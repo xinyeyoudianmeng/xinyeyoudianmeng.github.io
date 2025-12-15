@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>身材匀称度自测表 - 原创内容服务</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FF6B6B',
+                        secondary: '#4ECDC4',
+                        accent: '#FFD166',
+                        light: '#F7FFF7',
+                        dark: '#2F2F2F'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-up': 'slideUp 0.5s ease-in-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            }
+            .card-shadow {
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
+            }
+            .gradient-bg {
+                background: linear-gradient(135deg, #FF6B6B 0%, #4ECDC4 100%);
+            }
+            .input-focus {
+                @apply focus:ring-2 focus:ring-primary focus:border-primary focus:outline-none;
+            }
+        }
+    </style>
+</head>
+<body class="bg-light min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-3xl">
+        <!-- 标题区域 -->
+        <header class="text-center mb-8 animate-fade-in">
+            <h1 class="text-3xl md:text-4xl font-bold text-dark mb-2 text-shadow">身材匀称度自测表</h1>
+            <p class="text-gray-600">通过身高、体重、腰围、臀围等数据比例，快速判断身材类型</p>
+        </header>
+
+        <!-- 付费测试声明 -->
+        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-8 animate-fade-in">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <i class="fa fa-info-circle text-yellow-400 text-xl"></i>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm text-yellow-700 font-medium">付费测试为原创内容服务，非专业医疗/心理测评</p>
+                    <p class="text-xs text-yellow-600 mt-1">本测试仅供参考，不构成医疗建议或诊断</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 测试表单 -->
+        <div class="bg-white rounded-lg p-6 card-shadow mb-8 animate-slide-up">
+            <h2 class="text-xl font-semibold text-dark mb-4">请填写以下信息</h2>
+            
+            <form id="bodyShapeForm" class="space-y-4">
+                <!-- 基本信息 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="gender" class="block text-sm font-medium text-gray-700 mb-1">性别</label>
+                        <select id="gender" name="gender" class="w-full px-3 py-2 border border-gray-300 rounded-md input-focus">
+                            <option value="">请选择</option>
+                            <option value="female">女性</option>
+                            <option value="male">男性</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="age" class="block text-sm font-medium text-gray-700 mb-1">年龄</label>
+                        <input type="number" id="age" name="age" min="16" max="60" class="w-full px-3 py-2 border border-gray-300 rounded-md input-focus" placeholder="请输入年龄">
+                    </div>
+                </div>
+
+                <!-- 身体数据 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="height" class="block text-sm font-medium text-gray-700 mb-1">身高 (cm)</label>
+                        <input type="number" id="height" name="height" min="140" max="220" class="w-full px-3 py-2 border border-gray-300 rounded-md input-focus" placeholder="请输入身高">
+                    </div>
+                    <div>
+                        <label for="weight" class="block text-sm font-medium text-gray-700 mb-1">体重 (kg)</label>
+                        <input type="number" id="weight" name="weight" min="35" max="150" step="0.1" class="w-full px-3 py-2 border border-gray-300 rounded-md input-focus" placeholder="请输入体重">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="waist" class="block text-sm font-medium text-gray-700 mb-1">腰围 (cm)</label>
+                        <input type="number" id="waist" name="waist" min="50" max="150" step="0.1" class="w-full px-3 py-2 border border-gray-300 rounded-md input-focus" placeholder="请输入腰围">
+                    </div>
+                    <div>
+                        <label for="hip" class="block text-sm font-medium text-gray-700 mb-1">臀围 (cm)</label>
+                        <input type="number" id="hip" name="hip" min="70" max="150" step="0.1" class="w-full px-3 py-2 border border-gray-300 rounded-md input-focus" placeholder="请输入臀围">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="shoulder" class="block text-sm font-medium text-gray-700 mb-1">肩宽 (cm)</label>
+                        <input type="number" id="shoulder" name="shoulder" min="35" max="80" step="0.1" class="w-full px-3 py-2 border border-gray-300 rounded-md input-focus" placeholder="请输入肩宽">
+                    </div>
+                    <div>
+                        <label for="thigh" class="block text-sm font-medium text-gray-700 mb-1">大腿围 (cm)</label>
+                        <input type="number" id="thigh" name="thigh" min="30" max="80" step="0.1" class="w-full px-3 py-2 border border-gray-300 rounded-md input-focus" placeholder="请输入大腿围">
+                    </div>
+                </div>
+
+                <!-- 生活习惯 -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">生活习惯（可多选）</label>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="exercise" name="habits" value="exercise" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+                            <label for="exercise" class="ml-2 block text-sm text-gray-700">每周运动3次以上</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="checkbox" id="balancedDiet" name="habits" value="balancedDiet" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+                            <label for="balancedDiet" class="ml-2 block text-sm text-gray-700">饮食均衡</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="checkbox" id="regularSleep" name="habits" value="regularSleep" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+                            <label for="regularSleep" class="ml-2 block text-sm text-gray-700">作息规律</label>
+                        </div>
+                        <div class="flex items-center">
+                            <input type="checkbox" id="waterIntake" name="habits" value="waterIntake" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+                            <label for="waterIntake" class="ml-2 block text-sm text-gray-700">每日饮水量充足</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 提交按钮 -->
+                <div class="pt-2">
+                    <button type="button" id="calculateBtn" class="w-full py-3 px-4 bg-primary hover:bg-opacity-90 text-white font-medium rounded-md shadow-sm transition duration-200 flex justify-center items-center">
+                        <span>开始分析</span>
+                        <i class="fa fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- 结果展示区域 -->
+        <div id="resultSection" class="hidden animate-fade-in">
+            <!-- 结果概览 -->
+            <div class="bg-white rounded-lg p-6 card-shadow mb-6">
+                <h2 class="text-xl font-semibold text-dark mb-4">您的身材分析结果</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div class="bg-blue-50 rounded-lg p-4 text-center">
+                        <h3 class="text-sm font-medium text-gray-500 mb-1">BMI指数</h3>
+                        <p id="bmiValue" class="text-2xl font-bold text-primary">--</p>
+                        <p id="bmiCategory" class="text-xs text-gray-600 mt-1">--</p>
+                    </div>
+                    <div class="bg-green-50 rounded-lg p-4 text-center">
+                        <h3 class="text-sm font-medium text-gray-500 mb-1">腰臀比</h3>
+                        <p id="whrValue" class="text-2xl font-bold text-secondary">--</p>
+                        <p id="whrCategory" class="text-xs text-gray-600 mt-1">--</p>
+                    </div>
+                    <div class="bg-purple-50 rounded-lg p-4 text-center">
+                        <h3 class="text-sm font-medium text-gray-500 mb-1">匀称度评分</h3>
+                        <p id="shapeScore" class="text-2xl font-bold text-purple-600">--</p>
+                        <p id="shapeLevel" class="text-xs text-gray-600 mt-1">--</p>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h3 class="text-lg font-medium text-dark mb-2">您的身材类型</h3>
+                    <div id="bodyTypeResult" class="p-4 rounded-lg bg-gradient-to-r from-pink-50 to-blue-50 border border-gray-100">
+                        <p class="text-gray-800">请完成测试查看结果</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 详细分析 -->
+            <div class="bg-white rounded-lg p-6 card-shadow mb-6">
+                <h2 class="text-xl font-semibold text-dark mb-4">详细分析</h2>
+                
+                <div class="space-y-4">
+                    <div>
+                        <h3 class="text-md font-medium text-dark mb-2">体重与身高比例</h3>
+                        <p id="bmiAnalysis" class="text-gray-700 text-sm">请完成测试查看结果</p>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-md font-medium text-dark mb-2">体型分布特点</h3>
+                        <p id="shapeAnalysis" class="text-gray-700 text-sm">请完成测试查看结果</p>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-md font-medium text-dark mb-2">健康风险评估</h3>
+                        <p id="healthRiskAnalysis" class="text-gray-700 text-sm">请完成测试查看结果</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 个性化建议 -->
+            <div class="bg-white rounded-lg p-6 card-shadow mb-6">
+                <h2 class="text-xl font-semibold text-dark mb-4">个性化建议</h2>
+                
+                <div class="space-y-4">
+                    <div>
+                        <h3 class="text-md font-medium text-dark mb-2">运动建议</h3>
+                        <ul id="exerciseSuggestions" class="list-disc list-inside text-gray-700 text-sm space-y-1">
+                            <li>请完成测试查看结果</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-md font-medium text-dark mb-2">饮食建议</h3>
+                        <ul id="dietSuggestions" class="list-disc list-inside text-gray-700 text-sm space-y-1">
+                            <li>请完成测试查看结果</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-md font-medium text-dark mb-2">生活方式建议</h3>
+                        <ul id="lifestyleSuggestions" class="list-disc list-inside text-gray-700 text-sm space-y-1">
+                            <li>请完成测试查看结果</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 重新测试按钮 -->
+            <div class="text-center mb-8">
+                <button id="retestBtn" class="py-2 px-6 bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium rounded-md transition duration-200">
+                    重新测试
+                </button>
+            </div>
+        </div>
+
+        <!-- 原创声明 -->
+        <div class="bg-gray-50 rounded-lg p-4 mb-6 text-sm text-gray-600">
+            <h3 class="font-medium text-gray-800 mb-2">原创声明</h3>
+            <p>本身材匀称度自测表为原创内容，所有测试题目、评分标准和结果解读均为独立设计，不复制任何专业量表的具体题目和评分规则。</p>
+            <p class="mt-2">© 2025 身材管理工作室 版权所有</p>
+        </div>
+
+        <!-- 免责声明 -->
+        <div class="bg-gray-50 rounded-lg p-4 mb-6 text-sm text-gray-600">
+            <h3 class="font-medium text-gray-800 mb-2">免责声明</h3>
+            <p class="font-bold text-red-600">本测试为非专业诊断工具，仅供参考，不构成医疗建议或诊断。</p>
+            <p class="mt-2">1. 本测试结果不能替代专业医疗或健康评估，如有健康 concerns，请咨询专业医疗人士。</p>
+            <p class="mt-1">2. 测试结果仅基于您提供的信息，可能存在误差，请勿过度解读。</p>
+            <p class="mt-1">3. 本测试不涉及任何医疗诊断，不提供医疗建议，不承诺任何特定结果。</p>
+            <p class="mt-1">4. 身材多样性是正常的，本测试旨在提供参考，不应造成身材焦虑。</p>
+            <p class="mt-2 font-medium">如您有任何健康问题，请及时寻求专业医疗帮助。</p>
+        </div>
+    </div>
+
+    <script>
+        // 原创评分体系
+        document.addEventListener('DOMContentLoaded', function() {
+            const calculateBtn = document.getElementById('calculateBtn');
+            const retestBtn = document.getElementById('retestBtn');
+            const resultSection = document.getElementById('resultSection');
+            const form = document.getElementById('bodyShapeForm');
+
+            calculateBtn.addEventListener('click', function() {
+                // 获取表单数据
+                const gender = document.getElementById('gender').value;
+                const age = parseInt(document.getElementById('age').value);
+                const height = parseFloat(document.getElementById('height').value);
+                const weight = parseFloat(document.getElementById('weight').value);
+                const waist = parseFloat(document.getElementById('waist').value);
+                const hip = parseFloat(document.getElementById('hip').value);
+                const shoulder = parseFloat(document.getElementById('shoulder').value);
+                const thigh = parseFloat(document.getElementById('thigh').value);
+                
+                // 获取生活习惯
+                const habits = [];
+                document.querySelectorAll('input[name="habits"]:checked').forEach(checkbox => {
+                    habits.push(checkbox.value);
+                });
+
+                // 表单验证
+                if (!validateForm(gender, age, height, weight, waist, hip, shoulder, thigh)) {
+                    return;
+                }
+
+                // 计算各项指标
+                const bmi = calculateBMI(height, weight);
+                const whr = calculateWHR(waist, hip);
+                const shapeScore = calculateShapeScore(gender, bmi, whr, shoulder, hip, waist, thigh, habits);
+                const bodyType = determineBodyType(gender, shoulder, waist, hip);
+
+                // 显示结果
+                displayResults(bmi, whr, shapeScore, bodyType, gender, age, height, weight, waist, hip, shoulder, thigh, habits);
+                
+                // 显示结果区域
+                resultSection.classList.remove('hidden');
+                window.scrollTo({
+                    top: resultSection.offsetTop - 20,
+                    behavior: 'smooth'
+                });
+            });
+
+            retestBtn.addEventListener('click', function() {
+                form.reset();
+                resultSection.classList.add('hidden');
+                window.scrollTo({
+                    top: form.offsetTop - 20,
+                    behavior: 'smooth'
+                });
+            });
+
+            // 表单验证函数
+            function validateForm(gender, age, height, weight, waist, hip, shoulder, thigh) {
+                let isValid = true;
+                let errorMessage = '';
+
+                if (!gender) {
+                    errorMessage += '请选择性别\n';
+                    isValid = false;
+                }
+                
+                if (!age || age < 16 || age > 60) {
+                    errorMessage += '请输入有效的年龄（16-60岁）\n';
+                    isValid = false;
+                }
+                
+                if (!height || height < 140 || height > 220) {
+                    errorMessage += '请输入有效的身高（140-220cm）\n';
+                    isValid = false;
+                }
+                
+                if (!weight || weight < 35 || weight > 150) {
+                    errorMessage += '请输入有效的体重（35-150kg）\n';
+                    isValid = false;
+                }
+                
+                if (!waist || waist < 50 || waist > 150) {
+                    errorMessage += '请输入有效的腰围（50-150cm）\n';
+                    isValid = false;
+                }
+                
+                if (!hip || hip < 70 || hip > 150) {
+                    errorMessage += '请输入有效的臀围（70-150cm）\n';
+                    isValid = false;
+                }
+                
+                if (!shoulder || shoulder < 35 || shoulder > 80) {
+                    errorMessage += '请输入有效的肩宽（35-80cm）\n';
+                    isValid = false;
+                }
+                
+                if (!thigh || thigh < 30 || thigh > 80) {
+                    errorMessage += '请输入有效的大腿围（30-80cm）\n';
+                    isValid = false;
+                }
+
+                if (!isValid) {
+                    alert(errorMessage);
+                }
+
+                return isValid;
+            }
+
+            // 计算BMI
+            function calculateBMI(height, weight) {
+                const heightInMeters = height / 100;
+                return weight / (heightInMeters * heightInMeters);
+            }
+
+            // 计算腰臀比
+            function calculateWHR(waist, hip) {
+                return waist / hip;
+            }
+
+            // 计算身材匀称度评分（原创评分体系）
+            function calculateShapeScore(gender, bmi, whr, shoulder, hip, waist, thigh, habits) {
+                let score = 0;
+                
+                // BMI评分（30分）
+                if (bmi >= 18.5 && bmi < 24) {
+                    score += 30;
+                } else if (bmi >= 24 && bmi < 27 || bmi >= 17 && bmi < 18.5) {
+                    score += 20;
+                } else if (bmi >= 27 && bmi < 30 || bmi >= 16 && bmi < 17) {
+                    score += 10;
+                } else {
+                    score += 5;
+                }
+                
+                // 腰臀比评分（25分）
+                if (gender === 'female') {
+                    if (whr < 0.7) {
+                        score += 25;
+                    } else if (whr >= 0.7 && whr < 0.75) {
+                        score += 20;
+                    } else if (whr >= 0.75 && whr < 0.8) {
+                        score += 15;
+                    } else if (whr >= 0.8 && whr < 0.85) {
+                        score += 10;
+                    } else {
+                        score += 5;
+                    }
+                } else { // 男性
+                    if (whr < 0.8) {
+                        score += 25;
+                    } else if (whr >= 0.8 && whr < 0.85) {
+                        score += 20;
+                    } else if (whr >= 0.85 && whr < 0.9) {
+                        score += 15;
+                    } else if (whr >= 0.9 && whr < 0.95) {
+                        score += 10;
+                    } else {
+                        score += 5;
+                    }
+                }
+                
+                // 肩臀比评分（15分）
+                const shoulderToHip = shoulder / hip;
+                if (gender === 'female') {
+                    if (shoulderToHip >= 0.85 && shoulderToHip <= 0.95) {
+                        score += 15;
+                    } else if (shoulderToHip >= 0.8 && shoulderToHip < 0.85 || shoulderToHip > 0.95 && shoulderToHip <= 1.0) {
+                        score += 12;
+                    } else {
+                        score += 8;
+                    }
+                } else { // 男性
+                    if (shoulderToHip >= 1.0 && shoulderToHip <= 1.15) {
+                        score += 15;
+                    } else if (shoulderToHip >= 0.95 && shoulderToHip < 1.0 || shoulderToHip > 1.15 && shoulderToHip <= 1.25) {
+                        score += 12;
+                    } else {
+                        score += 8;
+                    }
+                }
+                
+                // 腰肩比评分（15分）
+                const waistToShoulder = waist / shoulder;
+                if (gender === 'female') {
+                    if (waistToShoulder >= 0.65 && waistToShoulder <= 0.75) {
+                        score += 15;
+                    } else if (waistToShoulder >= 0.6 && waistToShoulder < 0.65 || waistToShoulder > 0.75 && waistToShoulder <= 0.8) {
+                        score += 12;
+                    } else {
+                        score += 8;
+                    }
+                } else { // 男性
+                    if (waistToShoulder >= 0.7 && waistToShoulder <= 0.8) {
+                        score += 15;
+                    } else if (waistToShoulder >= 0.65 && waistToShoulder < 0.7 || waistToShoulder > 0.8 && waistToShoulder <= 0.85) {
+                        score += 12;
+                    } else {
+                        score += 8;
+                    }
+                }
+                
+                // 大腿围评分（15分）
+                const thighToHip = thigh / hip;
+                if (gender === 'female') {
+                    if (thighToHip >= 0.55 && thighToHip <= 0.65) {
+                        score += 15;
+                    } else if (thighToHip >= 0.5 && thighToHip < 0.55 || thighToHip > 0.65 && thighToHip <= 0.7) {
+                        score += 12;
+                    } else {
+                        score += 8;
+                    }
+                } else { // 男性
+                    if (thighToHip >= 0.5 && thighToHip <= 0.6) {
+                        score += 15;
+                    } else if (thighToHip >= 0.45 && thighToHip < 0.5 || thighToHip > 0.6 && thighToHip <= 0.65) {
+                        score += 12;
+                    } else {
+                        score += 8;
+                    }
+                }
+                
+                // 生活习惯加分（最高10分）
+                score += habits.length * 2.5;
+                
+                return Math.min(Math.round(score), 100);
+            }
+
+            // 确定身材类型（原创分类）
+            function determineBodyType(gender, shoulder, waist, hip) {
+                const shoulderToHip = shoulder / hip;
+                const waistToHip = waist / hip;
+                
+                if (gender === 'female') {
+                    if (shoulderToHip < 0.9 && waistToHip < 0.75 && hip > shoulder) {
+                        return '梨形身材';
+                    } else if (shoulderToHip > 1.0 && waistToHip < 0.8 && shoulder > hip) {
+                        return '倒三角身材';
+                    } else if (waistToHip >= 0.8 && Math.abs(shoulder - hip) < 5) {
+                        return '苹果形身材';
+                    } else if (shoulderToHip >= 0.9 && shoulderToHip <= 1.0 && waistToHip < 0.75) {
+                        return '沙漏形身材';
+                    } else if (shoulderToHip >= 0.85 && shoulderToHip <= 0.95 && waistToHip >= 0.75 && waistToHip < 0.8) {
+                        return '矩形身材';
+                    } else {
+                        return '匀称型身材';
+                    }
+                } else { // 男性
+                    if (shoulderToHip > 1.15 && waistToHip < 0.9 && shoulder > hip + 5) {
+                        return '倒三角身材';
+                    } else if (waistToHip >= 0.9 && Math.abs(shoulder - hip) < 5) {
+                        return '苹果形身材';
+                    } else if (shoulderToHip >= 1.0 && shoulderToHip <= 1.15 && waistToHip < 0.85) {
+                        return 'V形身材';
+                    } else if (shoulderToHip < 1.0 && hip > shoulder) {
+                        return '梨形身材';
+                    } else {
+                        return '匀称型身材';
+                    }
+                }
+            }
+
+            // 显示结果
+            function displayResults(bmi, whr, shapeScore, bodyType, gender, age, height, weight, waist, hip, shoulder, thigh, habits) {
+                // BMI结果
+                document.getElementById('bmiValue').textContent = bmi.toFixed(1);
+                let bmiCategory = '';
+                if (bmi < 18.5) {
+                    bmiCategory = '偏瘦';
+                } else if (bmi >= 18.5 && bmi < 24) {
+                    bmiCategory = '正常';
+                } else if (bmi >= 24 && bmi < 27) {
+                    bmiCategory = '超重';
+                } else if (bmi >= 27 && bmi < 30) {
+                    bmiCategory = '轻度肥胖';
+                } else if (bmi >= 30 && bmi < 35) {
+                    bmiCategory = '中度肥胖';
+                } else {
+                    bmiCategory = '重度肥胖';
+                }
+                document.getElementById('bmiCategory').textContent = bmiCategory;
+
+                // 腰臀比结果
+                document.getElementById('whrValue').textContent = whr.toFixed(2);
+                let whrCategory = '';
+                if (gender === 'female') {
+                    if (whr < 0.7) {
+                        whrCategory = '理想比例';
+                    } else if (whr >= 0.7 && whr < 0.8) {
+                        whrCategory = '正常范围';
+                    } else if (whr >= 0.8 && whr < 0.85) {
+                        whrCategory = '需注意';
+                    } else {
+                        whrCategory = '建议改善';
+                    }
+                } else { // 男性
+                    if (whr < 0.8) {
+                        whrCategory = '理想比例';
+                    } else if (whr >= 0.8 && whr < 0.9) {
+                        whrCategory = '正常范围';
+                    } else if (whr >= 0.9 && whr < 0.95) {
+                        whrCategory = '需注意';
+                    } else {
+                        whrCategory = '建议改善';
+                    }
+                }
+                document.getElementById('whrCategory').textContent = whrCategory;
+
+                // 匀称度评分
+                document.getElementById('shapeScore').textContent = shapeScore;
+                let shapeLevel = '';
+                if (shapeScore >= 90) {
+                    shapeLevel = '非常匀称';
+                } else if (shapeScore >= 80 && shapeScore < 90) {
+                    shapeLevel = '较为匀称';
+                } else if (shapeScore >= 70 && shapeScore < 80) {
+                    shapeLevel = '基本匀称';
+                } else if (shapeScore >= 60 && shapeScore < 70) {
+                    shapeLevel = '需要改善';
+                } else {
+                    shapeLevel = '建议调整';
+                }
+                document.getElementById('shapeLevel').textContent = shapeLevel;
+
+                // 身材类型
+                document.getElementById('bodyTypeResult').innerHTML = `
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 rounded-full bg-primary bg-opacity-20 flex items-center justify-center mr-4">
+                            <i class="fa fa-user text-primary text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-medium text-lg text-dark">${bodyType}</h4>
+                            <p class="text-sm text-gray-600 mt-1">${getBodyTypeDescription(bodyType, gender)}</p>
+                        </div>
+                    </div>
+                `;
+
+                // BMI分析
+                document.getElementById('bmiAnalysis').textContent = getBMIAnalysis(bmi, gender, age);
+
+                // 体型分布分析
+                document.getElementById('shapeAnalysis').textContent = getShapeAnalysis(bodyType, shoulder, waist, hip, thigh, gender);
+
+                // 健康风险分析
+                document.getElementById('healthRiskAnalysis').textContent = getHealthRiskAnalysis(bmi, whr, bodyType);
+
+                // 运动建议
+                const exerciseSuggestions = getExerciseSuggestions(bodyType, bmi, gender);
+                document.getElementById('exerciseSuggestions').innerHTML = exerciseSuggestions.map(suggestion => `<li>${suggestion}</li>`).join('');
+
+                // 饮食建议
+                const dietSuggestions = getDietSuggestions(bmi, gender);
+                document.getElementById('dietSuggestions').innerHTML = dietSuggestions.map(suggestion => `<li>${suggestion}</li>`).join('');
+
+                // 生活方式建议
+                const lifestyleSuggestions = getLifestyleSuggestions(habits, bmi, whr);
+                document.getElementById('lifestyleSuggestions').innerHTML = lifestyleSuggestions.map(suggestion => `<li>${suggestion}</li>`).join('');
+            }
+
+            // 获取身材类型描述（原创内容）
+            function getBodyTypeDescription(bodyType, gender) {
+                const descriptions = {
+                    '梨形身材': gender === 'female' ? 
+                        '您的下半身相对较宽，臀部和大腿较为丰满，上半身较窄。这种体型通常被认为是女性理想体型之一。' : 
+                        '您的下半身相对较宽，臀部和大腿较为丰满，上半身较窄。',
+                    '倒三角身材': gender === 'female' ? 
+                        '您的肩膀较宽，上半身较为发达，下半身相对较窄。这种体型在女性中较为少见，通常给人运动感和力量感。' : 
+                        '您的肩膀宽阔，上半身发达，腰部较细，下半身相对较窄。这是许多男性追求的理想体型。',
+                    '苹果形身材': gender === 'female' ? 
+                        '您的腰部较粗，脂肪主要集中在腹部，上下半身相对较细。这种体型需要注意腹部脂肪的管理。' : 
+                        '您的腰部较粗，脂肪主要集中在腹部，上下半身相对较细。这种体型需要特别注意腹部脂肪的管理。',
+                    '沙漏形身材': 
+                        '您的肩膀和臀部宽度相近，腰部明显较细，形成沙漏般的曲线。这是被广泛认为最具吸引力的体型之一。',
+                    '矩形身材': gender === 'female' ? 
+                        '您的肩膀、腰部和臀部宽度相近，没有明显的曲线。这种体型通常给人清爽、利落的感觉。' : 
+                        '您的肩膀、腰部和臀部宽度相近，整体线条较为笔直。这是一种较为中性化的体型。',
+                    'V形身材': 
+                        '您的肩膀宽阔，腰部较细，臀部适中，整体呈现V字形。这是许多男性追求的理想体型，给人健壮、有力的感觉。',
+                    '匀称型身材': 
+                        '您的身体各部位比例协调，没有特别突出的部位。这是一种健康、平衡的体型。'
+                };
+                
+                return descriptions[bodyType] || '您的体型较为均衡，各部位比例协调。';
+            }
+
+            // 获取BMI分析（原创内容）
+            function getBMIAnalysis(bmi, gender, age) {
+                if (bmi < 18.5) {
+                    return `您的BMI指数为${bmi.toFixed(1)}，属于偏瘦范围。建议适当增加营养摄入，进行力量训练以增加肌肉量。偏瘦可能会影响免疫力和健康，尤其是在${age}岁这个年龄段，保持适当的体重对健康至关重要。`;
+                } else if (bmi >= 18.5 && bmi < 24) {
+                    return `您的BMI指数为${bmi.toFixed(1)}，属于正常范围。恭喜您保持了健康的体重！建议继续保持良好的生活习惯，定期运动，均衡饮食，以维持当前的健康状态。`;
+                } else if (bmi >= 24 && bmi < 27) {
+                    return `您的BMI指数为${bmi.toFixed(1)}，属于超重范围。建议适当控制饮食，增加有氧运动，减少高热量食物的摄入。保持健康的体重可以降低多种慢性疾病的风险。`;
+                } else {
+                    return `您的BMI指数为${bmi.toFixed(1)}，属于肥胖范围。建议咨询专业营养师或医生，制定个性化的减重计划。肥胖可能会增加心血管疾病、糖尿病等健康风险，需要引起重视。`;
+                }
+            }
+
+            // 获取体型分布分析（原创内容）
+            function getShapeAnalysis(bodyType, shoulder, waist, hip, thigh, gender) {
+                const shoulderToHip = (shoulder / hip).toFixed(2);
+                const waistToHip = (waist / hip).toFixed(2);
+                const thighToHip = (thigh / hip).toFixed(2);
+                
+                let analysis = `您的肩臀比为${shoulderToHip}，腰臀比为${waistToHip}，大腿围与臀围比为${thighToHip}。`;
+                
+                switch(bodyType) {
+                    case '梨形身材':
+                        analysis += `作为${gender === 'female' ? '女性' : '男性'}梨形身材，您的下半身相对较宽，脂肪主要分布在臀部和大腿。这种体型的优势是上半身较为纤细，但需要注意下半身的塑形和线条管理。`;
+                        break;
+                    case '倒三角身材':
+                        analysis += `作为${gender === 'female' ? '女性' : '男性'}倒三角身材，您的肩膀宽阔，上半身发达，下半身相对较窄。这种体型给人强壮、有力的感觉，但可能需要注意上下半身的平衡发展。`;
+                        break;
+                    case '苹果形身材':
+                        analysis += `作为苹果形身材，您的脂肪主要集中在腹部，这可能会增加某些健康风险。建议重点关注腹部脂肪的减少，增强核心肌群的锻炼。`;
+                        break;
+                    case '沙漏形身材':
+                        analysis += `作为沙漏形身材，您的肩膀和臀部宽度相近，腰部明显较细，这是被广泛认为最具吸引力的体型之一。建议继续保持这种均衡的比例。`;
+                        break;
+                    case '矩形身材':
+                        analysis += `作为矩形身材，您的肩膀、腰部和臀部宽度相近，线条较为笔直。建议通过锻炼增强腰部曲线，塑造更有层次感的体型。`;
+                        break;
+                    case 'V形身材':
+                        analysis += `作为V形身材，您的肩膀宽阔，腰部较细，臀部适中，整体呈现V字形。这是许多男性追求的理想体型，给人健壮、有力的感觉。`;
+                        break;
+                    default:
+                        analysis += `您的体型较为匀称，各部位比例协调。建议继续保持当前的体型，并通过针对性的锻炼进一步提升身体线条。`;
+                }
+                
+                return analysis;
+            }
+
+            // 获取健康风险分析（原创内容）
+            function getHealthRiskAnalysis(bmi, whr, bodyType) {
+                let riskAnalysis = '';
+                
+                // BMI相关风险
+                if (bmi < 18.5) {
+                    riskAnalysis += '偏瘦可能会导致免疫力下降、营养不良、骨质疏松风险增加等健康问题。';
+                } else if (bmi >= 18.5 && bmi < 24) {
+                    riskAnalysis += '您的BMI在正常范围内，健康风险相对较低。';
+                } else if (bmi >= 24 && bmi < 27) {
+                    riskAnalysis += '超重可能会增加心血管疾病、高血压、糖尿病等健康风险。';
+                } else {
+                    riskAnalysis += '肥胖会显著增加心血管疾病、糖尿病、高血压、睡眠呼吸暂停等多种健康问题的风险。';
+                }
+                
+                // 腰臀比相关风险
+                riskAnalysis += ' ';
+                if (whr < 0.8) {
+                    riskAnalysis += '您的腰臀比在理想范围内，代谢性疾病风险较低。';
+                } else if (whr >= 0.8 && whr < 0.9) {
+                    riskAnalysis += '您的腰臀比略高，建议关注腹部脂肪的管理，以降低代谢性疾病风险。';
+                } else {
+                    riskAnalysis += '您的腰臀比偏高，腹部脂肪较多，这与心血管疾病、糖尿病等健康问题风险增加相关。';
+                }
+                
+                // 体型相关风险
+                riskAnalysis += ' ';
+                if (bodyType === '苹果形身材') {
+                    riskAnalysis += '作为苹果形身材，您的脂肪主要集中在腹部，这种"内脏脂肪"与多种慢性疾病风险相关，需要特别注意。';
+                } else if (bodyType === '梨形身材') {
+                    riskAnalysis += '作为梨形身材，您的脂肪主要分布在臀部和大腿，相对而言，这种脂肪分布模式的健康风险较低。';
+                } else {
+                    riskAnalysis += '您的体型分布较为均衡，这通常与较好的代谢健康状况相关。';
+                }
+                
+                return riskAnalysis;
+            }
+
+            // 获取运动建议（原创内容）
+            function getExerciseSuggestions(bodyType, bmi, gender) {
+                const suggestions = [];
+                
+                // 基础建议
+                suggestions.push('每周至少进行150分钟中等强度的有氧运动，如快走、慢跑、游泳等。');
+                suggestions.push('每周进行2-3次力量训练，锻炼全身主要肌群。');
+                
+                // 根据体型定制建议
+                switch(bodyType) {
+                    case '梨形身材':
+                        suggestions.push('加强上半身训练，如俯卧撑、哑铃训练等，以平衡上下半身比例。');
+                        suggestions.push('进行有氧运动以减少下半身脂肪，如骑自行车、爬楼梯等。');
+                        break;
+                    case '倒三角身材':
+                        suggestions.push('加强下半身训练，如深蹲、箭步蹲等，以平衡上下半身比例。');
+                        suggestions.push('注意控制上半身肌肉过度发达。');
+                        break;
+                    case '苹果形身材':
+                        suggestions.push('重点进行腹部训练，如平板支撑、卷腹等，增强核心肌群。');
+                        suggestions.push('增加有氧运动时间，帮助减少腹部脂肪。');
+                        break;
+                    case '沙漏形身材':
+                        suggestions.push('保持均衡的全身训练，维持现有的比例优势。');
+                        suggestions.push('可以适当进行核心训练，进一步强化腰部曲线。');
+                        break;
+                    case '矩形身材':
+                        suggestions.push('进行针对性训练以增强曲线，如侧腰训练、臀部训练等。');
+                        suggestions.push('尝试瑜伽或普拉提，改善身体线条和姿态。');
+                        break;
+                    default:
+                        suggestions.push('保持均衡的全身训练，维持现有的良好比例。');
+                        suggestions.push('可以根据个人喜好选择不同的运动方式，保持运动的多样性。');
+                }
+                
+                // 根据BMI调整建议
+                if (bmi < 18.5) {
+                    suggestions.push('增加力量训练，减少长时间的有氧运动，以增加肌肉量。');
+                } else if (bmi >= 24) {
+                    suggestions.push('增加有氧运动的频率和时长，帮助控制体重。');
+                    suggestions.push('注意运动强度的渐进性，避免运动损伤。');
+                }
+                
+                return suggestions;
+            }
+
+            // 获取饮食建议（原创内容）
+            function getDietSuggestions(bmi, gender) {
+                const suggestions = [];
+                
+                // 基础建议
+                suggestions.push('保持饮食多样化，摄入足够的蛋白质、碳水化合物、健康脂肪、维生素和矿物质。');
+                suggestions.push('控制食物分量，避免过度进食。');
+                suggestions.push('减少加工食品、高糖饮料和油炸食品的摄入。');
+                
+                // 根据BMI调整建议
+                if (bmi < 18.5) {
+                    suggestions.push('适当增加热量摄入，选择高热量但营养丰富的食物，如坚果、牛油果、全脂乳制品等。');
+                    suggestions.push('增加蛋白质摄入，促进肌肉生长，如鸡肉、鱼类、豆类等。');
+                    suggestions.push('少食多餐，避免空腹时间过长。');
+                } else if (bmi >= 18.5 && bmi < 24) {
+                    suggestions.push('保持当前的饮食模式，确保营养均衡。');
+                    suggestions.push('多吃蔬菜和水果，增加膳食纤维摄入。');
+                    suggestions.push('选择全谷物食品，提供持久能量。');
+                } else if (bmi >= 24) {
+                    suggestions.push('适当减少热量摄入，创造热量缺口。');
+                    suggestions.push('增加蛋白质摄入，提高饱腹感，如瘦肉、鱼类、豆类等。');
+                    suggestions.push('多吃蔬菜和水果，增加膳食纤维摄入，延长饱腹感。');
+                    suggestions.push('选择低脂肪食品，减少油脂摄入。');
+                }
+                
+                return suggestions;
+            }
+
+            // 获取生活方式建议（原创内容）
+            function getLifestyleSuggestions(habits, bmi, whr) {
+                const suggestions = [];
+                
+                // 基础建议
+                suggestions.push('保持充足的睡眠，每天7-8小时。');
+                suggestions.push('管理压力，避免长期处于高压状态，可以尝试冥想、深呼吸等放松技巧。');
+                
+                // 根据已有习惯调整建议
+                if (!habits.includes('exercise')) {
+                    suggestions.push('建立规律的运动习惯，从低强度、短时间开始，逐渐增加。');
+                }
+                
+                if (!habits.includes('balancedDiet')) {
+                    suggestions.push('逐步改善饮食习惯，增加蔬果摄入，减少加工食品。');
+                }
+                
+                if (!habits.includes('regularSleep')) {
+                    suggestions.push('建立规律的作息时间，避免熬夜，创造良好的睡眠环境。');
+                }
+                
+                if (!habits.includes('waterIntake')) {
+                    suggestions.push('每天喝足够的水，建议每天摄入2000ml左右的水分。');
+                }
+                
+                // 根据健康指标调整建议
+                if (bmi >= 24 || whr >= 0.85) {
+                    suggestions.push('定期监测体重和腰围变化，设定合理的减重目标。');
+                    suggestions.push('考虑寻求专业营养师或健康教练的指导。');
+                }
+                
+                suggestions.push('定期进行健康检查，关注身体各项指标的变化。');
+                
+                return suggestions;
+            }
+        });
+    </script>
+</body>
+</html>
