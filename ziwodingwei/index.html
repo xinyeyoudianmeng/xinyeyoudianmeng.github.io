@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>自我定位探索测试 | 发现你的独特价值</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FF6B8B',
+                        secondary: '#FFE4E8',
+                        accent: '#FF8FA7',
+                        neutral: '#F9F9F9',
+                        dark: '#4A4A4A'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px rgba(255, 107, 139, 0.1)',
+                        'hover': '0 8px 30px rgba(255, 107, 139, 0.15)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            .transition-all-300 {
+                transition: all 0.3s ease;
+            }
+            .bg-gradient-primary {
+                background: linear-gradient(135deg, #FF6B8B 0%, #FF8FA7 100%);
+            }
+        }
+    </style>
+</head>
+<body class="bg-neutral min-h-screen font-sans text-dark">
+    <div class="max-w-2xl mx-auto px-4 py-8 md:py-12">
+        <!-- 头部区域 -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-primary mb-3 text-shadow">自我定位探索测试</h1>
+            <p class="text-lg text-gray-600 mb-6">发现你的独特价值与成长方向</p>
+            
+            <!-- 付费提示 -->
+            <div class="bg-secondary rounded-lg p-4 mb-6 border border-accent">
+                <p class="text-primary font-medium flex items-center justify-center">
+                    <i class="fa fa-info-circle mr-2"></i>
+                    付费测试为原创内容服务，非专业医疗/心理测评
+                </p>
+            </div>
+            
+            <!-- 免责声明 -->
+            <div class="bg-white rounded-lg p-4 mb-8 shadow-soft">
+                <h3 class="text-lg font-semibold text-primary mb-2">免责声明</h3>
+                <p class="text-sm text-gray-600">
+                    本测试为原创娱乐性内容，旨在提供自我认知的参考和个人成长的启发。测试结果不构成专业心理诊断、医疗建议或职业规划指导。
+                    如有需要，请寻求专业人士的帮助。本测试最终解释权归创作者所有。
+                </p>
+            </div>
+        </header>
+
+        <!-- 测试说明 -->
+        <div class="bg-white rounded-lg p-6 mb-8 shadow-soft">
+            <h2 class="text-xl font-semibold text-primary mb-3">测试说明</h2>
+            <p class="mb-4">
+                本测试包含30道关于个人行为偏好、思维方式和价值观的问题，请根据你的真实情况选择最符合的选项。
+                测试完成后，你将获得一份个性化的自我定位分析报告。
+            </p>
+            <p class="text-sm text-gray-600">
+                注意：请在安静的环境中，诚实、直觉地回答问题，无需过度思考。
+            </p>
+        </div>
+
+        <!-- 测试区域 -->
+        <div id="test-container" class="bg-white rounded-lg p-6 shadow-soft">
+            <!-- 进度条 -->
+            <div class="mb-6">
+                <div class="flex justify-between text-sm text-gray-500 mb-1">
+                    <span>进度</span>
+                    <span id="progress-text">1/30</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                    <div id="progress-bar" class="bg-gradient-primary h-2.5 rounded-full transition-all duration-300" style="width: 6.67%"></div>
+                </div>
+            </div>
+
+            <!-- 问题区域 -->
+            <div id="question-container">
+                <!-- 问题将通过JavaScript动态生成 -->
+            </div>
+
+            <!-- 导航按钮 -->
+            <div class="flex justify-between mt-8">
+                <button id="prev-btn" class="px-6 py-2.5 bg-gray-200 text-gray-600 rounded-full font-medium hover:bg-gray-300 transition-all-300 opacity-50 cursor-not-allowed" disabled>
+                    <i class="fa fa-arrow-left mr-2"></i>上一题
+                </button>
+                <button id="next-btn" class="px-6 py-2.5 bg-gradient-primary text-white rounded-full font-medium hover:bg-accent transition-all-300 hover:shadow-lg">
+                    下一题<i class="fa fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 结果区域 (初始隐藏) -->
+        <div id="result-container" class="bg-white rounded-lg p-6 shadow-soft mt-8 hidden">
+            <h2 class="text-2xl font-bold text-primary mb-6 text-center">你的自我定位分析</h2>
+            
+            <!-- 结果摘要 -->
+            <div id="result-summary" class="mb-8">
+                <!-- 结果摘要将通过JavaScript动态生成 -->
+            </div>
+            
+            <!-- 详细分析 -->
+            <div id="result-details" class="space-y-6">
+                <!-- 详细分析将通过JavaScript动态生成 -->
+            </div>
+            
+            <!-- 建议部分 -->
+            <div class="mt-8 p-5 bg-secondary rounded-lg border border-accent">
+                <h3 class="text-lg font-semibold text-primary mb-3">成长建议</h3>
+                <ul id="result-suggestions" class="list-disc pl-5 space-y-2">
+                    <!-- 建议将通过JavaScript动态生成 -->
+                </ul>
+            </div>
+            
+            <!-- 专业帮助提示 -->
+            <div class="mt-8 p-4 bg-gray-100 rounded-lg text-center">
+                <p class="text-sm text-gray-600">
+                    记住，本测试仅作为自我认知的参考。如果你希望更深入地了解自己或面临重要决策，
+                    <a href="#" class="text-primary font-medium hover:underline">建议寻求专业心理咨询师或职业顾问的帮助</a>。
+                </p>
+            </div>
+            
+
+            
+            <!-- 重新测试按钮 -->
+            <div class="mt-4 text-center">
+                <button id="retake-btn" class="px-6 py-2 bg-gray-200 text-gray-600 rounded-full font-medium hover:bg-gray-300 transition-all-300">
+                    <i class="fa fa-refresh mr-2"></i>重新测试
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 测试题目数据
+        const testQuestions = [
+            {
+                id: 1,
+                question: "在团队合作中，你更倾向于：",
+                options: [
+                    { value: "A", text: "提出创意和新想法", scores: { creator: 3, thinker: 1, doer: 0, relator: 1 } },
+                    { value: "B", text: "分析问题并制定详细计划", scores: { creator: 0, thinker: 3, doer: 1, relator: 0 } },
+                    { value: "C", text: "执行任务并确保完成", scores: { creator: 0, thinker: 1, doer: 3, relator: 0 } },
+                    { value: "D", text: "协调人际关系并提供支持", scores: { creator: 1, thinker: 0, doer: 0, relator: 3 } }
+                ]
+            },
+            {
+                id: 2,
+                question: "当面对挑战时，你的第一反应是：",
+                options: [
+                    { value: "A", text: "寻找创新的解决方案", scores: { creator: 3, thinker: 1, doer: 1, relator: 0 } },
+                    { value: "B", text: "收集信息并分析利弊", scores: { creator: 0, thinker: 3, doer: 0, relator: 1 } },
+                    { value: "C", text: "立即采取行动解决问题", scores: { creator: 1, thinker: 0, doer: 3, relator: 0 } },
+                    { value: "D", text: "寻求他人的帮助和建议", scores: { creator: 0, thinker: 1, doer: 0, relator: 3 } }
+                ]
+            },
+            {
+                id: 3,
+                question: "在学习新事物时，你更喜欢：",
+                options: [
+                    { value: "A", text: "探索多种可能性和方法", scores: { creator: 3, thinker: 2, doer: 0, relator: 0 } },
+                    { value: "B", text: "理解理论基础和原理", scores: { creator: 1, thinker: 3, doer: 0, relator: 1 } },
+                    { value: "C", text: "通过实践和尝试来学习", scores: { creator: 0, thinker: 0, doer: 3, relator: 1 } },
+                    { value: "D", text: "与他人合作学习和讨论", scores: { creator: 1, thinker: 0, doer: 1, relator: 3 } }
+                ]
+            },
+            {
+                id: 4,
+                question: "在空闲时间，你更喜欢：",
+                options: [
+                    { value: "A", text: "从事创意活动（如绘画、写作、音乐）", scores: { creator: 3, thinker: 1, doer: 0, relator: 1 } },
+                    { value: "B", text: "阅读书籍或观看教育内容", scores: { creator: 0, thinker: 3, doer: 0, relator: 1 } },
+                    { value: "C", text: "进行体育活动或动手项目", scores: { creator: 1, thinker: 0, doer: 3, relator: 0 } },
+                    { value: "D", text: "与朋友聚会或参与社交活动", scores: { creator: 0, thinker: 0, doer: 1, relator: 3 } }
+                ]
+            },
+            {
+                id: 5,
+                question: "当你需要做决策时，你主要依靠：",
+                options: [
+                    { value: "A", text: "直觉和灵感", scores: { creator: 3, thinker: 0, doer: 1, relator: 1 } },
+                    { value: "B", text: "逻辑分析和事实", scores: { creator: 0, thinker: 3, doer: 1, relator: 0 } },
+                    { value: "C", text: "过去的经验和实际效果", scores: { creator: 1, thinker: 1, doer: 3, relator: 0 } },
+                    { value: "D", text: "他人的意见和感受", scores: { creator: 0, thinker: 0, doer: 0, relator: 3 } }
+                ]
+            },
+            {
+                id: 6,
+                question: "在社交场合中，你通常是：",
+                options: [
+                    { value: "A", text: "提出新话题和想法的人", scores: { creator: 3, thinker: 0, doer: 1, relator: 1 } },
+                    { value: "B", text: "观察和分析他人的人", scores: { creator: 0, thinker: 3, doer: 0, relator: 1 } },
+                    { value: "C", text: "组织活动和推动进程的人", scores: { creator: 1, thinker: 0, doer: 3, relator: 1 } },
+                    { value: "D", text: "关心他人感受并提供支持的人", scores: { creator: 0, thinker: 1, doer: 0, relator: 3 } }
+                ]
+            },
+            {
+                id: 7,
+                question: "当你感到压力时，你会：",
+                options: [
+                    { value: "A", text: "寻找新的视角或创造性的出路", scores: { creator: 3, thinker: 1, doer: 1, relator: 0 } },
+                    { value: "B", text: "独自思考并分析问题根源", scores: { creator: 0, thinker: 3, doer: 0, relator: 1 } },
+                    { value: "C", text: "通过行动来释放压力", scores: { creator: 1, thinker: 0, doer: 3, relator: 0 } },
+                    { value: "D", text: "与亲友交流寻求情感支持", scores: { creator: 0, thinker: 0, doer: 1, relator: 3 } }
+                ]
+            },
+            {
+                id: 8,
+                question: "你认为自己最大的优势是：",
+                options: [
+                    { value: "A", text: "创造力和想象力", scores: { creator: 3, thinker: 1, doer: 0, relator: 1 } },
+                    { value: "B", text: "分析能力和批判性思维", scores: { creator: 0, thinker: 3, doer: 0, relator: 1 } },
+                    { value: "C", text: "执行力和解决问题的能力", scores: { creator: 1, thinker: 0, doer: 3, relator: 0 } },
+                    { value: "D", text: "人际交往能力和同理心", scores: { creator: 0, thinker: 0, doer: 0, relator: 3 } }
+                ]
+            },
+            {
+                id: 9,
+                question: "在工作或学习环境中，你更喜欢：",
+                options: [
+                    { value: "A", text: "灵活自由的环境，能发挥创意", scores: { creator: 3, thinker: 1, doer: 0, relator: 1 } },
+                    { value: "B", text: "有明确规则和结构的环境", scores: { creator: 0, thinker: 3, doer: 1, relator: 0 } },
+                    { value: "C", text: "注重结果和效率的环境", scores: { creator: 1, thinker: 0, doer: 3, relator: 0 } },
+                    { value: "D", text: "团队合作和相互支持的环境", scores: { creator: 0, thinker: 1, doer: 0, relator: 3 } }
+                ]
+            },
+            {
+                id: 10,
+                question: "当你需要向他人解释想法时，你会：",
+                options: [
+                    { value: "A", text: "使用比喻和视觉化的方式", scores: { creator: 3, thinker: 1, doer: 0, relator: 1 } },
+                    { value: "B", text: "提供逻辑和事实依据", scores: { creator: 0, thinker: 3, doer: 0, relator: 1 } },
+                    { value: "C", text: "直接展示实际效果或例子", scores: { creator: 1, thinker: 0, doer: 3, relator: 0 } },
+                    { value: "D", text: "关注他人的感受和反馈", scores: { creator: 0, thinker: 0, doer: 1, relator: 3 } }
+                ]
+            },
+            {
+                id: 11,
+                question: "在解决问题时，你更关注：",
+                options: [
+                    { value: "A", text: "可能性和创新", scores: { creator: 3, thinker: 1, doer: 0, relator: 0 } },
+                    { value: "B", text: "准确性和完整性", scores: { creator: 0, thinker: 3, doer: 1, relator: 0 } },
+                    { value: "C", text: "效率和实用性", scores: { creator: 1, thinker: 0, doer: 3, relator: 0 } },
+                    { value: "D", text: "和谐和共识", scores: { creator: 0, thinker: 0, doer: 0, relator: 3 } }
+                ]
+            },
+            {
+                id: 12,
+                question: "当你设定目标时，你倾向于：",
+                options: [
+                    { value: "A", text: "设定具有挑战性的目标", scores: { creator: 3, thinker: 1, doer: 2, relator: 0 } },
+                    { value: "B", text: "设定具体且可衡量的目标", scores: { creator: 0, thinker: 3, doer: 2, relator: 0 } },
+                    { value: "C", text: "设定切实可行的目标", scores: { creator: 1, thinker: 1, doer: 3, relator: 0 } },
+                    { value: "D", text: "设定与他人相关的目标", scores: { creator: 0, thinker: 0, doer: 0, relator: 3 } }
+                ]
+            },
+            {
+                id: 13,
+                question: "在处理信息时，你更擅长：",
+                options: [
+                    { value: "A", text: "看到整体模式和趋势", scores: { creator: 3, thinker: 2, doer: 0, relator: 0 } },
+                    { value: "B", text: "注意细节和精确性", scores: { creator: 0, thinker: 3, doer: 1, relator: 0 } },
+                    { value: "C", text: "应用信息解决实际问题", scores: { creator: 1, thinker: 0, doer: 3, relator: 0 } },
+                    { value: "D", text: "理解信息对他人的影响", scores: { creator: 0, thinker: 0, doer: 0, relator: 3 } }
+                ]
+            },
+            {
+                id: 14,
+                question: "在团队冲突中，你通常会：",
+                options: [
+                    { value: "A", text: "提出创新的解决方案", scores: { creator: 3, thinker: 1, doer: 1, relator: 0 } },
+                    { value: "B", text: "分析冲突根源并提出逻辑解决方案", scores: { creator: 0, thinker: 3, doer: 0, relator: 1 } },
+                    { value: "C", text: "采取行动解决问题", scores: { creator: 1, thinker: 0, doer: 3, relator: 0 } },
+                    { value: "D", text: "调和各方关系，寻求共识", scores: { creator: 0, thinker: 0, doer: 0, relator: 3 } }
+                ]
+            },
+            {
+                id: 15,
+                question: "你对成功的定义更接近：",
+                options: [
+                    { value: "A", text: "创造有价值的新事物", scores: { creator: 3, thinker: 1, doer: 0, relator: 1 } },
+                    { value: "B", text: "获得知识和理解", scores: { creator: 0, thinker: 3, doer: 0, relator: 1 } },
+                    { value: "C", text: "实现目标和取得成就", scores: { creator: 1, thinker: 0, doer: 3, relator: 0 } },
+                    { value: "D", text: "建立有意义的关系和影响他人", scores: { creator: 0, thinker: 0, doer: 0, relator: 3 } }
+                ]
+            },
+            {
+                id: 16,
+                question: "在面对变化时，你通常会：",
+                options: [
+                    { value: "A", text: "拥抱变化并寻找新机会", scores: { creator: 3, thinker: 1, doer: 2, relator: 0 } },
+                    { value: "B", text: "分析变化的原因和影响", scores: { creator: 0, thinker: 3, doer: 0, relator: 1 } },
+                    { value: "C", text: "迅速调整并适应变化", scores: { creator: 1, thinker: 0, doer: 3, relator: 1 } },
+                    { value: "D", text: "关注变化对他人的影响并提供支持", scores: { creator: 0, thinker: 1, doer: 0, relator: 3 } }
+                ]
+            },
+            {
+                id: 17,
+                question: "在解决复杂问题时，你更倾向于：",
+                options: [
+                    { value: "A", text: "跳出常规思维寻找创新解决方案", scores: { creator: 3, thinker: 1, doer: 0, relator: 0 } },
+                    { value: "B", text: "系统分析问题的各个方面", scores: { creator: 0, thinker: 3, doer: 1, relator: 0 } },
+                    { value: "C", text: "采取实际行动逐步解决", scores: { creator: 1, thinker: 0, doer: 3, relator: 0 } },
+                    { value: "D", text: "与他人合作集思广益", scores: { creator: 0, thinker: 0, doer: 1, relator: 3 } }
+                ]
+            },
+            {
+                id: 18,
+                question: "在团队中，你更看重：",
+                options: [
+                    { value: "A", text: "创新和突破", scores: { creator: 3, thinker: 1, doer: 0, relator: 0 } },
+                    { value: "B", text: "效率和质量", scores: { creator: 0, thinker: 3, doer: 2, relator: 0 } },
+                    { value: "C", text: "结果和成就", scores: { creator: 1, thinker: 0, doer: 3, relator: 0 } },
+                    { value: "D", text: "和谐和团队精神", scores: { creator: 0, thinker: 0, doer: 0, relator: 3 } }
+                ]
+            },
+            {
+                id: 19,
+                question: "当你需要学习新技能时，你会：",
+                options: [
+                    { value: "A", text: "探索多种学习方法和资源", scores: { creator: 3, thinker: 2, doer: 0, relator: 0 } },
+                    { value: "B", text: "系统地学习理论知识", scores: { creator: 0, thinker: 3, doer: 0, relator: 1 } },
+                    { value: "C", text: "通过实践和尝试来学习", scores: { creator: 1, thinker: 0, doer: 3, relator: 0 } },
+                    { value: "D", text: "向他人请教和学习", scores: { creator: 0, thinker: 0, doer: 1, relator: 3 } }
+                ]
+            },
+            {
+                id: 20,
+                question: "在社交场合，你更喜欢谈论：",
+                options: [
+                    { value: "A", text: "创意和想法", scores: { creator: 3, thinker: 1, doer: 0, relator: 0 } },
+                    { value: "B", text: "事实和分析", scores: { creator: 0, thinker: 3, doer: 0, relator: 1 } },
+                    { value: "C", text: "经历和成就", scores: { creator: 1, thinker: 0, doer: 3, relator: 0 } },
+                    { value: "D", text: "感受和关系", scores: { creator: 0, thinker: 0, doer: 0, relator: 3 } }
+                ]
+            },
+            {
+                id: 21,
+                question: "当你有空闲时间时，你更喜欢：",
+                options: [
+                    { value: "A", text: "尝试新事物和探索", scores: { creator: 3, thinker: 1, doer: 2, relator: 0 } },
+                    { value: "B", text: "阅读和思考", scores: { creator: 0, thinker: 3, doer: 0, relator: 1 } },
+                    { value: "C", text: "完成未完成的任务", scores: { creator: 1, thinker: 0, doer: 3, relator: 0 } },
+                    { value: "D", text: "与亲友相处", scores: { creator: 0, thinker: 0, doer: 0, relator: 3 } }
+                ]
+            },
+            {
+                id: 22,
+                question: "在做决策时，你更倾向于：",
+                options: [
+                    { value: "A", text: "跟随直觉和灵感", scores: { creator: 3, thinker: 0, doer: 1, relator: 0 } },
+                    { value: "B", text: "收集信息并分析", scores: { creator: 0, thinker: 3, doer: 0, relator: 1 } },
+                    { value: "C", text: "快速做出决策并行动", scores: { creator: 1, thinker: 0, doer: 3, relator: 0 } },
+                    { value: "D", text: "考虑他人的意见和感受", scores: { creator: 0, thinker: 1, doer: 0, relator: 3 } }
+                ]
+            },
+            {
+                id: 23,
+                question: "在面对压力时，你会：",
+                options: [
+                    { value: "A", text: "寻找创造性的减压方式", scores: { creator: 3, thinker: 1, doer: 0, relator: 0 } },
+                    { value: "B", text: "分析压力源并制定解决方案", scores: { creator: 0, thinker: 3, doer: 1, relator: 0 } },
+                    { value: "C", text: "通过行动来缓解压力", scores: { creator: 1, thinker: 0, doer: 3, relator: 0 } },
+                    { value: "D", text: "寻求他人的支持和理解", scores: { creator: 0, thinker: 0, doer: 0, relator: 3 } }
+                ]
+            },
+            {
+                id: 24,
+                question: "在团队合作中，你最不喜欢：",
+                options: [
+                    { value: "A", text: "缺乏创新和变化", scores: { creator: 3, thinker: 1, doer: 0, relator: 0 } },
+                    { value: "B", text: "缺乏条理和效率", scores: { creator: 0, thinker: 3, doer: 2, relator: 0 } },
+                    { value: "C", text: "缺乏行动和结果", scores: { creator: 1, thinker: 0, doer: 3, relator: 0 } },
+                    { value: "D", text: "缺乏和谐和沟通", scores: { creator: 0, thinker: 0, doer: 0, relator: 3 } }
+                ]
+            },
+            {
+                id: 25,
+                question: "在解决问题时，你更关注：",
+                options: [
+                    { value: "A", text: "可能性和创新", scores: { creator: 3, thinker: 1, doer: 0, relator: 0 } },
+                    { value: "B", text: "原因和逻辑", scores: { creator: 0, thinker: 3, doer: 0, relator: 1 } },
+                    { value: "C", text: "结果和效果", scores: { creator: 1, thinker: 0, doer: 3, relator: 0 } },
+                    { value: "D", text: "影响和关系", scores: { creator: 0, thinker: 0, doer: 0, relator: 3 } }
+                ]
+            },
+            {
+                id: 26,
+                question: "在学习或工作中，你更喜欢：",
+                options: [
+                    { value: "A", text: "有创造性的任务", scores: { creator: 3, thinker: 1, doer: 0, relator: 0 } },
+                    { value: "B", text: "需要分析思考的任务", scores: { creator: 0, thinker: 3, doer: 0, relator: 1 } },
+                    { value: "C", text: "需要实际操作的任务", scores: { creator: 1, thinker: 0, doer: 3, relator: 0 } },
+                    { value: "D", text: "需要与人合作的任务", scores: { creator: 0, thinker: 0, doer: 0, relator: 3 } }
+                ]
+            },
+            {
+                id: 27,
+                question: "当你需要表达自己的想法时，你更倾向于：",
+                options: [
+                    { value: "A", text: "使用生动的比喻和例子", scores: { creator: 3, thinker: 1, doer: 0, relator: 1 } },
+                    { value: "B", text: "提供清晰的逻辑和事实", scores: { creator: 0, thinker: 3, doer: 0, relator: 1 } },
+                    { value: "C", text: "直接表达并强调重点", scores: { creator: 1, thinker: 0, doer: 3, relator: 0 } },
+                    { value: "D", text: "关注他人的反应并调整表达", scores: { creator: 0, thinker: 0, doer: 0, relator: 3 } }
+                ]
+            },
+            {
+                id: 28,
+                question: "在面对挑战时，你认为最重要的是：",
+                options: [
+                    { value: "A", text: "保持开放的心态", scores: { creator: 3, thinker: 1, doer: 0, relator: 1 } },
+                    { value: "B", text: "保持冷静和理性", scores: { creator: 0, thinker: 3, doer: 1, relator: 0 } },
+                    { value: "C", text: "保持积极的行动", scores: { creator: 1, thinker: 0, doer: 3, relator: 0 } },
+                    { value: "D", text: "保持团队的团结", scores: { creator: 0, thinker: 0, doer: 0, relator: 3 } }
+                ]
+            },
+            {
+                id: 29,
+                question: "在评价自己的工作时，你更看重：",
+                options: [
+                    { value: "A", text: "创新性和独特性", scores: { creator: 3, thinker: 1, doer: 0, relator: 0 } },
+                    { value: "B", text: "准确性和完整性", scores: { creator: 0, thinker: 3, doer: 1, relator: 0 } },
+                    { value: "C", text: "效率和成果", scores: { creator: 1, thinker: 0, doer: 3, relator: 0 } },
+                    { value: "D", text: "对他人的帮助和影响", scores: { creator: 0, thinker: 0, doer: 0, relator: 3 } }
+                ]
+            },
+            {
+                id: 30,
+                question: "在未来规划中，你更关注：",
+                options: [
+                    { value: "A", text: "可能性和机会", scores: { creator: 3, thinker: 1, doer: 0, relator: 0 } },
+                    { value: "B", text: "趋势和分析", scores: { creator: 0, thinker: 3, doer: 0, relator: 1 } },
+                    { value: "C", text: "目标和行动", scores: { creator: 1, thinker: 0, doer: 3, relator: 0 } },
+                    { value: "D", text: "关系和影响", scores: { creator: 0, thinker: 0, doer: 0, relator: 3 } }
+                ]
+            }
+        ];
+
+        // 结果类型定义
+        const resultTypes = {
+            creator: {
+                name: "创意引领者",
+                description: "你充满创造力和想象力，善于提出新想法和解决方案。",
+                strengths: ["创造力", "想象力", "创新思维", "直觉", "灵活性"],
+                challenges: ["可能过于理想主义", "有时缺乏执行力", "可能忽视细节", "对常规工作缺乏耐心"],
+                suggestions: [
+                    "将你的创意与实际执行计划结合",
+                    "学习如何有效沟通和推销你的想法",
+                    "培养对细节的关注",
+                    "寻找能够互补你技能的合作伙伴"
+                ],
+                careers: ["设计师", "艺术家", "创业者", "作家", "营销创意", "研发人员"]
+            },
+            thinker: {
+                name: "深度思考者",
+                description: "你擅长分析和批判性思考，注重逻辑和事实。",
+                strengths: ["分析能力", "批判性思维", "逻辑推理", "专注力", "追求精确"],
+                challenges: ["可能过度分析", "决策速度较慢", "可能过于理论化", "对变化的适应较慢"],
+                suggestions: [
+                    "学习快速决策的技巧",
+                    "将理论知识与实践结合",
+                    "培养对不确定性的容忍度",
+                    "练习简化复杂概念的能力"
+                ],
+                careers: ["科学家", "工程师", "分析师", "研究员", "教师", "战略顾问"]
+            },
+            doer: {
+                name: "行动执行者",
+                description: "你注重实际行动和结果，善于执行任务并解决问题。",
+                strengths: ["执行力", "务实精神", "解决问题能力", "效率", "坚韧不拔"],
+                challenges: ["可能过于急进", "对理论和规划缺乏耐心", "可能忽视他人感受", "不擅长长期规划"],
+                suggestions: [
+                    "学习在行动前进行充分规划",
+                    "培养倾听和理解他人的能力",
+                    "关注长期目标和战略",
+                    "练习反思和总结经验"
+                ],
+                careers: ["项目经理", "企业家", "运动员", "技术专家", "急救人员", "军人"]
+            },
+            relator: {
+                name: "关系构建者",
+                description: "你擅长人际交往和情感连接，注重和谐与共识。",
+                strengths: ["同理心", "沟通能力", "团队合作", "情感智能", "冲突解决"],
+                challenges: ["可能过度关注他人感受", "决策时难以客观", "避免冲突", "可能缺乏主见"],
+                suggestions: [
+                    "培养独立决策的能力",
+                    "学习健康的边界设定",
+                    "增强对建设性批评的接受度",
+                    "发展个人主见和立场"
+                ],
+                careers: ["心理咨询师", "人力资源", "教育工作者", "社会工作者", "销售顾问", "公关专家"]
+            },
+            creatorThinker: {
+                name: "创新思想家",
+                description: "你结合了创造力和分析能力，善于将创意与逻辑结合。",
+                summary: "你既能产生创新想法，又能进行深入分析，是理想的战略规划者和概念开发者。",
+                suggestions: [
+                    "平衡理论思考与实际应用",
+                    "寻找能够帮助你执行想法的合作伙伴",
+                    "学习项目管理技能",
+                    "定期与不同背景的人交流，拓展思维"
+                ]
+            },
+            creatorDoer: {
+                name: "创业行动者",
+                description: "你结合了创造力和执行力，善于将想法转化为实际行动。",
+                summary: "你既能产生创新想法，又能迅速付诸实践，是天生的创业者和变革推动者。",
+                suggestions: [
+                    "学习更系统的规划和评估方法",
+                    "培养倾听他人反馈的能力",
+                    "关注长期可持续发展",
+                    "平衡速度与质量"
+                ]
+            },
+            creatorRelator: {
+                name: "创意连接者",
+                description: "你结合了创造力和人际交往能力，善于通过创意连接他人。",
+                summary: "你既能产生创新想法，又能理解他人需求，是理想的创意引导者和团队建设者。",
+                suggestions: [
+                    "学习如何保护和实现你的创意",
+                    "培养更系统的思维方式",
+                    "设定明确的个人目标",
+                    "平衡他人需求与个人愿景"
+                ]
+            },
+            thinkerDoer: {
+                name: "分析执行者",
+                description: "你结合了分析能力和执行力，善于高效解决复杂问题。",
+                summary: "你既能深入分析问题，又能有效执行解决方案，是理想的问题解决者和项目管理者。",
+                suggestions: [
+                    "培养对创新思维的开放态度",
+                    "增强对变化的适应能力",
+                    "学习更有效的沟通技巧",
+                    "关注团队协作和人际关系"
+                ]
+            },
+            thinkerRelator: {
+                name: "智慧顾问",
+                description: "你结合了分析能力和人际交往能力，善于提供有洞察力的建议。",
+                summary: "你既能深入分析问题，又能理解他人需求，是理想的顾问和导师。",
+                suggestions: [
+                    "增强决策的果断性",
+                    "学习更直接的沟通方式",
+                    "培养对创新的开放态度",
+                    "平衡理性分析与情感需求"
+                ]
+            },
+            doerRelator: {
+                name: "影响行动者",
+                description: "你结合了执行力和人际交往能力，善于带领团队实现目标。",
+                summary: "你既能有效执行任务，又能激励他人，是理想的团队领导者和变革推动者。",
+                suggestions: [
+                    "增强对长期规划的关注",
+                    "培养更系统的分析能力",
+                    "学习更有效的冲突管理技巧",
+                    "平衡任务完成与团队发展"
+                ]
+            },
+            balanced: {
+                name: "全面发展者",
+                description: "你在多个维度都有均衡的表现，能够灵活适应不同情境。",
+                summary: "你在创造力、分析能力、执行力和人际交往方面都有不错的表现，能够根据情境灵活调整自己的行为方式。",
+                suggestions: [
+                    "识别并发展你的核心优势",
+                    "寻找能够互补你技能的合作伙伴",
+                    "在特定领域建立专业深度",
+                    "学习如何在不同情境中发挥适当的能力"
+                ]
+            }
+        };
+
+        // 应用状态
+        let currentQuestionIndex = 0;
+        const userAnswers = [];
+        let scores = {
+            creator: 0,
+            thinker: 0,
+            doer: 0,
+            relator: 0
+        };
+
+        // DOM元素
+        const questionContainer = document.getElementById('question-container');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const testContainer = document.getElementById('test-container');
+        const resultContainer = document.getElementById('result-container');
+
+        // 初始化应用
+        function initApp() {
+            renderCurrentQuestion();
+            setupEventListeners();
+        }
+
+        // 渲染当前问题
+        function renderCurrentQuestion() {
+            const question = testQuestions[currentQuestionIndex];
+            questionContainer.innerHTML = `
+                <h3 class="text-xl font-semibold mb-6">${question.id}. ${question.question}</h3>
+                <div class="space-y-4">
+                    ${question.options.map((option, index) => `
+                        <div class="option-container">
+                            <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-secondary transition-all-300 ${userAnswers[currentQuestionIndex] === option.value ? 'border-primary bg-secondary' : 'border-gray-200'}">
+                                <input type="radio" name="question-${question.id}" value="${option.value}" class="hidden" ${userAnswers[currentQuestionIndex] === option.value ? 'checked' : ''}>
+                                <span class="w-6 h-6 flex items-center justify-center rounded-full border-2 ${userAnswers[currentQuestionIndex] === option.value ? 'border-primary bg-primary text-white' : 'border-gray-300 text-gray-300'} mr-3">
+                                    ${option.value}
+                                </span>
+                                <span>${option.text}</span>
+                            </label>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            // 更新进度
+            progressText.textContent = `${currentQuestionIndex + 1}/${testQuestions.length}`;
+            progressBar.style.width = `${(currentQuestionIndex + 1) / testQuestions.length * 100}%`;
+
+            // 更新导航按钮状态
+            prevBtn.disabled = currentQuestionIndex === 0;
+            prevBtn.classList.toggle('opacity-50', currentQuestionIndex === 0);
+            prevBtn.classList.toggle('cursor-not-allowed', currentQuestionIndex === 0);
+
+            if (currentQuestionIndex === testQuestions.length - 1) {
+                nextBtn.textContent = '查看结果';
+                nextBtn.innerHTML = '查看结果<i class="fa fa-check ml-2"></i>';
+            } else {
+                nextBtn.textContent = '下一题';
+                nextBtn.innerHTML = '下一题<i class="fa fa-arrow-right ml-2"></i>';
+            }
+
+            // 添加选项点击事件
+            document.querySelectorAll('.option-container label').forEach(label => {
+                label.addEventListener('click', function() {
+                    const radio = this.querySelector('input[type="radio"]');
+                    radio.checked = true;
+                    
+                    // 更新选中状态样式
+                    document.querySelectorAll('.option-container label').forEach(l => {
+                        l.classList.remove('border-primary', 'bg-secondary');
+                        l.classList.add('border-gray-200');
+                        const span = l.querySelector('span:first-of-type');
+                        span.classList.remove('border-primary', 'bg-primary', 'text-white');
+                        span.classList.add('border-gray-300', 'text-gray-300');
+                    });
+                    
+                    this.classList.remove('border-gray-200');
+                    this.classList.add('border-primary', 'bg-secondary');
+                    const span = this.querySelector('span:first-of-type');
+                    span.classList.remove('border-gray-300', 'text-gray-300');
+                    span.classList.add('border-primary', 'bg-primary', 'text-white');
+                    
+                    // 保存答案
+                    userAnswers[currentQuestionIndex] = radio.value;
+                });
+            });
+        }
+
+        // 设置事件监听器
+        function setupEventListeners() {
+            // 上一题按钮
+            prevBtn.addEventListener('click', () => {
+                if (currentQuestionIndex > 0) {
+                    currentQuestionIndex--;
+                    renderCurrentQuestion();
+                }
+            });
+
+            // 下一题/查看结果按钮
+            nextBtn.addEventListener('click', () => {
+                // 检查是否选择了答案
+                if (!userAnswers[currentQuestionIndex]) {
+                    alert('请选择一个选项');
+                    return;
+                }
+
+                if (currentQuestionIndex < testQuestions.length - 1) {
+                    currentQuestionIndex++;
+                    renderCurrentQuestion();
+                } else {
+                    calculateResults();
+                    showResults();
+                }
+            });
+
+            // 重新测试按钮
+            document.getElementById('retake-btn').addEventListener('click', () => {
+                resetTest();
+            });
+
+
+        }
+
+        // 计算测试结果
+        function calculateResults() {
+            // 重置分数
+            scores = {
+                creator: 0,
+                thinker: 0,
+                doer: 0,
+                relator: 0
+            };
+
+            // 计算分数
+            userAnswers.forEach((answer, index) => {
+                const question = testQuestions[index];
+                const selectedOption = question.options.find(option => option.value === answer);
+                if (selectedOption) {
+                    Object.keys(selectedOption.scores).forEach(key => {
+                        scores[key] += selectedOption.scores[key];
+                    });
+                }
+            });
+        }
+
+        // 显示测试结果
+        function showResults() {
+            // 确定主要类型
+            let mainType = '';
+            let maxScore = 0;
+            let secondType = '';
+            let secondMaxScore = 0;
+
+            Object.keys(scores).forEach(type => {
+                if (scores[type] > maxScore) {
+                    secondMaxScore = maxScore;
+                    secondType = mainType;
+                    maxScore = scores[type];
+                    mainType = type;
+                } else if (scores[type] > secondMaxScore) {
+                    secondMaxScore = scores[type];
+                    secondType = type;
+                }
+            });
+
+            // 计算分数差异
+            const scoreDiff = maxScore - secondMaxScore;
+            const totalScore = scores.creator + scores.thinker + scores.doer + scores.relator;
+            const mainTypePercentage = Math.round((maxScore / totalScore) * 100);
+
+            // 确定结果类型
+            let resultKey;
+            if (scoreDiff < 5) {
+                // 如果最高分和第二高分差异小于5分，认为是混合型
+                if (mainType < secondType) {
+                    resultKey = `${mainType}${secondType.charAt(0).toUpperCase() + secondType.slice(1)}`;
+                } else {
+                    resultKey = `${secondType}${mainType.charAt(0).toUpperCase() + mainType.slice(1)}`;
+                }
+            } else if (mainTypePercentage < 30) {
+                // 如果最高分占总分比例小于30%，认为是平衡型
+                resultKey = 'balanced';
+            } else {
+                // 单一类型
+                resultKey = mainType;
+            }
+
+            // 获取结果数据
+            const result = resultTypes[resultKey];
+
+            // 渲染结果摘要
+            const resultSummary = document.getElementById('result-summary');
+            resultSummary.innerHTML = `
+                <div class="text-center mb-6">
+                    <div class="inline-block p-4 bg-secondary rounded-full mb-4">
+                        <i class="fa ${getResultIcon(resultKey)} text-4xl text-primary"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-primary">${result.name}</h3>
+                    <p class="text-gray-600 mt-2">${result.description}</p>
+                </div>
+                
+                <div class="bg-neutral p-4 rounded-lg">
+                    <h4 class="font-semibold mb-2">你的特质分布</h4>
+                    <div class="space-y-3">
+                        ${Object.keys(scores).map(type => `
+                            <div>
+                                <div class="flex justify-between text-sm mb-1">
+                                    <span>${getTypeDisplayName(type)}</span>
+                                    <span>${scores[type]}分</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2">
+                                    <div class="bg-${getTypeColor(type)} h-2 rounded-full" style="width: ${(scores[type] / totalScore) * 100}%"></div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            // 渲染详细分析
+            const resultDetails = document.getElementById('result-details');
+            
+            // 如果是单一类型或混合型，显示优势和挑战
+            if (resultKey === mainType || resultKey === 'balanced' || resultKey.includes(mainType) && resultKey.includes(secondType)) {
+                if (result.strengths) {
+                    resultDetails.innerHTML += `
+                        <div>
+                            <h4 class="text-lg font-semibold text-primary mb-3">你的核心优势</h4>
+                            <ul class="list-disc pl-5 space-y-1">
+                                ${result.strengths.map(strength => `<li>${strength}</li>`).join('')}
+                            </ul>
+                        </div>
+                    `;
+                }
+                
+                if (result.challenges) {
+                    resultDetails.innerHTML += `
+                        <div>
+                            <h4 class="text-lg font-semibold text-primary mb-3">可能面临的挑战</h4>
+                            <ul class="list-disc pl-5 space-y-1">
+                                ${result.challenges.map(challenge => `<li>${challenge}</li>`).join('')}
+                            </ul>
+                        </div>
+                    `;
+                }
+                
+                if (result.careers) {
+                    resultDetails.innerHTML += `
+                        <div>
+                            <h4 class="text-lg font-semibold text-primary mb-3">适合的职业方向</h4>
+                            <div class="flex flex-wrap gap-2">
+                                ${result.careers.map(career => `
+                                    <span class="px-3 py-1 bg-secondary text-primary rounded-full text-sm">${career}</span>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+            
+            // 渲染总结
+            if (result.summary) {
+                resultDetails.innerHTML += `
+                    <div>
+                        <h4 class="text-lg font-semibold text-primary mb-3">综合分析</h4>
+                        <p>${result.summary}</p>
+                    </div>
+                `;
+            }
+
+            // 渲染建议
+            const resultSuggestions = document.getElementById('result-suggestions');
+            resultSuggestions.innerHTML = result.suggestions.map(suggestion => `<li>${suggestion}</li>`).join('');
+
+            // 显示结果容器，隐藏测试容器
+            testContainer.classList.add('hidden');
+            resultContainer.classList.remove('hidden');
+        }
+
+        // 重置测试
+        function resetTest() {
+            currentQuestionIndex = 0;
+            userAnswers.length = 0;
+            scores = {
+                creator: 0,
+                thinker: 0,
+                doer: 0,
+                relator: 0
+            };
+            
+            resultContainer.classList.add('hidden');
+            testContainer.classList.remove('hidden');
+            
+            renderCurrentQuestion();
+        }
+
+        // 辅助函数：获取结果图标
+        function getResultIcon(resultKey) {
+            const icons = {
+                creator: 'fa-paint-brush',
+                thinker: 'fa-lightbulb-o',
+                doer: 'fa-cogs',
+                relator: 'fa-users',
+                creatorThinker: 'fa-star',
+                creatorDoer: 'fa-rocket',
+                creatorRelator: 'fa-heart',
+                thinkerDoer: 'fa-tasks',
+                thinkerRelator: 'fa-comments',
+                doerRelator: 'fa-handshake-o',
+                balanced: 'fa-compass'
+            };
+            return icons[resultKey] || 'fa-user';
+        }
+
+        // 辅助函数：获取类型显示名称
+        function getTypeDisplayName(type) {
+            const names = {
+                creator: '创造力',
+                thinker: '思考力',
+                doer: '执行力',
+                relator: '关系力'
+            };
+            return names[type] || type;
+        }
+
+        // 辅助函数：获取类型颜色
+        function getTypeColor(type) {
+            const colors = {
+                creator: 'pink-500',
+                thinker: 'blue-500',
+                doer: 'green-500',
+                relator: 'purple-500'
+            };
+            return colors[type] || 'gray-500';
+        }
+
+        // 初始化应用
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
