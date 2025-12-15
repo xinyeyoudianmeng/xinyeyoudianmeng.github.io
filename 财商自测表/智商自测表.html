@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>成人智商自测表 - 原创智力评估工具</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#60a5fa',
+                        accent: '#2563eb',
+                        neutral: '#f3f4f6',
+                        'neutral-dark': '#9ca3af'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-in': 'slideIn 0.5s ease-in-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideIn: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            }
+            .card-hover {
+                @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+            }
+            .btn-primary {
+                @apply bg-primary text-white font-medium py-2 px-6 rounded-lg shadow hover:bg-accent transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50;
+            }
+            .btn-secondary {
+                @apply bg-white text-primary border border-primary font-medium py-2 px-6 rounded-lg shadow hover:bg-neutral transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50;
+            }
+            .input-radio {
+                @apply w-4 h-4 text-primary focus:ring-primary border-gray-300 rounded;
+            }
+            .progress-bar {
+                @apply h-2 bg-neutral rounded-full overflow-hidden;
+            }
+            .progress-value {
+                @apply h-full bg-primary transition-all duration-500 ease-out;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- 页面容器 -->
+    <div class="min-h-screen flex flex-col">
+        <!-- 顶部导航 -->
+        <header class="bg-white shadow-sm">
+            <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <i class="fa fa-brain text-primary text-2xl"></i>
+                    <h1 class="text-xl font-bold text-gray-800">成人智商自测表</h1>
+                </div>
+                <div class="text-sm text-gray-500">
+                    <span id="timer">00:00</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- 主要内容 -->
+        <main class="flex-grow container mx-auto px-4 py-8">
+            <!-- 欢迎页面 -->
+            <section id="welcome-section" class="max-w-3xl mx-auto bg-white rounded-xl shadow-md p-8 animate-fade-in">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">欢迎使用成人智商自测表</h2>
+                    <p class="text-gray-600">这是一个原创的智力评估工具，参考国际标准智商测试题目数量设计，从语言智商和操作智商两个维度进行测评</p>
+                </div>
+
+                <!-- 免责声明 -->
+                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-8 rounded">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i class="fa fa-exclamation-triangle text-yellow-400"></i>
+                        </div>
+                        <div class="ml-3">
+                            <h3 class="text-sm font-medium text-yellow-800">重要声明</h3>
+                            <div class="mt-2 text-sm text-yellow-700">
+                                <p class="mb-2"><strong>付费测试为原创内容服务，非专业医疗/心理测评</strong></p>
+                                <p class="mb-2">本测试是原创的自我认知工具，<strong>不构成专业诊断</strong>，测试结果仅供参考。</p>
+                                <p>如果你有任何心理健康方面的 concerns，请咨询专业人士。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 测试介绍 -->
+                <div class="mb-8">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">测试介绍</h3>
+                    <ul class="list-disc pl-5 space-y-2 text-gray-600">
+                        <li>测试包含 <strong>60 道题目</strong>，参考国际标准智商测试（如瑞文标准推理测验）的题目数量设计</li>
+                        <li>题目分为语言智商（30题）和操作智商（30题）两个部分</li>
+                        <li>语言智商部分评估你的词汇理解、逻辑推理和语言表达能力</li>
+                        <li>操作智商部分评估你的空间思维、视觉处理和问题解决能力</li>
+                        <li>建议用时：<strong>30-45 分钟</strong>，与国际标准测试时间相近</li>
+                        <li>请在安静的环境中完成测试，避免干扰</li>
+                    </ul>
+                </div>
+
+                <!-- 开始按钮 -->
+                <div class="text-center">
+                    <button id="start-test" class="btn-primary text-lg">
+                        开始测试
+                        <i class="fa fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- 测试页面 -->
+            <section id="test-section" class="max-w-3xl mx-auto bg-white rounded-xl shadow-md p-8 hidden">
+                <!-- 进度条 -->
+                <div class="mb-6">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-sm font-medium text-gray-700">进度</span>
+                        <span id="progress-text" class="text-sm font-medium text-primary">1/60</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div id="progress-value" class="progress-value" style="width: 3.33%"></div>
+                    </div>
+                </div>
+
+                <!-- 题目区域 -->
+                <div id="question-container" class="mb-8 animate-slide-in">
+                    <h3 id="question-number" class="text-lg font-semibold text-gray-800 mb-2">问题 1/60</h3>
+                    <p id="question-text" class="text-gray-700 mb-6 text-lg">题目加载中...</p>
+                    
+                    <!-- 选项容器 -->
+                    <div id="options-container" class="space-y-3">
+                        <!-- 选项将通过JS动态生成 -->
+                    </div>
+                </div>
+
+                <!-- 导航按钮 -->
+                <div class="flex justify-between">
+                    <button id="prev-question" class="btn-secondary opacity-50 cursor-not-allowed" disabled>
+                        <i class="fa fa-arrow-left mr-2"></i>
+                        上一题
+                    </button>
+                    <button id="next-question" class="btn-primary">
+                        下一题
+                        <i class="fa fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- 结果页面 -->
+            <section id="result-section" class="max-w-3xl mx-auto bg-white rounded-xl shadow-md p-8 hidden animate-fade-in">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">测试结果</h2>
+                    <p class="text-gray-600">感谢完成测试，以下是你的智力评估结果</p>
+                </div>
+
+                <!-- 总分展示 -->
+                <div class="bg-blue-50 rounded-lg p-6 mb-8 text-center">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">总智商指数</h3>
+                    <div class="flex justify-center items-center">
+                        <div id="total-iq-circle" class="relative w-40 h-40 rounded-full flex items-center justify-center bg-white shadow-md">
+                            <div class="absolute inset-0 rounded-full border-4 border-primary border-opacity-20"></div>
+                            <span id="total-iq-score" class="text-4xl font-bold text-primary">0</span>
+                        </div>
+                    </div>
+                    <p id="total-iq-description" class="mt-4 text-gray-600">评估结果将在这里显示</p>
+                </div>
+
+                <!-- 分维度结果 -->
+                <div class="grid md:grid-cols-2 gap-6 mb-8">
+                    <!-- 语言智商 -->
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4 text-center">语言智商</h3>
+                        <div class="flex justify-center mb-4">
+                            <div class="relative w-32 h-32 rounded-full flex items-center justify-center bg-blue-50">
+                                <span id="verbal-iq-score" class="text-3xl font-bold text-primary">0</span>
+                            </div>
+                        </div>
+                        <div class="h-64">
+                            <canvas id="verbal-skills-chart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <!-- 操作智商 -->
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h3 class="text-xl font-semibold text-gray-800 mb-4 text-center">操作智商</h3>
+                        <div class="flex justify-center mb-4">
+                            <div class="relative w-32 h-32 rounded-full flex items-center justify-center bg-blue-50">
+                                <span id="performance-iq-score" class="text-3xl font-bold text-primary">0</span>
+                            </div>
+                        </div>
+                        <div class="h-64">
+                            <canvas id="performance-skills-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 综合分析 -->
+                <div class="bg-white rounded-lg shadow p-6 mb-8">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">综合分析</h3>
+                    <div id="comprehensive-analysis" class="text-gray-600 space-y-4">
+                        <p>分析结果将在这里显示</p>
+                    </div>
+                </div>
+
+                <!-- 建议与资源 -->
+                <div class="bg-green-50 rounded-lg p-6 mb-8">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4">发展建议</h3>
+                    <div id="development-suggestions" class="text-gray-600 space-y-3">
+                        <p>个性化建议将在这里显示</p>
+                    </div>
+                </div>
+
+                <!-- 免责声明 -->
+                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i class="fa fa-info-circle text-yellow-400"></i>
+                        </div>
+                        <div class="ml-3">
+                            <h3 class="text-sm font-medium text-yellow-800">结果说明</h3>
+                            <div class="mt-2 text-sm text-yellow-700">
+                                <p class="mb-2">本测试是原创的自我认知工具，<strong>不构成专业诊断</strong>。</p>
+                                <p class="mb-2">测试结果仅供参考，不能替代专业的智力评估。</p>
+                                <p>如果你对自己的认知能力有任何疑问，建议咨询专业的心理测评机构。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 分享按钮 -->
+                <div class="mt-8 text-center">
+                    <button id="share-result" class="btn-primary mr-4">
+                        <i class="fa fa-share-alt mr-2"></i>
+                        分享结果
+                    </button>
+                    <button id="restart-test" class="btn-secondary">
+                        <i class="fa fa-refresh mr-2"></i>
+                        重新测试
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <!-- 页脚 -->
+        <footer class="bg-white border-t border-gray-200 py-6">
+            <div class="container mx-auto px-4 text-center text-gray-500 text-sm">
+                <p class="mb-2">© 2025 成人智商自测表 - 原创智力评估工具</p>
+                <p>本测试为原创内容，未经授权不得复制或传播</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // 测试题目数据 - 参考国际标准智商测试题目数量设计
+        const testQuestions = [
+            // 语言智商题目 (1-30)
+            {
+                id: 1,
+                type: 'verbal',
+                category: '词汇理解',
+                question: '以下哪个词与"睿智"的含义最接近？',
+                options: ['聪明', '敏捷', '勇敢', '耐心'],
+                correctAnswer: 0,
+                difficulty: 1
+            },
+            {
+                id: 2,
+                type: 'verbal',
+                category: '类比推理',
+                question: '医生之于病人，正如教师之于？',
+                options: ['学校', '学生', '书籍', '知识'],
+                correctAnswer: 1,
+                difficulty: 1
+            },
+            {
+                id: 3,
+                type: 'verbal',
+                category: '词汇理解',
+                question: '"晦涩"的反义词是？',
+                options: ['明亮', '清晰', '简单', '直接'],
+                correctAnswer: 1,
+                difficulty: 2
+            },
+            {
+                id: 4,
+                type: 'verbal',
+                category: '逻辑推理',
+                question: '如果所有的鸟都有羽毛，而企鹅是鸟，那么可以得出什么结论？',
+                options: ['企鹅有羽毛', '企鹅不会飞', '所有有羽毛的都是鸟', '企鹅不是鸟'],
+                correctAnswer: 0,
+                difficulty: 2
+            },
+            {
+                id: 5,
+                type: 'verbal',
+                category: '词汇理解',
+                question: '以下哪个词与其他三个词的意义最不相关？',
+                options: ['慷慨', '大方', '吝啬', '豪爽'],
+                correctAnswer: 2,
+                difficulty: 1
+            },
+            {
+                id: 6,
+                type: 'verbal',
+                category: '类比推理',
+                question: '温暖之于炎热，正如凉爽之于？',
+                options: ['寒冷', '微风', '潮湿', '干燥'],
+                correctAnswer: 0,
+                difficulty: 2
+            },
+            {
+                id: 7,
+                type: 'verbal',
+                category: '逻辑推理',
+                question: '在一个班级中，有30名学生，其中18人会游泳，12人会骑自行车，8人既会游泳又会骑自行车。那么，既不会游泳也不会骑自行车的学生有多少人？',
+                options: ['0', '2', '4', '6'],
+                correctAnswer: 1,
+                difficulty: 3
+            },
+            {
+                id: 8,
+                type: 'verbal',
+                category: '词汇理解',
+                question: '"持之以恒"中"恒"的含义是？',
+                options: ['永久', '经常', '坚持', '不变'],
+                correctAnswer: 2,
+                difficulty: 1
+            },
+            {
+                id: 9,
+                type: 'verbal',
+                category: '类比推理',
+                question: '书之于知识，正如食物之于？',
+                options: ['味道', '营养', '健康', '生存'],
+                correctAnswer: 1,
+                difficulty: 1
+            },
+            {
+                id: 10,
+                type: 'verbal',
+                category: '逻辑推理',
+                question: '如果A比B高，B比C高，那么以下哪个陈述一定正确？',
+                options: ['A比C高', 'A和C一样高', 'C比A高', '无法确定A和C的身高关系'],
+                correctAnswer: 0,
+                difficulty: 1
+            },
+            {
+                id: 11,
+                type: 'verbal',
+                category: '词汇理解',
+                question: '以下哪个成语表示"做事有始无终"？',
+                options: ['半途而废', '一举两得', '三心二意', '四面楚歌'],
+                correctAnswer: 0,
+                difficulty: 2
+            },
+            {
+                id: 12,
+                type: 'verbal',
+                category: '类比推理',
+                question: '眼睛之于视觉，正如耳朵之于？',
+                options: ['声音', '听觉', '平衡', '嗅觉'],
+                correctAnswer: 1,
+                difficulty: 1
+            },
+            {
+                id: 13,
+                type: 'verbal',
+                category: '逻辑推理',
+                question: '如果所有的哺乳动物都有肺，而鲸鱼是哺乳动物，那么可以得出什么结论？',
+                options: ['鲸鱼有肺', '鲸鱼生活在水中', '所有有肺的都是哺乳动物', '鲸鱼不是哺乳动物'],
+                correctAnswer: 0,
+                difficulty: 2
+            },
+            {
+                id: 14,
+                type: 'verbal',
+                category: '词汇理解',
+                question: '"见微知著"的含义是？',
+                options: ['看到微小的事物就知道整体', '只看到表面现象', '观察仔细', '预知未来'],
+                correctAnswer: 0,
+                difficulty: 3
+            },
+            {
+                id: 15,
+                type: 'verbal',
+                category: '类比推理',
+                question: '水之于鱼，正如空气之于？',
+                options: ['人', '鸟', '植物', '所有生物'],
+                correctAnswer: 3,
+                difficulty: 2
+            },
+            {
+                id: 16,
+                type: 'verbal',
+                category: '词汇理解',
+                question: '"络绎不绝"中的"绝"是什么意思？',
+                options: ['断绝', '穷尽', '极', '独特'],
+                correctAnswer: 1,
+                difficulty: 2
+            },
+            {
+                id: 17,
+                type: 'verbal',
+                category: '逻辑推理',
+                question: '如果所有的哺乳动物都是温血动物，而蝙蝠是哺乳动物，那么可以得出什么结论？',
+                options: ['蝙蝠是温血动物', '蝙蝠会飞', '所有温血动物都是哺乳动物', '蝙蝠不是温血动物'],
+                correctAnswer: 0,
+                difficulty: 2
+            },
+            {
+                id: 18,
+                type: 'verbal',
+                category: '类比推理',
+                question: '温度计之于温度，正如气压计之于？',
+                options: ['高度', '气压', '湿度', '天气'],
+                correctAnswer: 1,
+                difficulty: 1
+            },
+            {
+                id: 19,
+                type: 'verbal',
+                category: '词汇理解',
+                question: '以下哪个词与"精湛"的含义最接近？',
+                options: ['精细', '熟练', '卓越', '准确'],
+                correctAnswer: 2,
+                difficulty: 2
+            },
+            {
+                id: 20,
+                type: 'verbal',
+                category: '逻辑推理',
+                question: '在一个袋子里有红、蓝、绿三种颜色的球，其中红球比蓝球多，蓝球比绿球多。那么以下哪个陈述一定正确？',
+                options: ['红球最多', '绿球最多', '红球和绿球一样多', '无法确定哪种球最多'],
+                correctAnswer: 0,
+                difficulty: 1
+            },
+            {
+                id: 21,
+                type: 'verbal',
+                category: '类比推理',
+                question: '书橱之于书，正如冰箱之于？',
+                options: ['食物', '饮料', '电器', '厨房'],
+                correctAnswer: 0,
+                difficulty: 1
+            },
+            {
+                id: 22,
+                type: 'verbal',
+                category: '词汇理解',
+                question: '"昙花一现"中的"昙花"指的是什么？',
+                options: ['一种花期很短的花', '一种名贵的花', '一种夜间开放的花', '一种白色的花'],
+                correctAnswer: 0,
+                difficulty: 2
+            },
+            {
+                id: 23,
+                type: 'verbal',
+                category: '逻辑推理',
+                question: '如果A是B的父亲，而B是C的母亲，那么A和C是什么关系？',
+                options: ['A是C的祖父', 'A是C的父亲', 'A是C的叔叔', 'A和C没有关系'],
+                correctAnswer: 0,
+                difficulty: 2
+            },
+            {
+                id: 24,
+                type: 'verbal',
+                category: '类比推理',
+                question: '眼睛之于看，正如耳朵之于？',
+                options: ['听', '闻', '尝', '触'],
+                correctAnswer: 0,
+                difficulty: 1
+            },
+            {
+                id: 25,
+                type: 'verbal',
+                category: '词汇理解',
+                question: '以下哪个成语表示"做事犹豫不决"？',
+                options: ['优柔寡断', '犹豫不决', '举棋不定', '以上都是'],
+                correctAnswer: 3,
+                difficulty: 1
+            },
+            {
+                id: 26,
+                type: 'verbal',
+                category: '逻辑推理',
+                question: '如果所有的鸟都有羽毛，而有些鸟会游泳，那么可以得出什么结论？',
+                options: ['有些会游泳的动物有羽毛', '所有会游泳的动物都有羽毛', '所有有羽毛的动物都会游泳', '以上都不对'],
+                correctAnswer: 0,
+                difficulty: 3
+            },
+            {
+                id: 27,
+                type: 'verbal',
+                category: '类比推理',
+                question: '教师之于学生，正如医生之于？',
+                options: ['病人', '医院', '药物', '健康'],
+                correctAnswer: 0,
+                difficulty: 1
+            },
+            {
+                id: 28,
+                type: 'verbal',
+                category: '词汇理解',
+                question: '"画蛇添足"的含义是？',
+                options: ['做多余的事', '做事认真', '画画技巧高超', '形容蛇的样子'],
+                correctAnswer: 0,
+                difficulty: 2
+            },
+            {
+                id: 29,
+                type: 'verbal',
+                category: '逻辑推理',
+                question: '在一个班级中，有40名学生，其中25人喜欢数学，20人喜欢语文，15人既喜欢数学又喜欢语文。那么，只喜欢数学不喜欢语文的学生有多少人？',
+                options: ['10', '15', '20', '25'],
+                correctAnswer: 0,
+                difficulty: 2
+            },
+            {
+                id: 30,
+                type: 'verbal',
+                category: '类比推理',
+                question: '太阳之于白天，正如月亮之于？',
+                options: ['夜晚', '星星', '地球', '天空'],
+                correctAnswer: 0,
+                difficulty: 1
+            },
+            
+            // 操作智商题目 (31-60)
+            {
+                id: 31,
+                type: 'performance',
+                category: '空间思维',
+                question: '观察以下图形序列，选择下一个应该出现的图形：[□ △ □ △ □ ?]',
+                options: ['□', '△', '○', '◇'],
+                correctAnswer: 1,
+                difficulty: 1
+            },
+            {
+                id: 17,
+                type: 'performance',
+                category: '视觉处理',
+                question: '以下哪个图形与其他三个不同？',
+                options: ['圆形', '正方形', '三角形', '椭圆形'],
+                correctAnswer: 2,
+                difficulty: 1
+            },
+            {
+                id: 18,
+                type: 'performance',
+                category: '空间思维',
+                question: '如果将一个正方形对折两次，然后从折叠处剪去一个小三角形，展开后会得到什么形状？',
+                options: ['四个小洞', '一个中心有洞的正方形', '四个三角形', '一个十字形'],
+                correctAnswer: 0,
+                difficulty: 2
+            },
+            {
+                id: 19,
+                type: 'performance',
+                category: '问题解决',
+                question: '有一个3升的容器和一个5升的容器，如何精确量出4升的水？',
+                options: ['先装满5升，倒入3升，剩下2升', '先装满3升，倒入5升，再装满3升，倒入5升至满，剩下1升', '装满5升，倒入3升，清空3升，将5升中剩余的2升倒入3升，再装满5升，倒入3升至满，5升中剩余4升', '以上都不对'],
+                correctAnswer: 2,
+                difficulty: 3
+            },
+            {
+                id: 20,
+                type: 'performance',
+                category: '视觉处理',
+                question: '以下数字序列中，哪个数字是多余的？ 2, 4, 6, 8, 10, 11, 12',
+                options: ['4', '8', '10', '11'],
+                correctAnswer: 3,
+                difficulty: 1
+            },
+            {
+                id: 21,
+                type: 'performance',
+                category: '空间思维',
+                question: '如果一个立方体的一个面是红色，相对的面是蓝色，其他四个面是绿色，那么这个立方体有多少个面是绿色？',
+                options: ['2', '4', '5', '6'],
+                correctAnswer: 1,
+                difficulty: 2
+            },
+            {
+                id: 22,
+                type: 'performance',
+                category: '问题解决',
+                question: '在一个平衡的天平上，左边放着3个苹果和2个橙子，右边放着4个苹果和1个橙子。如果每个苹果的重量相同，每个橙子的重量也相同，那么一个苹果的重量相当于几个橙子的重量？',
+                options: ['1个', '2个', '3个', '无法确定'],
+                correctAnswer: 0,
+                difficulty: 3
+            },
+            {
+                id: 23,
+                type: 'performance',
+                category: '视觉处理',
+                question: '以下图形中，哪个可以通过旋转得到？(假设选项A是原图，其他选项是旋转后的图形)',
+                options: ['选项A', '选项B', '选项C', '选项D'],
+                correctAnswer: 1,
+                difficulty: 2
+            },
+            {
+                id: 24,
+                type: 'performance',
+                category: '空间思维',
+                question: '如果将一张纸先向左对折，再向上对折，然后在右上角剪一个小洞，展开后纸上会有几个洞？',
+                options: ['1', '2', '3', '4'],
+                correctAnswer: 3,
+                difficulty: 2
+            },
+            {
+                id: 25,
+                type: 'performance',
+                category: '问题解决',
+                question: '有100个人，其中99个人说真话，1个人说假话。你可以问任何人一个问题："你是说真话的人吗？" 请问有多少人会回答"是"？',
+                options: ['99', '100', '1', '0'],
+                correctAnswer: 1,
+                difficulty: 3
+            },
+            {
+                id: 26,
+                type: 'performance',
+                category: '视觉处理',
+                question: '以下字母序列中，哪个字母是多余的？ A, B, D, E, G, H, J',
+                options: ['B', 'D', 'G', 'J'],
+                correctAnswer: 2,
+                difficulty: 2
+            },
+            {
+                id: 27,
+                type: 'performance',
+                category: '空间思维',
+                question: '一个正四面体有多少个面、多少条边和多少个顶点？',
+                options: ['4个面，6条边，4个顶点', '4个面，8条边，4个顶点', '6个面，12条边，8个顶点', '8个面，12条边，6个顶点'],
+                correctAnswer: 0,
+                difficulty: 3
+            },
+            {
+                id: 28,
+                type: 'performance',
+                category: '问题解决',
+                question: '如果现在是下午3点，那么200小时后是什么时间？',
+                options: ['上午7点', '下午7点', '上午3点', '下午3点'],
+                correctAnswer: 0,
+                difficulty: 2
+            },
+            {
+                id: 29,
+                type: 'performance',
+                category: '视觉处理',
+                question: '以下哪个图形是不可能通过折叠一张正方形纸得到的？',
+                options: ['三角形', '五边形', '六边形', '八边形'],
+                correctAnswer: 1,
+                difficulty: 3
+            },
+            {
+                id: 30,
+                type: 'performance',
+                category: '空间思维',
+                question: '如果一个时钟的时针和分针在12点重合，那么下一次重合是在什么时间？',
+                options: ['1点5分', '1点6分', '1点5分27秒左右', '1点5分30秒'],
+                correctAnswer: 2,
+                difficulty: 3
+            },
+            {
+                id: 60,
+                type: 'performance',
+                category: '问题解决',
+                question: '有一个正方形的蛋糕，要切成8块，最少需要切几刀？',
+                options: ['3刀', '4刀', '5刀', '6刀'],
+                correctAnswer: 0,
+                difficulty: 2
+            },
+            {
+                id: 59,
+                type: 'performance',
+                category: '视觉处理',
+                question: '以下哪个图形是轴对称图形？',
+                options: ['字母A', '字母B', '字母C', '字母D'],
+                correctAnswer: 0,
+                difficulty: 1
+            },
+            {
+                id: 58,
+                type: 'performance',
+                category: '空间思维',
+                question: '一个正方体有多少条棱？',
+                options: ['6', '8', '12', '16'],
+                correctAnswer: 2,
+                difficulty: 1
+            },
+            {
+                id: 57,
+                type: 'performance',
+                category: '问题解决',
+                question: '如果今天是星期一，那么100天后是星期几？',
+                options: ['星期一', '星期二', '星期三', '星期四'],
+                correctAnswer: 2,
+                difficulty: 2
+            },
+            {
+                id: 56,
+                type: 'performance',
+                category: '视觉处理',
+                question: '以下数字序列中，哪个数字是多余的？ 3, 6, 9, 12, 15, 16, 18',
+                options: ['6', '12', '15', '16'],
+                correctAnswer: 3,
+                difficulty: 1
+            },
+            {
+                id: 55,
+                type: 'performance',
+                category: '空间思维',
+                question: '如果将一个圆形纸片对折两次，然后在折叠处剪一个小洞，展开后纸上会有几个洞？',
+                options: ['1', '2', '3', '4'],
+                correctAnswer: 3,
+                difficulty: 2
+            },
+            {
+                id: 54,
+                type: 'performance',
+                category: '问题解决',
+                question: '有3个开关控制3个灯泡，但开关在房间外面，你只能进房间一次，如何确定哪个开关控制哪个灯泡？',
+                options: ['无法确定', '先开一个开关，等一会儿关掉，再开另一个开关，然后进房间', '同时开两个开关，然后进房间', '随便开一个开关，然后进房间'],
+                correctAnswer: 1,
+                difficulty: 3
+            },
+            {
+                id: 53,
+                type: 'performance',
+                category: '视觉处理',
+                question: '以下图形中，哪个可以通过平移得到？(假设选项A是原图)',
+                options: ['选项A', '选项B', '选项C', '选项D'],
+                correctAnswer: 1,
+                difficulty: 1
+            },
+            {
+                id: 52,
+                type: 'performance',
+                category: '空间思维',
+                question: '一个长方体有多少个面？',
+                options: ['4', '6', '8', '12'],
+                correctAnswer: 1,
+                difficulty: 1
+            },
+            {
+                id: 51,
+                type: 'performance',
+                category: '问题解决',
+                question: '如果A比B大5岁，B比C大3岁，那么A比C大几岁？',
+                options: ['2岁', '5岁', '8岁', '15岁'],
+                correctAnswer: 2,
+                difficulty: 1
+            },
+            {
+                id: 50,
+                type: 'performance',
+                category: '视觉处理',
+                question: '以下字母序列中，哪个字母是多余的？ A, C, E, G, H, I, K',
+                options: ['C', 'G', 'H', 'K'],
+                correctAnswer: 2,
+                difficulty: 2
+            },
+            {
+                id: 49,
+                type: 'performance',
+                category: '空间思维',
+                question: '如果将一个三角形的三个角剪下来拼在一起，会形成什么角度？',
+                options: ['90度', '180度', '270度', '360度'],
+                correctAnswer: 1,
+                difficulty: 2
+            },
+            {
+                id: 48,
+                type: 'performance',
+                category: '问题解决',
+                question: '有一个装满水的10升容器，一个7升容器和一个3升容器，如何精确量出5升水？',
+                options: ['直接倒出5升', '先倒满7升容器，再从7升容器倒满3升容器，7升容器中剩余4升', '先倒满3升容器，再倒入7升容器，重复三次，3升容器中剩余2升', '先倒满7升容器，倒满3升容器，7升容器中剩余4升；倒空3升容器，将4升倒入3升容器，7升容器中剩余1升；倒空3升容器，将1升倒入3升容器；倒满7升容器，再倒入已有1升的3升容器，7升容器中剩余5升'],
+                correctAnswer: 3,
+                difficulty: 3
+            },
+            {
+                id: 47,
+                type: 'performance',
+                category: '视觉处理',
+                question: '以下图形中，哪个是中心对称图形？',
+                options: ['字母A', '字母S', '字母T', '字母V'],
+                correctAnswer: 1,
+                difficulty: 2
+            },
+            {
+                id: 46,
+                type: 'performance',
+                category: '空间思维',
+                question: '一个正四面体有多少个顶点？',
+                options: ['3', '4', '5', '6'],
+                correctAnswer: 1,
+                difficulty: 2
+            },
+            {
+                id: 45,
+                type: 'performance',
+                category: '问题解决',
+                question: '如果现在是上午9点，那么20小时后是什么时间？',
+                options: ['上午5点', '下午5点', '上午9点', '下午9点'],
+                correctAnswer: 1,
+                difficulty: 1
+            },
+            {
+                id: 44,
+                type: 'performance',
+                category: '视觉处理',
+                question: '观察以下图形序列，选择下一个应该出现的图形：[○ □ △ ○ □ ?]',
+                options: ['○', '□', '△', '◇'],
+                correctAnswer: 2,
+                difficulty: 1
+            },
+            {
+                id: 43,
+                type: 'performance',
+                category: '空间思维',
+                question: '如果将一个正方形沿对角线对折，得到的图形是什么形状？',
+                options: ['正方形', '长方形', '三角形', '菱形'],
+                correctAnswer: 2,
+                difficulty: 1
+            },
+            {
+                id: 42,
+                type: 'performance',
+                category: '问题解决',
+                question: '有8个外观相同的球，其中一个比其他球重。最少需要用天平称几次才能找出这个较重的球？',
+                options: ['1次', '2次', '3次', '4次'],
+                correctAnswer: 1,
+                difficulty: 2
+            },
+            {
+                id: 41,
+                type: 'performance',
+                category: '视觉处理',
+                question: '以下哪个图形与其他三个不同？',
+                options: ['圆形', '正方形', '三角形', '平行四边形'],
+                correctAnswer: 0,
+                difficulty: 1
+            },
+            {
+                id: 40,
+                type: 'performance',
+                category: '空间思维',
+                question: '如果一个立方体的每个面都被涂上不同的颜色，那么有多少种不同的涂色方式？',
+                options: ['6', '12', '24', '30'],
+                correctAnswer: 2,
+                difficulty: 3
+            },
+            {
+                id: 39,
+                type: 'performance',
+                category: '问题解决',
+                question: '如果A+B=10，B+C=15，A+C=13，那么A+B+C=？',
+                options: ['14', '16', '19', '20'],
+                correctAnswer: 2,
+                difficulty: 2
+            },
+            {
+                id: 38,
+                type: 'performance',
+                category: '视觉处理',
+                question: '以下数字序列中，哪个数字是多余的？ 1, 4, 9, 15, 25, 36',
+                options: ['4', '9', '15', '25'],
+                correctAnswer: 2,
+                difficulty: 2
+            },
+            {
+                id: 37,
+                type: 'performance',
+                category: '空间思维',
+                question: '如果将一张纸先向右对折，再向下对折，然后在左上角剪一个小洞，展开后纸上会有几个洞？',
+                options: ['1', '2', '3', '4'],
+                correctAnswer: 3,
+                difficulty: 2
+            },
+            {
+                id: 36,
+                type: 'performance',
+                category: '问题解决',
+                question: '有两根不均匀分布的香，每根香烧完的时间是1小时，如何用这两根香来确定15分钟的时间？',
+                options: ['无法确定', '同时点燃两根香的一端，当一根香烧完时，就是15分钟', '点燃一根香的两端和另一根香的一端，当两端点燃的香烧完时，就是15分钟', '点燃一根香的一端，当烧到一半时，就是15分钟'],
+                correctAnswer: 2,
+                difficulty: 3
+            },
+            {
+                id: 35,
+                type: 'performance',
+                category: '视觉处理',
+                question: '以下图形中，哪个可以通过翻转得到？(假设选项A是原图)',
+                options: ['选项A', '选项B', '选项C', '选项D'],
+                correctAnswer: 1,
+                difficulty: 1
+            },
+            {
+                id: 34,
+                type: 'performance',
+                category: '空间思维',
+                question: '一个圆锥有多少个面？',
+                options: ['1', '2', '3', '4'],
+                correctAnswer: 1,
+                difficulty: 1
+            },
+            {
+                id: 33,
+                type: 'performance',
+                category: '问题解决',
+                question: '如果A比B快20%，B比C快20%，那么A比C快多少？',
+                options: ['20%', '36%', '40%', '44%'],
+                correctAnswer: 3,
+                difficulty: 2
+            },
+            {
+                id: 32,
+                type: 'performance',
+                category: '视觉处理',
+                question: '以下字母序列中，哪个字母是多余的？ B, D, F, H, I, J, L',
+                options: ['D', 'H', 'I', 'L'],
+                correctAnswer: 2,
+                difficulty: 2
+            }
+        ];
+
+        // 结果分析数据
+        const resultAnalysis = {
+            verbal: {
+                categories: ['词汇理解', '类比推理', '逻辑推理'],
+                descriptions: {
+                    high: '你的语言智商表现优秀，表明你在词汇理解、语言表达和逻辑思维方面具有较强能力。你可能擅长阅读理解、写作和口头表达，能够轻松理解复杂的语言概念和逻辑关系。',
+                    medium: '你的语言智商表现良好，表明你在大多数语言相关任务中能够胜任。你有不错的词汇量和理解能力，能够进行基本的逻辑推理和语言表达。',
+                    low: '你的语言智商表现一般，可能在某些语言任务上需要更多努力。建议你可以通过阅读、词汇练习和逻辑思维训练来提升这方面的能力。'
+                }
+            },
+            performance: {
+                categories: ['空间思维', '视觉处理', '问题解决'],
+                descriptions: {
+                    high: '你的操作智商表现优秀，表明你在空间思维、视觉处理和问题解决方面具有较强能力。你可能擅长解决实际问题、理解空间关系和处理视觉信息，具有良好的动手能力和创新思维。',
+                    medium: '你的操作智商表现良好，表明你在大多数操作相关任务中能够胜任。你有不错的空间感知和问题解决能力，能够处理一般的视觉和空间任务。',
+                    low: '你的操作智商表现一般，可能在某些空间和视觉任务上需要更多努力。建议你可以通过拼图游戏、空间思维训练和实际问题解决练习来提升这方面的能力。'
+                }
+            },
+            total: {
+                ranges: [
+                    { min: 0, max: 70, label: '智力低下', description: '你的测试得分较低，可能表明在认知能力方面存在一定挑战。建议寻求专业评估和指导。' },
+                    { min: 71, max: 85, label: '智力偏低', description: '你的测试得分略低于平均水平，但仍在正常范围内。通过适当的训练和学习，你可以提升自己的认知能力。' },
+                    { min: 86, max: 115, label: '智力正常', description: '你的测试得分在正常范围内，表明你具有一般水平的认知能力。在大多数日常任务和学习中，你应该能够胜任。' },
+                    { min: 116, max: 130, label: '智力良好', description: '你的测试得分高于平均水平，表明你具有较好的认知能力。你可能在学习、工作和问题解决方面表现出色。' },
+                    { min: 131, max: 145, label: '智力优秀', description: '你的测试得分很高，表明你具有优秀的认知能力。你可能在抽象思维、逻辑推理和问题解决方面有出色表现。' },
+                    { min: 146, max: 200, label: '智力卓越', description: '你的测试得分非常高，表明你具有卓越的认知能力。你可能在复杂问题解决、创新思维和快速学习方面有非凡表现。' }
+                ]
+            },
+            suggestions: {
+                verbal: [
+                    '阅读各类书籍，扩展词汇量和知识面',
+                    '参加辩论或讨论活动，提升语言表达能力',
+                    '学习新语言，锻炼语言思维能力',
+                    '玩文字游戏，如填字游戏、字谜等',
+                    '写作练习，如日记、短文等'
+                ],
+                performance: [
+                    '玩空间思维游戏，如拼图、魔方等',
+                    '学习绘画或设计，提升视觉处理能力',
+                    '解决实际问题，锻炼动手能力',
+                    '玩策略游戏，提升问题解决能力',
+                    '参加手工制作活动，增强空间感知'
+                ],
+                general: [
+                    '保持规律的作息和健康的生活方式',
+                    '进行适度的体育锻炼，促进大脑发育',
+                    '学习新技能，保持大脑活跃',
+                    '保持好奇心和学习兴趣',
+                    '与他人交流和合作，拓展思维方式'
+                ]
+            }
+        };
+
+        // DOM 元素
+        const welcomeSection = document.getElementById('welcome-section');
+        const testSection = document.getElementById('test-section');
+        const resultSection = document.getElementById('result-section');
+        const startTestBtn = document.getElementById('start-test');
+        const prevQuestionBtn = document.getElementById('prev-question');
+        const nextQuestionBtn = document.getElementById('next-question');
+        const restartTestBtn = document.getElementById('restart-test');
+        const shareResultBtn = document.getElementById('share-result');
+        const questionNumber = document.getElementById('question-number');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const progressText = document.getElementById('progress-text');
+        const progressValue = document.getElementById('progress-value');
+        const timer = document.getElementById('timer');
+
+        // 测试状态
+        let currentQuestionIndex = 0;
+        let userAnswers = new Array(60).fill(null);
+        let startTime = null;
+        let timerInterval = null;
+        let testCompleted = false;
+
+        // 初始化测试
+        function initTest() {
+            currentQuestionIndex = 0;
+            userAnswers = new Array(testQuestions.length).fill(null);
+            testCompleted = false;
+            updateQuestion();
+            updateNavigationButtons();
+            startTimer();
+        }
+
+        // 开始测试
+        function startTest() {
+            welcomeSection.classList.add('hidden');
+            testSection.classList.remove('hidden');
+            resultSection.classList.add('hidden');
+            initTest();
+        }
+
+        // 更新当前问题
+        function updateQuestion() {
+            const question = testQuestions[currentQuestionIndex];
+            questionNumber.textContent = `问题 ${currentQuestionIndex + 1}/${testQuestions.length}`;
+            questionText.textContent = question.question;
+            
+            // 清空选项容器
+            optionsContainer.innerHTML = '';
+            
+            // 添加选项
+            question.options.forEach((option, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'flex items-center';
+                
+                const radioInput = document.createElement('input');
+                radioInput.type = 'radio';
+                radioInput.name = 'question-option';
+                radioInput.id = `option-${index}`;
+                radioInput.className = 'input-radio';
+                radioInput.value = index;
+                radioInput.checked = userAnswers[currentQuestionIndex] === index;
+                
+                radioInput.addEventListener('change', () => {
+                    userAnswers[currentQuestionIndex] = index;
+                });
+                
+                const label = document.createElement('label');
+                label.htmlFor = `option-${index}`;
+                label.className = 'ml-3 block text-gray-700 cursor-pointer';
+                label.textContent = `${String.fromCharCode(65 + index)}. ${option}`;
+                
+                optionDiv.appendChild(radioInput);
+                optionDiv.appendChild(label);
+                optionsContainer.appendChild(optionDiv);
+            });
+            
+            // 更新进度条
+            progressText.textContent = `${currentQuestionIndex + 1}/${testQuestions.length}`;
+            progressValue.style.width = `${((currentQuestionIndex + 1) / testQuestions.length) * 100}%`;
+        }
+
+        // 更新导航按钮状态
+        function updateNavigationButtons() {
+            prevQuestionBtn.disabled = currentQuestionIndex === 0;
+            prevQuestionBtn.classList.toggle('opacity-50', currentQuestionIndex === 0);
+            prevQuestionBtn.classList.toggle('cursor-not-allowed', currentQuestionIndex === 0);
+            
+            if (currentQuestionIndex === testQuestions.length - 1) {
+                nextQuestionBtn.textContent = '完成测试';
+                nextQuestionBtn.innerHTML = '完成测试 <i class="fa fa-check ml-2"></i>';
+            } else {
+                nextQuestionBtn.textContent = '下一题';
+                nextQuestionBtn.innerHTML = '下一题 <i class="fa fa-arrow-right ml-2"></i>';
+            }
+        }
+
+        // 上一题
+        function goToPrevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                updateQuestion();
+                updateNavigationButtons();
+            }
+        }
+
+        // 下一题
+        function goToNextQuestion() {
+            // 如果当前题目未回答，提示用户
+            if (userAnswers[currentQuestionIndex] === null) {
+                alert('请选择一个答案后继续');
+                return;
+            }
+            
+            if (currentQuestionIndex < 59) {
+                currentQuestionIndex++;
+                updateQuestion();
+                updateNavigationButtons();
+            } else {
+                completeTest();
+            }
+        }
+
+        // 完成测试
+        function completeTest() {
+            testCompleted = true;
+            stopTimer();
+            calculateResults();
+            
+            testSection.classList.add('hidden');
+            resultSection.classList.remove('hidden');
+        }
+
+        // 计算测试结果
+        function calculateResults() {
+            // 计算语言智商得分
+            let verbalCorrect = 0;
+            let verbalTotal = 0;
+            let verbalCategoryScores = {
+                '词汇理解': 0,
+                '类比推理': 0,
+                '逻辑推理': 0
+            };
+            let verbalCategoryTotal = {
+                '词汇理解': 0,
+                '类比推理': 0,
+                '逻辑推理': 0
+            };
+            
+            // 计算操作智商得分
+            let performanceCorrect = 0;
+            let performanceTotal = 0;
+            let performanceCategoryScores = {
+                '空间思维': 0,
+                '视觉处理': 0,
+                '问题解决': 0
+            };
+            let performanceCategoryTotal = {
+                '空间思维': 0,
+                '视觉处理': 0,
+                '问题解决': 0
+            };
+            
+            // 统计得分
+            testQuestions.forEach((question, index) => {
+                const isCorrect = userAnswers[index] === question.correctAnswer;
+                const difficulty = question.difficulty;
+                
+                if (question.type === 'verbal') {
+                    verbalTotal += difficulty;
+                    verbalCategoryTotal[question.category] += difficulty;
+                    
+                    if (isCorrect) {
+                        verbalCorrect += difficulty;
+                        verbalCategoryScores[question.category] += difficulty;
+                    }
+                } else {
+                    performanceTotal += difficulty;
+                    performanceCategoryTotal[question.category] += difficulty;
+                    
+                    if (isCorrect) {
+                        performanceCorrect += difficulty;
+                        performanceCategoryScores[question.category] += difficulty;
+                    }
+                }
+            });
+            
+            // 计算标准分
+            const verbalPercentage = verbalTotal > 0 ? (verbalCorrect / verbalTotal) * 100 : 0;
+            const performancePercentage = performanceTotal > 0 ? (performanceCorrect / performanceTotal) * 100 : 0;
+            const totalPercentage = (verbalPercentage + performancePercentage) / 2;
+            
+            // 转换为智商指数（使用正态分布模型）
+            const verbalIQ = Math.round(90 + (verbalPercentage / 100) * 60);
+            const performanceIQ = Math.round(90 + (performancePercentage / 100) * 60);
+            const totalIQ = Math.round((verbalIQ + performanceIQ) / 2);
+            
+            // 更新UI显示
+            document.getElementById('verbal-iq-score').textContent = verbalIQ;
+            document.getElementById('performance-iq-score').textContent = performanceIQ;
+            
+            // 动画显示总智商
+            animateValue('total-iq-score', 0, totalIQ, 1500);
+            
+            // 获取总智商描述
+            const totalIQResult = resultAnalysis.total.ranges.find(range => 
+                totalIQ >= range.min && totalIQ <= range.max
+            );
+            
+            document.getElementById('total-iq-description').textContent = totalIQResult ? 
+                `${totalIQResult.label} (${totalIQResult.min}-${totalIQResult.max})` : 
+                '无法评估';
+            
+            // 生成语言能力雷达图
+            const verbalChartData = {
+                labels: resultAnalysis.verbal.categories,
+                datasets: [{
+                    label: '能力水平',
+                    data: resultAnalysis.verbal.categories.map(category => 
+                        verbalCategoryTotal[category] > 0 ? 
+                        Math.round((verbalCategoryScores[category] / verbalCategoryTotal[category]) * 100) : 0
+                    ),
+                    backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                    borderColor: 'rgba(59, 130, 246, 1)',
+                    borderWidth: 2,
+                    pointBackgroundColor: 'rgba(59, 130, 246, 1)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgba(59, 130, 246, 1)'
+                }]
+            };
+            
+            const verbalChart = new Chart(
+                document.getElementById('verbal-skills-chart'),
+                {
+                    type: 'radar',
+                    data: verbalChartData,
+                    options: {
+                        scales: {
+                            r: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: {
+                                    stepSize: 20
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            );
+            
+            // 生成操作能力雷达图
+            const performanceChartData = {
+                labels: resultAnalysis.performance.categories,
+                datasets: [{
+                    label: '能力水平',
+                    data: resultAnalysis.performance.categories.map(category => 
+                        performanceCategoryTotal[category] > 0 ? 
+                        Math.round((performanceCategoryScores[category] / performanceCategoryTotal[category]) * 100) : 0
+                    ),
+                    backgroundColor: 'rgba(96, 165, 250, 0.2)',
+                    borderColor: 'rgba(96, 165, 250, 1)',
+                    borderWidth: 2,
+                    pointBackgroundColor: 'rgba(96, 165, 250, 1)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgba(96, 165, 250, 1)'
+                }]
+            };
+            
+            const performanceChart = new Chart(
+                document.getElementById('performance-skills-chart'),
+                {
+                    type: 'radar',
+                    data: performanceChartData,
+                    options: {
+                        scales: {
+                            r: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: {
+                                    stepSize: 20
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            );
+            
+            // 生成综合分析
+            let verbalDescription = '';
+            if (verbalIQ >= 120) {
+                verbalDescription = resultAnalysis.verbal.descriptions.high;
+            } else if (verbalIQ >= 90) {
+                verbalDescription = resultAnalysis.verbal.descriptions.medium;
+            } else {
+                verbalDescription = resultAnalysis.verbal.descriptions.low;
+            }
+            
+            let performanceDescription = '';
+            if (performanceIQ >= 120) {
+                performanceDescription = resultAnalysis.performance.descriptions.high;
+            } else if (performanceIQ >= 90) {
+                performanceDescription = resultAnalysis.performance.descriptions.medium;
+            } else {
+                performanceDescription = resultAnalysis.performance.descriptions.low;
+            }
+            
+            const comprehensiveAnalysis = `
+                <p class="mb-4"><strong>语言智商分析：</strong>${verbalDescription}</p>
+                <p class="mb-4"><strong>操作智商分析：</strong>${performanceDescription}</p>
+                <p><strong>总体评估：</strong>${totalIQResult ? totalIQResult.description : '无法评估'}</p>
+            `;
+            
+            document.getElementById('comprehensive-analysis').innerHTML = comprehensiveAnalysis;
+            
+            // 生成发展建议
+            let suggestions = '<ul class="list-disc pl-5">';
+            
+            // 根据语言智商得分添加建议
+            if (verbalIQ < 100) {
+                suggestions += '<li class="font-medium">语言能力提升建议：</li>';
+                resultAnalysis.suggestions.verbal.slice(0, 3).forEach(suggestion => {
+                    suggestions += `<li>${suggestion}</li>`;
+                });
+            }
+            
+            // 根据操作智商得分添加建议
+            if (performanceIQ < 100) {
+                suggestions += '<li class="font-medium mt-3">操作能力提升建议：</li>';
+                resultAnalysis.suggestions.performance.slice(0, 3).forEach(suggestion => {
+                    suggestions += `<li>${suggestion}</li>`;
+                });
+            }
+            
+            // 添加通用建议
+            suggestions += '<li class="font-medium mt-3">通用能力提升建议：</li>';
+            resultAnalysis.suggestions.general.slice(0, 3).forEach(suggestion => {
+                suggestions += `<li>${suggestion}</li>`;
+            });
+            
+            suggestions += '</ul>';
+            
+            document.getElementById('development-suggestions').innerHTML = suggestions;
+        }
+
+        // 动画显示数值
+        function animateValue(id, start, end, duration) {
+            const obj = document.getElementById(id);
+            const range = end - start;
+            const minTimer = 50;
+            let stepTime = Math.abs(Math.floor(duration / range));
+            
+            stepTime = Math.max(stepTime, minTimer);
+            
+            let startTime = new Date().getTime();
+            let endTime = startTime + duration;
+            let timer;
+            
+            function run() {
+                let now = new Date().getTime();
+                let remaining = Math.max((endTime - now) / duration, 0);
+                let value = Math.round(end - (remaining * range));
+                obj.textContent = value;
+                
+                if (value === end) {
+                    clearInterval(timer);
+                }
+            }
+            
+            timer = setInterval(run, stepTime);
+            run();
+        }
+
+        // 开始计时器
+        function startTimer() {
+            startTime = new Date();
+            
+            if (timerInterval) {
+                clearInterval(timerInterval);
+            }
+            
+            timerInterval = setInterval(() => {
+                const now = new Date();
+                const elapsedSeconds = Math.floor((now - startTime) / 1000);
+                const minutes = Math.floor(elapsedSeconds / 60).toString().padStart(2, '0');
+                const seconds = (elapsedSeconds % 60).toString().padStart(2, '0');
+                timer.textContent = `${minutes}:${seconds}`;
+            }, 1000);
+        }
+
+        // 停止计时器
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+        }
+
+        // 重新测试
+        function restartTest() {
+            resultSection.classList.add('hidden');
+            welcomeSection.classList.remove('hidden');
+            stopTimer();
+            timer.textContent = '00:00';
+        }
+
+        // 分享结果
+        function shareResult() {
+            // 这里只是一个示例，实际分享功能需要根据平台API实现
+            alert('分享功能已触发！在实际应用中，这里会调用小红书的分享API。');
+        }
+
+        // 事件监听
+        startTestBtn.addEventListener('click', startTest);
+        prevQuestionBtn.addEventListener('click', goToPrevQuestion);
+        nextQuestionBtn.addEventListener('click', goToNextQuestion);
+        restartTestBtn.addEventListener('click', restartTest);
+        shareResultBtn.addEventListener('click', shareResult);
+
+        // 键盘导航
+        document.addEventListener('keydown', (e) => {
+            if (testSection.classList.contains('hidden')) return;
+            
+            if (e.key === 'ArrowLeft') {
+                goToPrevQuestion();
+            } else if (e.key === 'ArrowRight') {
+                goToNextQuestion();
+            } else if (e.key >= '1' && e.key <= '4') {
+                const optionIndex = parseInt(e.key) - 1;
+                if (optionIndex < testQuestions[currentQuestionIndex].options.length) {
+                    userAnswers[currentQuestionIndex] = optionIndex;
+                    updateQuestion();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
