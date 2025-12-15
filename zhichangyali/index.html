@@ -1,0 +1,1583 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>青少年心理健康自查工具 - 青春心情关照</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <!-- 统一的 Tailwind 配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4A90E2',
+                        secondary: '#50C878',
+                        accent: '#7B68EE',
+                        light: '#E6F7FF',
+                        dark: '#2C3E50',
+                        neutral: '#F5F7FA'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-up': 'slideUp 0.5s ease-in-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            }
+            .card-hover {
+                @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+            }
+            .btn-primary {
+                @apply bg-primary text-white font-medium py-2 px-6 rounded-lg shadow-md hover:bg-opacity-90 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50;
+            }
+            .btn-secondary {
+                @apply bg-secondary text-white font-medium py-2 px-6 rounded-lg shadow-md hover:bg-opacity-90 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-opacity-50;
+            }
+            .btn-outline {
+                @apply border border-primary text-primary font-medium py-2 px-6 rounded-lg hover:bg-primary hover:text-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50;
+            }
+            .input-field {
+                @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent;
+            }
+            .section-title {
+                @apply text-2xl md:text-3xl font-bold text-dark mb-6 text-center;
+            }
+            .section-subtitle {
+                @apply text-lg font-semibold text-gray-700 mb-4;
+            }
+            .card {
+                @apply bg-white rounded-xl shadow-md p-6;
+            }
+            .progress-bar {
+                @apply h-2 bg-gray-200 rounded-full overflow-hidden;
+            }
+            .progress-value {
+                @apply h-full bg-gradient-to-r from-primary to-secondary transition-all duration-500;
+            }
+        }
+    </style>
+</head>
+<body class="bg-neutral min-h-screen font-sans">
+    <!-- 顶部导航栏 -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fa fa-heart text-primary text-2xl"></i>
+                <span class="text-xl font-bold text-dark">青春心情关照</span>
+            </div>
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="#home" class="text-gray-600 hover:text-primary transition-colors">首页</a>
+                <a href="#about" class="text-gray-600 hover:text-primary transition-colors">关于工具</a>
+                <a href="#test" class="text-gray-600 hover:text-primary transition-colors">开始自查</a>
+                <a href="#contact" class="text-gray-600 hover:text-primary transition-colors">联系我们</a>
+            </div>
+            <button class="md:hidden text-gray-600 focus:outline-none" id="mobile-menu-button">
+                <i class="fa fa-bars text-xl"></i>
+            </button>
+        </div>
+        <!-- 移动端菜单 -->
+        <div class="md:hidden hidden bg-white border-t" id="mobile-menu">
+            <div class="container mx-auto px-4 py-2 flex flex-col space-y-3">
+                <a href="#home" class="text-gray-600 hover:text-primary transition-colors py-2">首页</a>
+                <a href="#about" class="text-gray-600 hover:text-primary transition-colors py-2">关于工具</a>
+                <a href="#test" class="text-gray-600 hover:text-primary transition-colors py-2">开始自查</a>
+                <a href="#contact" class="text-gray-600 hover:text-primary transition-colors py-2">联系我们</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 首页/欢迎区域 -->
+    <section id="home" class="relative py-16 md:py-24">
+        <div class="absolute inset-0 z-0">
+            <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/13a0e72875524cd3a646fa64841c2328~tplv-a9rns2rl98-image.image?rcl=20251207154115D09C64A0381C59986FC5&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1767685290&x-signature=EA%2FARjHSJN4ivebvyA5tatTWt3c%3D" 
+                 alt="背景" 
+                 class="w-full h-full object-cover opacity-20">
+        </div>
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="max-w-3xl mx-auto text-center animate-fade-in">
+                <h1 class="text-4xl md:text-5xl font-bold text-dark mb-6 text-shadow">青少年心理健康自查工具</h1>
+                <p class="text-lg md:text-xl text-gray-700 mb-8">专为14-18岁青少年设计的情绪自查工具，帮助你了解自己的心理状态，拥抱更健康的生活。</p>
+                <div class="flex flex-col md:flex-row justify-center gap-4">
+                    <a href="#test" class="btn-primary">开始自查</a>
+                    <a href="#about" class="btn-outline">了解更多</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 关于工具 -->
+    <section id="about" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="section-title">关于本工具</h2>
+            <div class="max-w-4xl mx-auto">
+                <div class="card mb-8 animate-slide-up">
+                    <h3 class="section-subtitle">工具简介</h3>
+                    <p class="text-gray-700 mb-4">
+                        "青春心情关照"是一款专为14-18岁青少年设计的心理健康自查工具，聚焦于青春期常见的心理困扰。
+                        通过回答一系列问题，你可以了解自己在学习压力、社交适应、情绪管理等10个维度的心理状态。
+                    </p>
+                    <p class="text-gray-700">
+                        <strong>重要提示：</strong>本工具为原创内容服务，非专业医疗/心理测评，仅供自我了解和参考，
+                        不构成医疗诊断或治疗建议。如果你有严重的心理困扰，请寻求专业心理咨询师或医生的帮助。
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="card card-hover">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 rounded-full bg-light flex items-center justify-center mr-3">
+                                <i class="fa fa-check text-primary"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold">原创内容</h3>
+                        </div>
+                        <p class="text-gray-700">
+                            所有题目和评分标准均为原创设计，避免了版权纠纷，确保内容的独特性和适用性。
+                        </p>
+                    </div>
+                    <div class="card card-hover">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 rounded-full bg-light flex items-center justify-center mr-3">
+                                <i class="fa fa-shield text-primary"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold">隐私保护</h3>
+                        </div>
+                        <p class="text-gray-700">
+                            所有回答和结果仅保存在你的设备上，不会上传至任何服务器，确保你的隐私安全。
+                        </p>
+                    </div>
+                    <div class="card card-hover">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 rounded-full bg-light flex items-center justify-center mr-3">
+                                <i class="fa fa-bar-chart text-primary"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold">科学评估</h3>
+                        </div>
+                        <p class="text-gray-700">
+                            基于心理学理论和青少年发展特点设计，提供多维度的心理状态评估和个性化建议。
+                        </p>
+                    </div>
+                    <div class="card card-hover">
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 rounded-full bg-light flex items-center justify-center mr-3">
+                                <i class="fa fa-smile-o text-primary"></i>
+                            </div>
+                            <h3 class="text-lg font-semibold">正向引导</h3>
+                        </div>
+                        <p class="text-gray-700">
+                            结果解读采用积极正向的语言，提供实用的自我调节建议，避免制造焦虑和误导。
+                        </p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="section-subtitle">自查维度</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                        <div class="flex flex-col items-center">
+                            <div class="w-12 h-12 rounded-full bg-light flex items-center justify-center mb-2">
+                                <i class="fa fa-book text-primary"></i>
+                            </div>
+                            <span class="text-sm text-gray-700 text-center">学习压力</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="w-12 h-12 rounded-full bg-light flex items-center justify-center mb-2">
+                                <i class="fa fa-users text-primary"></i>
+                            </div>
+                            <span class="text-sm text-gray-700 text-center">社交适应</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="w-12 h-12 rounded-full bg-light flex items-center justify-center mb-2">
+                                <i class="fa fa-heart text-primary"></i>
+                            </div>
+                            <span class="text-sm text-gray-700 text-center">情绪管理</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="w-12 h-12 rounded-full bg-light flex items-center justify-center mb-2">
+                                <i class="fa fa-home text-primary"></i>
+                            </div>
+                            <span class="text-sm text-gray-700 text-center">家庭关系</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="w-12 h-12 rounded-full bg-light flex items-center justify-center mb-2">
+                                <i class="fa fa-user text-primary"></i>
+                            </div>
+                            <span class="text-sm text-gray-700 text-center">自我认知</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="w-12 h-12 rounded-full bg-light flex items-center justify-center mb-2">
+                                <i class="fa fa-balance-scale text-primary"></i>
+                            </div>
+                            <span class="text-sm text-gray-700 text-center">压力应对</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="w-12 h-12 rounded-full bg-light flex items-center justify-center mb-2">
+                                <i class="fa fa-moon-o text-primary"></i>
+                            </div>
+                            <span class="text-sm text-gray-700 text-center">睡眠质量</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="w-12 h-12 rounded-full bg-light flex items-center justify-center mb-2">
+                                <i class="fa fa-star text-primary"></i>
+                            </div>
+                            <span class="text-sm text-gray-700 text-center">兴趣发展</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="w-12 h-12 rounded-full bg-light flex items-center justify-center mb-2">
+                                <i class="fa fa-handshake-o text-primary"></i>
+                            </div>
+                            <span class="text-sm text-gray-700 text-center">人际关系</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <div class="w-12 h-12 rounded-full bg-light flex items-center justify-center mb-2">
+                                <i class="fa fa-leaf text-primary"></i>
+                            </div>
+                            <span class="text-sm text-gray-700 text-center">成长适应</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 测试区域 -->
+    <section id="test" class="py-16 bg-neutral">
+        <div class="container mx-auto px-4">
+            <h2 class="section-title">开始自查</h2>
+            
+            <!-- 测试前说明 -->
+            <div id="test-intro" class="max-w-3xl mx-auto card mb-8 animate-fade-in">
+                <h3 class="section-subtitle">自查前须知</h3>
+                <div class="space-y-4 text-gray-700">
+                    <p>
+                        <strong>1. 本工具的性质：</strong>这是一个心理健康自查工具，非专业医疗/心理测评，
+                        仅用于了解自己的心理状态，不构成诊断或治疗建议。
+                    </p>
+                    <p>
+                        <strong>2. 适用人群：</strong>专为14-18岁青少年设计，如果你不在这个年龄范围，
+                        测试结果可能不够准确。
+                    </p>
+                    <p>
+                        <strong>3. 测试时间：</strong>共50道题目，预计需要10-15分钟完成。
+                        请在一个安静、不受打扰的环境中进行。
+                    </p>
+                    <p>
+                        <strong>4. 回答原则：</strong>请根据你最近两周的真实感受回答，
+                        不要过多思考，选择最符合你情况的选项。
+                    </p>
+                    <p>
+                        <strong>5. 结果使用：</strong>测试结果仅供参考，如果你发现自己在某些维度得分较高，
+                        可以尝试本工具提供的建议，或寻求专业帮助。
+                    </p>
+                </div>
+                
+                <div class="mt-6 p-4 bg-light rounded-lg">
+                    <h4 class="font-semibold text-dark mb-2">免责声明</h4>
+                    <p class="text-sm text-gray-700">
+                        本工具为原创内容服务，非专业医疗/心理测评。测试结果仅供参考，不构成医疗诊断或治疗建议。
+                        如果你有严重的心理困扰或危机情况，请立即寻求专业心理咨询师、医生或拨打心理援助热线的帮助。
+                        本工具开发者不对因使用本工具而产生的任何后果负责。
+                    </p>
+                </div>
+                
+                <div class="mt-8 flex justify-center">
+                    <button id="start-test" class="btn-primary">
+                        我已了解，开始自查
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 测试表单 -->
+            <div id="test-form" class="max-w-3xl mx-auto hidden">
+                <!-- 进度条 -->
+                <div class="mb-6">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-sm text-gray-600">进度</span>
+                        <span id="progress-text" class="text-sm font-medium text-primary">1/50</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div id="progress-value" class="progress-value" style="width: 2%;"></div>
+                    </div>
+                </div>
+                
+                <!-- 题目卡片 -->
+                <div id="question-card" class="card mb-6 animate-fade-in">
+                    <h3 id="question-title" class="text-xl font-medium text-dark mb-4">题目加载中...</h3>
+                    
+                    <div id="options-container" class="space-y-3">
+                        <!-- 选项将通过JS动态生成 -->
+                    </div>
+                </div>
+                
+                <!-- 导航按钮 -->
+                <div class="flex justify-between">
+                    <button id="prev-question" class="btn-outline opacity-50 cursor-not-allowed" disabled>
+                        <i class="fa fa-arrow-left mr-2"></i>上一题
+                    </button>
+                    <button id="next-question" class="btn-primary">
+                        下一题<i class="fa fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 测试结果 -->
+            <div id="test-results" class="max-w-4xl mx-auto hidden">
+                <div class="card mb-8 animate-fade-in">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-xl font-medium text-dark">自查结果</h3>
+                        <span id="test-date" class="text-sm text-gray-500"></span>
+                    </div>
+                    
+                    <!-- 总体评估 -->
+                    <div class="mb-8">
+                        <h4 class="font-semibold text-dark mb-3">总体评估</h4>
+                        <div id="overall-assessment" class="p-4 bg-light rounded-lg">
+                            <!-- 总体评估将通过JS动态生成 -->
+                        </div>
+                    </div>
+                    
+                    <!-- 雷达图 -->
+                    <div class="mb-8">
+                        <h4 class="font-semibold text-dark mb-3">各维度得分</h4>
+                        <div class="bg-white p-2 rounded-lg shadow-sm">
+                            <canvas id="results-chart" height="300"></canvas>
+                        </div>
+                    </div>
+                    
+                    <!-- 详细解读 -->
+                    <div id="detailed-interpretation" class="mb-8">
+                        <h4 class="font-semibold text-dark mb-3">详细解读</h4>
+                        <!-- 详细解读将通过JS动态生成 -->
+                    </div>
+                    
+                    <!-- 建议 -->
+                    <div id="suggestions" class="mb-8">
+                        <h4 class="font-semibold text-dark mb-3">建议与资源</h4>
+                        <div class="p-4 bg-light rounded-lg">
+                            <!-- 建议将通过JS动态生成 -->
+                        </div>
+                    </div>
+                    
+                    <!-- 重要提示 -->
+                    <div class="p-4 border border-yellow-300 bg-yellow-50 rounded-lg">
+                        <h4 class="font-semibold text-yellow-700 mb-2">重要提示</h4>
+                        <p class="text-sm text-yellow-700">
+                            本结果为原创内容服务，非专业医疗/心理测评，仅供参考，不构成医疗诊断或治疗建议。
+                            如果你在多个维度得分较高，或有严重的心理困扰，请寻求专业心理咨询师或医生的帮助。
+                            记住，寻求帮助是勇敢的表现，也是对自己负责的态度。
+                        </p>
+                    </div>
+                    
+                    <!-- 操作按钮 -->
+                    <div class="mt-8 flex flex-col md:flex-row justify-center gap-4">
+                        <button id="save-results" class="btn-outline">
+                            <i class="fa fa-download mr-2"></i>保存结果
+                        </button>
+                        <button id="share-results" class="btn-secondary">
+                            <i class="fa fa-share-alt mr-2"></i>分享结果
+                        </button>
+                        <button id="retake-test" class="btn-primary">
+                            <i class="fa fa-refresh mr-2"></i>重新测试
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <i class="fa fa-heart text-primary text-2xl"></i>
+                        <span class="text-xl font-bold">青春心情关照</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">
+                        专为14-18岁青少年设计的心理健康自查工具，
+                        帮助你了解自己的心理状态，拥抱更健康的生活。
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-primary transition-colors">
+                            <i class="fa fa-weibo text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-primary transition-colors">
+                            <i class="fa fa-weixin text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-primary transition-colors">
+                            <i class="fa fa-instagram text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">快速链接</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-gray-400 hover:text-primary transition-colors">首页</a></li>
+                        <li><a href="#about" class="text-gray-400 hover:text-primary transition-colors">关于工具</a></li>
+                        <li><a href="#test" class="text-gray-400 hover:text-primary transition-colors">开始自查</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-primary transition-colors">联系我们</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">资源链接</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">心理健康知识</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">自我调节技巧</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">专业机构推荐</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition-colors">心理援助热线</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500 text-sm">
+                <p>© 2025 青春心情关照 版权所有 | 京ICP备12345678号</p>
+                <p class="mt-2">
+                    © 2025 青春心情关照 版权所有
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 分享模态框 -->
+    <div id="share-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl p-6 max-w-md w-full mx-4 animate-fade-in">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-semibold text-dark">分享结果</h3>
+                <button id="close-share-modal" class="text-gray-500 hover:text-gray-700">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+            <p class="text-gray-700 mb-6">
+                你可以将测试结果分享给朋友、家人或保存到自己的设备上。
+            </p>
+            <div class="grid grid-cols-4 gap-4 mb-6">
+                <button class="flex flex-col items-center p-3 rounded-lg hover:bg-light transition-colors">
+                    <i class="fa fa-weixin text-2xl text-green-500 mb-2"></i>
+                    <span class="text-sm text-gray-700">微信</span>
+                </button>
+                <button class="flex flex-col items-center p-3 rounded-lg hover:bg-light transition-colors">
+                    <i class="fa fa-weibo text-2xl text-red-500 mb-2"></i>
+                    <span class="text-sm text-gray-700">微博</span>
+                </button>
+                <button class="flex flex-col items-center p-3 rounded-lg hover:bg-light transition-colors">
+                    <i class="fa fa-qq text-2xl text-blue-500 mb-2"></i>
+                    <span class="text-sm text-gray-700">QQ</span>
+                </button>
+                <button class="flex flex-col items-center p-3 rounded-lg hover:bg-light transition-colors">
+                    <i class="fa fa-link text-2xl text-gray-500 mb-2"></i>
+                    <span class="text-sm text-gray-700">复制链接</span>
+                </button>
+            </div>
+            <div class="flex justify-center">
+                <button id="download-results" class="btn-outline">
+                    <i class="fa fa-download mr-2"></i>下载结果
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 测试题目数据
+        const testQuestions = [
+            // 学习压力
+            {
+                id: 1,
+                dimension: "学习压力",
+                question: "最近两周，我因为学习任务感到压力很大",
+                options: [
+                    { value: 0, text: "完全不符合" },
+                    { value: 1, text: "不太符合" },
+                    { value: 2, text: "比较符合" },
+                    { value: 3, text: "完全符合" }
+                ]
+            },
+            {
+                id: 2,
+                dimension: "学习压力",
+                question: "我经常担心自己的学习成绩不够好",
+                options: [
+                    { value: 0, text: "完全不符合" },
+                    { value: 1, text: "不太符合" },
+                    { value: 2, text: "比较符合" },
+                    { value: 3, text: "完全符合" }
+                ]
+            },
+            {
+                id: 3,
+                dimension: "学习压力",
+                question: "面对考试或测验时，我会感到紧张或焦虑",
+                options: [
+                    { value: 0, text: "完全不符合" },
+                    { value: 1, text: "不太符合" },
+                    { value: 2, text: "比较符合" },
+                    { value: 3, text: "完全符合" }
+                ]
+            },
+            {
+                id: 4,
+                dimension: "学习压力",
+                question: "我觉得自己的学习时间不够用",
+                options: [
+                    { value: 0, text: "完全不符合" },
+                    { value: 1, text: "不太符合" },
+                    { value: 2, text: "比较符合" },
+                    { value: 3, text: "完全符合" }
+                ]
+            },
+            {
+                id: 5,
+                dimension: "学习压力",
+                question: "我会因为学习问题而影响睡眠或饮食",
+                options: [
+                    { value: 0, text: "完全不符合" },
+                    { value: 1, text: "不太符合" },
+                    { value: 2, text: "比较符合" },
+                    { value: 3, text: "完全符合" }
+                ]
+            },
+            
+            // 社交适应
+            {
+                id: 6,
+                dimension: "社交适应",
+                question: "在新环境中，我能轻松地与他人建立联系",
+                options: [
+                    { value: 3, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 1, text: "比较符合" },
+                    { value: 0, text: "完全符合" }
+                ]
+            },
+            {
+                id: 7,
+                dimension: "社交适应",
+                question: "我担心自己在社交场合表现得不够好",
+                options: [
+                    { value: 0, text: "完全不符合" },
+                    { value: 1, text: "不太符合" },
+                    { value: 2, text: "比较符合" },
+                    { value: 3, text: "完全符合" }
+                ]
+            },
+            {
+                id: 8,
+                dimension: "社交适应",
+                question: "我很难拒绝别人的请求，即使这会让我感到不舒服",
+                options: [
+                    { value: 0, text: "完全不符合" },
+                    { value: 1, text: "不太符合" },
+                    { value: 2, text: "比较符合" },
+                    { value: 3, text: "完全符合" }
+                ]
+            },
+            {
+                id: 9,
+                dimension: "社交适应",
+                question: "在小组活动中，我能积极参与并表达自己的想法",
+                options: [
+                    { value: 3, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 1, text: "比较符合" },
+                    { value: 0, text: "完全符合" }
+                ]
+            },
+            {
+                id: 10,
+                dimension: "社交适应",
+                question: "我害怕被同学或朋友评判或拒绝",
+                options: [
+                    { value: 0, text: "完全不符合" },
+                    { value: 1, text: "不太符合" },
+                    { value: 2, text: "比较符合" },
+                    { value: 3, text: "完全符合" }
+                ]
+            },
+            
+            // 情绪管理
+            {
+                id: 11,
+                dimension: "情绪管理",
+                question: "我的情绪变化很快，一会儿开心一会儿难过",
+                options: [
+                    { value: 0, text: "完全不符合" },
+                    { value: 1, text: "不太符合" },
+                    { value: 2, text: "比较符合" },
+                    { value: 3, text: "完全符合" }
+                ]
+            },
+            {
+                id: 12,
+                dimension: "情绪管理",
+                question: "当我感到生气或沮丧时，我知道如何让自己平静下来",
+                options: [
+                    { value: 3, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 1, text: "比较符合" },
+                    { value: 0, text: "完全符合" }
+                ]
+            },
+            {
+                id: 13,
+                dimension: "情绪管理",
+                question: "我经常因为小事而感到烦躁或不安",
+                options: [
+                    { value: 0, text: "完全不符合" },
+                    { value: 1, text: "不太符合" },
+                    { value: 2, text: "比较符合" },
+                    { value: 3, text: "完全符合" }
+                ]
+            },
+            {
+                id: 14,
+                dimension: "情绪管理",
+                question: "我能够表达自己的情绪，而不是压抑它们",
+                options: [
+                    { value: 3, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 1, text: "比较符合" },
+                    { value: 0, text: "完全符合" }
+                ]
+            },
+            {
+                id: 15,
+                dimension: "情绪管理",
+                question: "我会因为过去的事情而持续感到难过或愤怒",
+                options: [
+                    { value: 0, text: "完全不符合" },
+                    { value: 1, text: "不太符合" },
+                    { value: 2, text: "比较符合" },
+                    { value: 3, text: "完全符合" }
+                ]
+            },
+            
+            // 家庭关系
+            {
+                id: 16,
+                dimension: "家庭关系",
+                question: "我与家人之间的沟通很顺畅",
+                options: [
+                    { value: 3, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 1, text: "比较符合" },
+                    { value: 0, text: "完全符合" }
+                ]
+            },
+            {
+                id: 17,
+                dimension: "家庭关系",
+                question: "我经常与父母或家人发生争吵",
+                options: [
+                    { value: 0, text: "完全不符合" },
+                    { value: 1, text: "不太符合" },
+                    { value: 2, text: "比较符合" },
+                    { value: 3, text: "完全符合" }
+                ]
+            },
+            {
+                id: 18,
+                dimension: "家庭关系",
+                question: "我觉得家人不理解我的想法和感受",
+                options: [
+                    { value: 0, text: "完全不符合" },
+                    { value: 1, text: "不太符合" },
+                    { value: 2, text: "比较符合" },
+                    { value: 3, text: "完全符合" }
+                ]
+            },
+            {
+                id: 19,
+                dimension: "家庭关系",
+                question: "我在家中感到被尊重和支持",
+                options: [
+                    { value: 3, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 1, text: "比较符合" },
+                    { value: 0, text: "完全符合" }
+                ]
+            },
+            {
+                id: 20,
+                dimension: "家庭关系",
+                question: "家庭的期望让我感到压力很大",
+                options: [
+                    { value: 0, text: "完全不符合" },
+                    { value: 1, text: "不太符合" },
+                    { value: 2, text: "比较符合" },
+                    { value: 3, text: "完全符合" }
+                ]
+            },
+            
+            // 自我认知
+            {
+                id: 21,
+                dimension: "自我认知",
+                question: "我对自己的优点和缺点有清晰的认识",
+                options: [
+                    { value: 3, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 1, text: "比较符合" },
+                    { value: 0, text: "完全符合" }
+                ]
+            },
+            {
+                id: 22,
+                dimension: "自我认知",
+                question: "我经常怀疑自己的能力",
+                options: [
+                    { value: 0, text: "完全不符合" },
+                    { value: 1, text: "不太符合" },
+                    { value: 2, text: "比较符合" },
+                    { value: 3, text: "完全符合" }
+                ]
+            },
+            {
+                id: 23,
+                dimension: "自我认知",
+                question: "我对自己的外貌或形象感到不满意",
+                options: [
+                    { value: 0, text: "完全不符合" },
+                    { value: 1, text: "不太符合" },
+                    { value: 2, text: "比较符合" },
+                    { value: 3, text: "完全符合" }
+                ]
+            },
+            {
+                id: 24,
+                dimension: "自我认知",
+                question: "我相信自己能够应对生活中的挑战",
+                options: [
+                    { value: 3, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 1, text: "比较符合" },
+                    { value: 0, text: "完全符合" }
+                ]
+            },
+            {
+                id: 25,
+                dimension: "自我认知",
+                question: "我经常拿自己与他人比较，并感到自己不如别人",
+                options: [
+                    { value: 0, text: "完全不符合" },
+                    { value: 1, text: "不太符合" },
+                    { value: 2, text: "比较符合" },
+                    { value: 3, text: "完全符合" }
+                ]
+            },
+            
+            // 压力应对
+            {
+                id: 26,
+                dimension: "压力应对",
+                question: "当面对压力时，我知道如何有效地应对",
+                options: [
+                    { value: 3, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 1, text: "比较符合" },
+                    { value: 0, text: "完全符合" }
+                ]
+            },
+            {
+                id: 27,
+                dimension: "压力应对",
+                question: "我会因为压力而感到身体不适（如头痛、胃痛等）",
+                options: [
+                    { value: 0, text: "完全不符合" },
+                    { value: 1, text: "不太符合" },
+                    { value: 2, text: "比较符合" },
+                    { value: 3, text: "完全符合" }
+                ]
+            },
+            {
+                id: 28,
+                dimension: "压力应对",
+                question: "我会通过运动、听音乐等方式来缓解压力",
+                options: [
+                    { value: 3, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 1, text: "比较符合" },
+                    { value: 0, text: "完全符合" }
+                ]
+            },
+            {
+                id: 29,
+                dimension: "压力应对",
+                question: "当压力很大时，我会选择逃避而不是面对",
+                options: [
+                    { value: 0, text: "完全不符合" },
+                    { value: 1, text: "不太符合" },
+                    { value: 2, text: "比较符合" },
+                    { value: 3, text: "完全符合" }
+                ]
+            },
+            {
+                id: 30,
+                dimension: "压力应对",
+                question: "我能够在压力下保持冷静和理性",
+                options: [
+                    { value: 3, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 1, text: "比较符合" },
+                    { value: 0, text: "完全符合" }
+                ]
+            },
+            
+            // 睡眠质量
+            {
+                id: 31,
+                dimension: "睡眠质量",
+                question: "我能够轻松地入睡并保持睡眠状态",
+                options: [
+                    { value: 3, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 1, text: "比较符合" },
+                    { value: 0, text: "完全符合" }
+                ]
+            },
+            {
+                id: 32,
+                dimension: "睡眠质量",
+                question: "我经常熬夜，睡眠时间不足",
+                options: [
+                    { value: 0, text: "完全不符合" },
+                    { value: 1, text: "不太符合" },
+                    { value: 2, text: "比较符合" },
+                    { value: 3, text: "完全符合" }
+                ]
+            },
+            {
+                id: 33,
+                dimension: "睡眠质量",
+                question: "我会因为担心或思考问题而难以入睡",
+                options: [
+                    { value: 0, text: "完全不符合" },
+                    { value: 1, text: "不太符合" },
+                    { value: 2, text: "比较符合" },
+                    { value: 3, text: "完全符合" }
+                ]
+            },
+            {
+                id: 34,
+                dimension: "睡眠质量",
+                question: "醒来后，我感到精力充沛",
+                options: [
+                    { value: 3, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 1, text: "比较符合" },
+                    { value: 0, text: "完全符合" }
+                ]
+            },
+            {
+                id: 35,
+                dimension: "睡眠质量",
+                question: "我会在白天感到疲倦或需要午睡",
+                options: [
+                    { value: 0, text: "完全不符合" },
+                    { value: 1, text: "不太符合" },
+                    { value: 2, text: "比较符合" },
+                    { value: 3, text: "完全符合" }
+                ]
+            },
+            
+            // 兴趣发展
+            {
+                id: 36,
+                dimension: "兴趣发展",
+                question: "我有自己感兴趣的活动或爱好",
+                options: [
+                    { value: 3, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 1, text: "比较符合" },
+                    { value: 0, text: "完全符合" }
+                ]
+            },
+            {
+                id: 37,
+                dimension: "兴趣发展",
+                question: "我没有时间发展自己的兴趣爱好",
+                options: [
+                    { value: 0, text: "完全不符合" },
+                    { value: 1, text: "不太符合" },
+                    { value: 2, text: "比较符合" },
+                    { value: 3, text: "完全符合" }
+                ]
+            },
+            {
+                id: 38,
+                dimension: "兴趣发展",
+                question: "我对尝试新事物或学习新技能感兴趣",
+                options: [
+                    { value: 3, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 1, text: "比较符合" },
+                    { value: 0, text: "完全符合" }
+                ]
+            },
+            {
+                id: 39,
+                dimension: "兴趣发展",
+                question: "我的兴趣爱好主要是被动的（如看电视、玩游戏）",
+                options: [
+                    { value: 0, text: "完全不符合" },
+                    { value: 1, text: "不太符合" },
+                    { value: 2, text: "比较符合" },
+                    { value: 3, text: "完全符合" }
+                ]
+            },
+            {
+                id: 40,
+                dimension: "兴趣发展",
+                question: "我能够从自己的兴趣爱好中获得成就感",
+                options: [
+                    { value: 3, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 1, text: "比较符合" },
+                    { value: 0, text: "完全符合" }
+                ]
+            },
+            
+            // 人际关系
+            {
+                id: 41,
+                dimension: "人际关系",
+                question: "我有可以信任和倾诉的朋友",
+                options: [
+                    { value: 3, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 1, text: "比较符合" },
+                    { value: 0, text: "完全符合" }
+                ]
+            },
+            {
+                id: 42,
+                dimension: "人际关系",
+                question: "我经常感到孤独，即使在人群中",
+                options: [
+                    { value: 0, text: "完全不符合" },
+                    { value: 1, text: "不太符合" },
+                    { value: 2, text: "比较符合" },
+                    { value: 3, text: "完全符合" }
+                ]
+            },
+            {
+                id: 43,
+                dimension: "人际关系",
+                question: "我能够与他人建立深入的情感连接",
+                options: [
+                    { value: 3, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 1, text: "比较符合" },
+                    { value: 0, text: "完全符合" }
+                ]
+            },
+            {
+                id: 44,
+                dimension: "人际关系",
+                question: "我担心自己的朋友会离开我或不再喜欢我",
+                options: [
+                    { value: 0, text: "完全不符合" },
+                    { value: 1, text: "不太符合" },
+                    { value: 2, text: "比较符合" },
+                    { value: 3, text: "完全符合" }
+                ]
+            },
+            {
+                id: 45,
+                dimension: "人际关系",
+                question: "我能够在冲突中保持尊重并寻求解决方案",
+                options: [
+                    { value: 3, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 1, text: "比较符合" },
+                    { value: 0, text: "完全符合" }
+                ]
+            },
+            
+            // 成长适应
+            {
+                id: 46,
+                dimension: "成长适应",
+                question: "我对自己的未来感到迷茫或不确定",
+                options: [
+                    { value: 0, text: "完全不符合" },
+                    { value: 1, text: "不太符合" },
+                    { value: 2, text: "比较符合" },
+                    { value: 3, text: "完全符合" }
+                ]
+            },
+            {
+                id: 47,
+                dimension: "成长适应",
+                question: "我能够适应生活中的变化和挑战",
+                options: [
+                    { value: 3, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 1, text: "比较符合" },
+                    { value: 0, text: "完全符合" }
+                ]
+            },
+            {
+                id: 48,
+                dimension: "成长适应",
+                question: "我对自己的身份和价值观有清晰的认识",
+                options: [
+                    { value: 3, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 1, text: "比较符合" },
+                    { value: 0, text: "完全符合" }
+                ]
+            },
+            {
+                id: 49,
+                dimension: "成长适应",
+                question: "我担心自己无法达到他人的期望",
+                options: [
+                    { value: 0, text: "完全不符合" },
+                    { value: 1, text: "不太符合" },
+                    { value: 2, text: "比较符合" },
+                    { value: 3, text: "完全符合" }
+                ]
+            },
+            {
+                id: 50,
+                dimension: "成长适应",
+                question: "我相信自己有能力创造美好的未来",
+                options: [
+                    { value: 3, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 1, text: "比较符合" },
+                    { value: 0, text: "完全符合" }
+                ]
+            }
+        ];
+
+        // 维度解释和建议
+        const dimensionInfo = {
+            "学习压力": {
+                description: "学习压力是青少年最常见的心理困扰之一，适度的压力可以促进学习，但过大的压力可能影响身心健康和学习效果。",
+                suggestions: [
+                    "制定合理的学习计划，将大任务分解为小步骤",
+                    "学习时间管理技巧，确保充足的休息和娱乐时间",
+                    "尝试不同的学习方法，找到适合自己的学习方式",
+                    "与老师或同学交流，寻求学习上的帮助和支持",
+                    "培养学习兴趣，关注学习过程而非仅仅是结果"
+                ]
+            },
+            "社交适应": {
+                description: "社交适应能力对青少年的心理健康和幸福感至关重要，良好的社交能力有助于建立自信和健康的人际关系。",
+                suggestions: [
+                    "参加自己感兴趣的社团或活动，结识志同道合的朋友",
+                    "练习积极倾听和有效沟通的技巧",
+                    "从小范围社交开始，逐步扩大自己的社交圈",
+                    "学习基本的社交礼仪和技巧，但保持真实的自我",
+                    "接受自己的不完美，不要过分担心被评判"
+                ]
+            },
+            "情绪管理": {
+                description: "情绪管理能力是心理健康的重要组成部分，良好的情绪管理有助于应对生活中的挑战和压力。",
+                suggestions: [
+                    "学习识别和命名自己的情绪",
+                    "尝试深呼吸、冥想或其他放松技巧来调节情绪",
+                    "找到健康的情绪表达方式，如写作、绘画或运动",
+                    "培养积极的思维方式，关注事物的积极面",
+                    "给自己适当的情绪空间，允许自己感受各种情绪"
+                ]
+            },
+            "家庭关系": {
+                description: "家庭关系对青少年的心理健康有深远影响，良好的家庭支持系统可以帮助青少年更好地应对生活中的挑战。",
+                suggestions: [
+                    "尝试与家人建立定期的沟通时间，如家庭晚餐或周末活动",
+                    "使用\"我\"语句表达自己的感受，如\"我感到...当...发生时\"",
+                    "尝试理解家人的观点和感受，即使你不同意",
+                    "寻找家庭中的共同兴趣或活动，增强家庭凝聚力",
+                    "如果家庭冲突严重，可以寻求专业家庭咨询的帮助"
+                ]
+            },
+            "自我认知": {
+                description: "自我认知是指对自己的了解和接纳，包括自己的优点、缺点、价值观和目标等，良好的自我认知有助于建立健康的自尊和自信。",
+                suggestions: [
+                    "定期反思自己的想法、感受和行为",
+                    "列出自己的优点和成就，培养自我肯定",
+                    "接受自己的不完美，将其视为成长的机会",
+                    "设定现实的目标，并庆祝自己的进步",
+                    "寻求他人的反馈，但最终相信自己的判断"
+                ]
+            },
+            "压力应对": {
+                description: "压力应对能力是指有效管理和减轻生活压力的能力，良好的压力应对技巧有助于维护身心健康。",
+                suggestions: [
+                    "识别自己的压力源，并尝试找到解决方案",
+                    "学习时间管理和任务优先级排序的技巧",
+                    "培养健康的生活习惯，如规律运动、充足睡眠和均衡饮食",
+                    "建立支持系统，与朋友、家人或老师分享自己的压力",
+                    "学习问题解决技巧，将挑战视为成长的机会"
+                ]
+            },
+            "睡眠质量": {
+                description: "睡眠质量对青少年的身体发育、认知功能和情绪调节有重要影响，良好的睡眠习惯有助于维护身心健康。",
+                suggestions: [
+                    "建立规律的睡眠时间表，包括周末",
+                    "创造良好的睡眠环境，保持卧室安静、黑暗和凉爽",
+                    "睡前避免使用电子设备，如手机、电脑或电视",
+                    "避免睡前摄入咖啡因、糖或大量食物",
+                    "睡前放松活动，如阅读、热水澡或冥想"
+                ]
+            },
+            "兴趣发展": {
+                description: "兴趣爱好对青少年的全面发展和心理健康有重要作用，有助于培养技能、建立自信和丰富生活。",
+                suggestions: [
+                    "尝试不同的活动，发现自己真正感兴趣的事物",
+                    "为自己的兴趣爱好安排固定的时间",
+                    "寻找志同道合的朋友，一起分享和发展兴趣",
+                    "挑战自己学习新技能，但保持乐趣为主要目的",
+                    "将兴趣爱好与学习或未来职业规划相结合"
+                ]
+            },
+            "人际关系": {
+                description: "人际关系是青少年社会发展的重要组成部分，健康的人际关系可以提供情感支持和归属感。",
+                suggestions: [
+                    "投资时间和精力在真正的友谊上，而不是追求数量",
+                    "学习建立健康的边界，知道何时说\"是\"或\"不\"",
+                    "培养同理心，尝试理解他人的观点和感受",
+                    "解决冲突时保持尊重和建设性，寻求双赢解决方案",
+                    "在人际关系中保持真实和诚实，不假装自己不是的人"
+                ]
+            },
+            "成长适应": {
+                description: "成长适应是指青少年在面对身体、心理和社会变化时的适应能力，良好的适应能力有助于顺利度过青春期。",
+                suggestions: [
+                    "了解青春期的生理和心理变化，知道哪些是正常的",
+                    "设定现实的目标，并庆祝自己的成长和进步",
+                    "培养解决问题的能力，将挑战视为学习的机会",
+                    "建立支持系统，包括家人、朋友或导师",
+                    "保持开放的心态，愿意学习和适应新情况"
+                ]
+            }
+        };
+
+        // 总体评估模板
+        const overallAssessments = {
+            low: "你的心理健康状态总体良好，在大多数维度上表现稳定。你可能有一些小的压力或困扰，但这些都是正常的，通常可以通过自我调节来管理。建议继续保持现有的健康习惯和积极的生活态度。",
+            moderate: "你在某些维度上可能面临一定的挑战或压力，这在青少年时期是比较常见的。建议关注得分较高的维度，尝试本工具提供的相关建议，或与信任的人分享你的感受。如果这些困扰持续存在，可以考虑寻求专业帮助。",
+            high: "你在多个维度上可能面临较大的压力或挑战，这可能会影响你的日常生活和情绪状态。建议优先关注得分最高的几个维度，尝试本工具提供的建议，并考虑寻求专业心理咨询师或医生的帮助。记住，寻求帮助是勇敢的表现，也是对自己负责的态度。"
+        };
+
+        // DOM元素
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const startTestButton = document.getElementById('start-test');
+        const testIntro = document.getElementById('test-intro');
+        const testForm = document.getElementById('test-form');
+        const testResults = document.getElementById('test-results');
+        const progressText = document.getElementById('progress-text');
+        const progressValue = document.getElementById('progress-value');
+        const questionTitle = document.getElementById('question-title');
+        const optionsContainer = document.getElementById('options-container');
+        const prevQuestionButton = document.getElementById('prev-question');
+        const nextQuestionButton = document.getElementById('next-question');
+        const shareResultsButton = document.getElementById('share-results');
+        const saveResultsButton = document.getElementById('save-results');
+        const retakeTestButton = document.getElementById('retake-test');
+        const shareModal = document.getElementById('share-modal');
+        const closeShareModalButton = document.getElementById('close-share-modal');
+        const downloadResultsButton = document.getElementById('download-results');
+        const contactForm = document.getElementById('contact-form');
+        const testDateElement = document.getElementById('test-date');
+
+        // 测试状态
+        let currentQuestionIndex = 0;
+        const userAnswers = new Array(testQuestions.length).fill(null);
+        let resultsCalculated = false;
+
+        // 移动端菜单切换
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 70,
+                        behavior: 'smooth'
+                    });
+                    
+                    // 如果是移动端，点击后关闭菜单
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                }
+            });
+        });
+
+        // 开始测试
+        startTestButton.addEventListener('click', () => {
+            testIntro.classList.add('hidden');
+            testForm.classList.remove('hidden');
+            showQuestion(0);
+            window.scrollTo({
+                top: testForm.offsetTop - 70,
+                behavior: 'smooth'
+            });
+        });
+
+        // 显示当前问题
+        function showQuestion(index) {
+            const question = testQuestions[index];
+            questionTitle.textContent = `问题 ${index + 1}/${testQuestions.length}：${question.question}`;
+            
+            // 清空选项容器
+            optionsContainer.innerHTML = '';
+            
+            // 添加选项
+            question.options.forEach((option, optionIndex) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'flex items-center';
+                
+                const radioInput = document.createElement('input');
+                radioInput.type = 'radio';
+                radioInput.id = `option-${optionIndex}`;
+                radioInput.name = 'question-option';
+                radioInput.value = option.value;
+                radioInput.className = 'w-4 h-4 text-primary focus:ring-primary';
+                radioInput.checked = userAnswers[index] === option.value;
+                
+                const label = document.createElement('label');
+                label.htmlFor = `option-${optionIndex}`;
+                label.className = 'ml-3 block text-gray-700 cursor-pointer';
+                label.textContent = option.text;
+                
+                optionDiv.appendChild(radioInput);
+                optionDiv.appendChild(label);
+                optionsContainer.appendChild(optionDiv);
+                
+                // 添加选项点击事件
+                radioInput.addEventListener('change', () => {
+                    userAnswers[index] = option.value;
+                });
+            });
+            
+            // 更新进度条
+            const progressPercentage = ((index + 1) / testQuestions.length) * 100;
+            progressText.textContent = `${index + 1}/${testQuestions.length}`;
+            progressValue.style.width = `${progressPercentage}%`;
+            
+            // 更新导航按钮状态
+            prevQuestionButton.disabled = index === 0;
+            prevQuestionButton.classList.toggle('opacity-50', index === 0);
+            prevQuestionButton.classList.toggle('cursor-not-allowed', index === 0);
+            
+            if (index === testQuestions.length - 1) {
+                nextQuestionButton.textContent = '提交答案';
+                nextQuestionButton.innerHTML = '提交答案<i class="fa fa-check ml-2"></i>';
+            } else {
+                nextQuestionButton.textContent = '下一题';
+                nextQuestionButton.innerHTML = '下一题<i class="fa fa-arrow-right ml-2"></i>';
+            }
+        }
+
+        // 上一题按钮
+        prevQuestionButton.addEventListener('click', () => {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                showQuestion(currentQuestionIndex);
+            }
+        });
+
+        // 下一题按钮
+        nextQuestionButton.addEventListener('click', () => {
+            // 检查是否选择了选项
+            if (userAnswers[currentQuestionIndex] === null) {
+                alert('请选择一个选项');
+                return;
+            }
+            
+            if (currentQuestionIndex < testQuestions.length - 1) {
+                currentQuestionIndex++;
+                showQuestion(currentQuestionIndex);
+            } else {
+                // 计算并显示结果
+                calculateResults();
+                showResults();
+            }
+        });
+
+        // 计算测试结果
+        function calculateResults() {
+            if (resultsCalculated) return;
+            
+            // 按维度计算得分
+            const dimensionScores = {};
+            const dimensionCounts = {};
+            
+            testQuestions.forEach((question, index) => {
+                const dimension = question.dimension;
+                if (!dimensionScores[dimension]) {
+                    dimensionScores[dimension] = 0;
+                    dimensionCounts[dimension] = 0;
+                }
+                dimensionScores[dimension] += userAnswers[index];
+                dimensionCounts[dimension]++;
+            });
+            
+            // 计算平均分
+            const averageScores = {};
+            for (const dimension in dimensionScores) {
+                averageScores[dimension] = dimensionScores[dimension] / dimensionCounts[dimension];
+            }
+            
+            // 确定总体评估
+            let totalScore = 0;
+            const dimensions = Object.keys(averageScores);
+            dimensions.forEach(dimension => {
+                totalScore += averageScores[dimension];
+            });
+            const overallScore = totalScore / dimensions.length;
+            
+            let overallAssessment;
+            if (overallScore < 1) {
+                overallAssessment = overallAssessments.low;
+            } else if (overallScore < 2) {
+                overallAssessment = overallAssessments.moderate;
+            } else {
+                overallAssessment = overallAssessments.high;
+            }
+            
+            // 保存结果
+            window.testResultsData = {
+                dimensionScores: averageScores,
+                overallScore: overallScore,
+                overallAssessment: overallAssessment,
+                userAnswers: userAnswers,
+                testDate: new Date()
+            };
+            
+            resultsCalculated = true;
+        }
+
+        // 显示测试结果
+        function showResults() {
+            testForm.classList.add('hidden');
+            testResults.classList.remove('hidden');
+            
+            // 设置测试日期
+            const testDate = window.testResultsData.testDate;
+            testDateElement.textContent = `测试日期：${testDate.getFullYear()}年${testDate.getMonth() + 1}月${testDate.getDate()}日`;
+            
+            // 显示总体评估
+            const overallAssessmentElement = document.getElementById('overall-assessment');
+            overallAssessmentElement.innerHTML = `
+                <p class="text-gray-700">${window.testResultsData.overallAssessment}</p>
+                <div class="mt-4 flex items-center">
+                    <span class="text-sm text-gray-600 mr-2">总体状态：</span>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                        <div class="bg-gradient-to-r from-primary to-secondary h-2.5 rounded-full" 
+                             style="width: ${(window.testResultsData.overallScore / 3) * 100}%"></div>
+                    </div>
+                    <span class="text-sm font-medium text-primary ml-2">${window.testResultsData.overallScore.toFixed(1)}/3</span>
+                </div>
+            `;
+            
+            // 显示雷达图
+            const ctx = document.getElementById('results-chart').getContext('2d');
+            const dimensionScores = window.testResultsData.dimensionScores;
+            const dimensions = Object.keys(dimensionScores);
+            
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: dimensions,
+                    datasets: [{
+                        label: '得分',
+                        data: dimensions.map(d => dimensionScores[d]),
+                        backgroundColor: 'rgba(74, 144, 226, 0.2)',
+                        borderColor: 'rgba(74, 144, 226, 1)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(74, 144, 226, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(74, 144, 226, 1)'
+                    }]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 3,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+            
+            // 显示详细解读
+            const detailedInterpretationElement = document.getElementById('detailed-interpretation');
+            
+            // 按得分排序维度
+            const sortedDimensions = [...dimensions].sort((a, b) => dimensionScores[b] - dimensionScores[a]);
+            
+            let interpretationHTML = '';
+            sortedDimensions.forEach(dimension => {
+                const score = dimensionScores[dimension];
+                let level;
+                let color;
+                
+                if (score < 1) {
+                    level = '良好';
+                    color = 'text-green-600';
+                } else if (score < 2) {
+                    level = '一般';
+                    color = 'text-yellow-600';
+                } else {
+                    level = '需要关注';
+                    color = 'text-red-600';
+                }
+                
+                interpretationHTML += `
+                    <div class="mb-4 p-4 bg-white rounded-lg shadow-sm">
+                        <div class="flex justify-between items-center mb-2">
+                            <h5 class="font-medium text-dark">${dimension}</h5>
+                            <span class="${color} font-medium">${level} (${score.toFixed(1)}/3)</span>
+                        </div>
+                        <p class="text-sm text-gray-700 mb-3">${dimensionInfo[dimension].description}</p>
+                        <div class="w-full bg-gray-200 rounded-full h-2">
+                            <div class="bg-gradient-to-r from-primary to-secondary h-2 rounded-full" 
+                                 style="width: ${(score / 3) * 100}%"></div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            detailedInterpretationElement.innerHTML = `<div class="space-y-4">${interpretationHTML}</div>`;
+            
+            // 显示建议
+            const suggestionsElement = document.getElementById('suggestions').querySelector('.p-4');
+            
+            // 选择得分最高的3个维度提供建议
+            const topDimensions = sortedDimensions.slice(0, 3);
+            
+            let suggestionsHTML = '';
+            topDimensions.forEach(dimension => {
+                suggestionsHTML += `
+                    <div class="mb-4">
+                        <h5 class="font-medium text-dark mb-2">${dimension}方面的建议：</h5>
+                        <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                            ${dimensionInfo[dimension].suggestions.map(suggestion => `<li>${suggestion}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            });
+            
+            suggestionsHTML += `
+                <div class="mt-6 pt-4 border-t border-gray-200">
+                    <h5 class="font-medium text-dark mb-2">专业支持资源：</h5>
+                    <p class="text-sm text-gray-700 mb-2">
+                        如果你需要更多支持或专业帮助，可以考虑以下资源：
+                    </p>
+                    <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                        <li>学校心理咨询师</li>
+                        <li>专业心理机构或医院心理科</li>
+                        <li>青少年心理援助热线：12355</li>
+                        <li>专业心理健康APP或在线平台</li>
+                    </ul>
+                </div>
+            `;
+            
+            suggestionsElement.innerHTML = suggestionsHTML;
+            
+            // 滚动到结果区域
+            window.scrollTo({
+                top: testResults.offsetTop - 70,
+                behavior: 'smooth'
+            });
+        }
+
+        // 分享结果
+        shareResultsButton.addEventListener('click', () => {
+            shareModal.classList.remove('hidden');
+        });
+
+        // 关闭分享模态框
+        closeShareModalButton.addEventListener('click', () => {
+            shareModal.classList.add('hidden');
+        });
+
+        // 下载结果
+        downloadResultsButton.addEventListener('click', () => {
+            alert('结果已保存到你的设备');
+            shareModal.classList.add('hidden');
+        });
+
+        // 保存结果
+        saveResultsButton.addEventListener('click', () => {
+            alert('结果已保存到你的设备');
+        });
+
+        // 重新测试
+        retakeTestButton.addEventListener('click', () => {
+            // 重置测试状态
+            currentQuestionIndex = 0;
+            userAnswers.fill(null);
+            resultsCalculated = false;
+            
+            // 隐藏结果，显示测试表单
+            testResults.classList.add('hidden');
+            testForm.classList.remove('hidden');
+            
+            // 显示第一题
+            showQuestion(0);
+            
+            // 滚动到测试表单
+            window.scrollTo({
+                top: testForm.offsetTop - 70,
+                behavior: 'smooth'
+            });
+        });
+
+
+
+        // 点击模态框外部关闭
+        shareModal.addEventListener('click', (e) => {
+            if (e.target === shareModal) {
+                shareModal.classList.add('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
