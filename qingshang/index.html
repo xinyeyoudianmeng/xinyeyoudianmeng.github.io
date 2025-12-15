@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>情商(EQ)自测 - 情绪智慧探索</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4A90E2',
+                        secondary: '#50C878',
+                        neutral: '#F5F7FA',
+                        accent: '#FFB347',
+                        textDark: '#333333',
+                        textLight: '#666666'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px rgba(0, 0, 0, 0.05)',
+                        'hover': '0 10px 30px rgba(0, 0, 0, 0.1)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .transition-all-300 {
+                transition: all 0.3s ease;
+            }
+            .glass-effect {
+                background: rgba(255, 255, 255, 0.8);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+            }
+            .progress-bar {
+                height: 8px;
+                background: #E0E0E0;
+                border-radius: 4px;
+                overflow: hidden;
+            }
+            .progress-value {
+                height: 100%;
+                background: linear-gradient(90deg, #4A90E2, #50C878);
+                border-radius: 4px;
+                transition: width 0.5s ease;
+            }
+            .option-hover:hover {
+                transform: translateY(-2px);
+            }
+        }
+    </style>
+</head>
+<body class="bg-neutral min-h-screen font-sans text-textDark">
+    <!-- 顶部导航 -->
+    <header class="sticky top-0 z-50 glass-effect border-b border-gray-200">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fa fa-heart-o text-primary text-2xl"></i>
+                <h1 class="text-xl font-bold text-primary">情绪智慧探索</h1>
+            </div>
+            <div class="flex items-center space-x-4">
+                <span id="progress-text" class="text-sm text-textLight">0/50</span>
+                <div class="hidden md:block w-40">
+                    <div class="progress-bar">
+                        <div id="progress-bar" class="progress-value" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 max-w-3xl">
+        <!-- 欢迎页面 -->
+        <section id="welcome-section" class="bg-white rounded-xl shadow-soft p-8 mb-8">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold mb-4 text-primary">情商(EQ)自测</h2>
+                <p class="text-textLight text-lg">探索你的情绪智慧，发现成长的可能</p>
+            </div>
+            
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold mb-4">测试介绍</h3>
+                <p class="text-textLight mb-4">
+                    本测试包含50道题目，从四个维度评估你的情绪智慧：
+                </p>
+                <ul class="space-y-2 text-textLight">
+                    <li class="flex items-start">
+                        <i class="fa fa-check-circle text-secondary mt-1 mr-2"></i>
+                        <span><strong>自我情绪认知：</strong>识别和理解自己情绪的能力</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fa fa-check-circle text-secondary mt-1 mr-2"></i>
+                        <span><strong>情绪调控：</strong>管理和调节自己情绪的能力</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fa fa-check-circle text-secondary mt-1 mr-2"></i>
+                        <span><strong>他人情绪感知：</strong>识别和理解他人情绪的能力</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fa fa-check-circle text-secondary mt-1 mr-2"></i>
+                        <span><strong>社交互动：</strong>在人际关系中有效运用情绪的能力</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="bg-neutral rounded-lg p-6 mb-8">
+                <h3 class="text-lg font-semibold mb-3 flex items-center">
+                    <i class="fa fa-info-circle text-primary mr-2"></i>
+                    重要说明
+                </h3>
+                <ul class="space-y-2 text-textLight text-sm">
+                    <li class="flex items-start">
+                        <i class="fa fa-circle text-xs mt-1 mr-2"></i>
+                        <span>本测试为<strong>原创内容服务</strong>，<strong>非专业医疗/心理测评</strong></span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fa fa-circle text-xs mt-1 mr-2"></i>
+                        <span>测试结果仅供参考，不构成任何形式的诊断或建议</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fa fa-circle text-xs mt-1 mr-2"></i>
+                        <span>请根据自己的真实情况回答，无需过度思考</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fa fa-circle text-xs mt-1 mr-2"></i>
+                        <span>完成测试约需10-15分钟</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="text-center">
+                <button id="start-test" class="bg-primary hover:bg-blue-600 text-white font-medium py-3 px-8 rounded-full shadow-md hover:shadow-lg transition-all-300">
+                    开始测试
+                </button>
+            </div>
+        </section>
+        
+        <!-- 免责声明 -->
+        <section id="disclaimer-section" class="bg-white rounded-xl shadow-soft p-8 mb-8 hidden">
+            <h2 class="text-2xl font-bold mb-6 text-primary">免责声明</h2>
+            
+            <div class="space-y-4 text-textLight">
+                <p>
+                    <strong>1. 性质说明：</strong>本情商测试为原创内容服务，旨在帮助用户进行自我情绪认知和个人成长探索，<strong>不构成专业医疗或心理诊断</strong>。测试结果仅作为参考，不能替代专业心理咨询或治疗。
+                </p>
+                
+                <p>
+                    <strong>2. 结果解读：</strong>测试结果基于用户自报信息生成，可能受到多种因素影响，包括但不限于当时的情绪状态、环境因素等。因此，结果可能存在一定偏差，不应被视为绝对准确的评估。
+                </p>
+                
+                <p>
+                    <strong>3. 使用责任：</strong>用户应自行决定如何使用测试结果。对于因使用本测试而产生的任何后果，包括但不限于基于测试结果做出的任何决策，本服务不承担任何责任。
+                </p>
+                
+                <p>
+                    <strong>4. 专业帮助：</strong>如果您正在经历严重的情绪困扰、心理压力或其他心理健康问题，我们<strong>强烈建议</strong>您寻求专业心理健康服务提供者的帮助。
+                </p>
+                
+                <p>
+                    <strong>5. 隐私保护：</strong>我们重视您的隐私，测试过程中收集的信息仅用于生成测试结果，不会用于其他目的或分享给第三方。
+                </p>
+                
+                <p>
+                    <strong>6. 自愿参与：</strong>参与本测试完全出于自愿，您可以随时停止测试，且无需提供任何理由。
+                </p>
+            </div>
+            
+            <div class="mt-8 text-center">
+                <button id="accept-disclaimer" class="bg-primary hover:bg-blue-600 text-white font-medium py-3 px-8 rounded-full shadow-md hover:shadow-lg transition-all-300">
+                    我已阅读并理解上述声明
+                </button>
+            </div>
+        </section>
+
+        <!-- 测试页面 -->
+        <section id="test-section" class="bg-white rounded-xl shadow-soft p-8 mb-8 hidden">
+            <div class="mb-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 id="question-number" class="text-lg font-semibold text-primary">问题 1/50</h3>
+                    <div class="w-40">
+                        <div class="progress-bar">
+                            <div id="test-progress-bar" class="progress-value" style="width: 2%"></div>
+                        </div>
+                    </div>
+                </div>
+                <h4 id="question-text" class="text-xl font-medium mb-6"></h4>
+            </div>
+            
+            <div id="options-container" class="space-y-3 mb-8">
+                <!-- 选项将通过JavaScript动态生成 -->
+            </div>
+            
+            <div class="flex justify-between">
+                <button id="prev-question" class="bg-gray-200 hover:bg-gray-300 text-textDark font-medium py-2 px-6 rounded-lg shadow-sm hover:shadow transition-all-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i class="fa fa-arrow-left mr-2"></i>上一题
+                </button>
+                <button id="next-question" class="bg-primary hover:bg-blue-600 text-white font-medium py-2 px-6 rounded-lg shadow-md hover:shadow-lg transition-all-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                    下一题<i class="fa fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- 结果页面 -->
+        <section id="results-section" class="bg-white rounded-xl shadow-soft p-8 mb-8 hidden">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold mb-4 text-primary">测试结果</h2>
+                <p class="text-textLight text-lg">你的情绪智慧探索报告</p>
+            </div>
+            
+            <div class="mb-8">
+                <div class="flex justify-center mb-6">
+                    <div class="relative w-48 h-48">
+                        <svg class="w-full h-full" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="45" fill="none" stroke="#E0E0E0" stroke-width="8" />
+                            <circle id="total-score-circle" cx="50" cy="50" r="45" fill="none" stroke="url(#gradient)" stroke-width="8" stroke-linecap="round" transform="rotate(-90 50 50)" stroke-dasharray="0 283" />
+                            <defs>
+                                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#4A90E2" />
+                                    <stop offset="100%" stop-color="#50C878" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center">
+                            <span id="total-score" class="text-4xl font-bold text-primary">0</span>
+                            <span class="text-sm text-textLight">总分</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mb-8">
+                    <h3 id="total-score-category" class="text-xl font-semibold mb-2"></h3>
+                    <p id="total-score-description" class="text-textLight"></p>
+                </div>
+            </div>
+            
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold mb-4">各维度得分</h3>
+                <div class="space-y-6">
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="font-medium">自我情绪认知</span>
+                            <span id="self-awareness-score" class="text-primary font-semibold">0/25</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div id="self-awareness-bar" class="progress-value" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="font-medium">情绪调控</span>
+                            <span id="self-management-score" class="text-primary font-semibold">0/25</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div id="self-management-bar" class="progress-value" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="font-medium">他人情绪感知</span>
+                            <span id="social-awareness-score" class="text-primary font-semibold">0/25</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div id="social-awareness-bar" class="progress-value" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <span class="font-medium">社交互动</span>
+                            <span id="relationship-management-score" class="text-primary font-semibold">0/25</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div id="relationship-management-bar" class="progress-value" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold mb-4">详细解读</h3>
+                
+                <div id="self-awareness-insight" class="mb-6 bg-neutral p-4 rounded-lg">
+                    <h4 class="font-semibold mb-2 text-primary">自我情绪认知</h4>
+                    <p class="text-textLight"></p>
+                </div>
+                
+                <div id="self-management-insight" class="mb-6 bg-neutral p-4 rounded-lg">
+                    <h4 class="font-semibold mb-2 text-primary">情绪调控</h4>
+                    <p class="text-textLight"></p>
+                </div>
+                
+                <div id="social-awareness-insight" class="mb-6 bg-neutral p-4 rounded-lg">
+                    <h4 class="font-semibold mb-2 text-primary">他人情绪感知</h4>
+                    <p class="text-textLight"></p>
+                </div>
+                
+                <div id="relationship-management-insight" class="mb-6 bg-neutral p-4 rounded-lg">
+                    <h4 class="font-semibold mb-2 text-primary">社交互动</h4>
+                    <p class="text-textLight"></p>
+                </div>
+            </div>
+            
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold mb-4">成长建议</h3>
+                <div id="growth-tips" class="space-y-4 text-textLight">
+                    <!-- 成长建议将通过JavaScript动态生成 -->
+                </div>
+            </div>
+            
+            <div class="bg-blue-50 border-l-4 border-primary p-4 rounded-r-lg mb-8">
+                <h4 class="font-semibold mb-2 flex items-center">
+                    <i class="fa fa-lightbulb-o text-primary mr-2"></i>
+                    温馨提示
+                </h4>
+                <p class="text-textLight text-sm">
+                    情商不是固定不变的，通过有意识的练习和成长，我们可以不断提升自己的情绪智慧。记住，每个人都有自己独特的情绪表达方式和处理方式，重要的是找到适合自己的成长路径。
+                </p>
+            </div>
+            
+            <div class="text-center">
+                <button id="restart-test" class="bg-primary hover:bg-blue-600 text-white font-medium py-3 px-8 rounded-full shadow-md hover:shadow-lg transition-all-300">
+                    重新测试
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-white border-t border-gray-200 py-6">
+        <div class="container mx-auto px-4 text-center text-textLight text-sm">
+            <p class="mb-2">© 2025 情绪智慧探索 | 原创内容服务</p>
+            <p>本测试为原创设计，非专业医疗/心理测评工具</p>
+        </div>
+    </footer>
+
+    <script>
+        // 测试题目数据
+        const questions = [
+            // 自我情绪认知维度
+            {
+                id: 1,
+                dimension: "self-awareness",
+                text: "当你感到压力很大时，你通常能清楚地识别出自己的情绪状态吗？",
+                options: [
+                    { value: 0, text: "完全不能，我经常不知道自己为什么感到压力" },
+                    { value: 1, text: "不太能，我需要很长时间才能弄清楚自己的情绪" },
+                    { value: 2, text: "有时候能，取决于压力的大小" },
+                    { value: 3, text: "大多数时候能，我通常知道自己的情绪状态" },
+                    { value: 4, text: "总是能，我对自己的情绪状态非常敏感" }
+                ]
+            },
+            {
+                id: 2,
+                dimension: "self-awareness",
+                text: "当你感到沮丧时，你能准确地说出导致这种情绪的原因吗？",
+                options: [
+                    { value: 0, text: "完全不能，我经常不知道自己为什么沮丧" },
+                    { value: 1, text: "不太能，我需要别人帮助才能理解自己的情绪" },
+                    { value: 2, text: "有时候能，取决于沮丧的程度" },
+                    { value: 3, text: "大多数时候能，我通常能找出情绪的触发点" },
+                    { value: 4, text: "总是能，我对自己情绪的来源非常清楚" }
+                ]
+            },
+            {
+                id: 3,
+                dimension: "self-awareness",
+                text: "在社交场合中，你能意识到自己的情绪变化吗？",
+                options: [
+                    { value: 0, text: "完全不能，我很少注意到自己在社交中的情绪变化" },
+                    { value: 1, text: "不太能，只有当情绪非常强烈时才会注意到" },
+                    { value: 2, text: "有时候能，取决于社交场合的正式程度" },
+                    { value: 3, text: "大多数时候能，我通常能察觉到自己的情绪变化" },
+                    { value: 4, text: "总是能，我对自己在社交中的情绪状态非常敏感" }
+                ]
+            },
+            {
+                id: 4,
+                dimension: "self-awareness",
+                text: "当你取得成功时，你能清楚地识别出自己的感受吗？",
+                options: [
+                    { value: 0, text: "完全不能，我很少关注自己的成功感受" },
+                    { value: 1, text: "不太能，我对成功的感受比较模糊" },
+                    { value: 2, text: "有时候能，取决于成功的重要性" },
+                    { value: 3, text: "大多数时候能，我通常能享受成功的喜悦" },
+                    { value: 4, text: "总是能，我对自己的成功感受非常清晰" }
+                ]
+            },
+            {
+                id: 5,
+                dimension: "self-awareness",
+                text: "你是否经常花时间反思自己的情绪状态？",
+                options: [
+                    { value: 0, text: "从不，我很少思考自己的情绪" },
+                    { value: 1, text: "很少，只有在情绪特别强烈时才会反思" },
+                    { value: 2, text: "有时候，当我有空闲时间时" },
+                    { value: 3, text: "经常，我会定期反思自己的情绪状态" },
+                    { value: 4, text: "总是，我非常关注自己的情绪变化" }
+                ]
+            },
+            {
+                id: 6,
+                dimension: "self-awareness",
+                text: "当你感到愤怒时，你能意识到这种情绪对自己行为的影响吗？",
+                options: [
+                    { value: 0, text: "完全不能，我经常在愤怒中做出后悔的事情" },
+                    { value: 1, text: "不太能，我需要别人提醒才能意识到" },
+                    { value: 2, text: "有时候能，取决于愤怒的程度" },
+                    { value: 3, text: "大多数时候能，我通常能控制自己的愤怒" },
+                    { value: 4, text: "总是能，我对愤怒的影响有很强的觉知" }
+                ]
+            },
+            {
+                id: 7,
+                dimension: "self-awareness",
+                text: "你能识别出自己的情绪模式吗？（例如，在特定情况下总是有相似的情绪反应）",
+                options: [
+                    { value: 0, text: "完全不能，我没有注意到自己的情绪模式" },
+                    { value: 1, text: "不太能，我对自己的情绪模式了解很少" },
+                    { value: 2, text: "有时候能，我注意到一些简单的模式" },
+                    { value: 3, text: "大多数时候能，我了解自己主要的情绪模式" },
+                    { value: 4, text: "总是能，我对自己的情绪模式有深入的了解" }
+                ]
+            },
+            {
+                id: 8,
+                dimension: "self-awareness",
+                text: "当你感到焦虑时，你能区分出不同类型的焦虑感受吗？",
+                options: [
+                    { value: 0, text: "完全不能，对我来说焦虑就是焦虑" },
+                    { value: 1, text: "不太能，我只能区分非常明显的焦虑类型" },
+                    { value: 2, text: "有时候能，我能区分一些基本的焦虑类型" },
+                    { value: 3, text: "大多数时候能，我能区分多种焦虑感受" },
+                    { value: 4, text: "总是能，我对不同类型的焦虑有精细的觉知" }
+                ]
+            },
+            {
+                id: 9,
+                dimension: "self-awareness",
+                text: "你能意识到自己的情绪如何影响自己的思维方式吗？",
+                options: [
+                    { value: 0, text: "完全不能，我没有注意到情绪对思维的影响" },
+                    { value: 1, text: "不太能，我对这种影响了解很少" },
+                    { value: 2, text: "有时候能，我注意到一些明显的影响" },
+                    { value: 3, text: "大多数时候能，我了解情绪如何影响我的思维" },
+                    { value: 4, text: "总是能，我对情绪与思维的关系有深入的理解" }
+                ]
+            },
+            {
+                id: 10,
+                dimension: "self-awareness",
+                text: "当你感到疲惫时，你能区分出是身体疲劳还是情绪疲劳吗？",
+                options: [
+                    { value: 0, text: "完全不能，对我来说疲惫就是疲惫" },
+                    { value: 1, text: "不太能，我需要很长时间才能区分" },
+                    { value: 2, text: "有时候能，取决于疲惫的程度" },
+                    { value: 3, text: "大多数时候能，我通常能区分不同类型的疲惫" },
+                    { value: 4, text: "总是能，我对自己的疲惫状态有清晰的觉知" }
+                ]
+            },
+            {
+                id: 11,
+                dimension: "self-awareness",
+                text: "你能意识到自己的情绪如何影响自己的身体状态吗？",
+                options: [
+                    { value: 0, text: "完全不能，我很少注意到情绪对身体的影响" },
+                    { value: 1, text: "不太能，只有在情绪非常强烈时才会注意到" },
+                    { value: 2, text: "有时候能，我注意到一些明显的身体反应" },
+                    { value: 3, text: "大多数时候能，我了解情绪如何影响我的身体" },
+                    { value: 4, text: "总是能，我对情绪与身体的联系有深入的理解" }
+                ]
+            },
+            {
+                id: 12,
+                dimension: "self-awareness",
+                text: "当你感到困惑时，你能识别出这种情绪背后的不确定性吗？",
+                options: [
+                    { value: 0, text: "完全不能，我很少思考困惑的原因" },
+                    { value: 1, text: "不太能，我对困惑的理解比较表面" },
+                    { value: 2, text: "有时候能，取决于困惑的程度" },
+                    { value: 3, text: "大多数时候能，我通常能理解自己困惑的原因" },
+                    { value: 4, text: "总是能，我对困惑的本质有深入的理解" }
+                ]
+            },
+            {
+                id: 13,
+                dimension: "self-awareness",
+                text: "你能意识到自己的情绪变化吗？",
+                options: [
+                    { value: 0, text: "完全不能，我很少注意到自己的情绪变化" },
+                    { value: 1, text: "不太能，只有当情绪变化非常明显时才会注意到" },
+                    { value: 2, text: "有时候能，我注意到一些明显的情绪变化" },
+                    { value: 3, text: "大多数时候能，我通常能察觉到自己的情绪变化" },
+                    { value: 4, text: "总是能，我对自己的情绪变化非常敏感" }
+                ]
+            },
+            {
+                id: 14,
+                dimension: "self-awareness",
+                text: "当你感到满足时，你能清楚地说出是什么让你感到满足吗？",
+                options: [
+                    { value: 0, text: "完全不能，我很少思考满足的原因" },
+                    { value: 1, text: "不太能，我对满足的理解比较模糊" },
+                    { value: 2, text: "有时候能，取决于满足感的强度" },
+                    { value: 3, text: "大多数时候能，我通常能识别出满足的来源" },
+                    { value: 4, text: "总是能，我对自己的满足感有清晰的理解" }
+                ]
+            },
+            {
+                id: 15,
+                dimension: "self-awareness",
+                text: "你能意识到自己的情绪如何影响自己的决策吗？",
+                options: [
+                    { value: 0, text: "完全不能，我很少考虑情绪对决策的影响" },
+                    { value: 1, text: "不太能，我对这种影响了解很少" },
+                    { value: 2, text: "有时候能，我注意到一些明显的影响" },
+                    { value: 3, text: "大多数时候能，我了解情绪如何影响我的决策" },
+                    { value: 4, text: "总是能，我对情绪与决策的关系有深入的理解" }
+                ]
+            },
+            {
+                id: 16,
+                dimension: "self-awareness",
+                text: "当你感到好奇时，你能意识到这种情绪如何推动你探索新事物吗？",
+                options: [
+                    { value: 0, text: "完全不能，我很少思考好奇的作用" },
+                    { value: 1, text: "不太能，我对好奇的理解比较表面" },
+                    { value: 2, text: "有时候能，取决于好奇心的强度" },
+                    { value: 3, text: "大多数时候能，我通常能利用好奇心探索新事物" },
+                    { value: 4, text: "总是能，我对好奇的力量有深入的理解" }
+                ]
+            },
+            {
+                id: 17,
+                dimension: "self-awareness",
+                text: "你能意识到自己的情绪如何影响自己的人际关系吗？",
+                options: [
+                    { value: 0, text: "完全不能，我很少考虑情绪对关系的影响" },
+                    { value: 1, text: "不太能，我对这种影响了解很少" },
+                    { value: 2, text: "有时候能，我注意到一些明显的影响" },
+                    { value: 3, text: "大多数时候能，我了解情绪如何影响我的人际关系" },
+                    { value: 4, text: "总是能，我对情绪与关系的联系有深入的理解" }
+                ]
+            },
+            {
+                id: 18,
+                dimension: "self-awareness",
+                text: "当你感到感激时，你能清楚地识别出自己感激的对象和原因吗？",
+                options: [
+                    { value: 0, text: "完全不能，我很少表达或思考感激" },
+                    { value: 1, text: "不太能，我对感激的感受比较模糊" },
+                    { value: 2, text: "有时候能，取决于感激的强度" },
+                    { value: 3, text: "大多数时候能，我通常能识别出感激的对象和原因" },
+                    { value: 4, text: "总是能，我对自己的感激之情有清晰的理解" }
+                ]
+            },
+            {
+                id: 19,
+                dimension: "self-awareness",
+                text: "你能意识到自己的情绪如何影响自己的工作表现吗？",
+                options: [
+                    { value: 0, text: "完全不能，我很少考虑情绪对工作的影响" },
+                    { value: 1, text: "不太能，我对这种影响了解很少" },
+                    { value: 2, text: "有时候能，我注意到一些明显的影响" },
+                    { value: 3, text: "大多数时候能，我了解情绪如何影响我的工作" },
+                    { value: 4, text: "总是能，我对情绪与工作表现的关系有深入的理解" }
+                ]
+            },
+            {
+                id: 20,
+                dimension: "self-awareness",
+                text: "当你感到自豪时，你能清楚地识别出这种情绪的来源和合理性吗？",
+                options: [
+                    { value: 0, text: "完全不能，我很少思考自豪的原因" },
+                    { value: 1, text: "不太能，我对自豪的理解比较表面" },
+                    { value: 2, text: "有时候能，取决于自豪感的强度" },
+                    { value: 3, text: "大多数时候能，我通常能理解自己自豪的原因" },
+                    { value: 4, text: "总是能，我对自豪的本质和来源有深入的理解" }
+                ]
+            },
+            
+            // 情绪调控维度
+            {
+                id: 21,
+                dimension: "self-management",
+                text: "当你感到生气时，你通常能在多长时间内平静下来？",
+                options: [
+                    { value: 0, text: "很长时间，我可能会持续生气数小时甚至数天" },
+                    { value: 1, text: "较长时间，我通常需要1-2小时才能平静" },
+                    { value: 2, text: "中等时间，我大约需要30分钟左右" },
+                    { value: 3, text: "较短时间，我通常在10-15分钟内平静下来" },
+                    { value: 4, text: "很短时间，我能在几分钟内调整好自己的情绪" }
+                ]
+            },
+            {
+                id: 22,
+                dimension: "self-management",
+                text: "当你面临压力时，你有有效的方法来缓解压力吗？",
+                options: [
+                    { value: 0, text: "完全没有，我通常被压力压垮" },
+                    { value: 1, text: "几乎没有，我很少有有效的减压方法" },
+                    { value: 2, text: "有一些，但效果不太明显" },
+                    { value: 3, text: "有一些有效的方法，能帮助我缓解压力" },
+                    { value: 4, text: "有很多有效的方法，我能很好地管理压力" }
+                ]
+            },
+            {
+                id: 23,
+                dimension: "self-management",
+                text: "当你感到沮丧时，你能激励自己保持积极的态度吗？",
+                options: [
+                    { value: 0, text: "完全不能，沮丧会让我一蹶不振" },
+                    { value: 1, text: "几乎不能，我很难从沮丧中走出来" },
+                    { value: 2, text: "有时候能，但需要很长时间" },
+                    { value: 3, text: "大多数时候能，我能找到方法激励自己" },
+                    { value: 4, text: "总是能，我有很强的自我激励能力" }
+                ]
+            },
+            {
+                id: 24,
+                dimension: "self-management",
+                text: "当你在公共场合感到尴尬时，你能迅速恢复并继续正常交流吗？",
+                options: [
+                    { value: 0, text: "完全不能，尴尬会让我长时间不自在" },
+                    { value: 1, text: "几乎不能，我需要很长时间才能恢复" },
+                    { value: 2, text: "有时候能，但会影响我接下来的交流" },
+                    { value: 3, text: "大多数时候能，我能较快地恢复正常" },
+                    { value: 4, text: "总是能，我能迅速化解尴尬并继续交流" }
+                ]
+            },
+            {
+                id: 25,
+                dimension: "self-management",
+                text: "当你感到焦虑时，你能控制自己不被焦虑情绪淹没吗？",
+                options: [
+                    { value: 0, text: "完全不能，焦虑会完全控制我的思维和行为" },
+                    { value: 1, text: "几乎不能，我很难控制焦虑的蔓延" },
+                    { value: 2, text: "有时候能，但需要很大努力" },
+                    { value: 3, text: "大多数时候能，我有方法控制焦虑" },
+                    { value: 4, text: "总是能，我能有效地管理焦虑情绪" }
+                ]
+            },
+            {
+                id: 26,
+                dimension: "self-management",
+                text: "当你遇到挫折时，你能很快调整自己的情绪并继续前进吗？",
+                options: [
+                    { value: 0, text: "完全不能，挫折会让我长时间停滞不前" },
+                    { value: 1, text: "几乎不能，我需要很长时间才能从挫折中恢复" },
+                    { value: 2, text: "有时候能，但会影响我的信心" },
+                    { value: 3, text: "大多数时候能，我能较快地调整自己" },
+                    { value: 4, text: "总是能，我能迅速从挫折中学习并继续前进" }
+                ]
+            },
+            {
+                id: 27,
+                dimension: "self-management",
+                text: "当你感到嫉妒时，你能控制这种情绪不让它影响你的判断和行为吗？",
+                options: [
+                    { value: 0, text: "完全不能，嫉妒会让我做出不理性的事情" },
+                    { value: 1, text: "几乎不能，我很难控制嫉妒的影响" },
+                    { value: 2, text: "有时候能，但需要很大努力" },
+                    { value: 3, text: "大多数时候能，我能理性看待嫉妒情绪" },
+                    { value: 4, text: "总是能，我能将嫉妒转化为积极的动力" }
+                ]
+            },
+            {
+                id: 28,
+                dimension: "self-management",
+                text: "当你需要在压力下保持冷静时，你能做到吗？",
+                options: [
+                    { value: 0, text: "完全不能，压力会让我紧张不安" },
+                    { value: 1, text: "几乎不能，我很难在压力下保持冷静" },
+                    { value: 2, text: "有时候能，但会感到很大的内部压力" },
+                    { value: 3, text: "大多数时候能，我能在压力下保持相对冷静" },
+                    { value: 4, text: "总是能，我能在压力下保持冷静和清晰的思考" }
+                ]
+            },
+            {
+                id: 29,
+                dimension: "self-management",
+                text: "当你感到失望时，你能很快调整自己的期望并继续前进吗？",
+                options: [
+                    { value: 0, text: "完全不能，失望会让我长时间情绪低落" },
+                    { value: 1, text: "几乎不能，我很难从失望中恢复" },
+                    { value: 2, text: "有时候能，但需要很长时间" },
+                    { value: 3, text: "大多数时候能，我能较快地调整自己的期望" },
+                    { value: 4, text: "总是能，我能迅速接受现实并调整方向" }
+                ]
+            },
+            {
+                id: 30,
+                dimension: "self-management",
+                text: "当你需要在情绪低落时保持高效工作，你能做到吗？",
+                options: [
+                    { value: 0, text: "完全不能，情绪低落会严重影响我的工作效率" },
+                    { value: 1, text: "几乎不能，我很难在情绪低落时集中注意力" },
+                    { value: 2, text: "有时候能，但效率会明显下降" },
+                    { value: 3, text: "大多数时候能，我能在情绪低落时保持基本效率" },
+                    { value: 4, text: "总是能，我能不受情绪影响地完成工作" }
+                ]
+            },
+            
+            // 他人情绪感知维度
+            {
+                id: 31,
+                dimension: "social-awareness",
+                text: "当你与朋友交谈时，你能察觉到他们情绪的细微变化吗？",
+                options: [
+                    { value: 0, text: "完全不能，我很少注意到别人的情绪变化" },
+                    { value: 1, text: "不太能，只有当情绪变化非常明显时才会注意到" },
+                    { value: 2, text: "有时候能，我会注意到一些明显的情绪变化" },
+                    { value: 3, text: "大多数时候能，我通常能察觉到朋友的情绪变化" },
+                    { value: 4, text: "总是能，我对朋友情绪的细微变化非常敏感" }
+                ]
+            },
+            {
+                id: 32,
+                dimension: "social-awareness",
+                text: "在团队会议中，你能察觉到同事们的情绪状态吗？",
+                options: [
+                    { value: 0, text: "完全不能，我很少关注同事的情绪" },
+                    { value: 1, text: "不太能，只有当情绪非常强烈时才会注意到" },
+                    { value: 2, text: "有时候能，我会注意到一些明显的情绪反应" },
+                    { value: 3, text: "大多数时候能，我通常能了解团队的整体情绪" },
+                    { value: 4, text: "总是能，我对团队成员的情绪状态非常敏感" }
+                ]
+            },
+            {
+                id: 33,
+                dimension: "social-awareness",
+                text: "当你与陌生人交流时，你能快速判断他们的情绪状态吗？",
+                options: [
+                    { value: 0, text: "完全不能，我很难判断陌生人的情绪" },
+                    { value: 1, text: "不太能，我需要很长时间才能有所察觉" },
+                    { value: 2, text: "有时候能，取决于对方情绪的表达强度" },
+                    { value: 3, text: "大多数时候能，我通常能较快地判断陌生人的情绪" },
+                    { value: 4, text: "总是能，我能在短时间内准确判断陌生人的情绪" }
+                ]
+            },
+            {
+                id: 34,
+                dimension: "social-awareness",
+                text: "你能通过一个人的肢体语言判断他的真实情绪吗？",
+                options: [
+                    { value: 0, text: "完全不能，我很少注意肢体语言" },
+                    { value: 1, text: "不太能，我对肢体语言的理解很有限" },
+                    { value: 2, text: "有时候能，我能理解一些基本的肢体语言" },
+                    { value: 3, text: "大多数时候能，我通常能通过肢体语言判断情绪" },
+                    { value: 4, text: "总是能，我对肢体语言有深入的理解" }
+                ]
+            },
+            {
+                id: 35,
+                dimension: "social-awareness",
+                text: "当你与家人相处时，你能察觉到他们未说出口的情绪需求吗？",
+                options: [
+                    { value: 0, text: "完全不能，我很少关注家人的情绪需求" },
+                    { value: 1, text: "不太能，我需要家人明确表达才能知道" },
+                    { value: 2, text: "有时候能，我会注意到一些明显的需求" },
+                    { value: 3, text: "大多数时候能，我通常能察觉到家人的情绪需求" },
+                    { value: 4, text: "总是能，我对家人的情绪需求非常敏感" }
+                ]
+            },
+            {
+                id: 36,
+                dimension: "social-awareness",
+                text: "在社交场合中，你能察觉到气氛的变化吗？",
+                options: [
+                    { value: 0, text: "完全不能，我很少注意到气氛的变化" },
+                    { value: 1, text: "不太能，只有当气氛变化非常明显时才会注意到" },
+                    { value: 2, text: "有时候能，我会注意到一些明显的气氛变化" },
+                    { value: 3, text: "大多数时候能，我通常能察觉到气氛的变化" },
+                    { value: 4, text: "总是能，我对社交场合的气氛变化非常敏感" }
+                ]
+            },
+            {
+                id: 37,
+                dimension: "social-awareness",
+                text: "当你与他人发生分歧时，你能理解对方的情绪立场吗？",
+                options: [
+                    { value: 0, text: "完全不能，我只关注自己的立场" },
+                    { value: 1, text: "不太能，我很难理解对方的情绪" },
+                    { value: 2, text: "有时候能，我会尝试理解对方的情绪" },
+                    { value: 3, text: "大多数时候能，我通常能理解对方的情绪立场" },
+                    { value: 4, text: "总是能，我能深入理解对方的情绪和立场" }
+                ]
+            },
+            {
+                id: 38,
+                dimension: "social-awareness",
+                text: "你能通过一个人的语气判断他的真实情绪吗？",
+                options: [
+                    { value: 0, text: "完全不能，我很少注意语气的变化" },
+                    { value: 1, text: "不太能，我对语气的理解很有限" },
+                    { value: 2, text: "有时候能，我能理解一些明显的语气变化" },
+                    { value: 3, text: "大多数时候能，我通常能通过语气判断情绪" },
+                    { value: 4, text: "总是能，我对语气的细微变化非常敏感" }
+                ]
+            },
+            {
+                id: 39,
+                dimension: "social-awareness",
+                text: "当你帮助他人时，你能察觉到他们真正的需求吗？",
+                options: [
+                    { value: 0, text: "完全不能，我通常按照自己的理解提供帮助" },
+                    { value: 1, text: "不太能，我很难理解他人的真实需求" },
+                    { value: 2, text: "有时候能，我会尝试理解他人的需求" },
+                    { value: 3, text: "大多数时候能，我通常能察觉到他人的真实需求" },
+                    { value: 4, text: "总是能，我能深入理解他人的需求并提供有效帮助" }
+                ]
+            },
+            {
+                id: 40,
+                dimension: "social-awareness",
+                text: "在团队合作中，你能察觉到成员之间的情绪互动吗？",
+                options: [
+                    { value: 0, text: "完全不能，我很少关注成员之间的互动" },
+                    { value: 1, text: "不太能，我对团队情绪互动的理解很有限" },
+                    { value: 2, text: "有时候能，我会注意到一些明显的互动模式" },
+                    { value: 3, text: "大多数时候能，我通常能理解团队的情绪动态" },
+                    { value: 4, text: "总是能，我对团队成员之间的情绪互动非常敏感" }
+                ]
+            },
+            
+            // 社交互动维度
+            {
+                id: 41,
+                dimension: "relationship-management",
+                text: "当你与他人发生冲突时，你能以建设性的方式解决问题吗？",
+                options: [
+                    { value: 0, text: "完全不能，冲突通常会恶化或被回避" },
+                    { value: 1, text: "不太能，我很难在冲突中保持理性" },
+                    { value: 2, text: "有时候能，但需要很大努力" },
+                    { value: 3, text: "大多数时候能，我通常能找到建设性的解决方案" },
+                    { value: 4, text: "总是能，我擅长将冲突转化为合作机会" }
+                ]
+            },
+            {
+                id: 42,
+                dimension: "relationship-management",
+                text: "当你需要给他人提供反馈时，你能以尊重和有效的方式表达吗？",
+                options: [
+                    { value: 0, text: "完全不能，我的反馈通常被视为批评或攻击" },
+                    { value: 1, text: "不太能，我很难平衡诚实和友善" },
+                    { value: 2, text: "有时候能，但效果不一致" },
+                    { value: 3, text: "大多数时候能，我通常能提供有效的反馈" },
+                    { value: 4, text: "总是能，我擅长提供建设性的反馈" }
+                ]
+            },
+            {
+                id: 43,
+                dimension: "relationship-management",
+                text: "当你与不同背景的人交流时，你能适应他们的沟通风格吗？",
+                options: [
+                    { value: 0, text: "完全不能，我很难与不同背景的人有效沟通" },
+                    { value: 1, text: "不太能，我很少调整自己的沟通方式" },
+                    { value: 2, text: "有时候能，但需要很大努力" },
+                    { value: 3, text: "大多数时候能，我通常能适应不同的沟通风格" },
+                    { value: 4, text: "总是能，我擅长与各种背景的人建立连接" }
+                ]
+            },
+            {
+                id: 44,
+                dimension: "relationship-management",
+                text: "当你需要激励他人时，你能有效地调动他们的积极性吗？",
+                options: [
+                    { value: 0, text: "完全不能，我很少能激励他人" },
+                    { value: 1, text: "不太能，我的激励方式效果有限" },
+                    { value: 2, text: "有时候能，但效果不一致" },
+                    { value: 3, text: "大多数时候能，我通常能有效激励他人" },
+                    { value: 4, text: "总是能，我擅长激发他人的潜能和热情" }
+                ]
+            },
+            {
+                id: 45,
+                dimension: "relationship-management",
+                text: "当你需要在团队中建立合作关系时，你能有效地促进协作吗？",
+                options: [
+                    { value: 0, text: "完全不能，我很难在团队中建立有效合作" },
+                    { value: 1, text: "不太能，我对团队协作的理解有限" },
+                    { value: 2, text: "有时候能，但需要他人的配合" },
+                    { value: 3, text: "大多数时候能，我通常能促进团队协作" },
+                    { value: 4, text: "总是能，我擅长创造协作的团队氛围" }
+                ]
+            },
+            {
+                id: 46,
+                dimension: "relationship-management",
+                text: "当你与他人意见不合时，你能保持尊重并寻找共同点吗？",
+                options: [
+                    { value: 0, text: "完全不能，意见不合通常会导致关系紧张" },
+                    { value: 1, text: "不太能，我很难在分歧中保持开放心态" },
+                    { value: 2, text: "有时候能，但会感到不舒服" },
+                    { value: 3, text: "大多数时候能，我通常能找到共同点" },
+                    { value: 4, text: "总是能，我擅长在分歧中发现机会" }
+                ]
+            },
+            {
+                id: 47,
+                dimension: "relationship-management",
+                text: "当你需要表达自己的情感时，你能以适当的方式传达吗？",
+                options: [
+                    { value: 0, text: "完全不能，我很少表达自己的情感" },
+                    { value: 1, text: "不太能，我的情感表达经常被误解" },
+                    { value: 2, text: "有时候能，但不太自然" },
+                    { value: 3, text: "大多数时候能，我通常能适当表达情感" },
+                    { value: 4, text: "总是能，我擅长以健康的方式表达情感" }
+                ]
+            },
+            {
+                id: 48,
+                dimension: "relationship-management",
+                text: "当你需要倾听他人时，你能真正理解他们的观点和感受吗？",
+                options: [
+                    { value: 0, text: "完全不能，我很少真正倾听他人" },
+                    { value: 1, text: "不太能，我经常打断或分心" },
+                    { value: 2, text: "有时候能，但会有自己的判断" },
+                    { value: 3, text: "大多数时候能，我通常能专注倾听" },
+                    { value: 4, text: "总是能，我擅长深度倾听和理解" }
+                ]
+            },
+            {
+                id: 49,
+                dimension: "relationship-management",
+                text: "当你需要在社交场合中建立新关系时，你能轻松地与人连接吗？",
+                options: [
+                    { value: 0, text: "完全不能，我在社交场合感到非常不自在" },
+                    { value: 1, text: "不太能，我很难主动与人交流" },
+                    { value: 2, text: "有时候能，但需要特定条件" },
+                    { value: 3, text: "大多数时候能，我通常能建立基本连接" },
+                    { value: 4, text: "总是能，我擅长在各种场合与人建立连接" }
+                ]
+            },
+            {
+                id: 50,
+                dimension: "relationship-management",
+                text: "当你需要在团队中处理复杂的人际关系时，你能有效地管理冲突和合作吗？",
+                options: [
+                    { value: 0, text: "完全不能，我很难处理复杂的团队关系" },
+                    { value: 1, text: "不太能，我经常被团队 dynamics 困扰" },
+                    { value: 2, text: "有时候能，但需要很大努力" },
+                    { value: 3, text: "大多数时候能，我通常能有效管理团队关系" },
+                    { value: 4, text: "总是能，我擅长创造和谐而高效的团队环境" }
+                ]
+            }
+        ];
+
+        // 结果解读数据
+        const insights = {
+            "self-awareness": {
+                low: "你对自己的情绪状态可能缺乏足够的觉知。这可能导致你在面对情绪时感到困惑或不知所措。建议你尝试每天花一些时间反思自己的情绪，记录情绪变化和触发因素，逐渐提高对自己情绪的敏感度。",
+                medium: "你对自己的情绪有一定的觉知，但在某些情况下可能不够敏锐。你可能在情绪强烈时能意识到，但在情绪微妙变化时可能会忽略。建议你尝试更系统地观察自己的情绪模式，特别是在压力或冲突情境下。",
+                high: "你对自己的情绪状态有很高的觉知。你能清楚地识别自己的情绪，理解情绪的来源和影响。这种能力有助于你更好地应对生活中的挑战。建议你继续保持这种自我觉知，并尝试将这种能力应用到更复杂的情境中。"
+            },
+            "self-management": {
+                low: "你可能在管理自己的情绪方面遇到一些挑战。在压力、挫折或强烈情绪面前，你可能感到难以控制自己的反应。建议你学习一些基本的情绪调节技巧，如深呼吸、正念冥想或 journaling，帮助你在情绪波动时保持平衡。",
+                medium: "你在管理情绪方面有一定的能力，但在某些情况下可能会感到困难。你可能在轻微压力下能保持冷静，但在高压情境下可能会失去控制。建议你拓展自己的情绪调节工具箱，学习更多应对不同情绪状态的策略。",
+                high: "你在管理自己的情绪方面表现出色。即使在压力或挑战情境下，你也能保持相对的平静和理性。这种能力有助于你在困难情况下做出明智的决策。建议你继续发展这种能力，并尝试帮助他人学习情绪管理技巧。"
+            },
+            "social-awareness": {
+                low: "你可能在察觉他人情绪方面有些困难。这可能导致你在人际关系中错过重要的非语言线索，或者难以理解他人的立场。建议你尝试更仔细地观察他人的面部表情、肢体语言和语气，同时练习倾听和共情的技巧。",
+                medium: "你在察觉他人情绪方面有一定的能力，但可能在某些情况下不够敏锐。你可能能理解明显的情绪表达，但对微妙的情绪变化可能不够敏感。建议你练习更深入地倾听他人，关注非语言线索，并尝试从他人的角度看问题。",
+                high: "你在察觉他人情绪方面有很高的敏感度。你能准确识别他人的情绪状态，理解他们的立场和需求。这种能力有助于你建立更深层的人际关系。建议你继续发展这种能力，并尝试在复杂的社交情境中应用。"
+            },
+            "relationship-management": {
+                low: "你可能在管理人际关系方面遇到一些挑战。在冲突、反馈或建立新关系时，你可能感到不自在或缺乏有效策略。建议你学习一些基本的沟通技巧，如积极倾听、非暴力沟通或冲突 resolution 策略，帮助你更有效地管理人际关系。",
+                medium: "你在管理人际关系方面有一定的能力，但在某些情况下可能会遇到困难。你可能能处理基本的人际互动，但在复杂或紧张的情境下可能会感到挑战。建议你拓展自己的社交技能工具箱，学习更多应对不同人际情境的策略。",
+                high: "你在管理人际关系方面表现出色。你能有效地沟通、解决冲突、建立连接，并在团队中创造合作氛围。这种能力有助于你在个人和职业生活中建立健康、富有成效的关系。建议你继续发展这种能力，并尝试帮助他人提升社交技能。"
+            }
+        };
+
+        // 成长建议数据
+        const growthTips = [
+            "每天花10-15分钟进行自我反思，关注自己的情绪状态、触发因素和反应模式。",
+            "尝试记录情绪日记，帮助你识别情绪模式和触发因素。",
+            "学习基本的放松技巧，如深呼吸、渐进式肌肉放松或正念冥想，帮助你在情绪波动时保持平衡。",
+            "练习情绪命名，用具体的词汇描述自己的情绪状态，提高情绪 granularity。",
+            "尝试从他人的角度看问题，培养共情能力。",
+            "学习积极倾听技巧，如 paraphrasing、asking open-ended questions 和 providing feedback。",
+            "练习非暴力沟通，学习如何表达自己的感受和需求，同时尊重他人。",
+            "参加社交技能培训或工作坊，提升自己的人际互动能力。",
+            "阅读关于情绪智力的书籍或文章，加深对情绪和人际关系的理解。",
+            "寻求反馈，了解他人如何看待你的情绪表达和人际互动。",
+            "在安全的环境中练习新的情绪表达和社交技巧，逐步建立信心。",
+            "关注非语言沟通，如面部表情、肢体语言和语气，提高对自己和他人情绪的觉知。",
+            "学习冲突 resolution 策略，如寻找共同点、focusing on solutions 或寻求第三方调解。",
+            "培养感恩的习惯，每天反思自己感激的人和事，提升积极情绪。",
+            "设定现实的情绪管理目标，逐步提升自己的情绪智力。"
+        ];
+
+        // 总分分类
+        const totalScoreCategories = [
+            { min: 0, max: 59, category: "探索阶段", description: "你正在开始探索自己的情绪世界。这是一个很好的起点，通过有意识的练习和成长，你可以显著提升自己的情绪智慧。" },
+            { min: 60, max: 99, category: "成长阶段", description: "你已经具备了基本的情绪智慧能力。通过持续的学习和实践，你可以进一步提升自己的情绪管理和人际互动能力。" },
+            { min: 100, max: 139, category: "发展阶段", description: "你在情绪智慧方面有良好的基础。你已经能够有效地识别和管理自己的情绪，同时也能理解他人的情绪。继续发展这些能力，你将在人际关系和职业发展中获得更多成功。" },
+            { min: 140, max: 179, category: "熟练阶段", description: "你在情绪智慧方面表现出色。你能够有效地管理自己的情绪，理解他人的需求，并在各种情境中保持良好的人际关系。这种能力将帮助你在个人和职业生活中取得更大的成功。" },
+            { min: 180, max: 200, category: "精通阶段", description: "你在情绪智慧方面达到了很高的水平。你能够在复杂的情境中保持情绪平衡，深入理解他人的情绪和需求，并建立深厚、有意义的人际关系。这种能力将帮助你成为优秀的领导者和团队成员。" }
+        ];
+
+        // DOM元素
+        const welcomeSection = document.getElementById('welcome-section');
+        const disclaimerSection = document.getElementById('disclaimer-section');
+        const testSection = document.getElementById('test-section');
+        const resultsSection = document.getElementById('results-section');
+        
+        const startTestBtn = document.getElementById('start-test');
+        const acceptDisclaimerBtn = document.getElementById('accept-disclaimer');
+        const prevQuestionBtn = document.getElementById('prev-question');
+        const nextQuestionBtn = document.getElementById('next-question');
+        const restartTestBtn = document.getElementById('restart-test');
+        
+        const questionNumberEl = document.getElementById('question-number');
+        const questionTextEl = document.getElementById('question-text');
+        const optionsContainerEl = document.getElementById('options-container');
+        const progressBarEl = document.getElementById('progress-bar');
+        const testProgressBarEl = document.getElementById('test-progress-bar');
+        const progressTextEl = document.getElementById('progress-text');
+        
+        // 测试状态
+        let currentQuestionIndex = 0;
+        const userAnswers = new Array(questions.length).fill(null);
+        
+        // 初始化
+        function init() {
+            // 绑定事件监听器
+            startTestBtn.addEventListener('click', showDisclaimer);
+            acceptDisclaimerBtn.addEventListener('click', startTest);
+            prevQuestionBtn.addEventListener('click', goToPrevQuestion);
+            nextQuestionBtn.addEventListener('click', goToNextQuestion);
+            restartTestBtn.addEventListener('click', restartTest);
+        }
+        
+        // 显示免责声明
+        function showDisclaimer() {
+            welcomeSection.classList.add('hidden');
+            disclaimerSection.classList.remove('hidden');
+        }
+        
+        // 开始测试
+        function startTest() {
+            disclaimerSection.classList.add('hidden');
+            testSection.classList.remove('hidden');
+            showQuestion(0);
+            updateProgress();
+        }
+        
+        // 显示当前问题
+        function showQuestion(index) {
+            const question = questions[index];
+            
+            // 更新问题信息
+            questionNumberEl.textContent = `问题 ${index + 1}/${questions.length}`;
+            questionTextEl.textContent = question.text;
+            
+            // 清空选项容器
+            optionsContainerEl.innerHTML = '';
+            
+            // 添加选项
+            question.options.forEach((option, optionIndex) => {
+                const optionEl = document.createElement('div');
+                optionEl.className = 'option-hover transition-all-300';
+                
+                const isSelected = userAnswers[index] === option.value;
+                
+                optionEl.innerHTML = `
+                    <label class="flex items-center p-4 border rounded-lg cursor-pointer ${isSelected ? 'border-primary bg-blue-50' : 'border-gray-200 hover:border-primary'}">
+                        <input type="radio" name="question-${index}" value="${option.value}" class="mr-3 text-primary focus:ring-primary" ${isSelected ? 'checked' : ''}>
+                        <span>${option.text}</span>
+                    </label>
+                `;
+                
+                optionsContainerEl.appendChild(optionEl);
+                
+                // 绑定选项点击事件
+                const radioBtn = optionEl.querySelector('input[type="radio"]');
+                radioBtn.addEventListener('change', () => {
+                    userAnswers[index] = option.value;
+                    updateNextButtonState();
+                    
+                    // 更新选项样式
+                    document.querySelectorAll('#options-container label').forEach(label => {
+                        label.classList.remove('border-primary', 'bg-blue-50');
+                        label.classList.add('border-gray-200');
+                    });
+                    
+                    optionEl.querySelector('label').classList.remove('border-gray-200');
+                    optionEl.querySelector('label').classList.add('border-primary', 'bg-blue-50');
+                });
+            });
+            
+            // 更新按钮状态
+            updateNavigationButtonsState();
+        }
+        
+        // 更新导航按钮状态
+        function updateNavigationButtonsState() {
+            prevQuestionBtn.disabled = currentQuestionIndex === 0;
+            
+            updateNextButtonState();
+        }
+        
+        // 更新下一步按钮状态
+        function updateNextButtonState() {
+            nextQuestionBtn.disabled = userAnswers[currentQuestionIndex] === null;
+        }
+        
+        // 前往上一题
+        function goToPrevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                showQuestion(currentQuestionIndex);
+                updateProgress();
+            }
+        }
+        
+        // 前往下一题或显示结果
+        function goToNextQuestion() {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                showQuestion(currentQuestionIndex);
+                updateProgress();
+            } else {
+                showResults();
+            }
+        }
+        
+        // 更新进度
+        function updateProgress() {
+            const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+            progressBarEl.style.width = `${progress}%`;
+            testProgressBarEl.style.width = `${progress}%`;
+            progressTextEl.textContent = `${currentQuestionIndex + 1}/${questions.length}`;
+        }
+        
+        // 计算得分
+        function calculateScores() {
+            const scores = {
+                "self-awareness": 0,
+                "self-management": 0,
+                "social-awareness": 0,
+                "relationship-management": 0,
+                total: 0
+            };
+            
+            // 计算各维度得分
+            questions.forEach((question, index) => {
+                const answer = userAnswers[index];
+                if (answer !== null) {
+                    scores[question.dimension] += answer;
+                    scores.total += answer;
+                }
+            });
+            
+            return scores;
+        }
+        
+        // 获取得分分类
+        function getScoreCategory(score, dimension) {
+            const maxScore = dimension === 'total' ? 200 : 50;
+            const percentage = (score / maxScore) * 100;
+            
+            if (percentage < 40) return 'low';
+            if (percentage < 70) return 'medium';
+            return 'high';
+        }
+        
+        // 显示结果
+        function showResults() {
+            testSection.classList.add('hidden');
+            resultsSection.classList.remove('hidden');
+            
+            const scores = calculateScores();
+            
+            // 更新总分
+            document.getElementById('total-score').textContent = scores.total;
+            
+            // 更新总分分类
+            const totalCategory = totalScoreCategories.find(cat => 
+                scores.total >= cat.min && scores.total <= cat.max
+            );
+            document.getElementById('total-score-category').textContent = totalCategory.category;
+            document.getElementById('total-score-description').textContent = totalCategory.description;
+            
+            // 更新总分圆环
+            const totalPercentage = (scores.total / 200) * 100;
+            const circumference = 2 * Math.PI * 45;
+            const dashArray = `${(totalPercentage / 100) * circumference} ${circumference}`;
+            document.getElementById('total-score-circle').style.strokeDasharray = dashArray;
+            
+            // 更新各维度得分和解读
+            const dimensions = ["self-awareness", "self-management", "social-awareness", "relationship-management"];
+            const dimensionLabels = {
+                "self-awareness": "自我情绪认知",
+                "self-management": "情绪调控",
+                "social-awareness": "他人情绪感知",
+                "relationship-management": "社交互动"
+            };
+            
+            dimensions.forEach(dimension => {
+                const score = scores[dimension];
+                const percentage = (score / 50) * 100;
+                const category = getScoreCategory(score, dimension);
+                
+                // 更新得分
+                document.getElementById(`${dimension}-score`).textContent = `${score}/50`;
+                
+                // 更新进度条
+                document.getElementById(`${dimension}-bar`).style.width = `${percentage}%`;
+                
+                // 更新解读
+                const insightEl = document.getElementById(`${dimension}-insight`);
+                insightEl.querySelector('p').textContent = insights[dimension][category];
+            });
+            
+            // 更新成长建议
+            const growthTipsEl = document.getElementById('growth-tips');
+            growthTipsEl.innerHTML = '';
+            
+            // 根据得分选择最相关的建议
+            const scoresArray = dimensions.map(dim => ({
+                dimension: dim,
+                score: scores[dim],
+                percentage: (scores[dim] / 50) * 100
+            }));
+            
+            // 按得分从低到高排序
+            scoresArray.sort((a, b) => a.percentage - b.percentage);
+            
+            // 选择与得分最低的两个维度相关的建议
+            const lowDimensions = scoresArray.slice(0, 2).map(item => item.dimension);
+            
+            // 添加针对性建议
+            const targetedTips = {
+                "self-awareness": [
+                    "每天花10-15分钟进行自我反思，关注自己的情绪状态、触发因素和反应模式。",
+                    "尝试记录情绪日记，帮助你识别情绪模式和触发因素。",
+                    "练习情绪命名，用具体的词汇描述自己的情绪状态，提高情绪 granularity。"
+                ],
+                "self-management": [
+                    "学习基本的放松技巧，如深呼吸、渐进式肌肉放松或正念冥想，帮助你在情绪波动时保持平衡。",
+                    "设定现实的情绪管理目标，逐步提升自己的情绪智力。",
+                    "培养感恩的习惯，每天反思自己感激的人和事，提升积极情绪。"
+                ],
+                "social-awareness": [
+                    "尝试更仔细地观察他人的面部表情、肢体语言和语气，同时练习倾听和共情的技巧。",
+                    "关注非语言沟通，提高对他人情绪的觉知。",
+                    "尝试从他人的角度看问题，培养共情能力。"
+                ],
+                "relationship-management": [
+                    "学习一些基本的沟通技巧，如积极倾听、非暴力沟通或冲突 resolution 策略，帮助你更有效地管理人际关系。",
+                    "练习非暴力沟通，学习如何表达自己的感受和需求，同时尊重他人。",
+                    "学习冲突 resolution 策略，如寻找共同点、focusing on solutions 或寻求第三方调解。"
+                ]
+            };
+            
+            // 添加针对性建议
+            lowDimensions.forEach(dimension => {
+                const tips = targetedTips[dimension];
+                tips.forEach(tip => {
+                    const tipEl = document.createElement('div');
+                    tipEl.className = 'flex items-start';
+                    tipEl.innerHTML = `
+                        <i class="fa fa-check-circle text-secondary mt-1 mr-2"></i>
+                        <span>${tip}</span>
+                    `;
+                    growthTipsEl.appendChild(tipEl);
+                });
+            });
+            
+            // 添加一些通用建议
+            const generalTips = growthTips.filter(tip => {
+                return !lowDimensions.some(dim => {
+                    const dimTips = targetedTips[dim];
+                    return dimTips.includes(tip);
+                });
+            });
+            
+            // 随机选择2-3个通用建议
+            const shuffledTips = generalTips.sort(() => 0.5 - Math.random());
+            const selectedTips = shuffledTips.slice(0, Math.floor(Math.random() * 2) + 2);
+            
+            selectedTips.forEach(tip => {
+                const tipEl = document.createElement('div');
+                tipEl.className = 'flex items-start';
+                tipEl.innerHTML = `
+                    <i class="fa fa-check-circle text-secondary mt-1 mr-2"></i>
+                    <span>${tip}</span>
+                `;
+                growthTipsEl.appendChild(tipEl);
+            });
+        }
+        
+        // 重新测试
+        function restartTest() {
+            // 重置测试状态
+            currentQuestionIndex = 0;
+            userAnswers.fill(null);
+            
+            // 返回欢迎页面
+            resultsSection.classList.add('hidden');
+            welcomeSection.classList.remove('hidden');
+        }
+        
+        // 初始化应用
+        init();
+    </script>
+</body>
+</html>
