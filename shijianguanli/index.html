@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>时间管理能力测评 - 原创内容服务</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FF7D00', // 温暖橙色
+                        secondary: '#0077B6', // 专业蓝色
+                        neutral: '#F8F9FA', // 浅灰背景
+                        dark: '#343A40', // 深色文字
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-in': 'slideIn 0.5s ease-in-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideIn: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+            }
+            .card-hover {
+                @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+            }
+            .btn-primary {
+                @apply bg-primary text-white font-medium py-3 px-6 rounded-lg shadow-md hover:bg-opacity-90 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50;
+            }
+            .btn-secondary {
+                @apply bg-secondary text-white font-medium py-3 px-6 rounded-lg shadow-md hover:bg-opacity-90 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-opacity-50;
+            }
+            .btn-outline {
+                @apply border border-primary text-primary font-medium py-3 px-6 rounded-lg hover:bg-primary hover:text-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50;
+            }
+            .progress-bar {
+                @apply h-2 bg-gray-200 rounded-full overflow-hidden;
+            }
+            .progress-value {
+                @apply h-full bg-primary transition-all duration-500 ease-out;
+            }
+            .option-card {
+                @apply border border-gray-200 rounded-lg p-4 cursor-pointer transition-all duration-300 hover:border-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50;
+            }
+            .option-card.selected {
+                @apply border-primary bg-primary bg-opacity-10;
+            }
+            .dimension-card {
+                @apply bg-white rounded-xl shadow-md p-6 card-hover;
+            }
+            .score-circle {
+                @apply w-32 h-32 rounded-full flex items-center justify-center text-4xl font-bold text-white shadow-lg mx-auto;
+            }
+        }
+    </style>
+</head>
+<body class="bg-neutral min-h-screen font-sans text-dark">
+    <!-- 顶部导航 -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fa fa-clock-o text-primary text-2xl"></i>
+                <h1 class="text-xl font-bold text-dark">时间管理能力测评</h1>
+            </div>
+            <div class="hidden md:flex items-center space-x-4">
+                <span class="text-sm text-gray-500">付费测试为原创内容服务，非专业医疗/心理测评</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- 开始页面 -->
+        <section id="start-section" class="max-w-3xl mx-auto bg-white rounded-2xl shadow-md p-8 animate-fade-in">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-dark mb-4">欢迎参加时间管理能力测评</h2>
+                <p class="text-gray-600 mb-6">本测评将帮助你全面了解自己的时间管理习惯和效率，获取个性化的改进建议</p>
+                
+                <!-- 付费提示 -->
+                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6 text-left">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i class="fa fa-info-circle text-yellow-400"></i>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-yellow-700">
+                                <strong>付费测试声明：</strong>本测试为原创内容服务，非专业医疗/心理测评。测试结果仅供参考，不构成任何形式的诊断或建议。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 测评介绍 -->
+                <div class="text-left mb-8">
+                    <h3 class="text-xl font-semibold mb-3">测评介绍</h3>
+                    <ul class="space-y-2 text-gray-600">
+                        <li class="flex items-start">
+                            <i class="fa fa-check-circle text-primary mt-1 mr-2"></i>
+                            <span>25道精心设计的原创题目</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa fa-check-circle text-primary mt-1 mr-2"></i>
+                            <span>5大时间管理维度全面分析</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa fa-check-circle text-primary mt-1 mr-2"></i>
+                            <span>个性化评分报告和改进建议</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa fa-check-circle text-primary mt-1 mr-2"></i>
+                            <span>实用的时间管理技巧和行动指南</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <!-- 免责声明 -->
+                <div class="bg-gray-50 p-4 rounded-lg mb-8 text-left">
+                    <h4 class="font-semibold text-gray-700 mb-2">免责声明</h4>
+                    <p class="text-xs text-gray-500">
+                        本测评内容为原创设计，仅作为个人成长和自我认知的参考工具，不具有专业诊断效力。测评结果不能替代专业人士的咨询或建议。
+                        如有需要，请寻求专业人士的帮助。通过参与本测评，您表示理解并同意上述声明。
+                    </p>
+                </div>
+                
+                <button id="start-test-btn" class="btn-primary">
+                    开始测评
+                    <i class="fa fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- 测试页面 -->
+        <section id="test-section" class="max-w-3xl mx-auto bg-white rounded-2xl shadow-md p-8 hidden animate-fade-in">
+            <!-- 进度条 -->
+            <div class="mb-8">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-sm font-medium text-gray-600">进度</span>
+                    <span id="progress-text" class="text-sm font-medium text-primary">1/25</span>
+                </div>
+                <div class="progress-bar">
+                    <div id="progress-value" class="progress-value" style="width: 4%"></div>
+                </div>
+            </div>
+            
+            <!-- 题目区域 -->
+            <div id="question-container" class="mb-8 animate-slide-in">
+                <h3 id="question-text" class="text-xl font-semibold mb-6">题目加载中...</h3>
+                
+                <div id="options-container" class="space-y-4">
+                    <!-- 选项将通过JS动态生成 -->
+                </div>
+            </div>
+            
+            <!-- 导航按钮 -->
+            <div class="flex justify-between">
+                <button id="prev-btn" class="btn-outline opacity-50 cursor-not-allowed" disabled>
+                    <i class="fa fa-arrow-left mr-2"></i>
+                    上一题
+                </button>
+                <button id="next-btn" class="btn-primary">
+                    下一题
+                    <i class="fa fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- 结果页面 -->
+        <section id="result-section" class="max-w-4xl mx-auto bg-white rounded-2xl shadow-md p-8 hidden animate-fade-in">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-dark mb-2">测评完成！</h2>
+                <p class="text-gray-600 mb-6">以下是你的时间管理能力分析报告</p>
+            </div>
+            
+            <!-- 总体评分 -->
+            <div class="mb-12">
+                <h3 class="text-xl font-semibold mb-6 text-center">总体评分</h3>
+                <div class="flex flex-col md:flex-row items-center justify-center">
+                    <div id="total-score-circle" class="score-circle bg-primary mb-4 md:mb-0 md:mr-8">
+                        0
+                    </div>
+                    <div class="text-left max-w-md">
+                        <h4 id="total-score-title" class="text-xl font-semibold mb-2">时间管理新手</h4>
+                        <p id="total-score-description" class="text-gray-600">
+                            你正在开始时间管理的旅程。通过学习和实践基本的时间管理技巧，你可以显著提高效率和生活质量。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 维度评分 -->
+            <div class="mb-12">
+                <h3 class="text-xl font-semibold mb-6 text-center">维度分析</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- 规划能力 -->
+                    <div class="dimension-card">
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="font-semibold">规划能力</h4>
+                            <span id="planning-score" class="text-lg font-bold text-primary">0</span>
+                        </div>
+                        <div class="progress-bar mb-4">
+                            <div id="planning-bar" class="progress-value bg-primary" style="width: 0%"></div>
+                        </div>
+                        <p id="planning-description" class="text-sm text-gray-600">
+                            评估你设定目标、制定计划和安排任务的能力。
+                        </p>
+                    </div>
+                    
+                    <!-- 执行效率 -->
+                    <div class="dimension-card">
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="font-semibold">执行效率</h4>
+                            <span id="execution-score" class="text-lg font-bold text-secondary">0</span>
+                        </div>
+                        <div class="progress-bar mb-4">
+                            <div id="execution-bar" class="progress-value bg-secondary" style="width: 0%"></div>
+                        </div>
+                        <p id="execution-description" class="text-sm text-gray-600">
+                            评估你专注工作、避免拖延和高效完成任务的能力。
+                        </p>
+                    </div>
+                    
+                    <!-- 干扰应对 -->
+                    <div class="dimension-card">
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="font-semibold">干扰应对</h4>
+                            <span id="distraction-score" class="text-lg font-bold text-green-500">0</span>
+                        </div>
+                        <div class="progress-bar mb-4">
+                            <div id="distraction-bar" class="progress-value bg-green-500" style="width: 0%"></div>
+                        </div>
+                        <p id="distraction-description" class="text-sm text-gray-600">
+                            评估你识别干扰、管理中断和保持专注的能力。
+                        </p>
+                    </div>
+                    
+                    <!-- 优先级管理 -->
+                    <div class="dimension-card">
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="font-semibold">优先级管理</h4>
+                            <span id="priority-score" class="text-lg font-bold text-purple-500">0</span>
+                        </div>
+                        <div class="progress-bar mb-4">
+                            <div id="priority-bar" class="progress-value bg-purple-500" style="width: 0%"></div>
+                        </div>
+                        <p id="priority-description" class="text-sm text-gray-600">
+                            评估你区分重要与紧急任务、合理分配时间和资源的能力。
+                        </p>
+                    </div>
+                    
+                    <!-- 自我调整 -->
+                    <div class="dimension-card">
+                        <div class="flex justify-between items-center mb-4">
+                            <h4 class="font-semibold">自我调整</h4>
+                            <span id="adaptation-score" class="text-lg font-bold text-pink-500">0</span>
+                        </div>
+                        <div class="progress-bar mb-4">
+                            <div id="adaptation-bar" class="progress-value bg-pink-500" style="width: 0%"></div>
+                        </div>
+                        <p id="adaptation-description" class="text-sm text-gray-600">
+                            评估你监控进度、反思问题和调整策略的能力。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 详细分析 -->
+            <div class="mb-12">
+                <h3 class="text-xl font-semibold mb-6">详细分析</h3>
+                <div id="detailed-analysis" class="bg-gray-50 rounded-lg p-6 text-gray-700">
+                    <!-- 详细分析内容将通过JS动态生成 -->
+                </div>
+            </div>
+            
+            <!-- 改进建议 -->
+            <div class="mb-12">
+                <h3 class="text-xl font-semibold mb-6">改进建议</h3>
+                <div id="improvement-tips" class="space-y-4">
+                    <!-- 改进建议将通过JS动态生成 -->
+                </div>
+            </div>
+            
+            <!-- 行动指南 -->
+            <div class="mb-12">
+                <h3 class="text-xl font-semibold mb-6">7天行动指南</h3>
+                <div id="action-guide" class="space-y-4">
+                    <!-- 行动指南将通过JS动态生成 -->
+                </div>
+            </div>
+            
+            <!-- 专业建议 -->
+            <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-8">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <i class="fa fa-lightbulb-o text-blue-400"></i>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm text-blue-700">
+                            <strong>专业成长建议：</strong>如果你希望进一步提升时间管理能力，可以考虑阅读相关书籍、参加专业课程或寻求专业教练的指导。记住，时间管理是一项需要持续练习和调整的技能。
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 分享按钮 -->
+            <div class="text-center">
+                <button id="share-btn" class="btn-secondary mr-4">
+                    <i class="fa fa-share-alt mr-2"></i>
+                    分享结果
+                </button>
+                <button id="restart-btn" class="btn-outline">
+                    <i class="fa fa-refresh mr-2"></i>
+                    重新测试
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa fa-clock-o text-primary text-xl"></i>
+                        <h2 class="text-lg font-bold">时间管理能力测评</h2>
+                    </div>
+                    <p class="text-sm text-gray-400 mt-1">原创内容服务，非专业医疗/心理测评</p>
+                </div>
+                
+                <div class="text-center md:text-right">
+                    <p class="text-sm text-gray-400">© 2025 时间管理能力测评. 保留所有权利.</p>
+                    <p class="text-xs text-gray-500 mt-1">本测评内容为原创设计，仅供个人成长参考，不具有专业诊断效力</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 测评题目数据
+        const questions = [
+            // 规划能力维度题目
+            {
+                id: 1,
+                text: "你通常会为每天的工作或学习制定详细计划吗？",
+                dimension: "planning",
+                options: [
+                    { value: 1, text: "从不，我喜欢随机应变" },
+                    { value: 2, text: "偶尔，只有在任务特别多时才会" },
+                    { value: 3, text: "有时，会大致安排但不够详细" },
+                    { value: 4, text: "经常，每天都会制定计划" },
+                    { value: 5, text: "总是，会制定详细计划并严格执行" }
+                ]
+            },
+            {
+                id: 2,
+                text: "你如何设定长期目标？",
+                dimension: "planning",
+                options: [
+                    { value: 1, text: "我没有明确的长期目标" },
+                    { value: 2, text: "有一些模糊的想法，但没有具体计划" },
+                    { value: 3, text: "会设定目标，但很少回顾或调整" },
+                    { value: 4, text: "会设定明确的目标，并定期检查进度" },
+                    { value: 5, text: "会将长期目标分解为可执行的短期目标，并制定详细计划" }
+                ]
+            },
+            {
+                id: 3,
+                text: "当你接到一个新项目或任务时，你会怎么做？",
+                dimension: "planning",
+                options: [
+                    { value: 1, text: "立即开始做，边做边想" },
+                    { value: 2, text: "简单思考后就开始，遇到问题再调整" },
+                    { value: 3, text: "大致规划一下步骤，然后开始" },
+                    { value: 4, text: "详细分析任务，制定计划后再开始" },
+                    { value: 5, text: "全面分析任务，制定详细计划，设定里程碑和检查点" }
+                ]
+            },
+            {
+                id: 4,
+                text: "你是否使用日历或任务管理工具来安排时间？",
+                dimension: "planning",
+                options: [
+                    { value: 1, text: "从不使用，全靠记忆" },
+                    { value: 2, text: "偶尔使用，但经常忘记更新" },
+                    { value: 3, text: "有时使用，但不够系统" },
+                    { value: 4, text: "经常使用，大部分安排都会记录" },
+                    { value: 5, text: "总是使用，所有安排都记录并定期检查" }
+                ]
+            },
+            {
+                id: 5,
+                text: "你对自己未来一周的时间安排了解程度如何？",
+                dimension: "planning",
+                options: [
+                    { value: 1, text: "完全不清楚，走一步看一步" },
+                    { value: 2, text: "知道一些重要事项，但细节不清楚" },
+                    { value: 3, text: "大致了解，但可能有变动" },
+                    { value: 4, text: "相当清楚，大部分时间都有安排" },
+                    { value: 5, text: "非常清楚，每天的安排都已确定" }
+                ]
+            },
+            
+            // 执行效率维度题目
+            {
+                id: 6,
+                text: "你通常能在截止日期前完成任务吗？",
+                dimension: "execution",
+                options: [
+                    { value: 1, text: "很少能，经常拖延到最后一刻甚至延期" },
+                    { value: 2, text: "偶尔能，有时需要加班或请求延期" },
+                    { value: 3, text: "一半一半，有些任务能按时完成，有些不能" },
+                    { value: 4, text: "大部分时候能，偶尔需要加班" },
+                    { value: 5, text: "总是能，通常还能提前完成" }
+                ]
+            },
+            {
+                id: 7,
+                text: "当你工作或学习时，你能保持专注的时间有多长？",
+                dimension: "execution",
+                options: [
+                    { value: 1, text: "很短，15分钟以内就会分心" },
+                    { value: 2, text: "较短，15-30分钟" },
+                    { value: 3, text: "中等，30-60分钟" },
+                    { value: 4, text: "较长，1-2小时" },
+                    { value: 5, text: "很长，2小时以上" }
+                ]
+            },
+            {
+                id: 8,
+                text: "你如何处理多项任务同时进行的情况？",
+                dimension: "execution",
+                options: [
+                    { value: 1, text: "感到混乱，经常出错或遗漏" },
+                    { value: 2, text: "有些吃力，需要花费更多时间" },
+                    { value: 3, text: "能应对，但效率不高" },
+                    { value: 4, text: "处理得不错，能合理分配时间" },
+                    { value: 5, text: "游刃有余，能高效切换并完成多项任务" }
+                ]
+            },
+            {
+                id: 9,
+                text: "你每天实际完成的任务量与计划的任务量相比如何？",
+                dimension: "execution",
+                options: [
+                    { value: 1, text: "很少完成计划的任务" },
+                    { value: 2, text: "完成约1/4的计划任务" },
+                    { value: 3, text: "完成约一半的计划任务" },
+                    { value: 4, text: "完成约3/4的计划任务" },
+                    { value: 5, text: "通常能完成所有计划任务，有时还能超额完成" }
+                ]
+            },
+            {
+                id: 10,
+                text: "你如何利用碎片时间（如通勤、排队等）？",
+                dimension: "execution",
+                options: [
+                    { value: 1, text: "通常用来休息或娱乐，不做任何 productive 的事" },
+                    { value: 2, text: "偶尔会回复消息或简单处理一些小事" },
+                    { value: 3, text: "有时会用来学习或工作，但效率不高" },
+                    { value: 4, text: "经常利用碎片时间处理简单任务或学习" },
+                    { value: 5, text: "总是有计划地利用碎片时间，将其纳入整体时间管理系统" }
+                ]
+            },
+            
+            // 干扰应对维度题目
+            {
+                id: 11,
+                text: "当你工作或学习时，手机消息或社交媒体通知会影响你吗？",
+                dimension: "distraction",
+                options: [
+                    { value: 1, text: "影响很大，我会立即查看每一条通知" },
+                    { value: 2, text: "影响较大，经常会被吸引去查看" },
+                    { value: 3, text: "有些影响，偶尔会查看" },
+                    { value: 4, text: "影响较小，通常会在完成一个任务段落后再查看" },
+                    { value: 5, text: "几乎没有影响，我会关闭通知或使用专注模式" }
+                ]
+            },
+            {
+                id: 12,
+                text: "当你正在专注工作时，有人打断你，你会怎么做？",
+                dimension: "distraction",
+                options: [
+                    { value: 1, text: "立即停下手中的工作，处理打断事项" },
+                    { value: 2, text: "虽然不情愿，但还是会停下处理" },
+                    { value: 3, text: "会处理，但会尽量快速回到工作" },
+                    { value: 4, text: "会说明自己正在忙，请求稍后再处理" },
+                    { value: 5, text: "会使用时间管理技巧（如告知对方自己的可用时间），最小化干扰" }
+                ]
+            },
+            {
+                id: 13,
+                text: "你如何应对工作或学习环境中的噪音或干扰？",
+                dimension: "distraction",
+                options: [
+                    { value: 1, text: "很难集中注意力，效率大幅下降" },
+                    { value: 2, text: "会受到影响，需要更长时间完成任务" },
+                    { value: 3, text: "有些影响，但还能继续工作" },
+                    { value: 4, text: "会采取措施（如戴耳机）减少干扰" },
+                    { value: 5, text: "几乎不受影响，或能迅速调整适应" }
+                ]
+            },
+            {
+                id: 14,
+                text: "你如何处理突然出现的紧急任务？",
+                dimension: "distraction",
+                options: [
+                    { value: 1, text: "立即放下所有工作去处理紧急任务" },
+                    { value: 2, text: "会处理，但感到压力和混乱" },
+                    { value: 3, text: "会处理，但会尽量记住之前的工作进度" },
+                    { value: 4, text: "会快速评估优先级，然后有条理地处理" },
+                    { value: 5, text: "有系统的方法来处理紧急任务，最小化对原有计划的影响" }
+                ]
+            },
+            {
+                id: 15,
+                text: "你每天花多少时间在与工作或学习无关的事情上？",
+                dimension: "distraction",
+                options: [
+                    { value: 1, text: "很多时间，经常分心做其他事" },
+                    { value: 2, text: "较多时间，经常需要提醒自己回到工作" },
+                    { value: 3, text: "中等时间，有时会分心但能控制" },
+                    { value: 4, text: "较少时间，大部分时间都专注于工作" },
+                    { value: 5, text: "很少时间，几乎不会做与工作无关的事" }
+                ]
+            },
+            
+            // 优先级管理维度题目
+            {
+                id: 16,
+                text: "你如何决定每天要先完成哪些任务？",
+                dimension: "priority",
+                options: [
+                    { value: 1, text: "通常从最简单或最喜欢的任务开始" },
+                    { value: 2, text: "按照任务出现的顺序处理" },
+                    { value: 3, text: "大致考虑重要性，但经常被紧急任务牵着走" },
+                    { value: 4, text: "会评估任务的重要性和紧急性，然后排序" },
+                    { value: 5, text: "有系统的方法（如四象限法则）来确定任务优先级" }
+                ]
+            },
+            {
+                id: 17,
+                text: "当你有很多任务时，你会怎么做？",
+                dimension: "priority",
+                options: [
+                    { value: 1, text: "感到不知所措，不知道从何开始" },
+                    { value: 2, text: "尝试同时做多项任务，但经常完不成" },
+                    { value: 3, text: "会列出任务清单，但执行时缺乏条理" },
+                    { value: 4, text: "会列出任务清单，并按优先级排序执行" },
+                    { value: 5, text: "不仅会排序，还会根据精力和时间状况灵活调整计划" }
+                ]
+            },
+            {
+                id: 18,
+                text: "你如何处理那些重要但不紧急的任务（如学习新技能、健康管理）？",
+                dimension: "priority",
+                options: [
+                    { value: 1, text: "很少考虑这些任务，总是被紧急任务占据时间" },
+                    { value: 2, text: "知道它们重要，但很少有时间去做" },
+                    { value: 3, text: "有时会做，但经常被其他事情打断" },
+                    { value: 4, text: "会定期安排时间来处理这些任务" },
+                    { value: 5, text: "将这些任务视为高优先级，确保它们在日程中有固定位置" }
+                ]
+            },
+            {
+                id: 19,
+                text: "你是否会授权或委托一些任务给他人？",
+                dimension: "priority",
+                options: [
+                    { value: 1, text: "很少，我更喜欢自己完成所有任务" },
+                    { value: 2, text: "偶尔，但会担心他人做不好" },
+                    { value: 3, text: "有时，当任务太多时会委托一些简单任务" },
+                    { value: 4, text: "经常，会根据他人的优势分配适当的任务" },
+                    { value: 5, text: "总是，善于识别哪些任务可以委托，从而专注于更重要的工作" }
+                ]
+            },
+            {
+                id: 20,
+                text: "你如何平衡工作/学习与个人生活的时间？",
+                dimension: "priority",
+                options: [
+                    { value: 1, text: "几乎没有平衡，经常工作/学习到很晚" },
+                    { value: 2, text: "工作/学习时间经常侵占个人生活" },
+                    { value: 3, text: "有时能平衡，但经常感到压力" },
+                    { value: 4, text: "大部分时间能保持平衡，有明确的界限" },
+                    { value: 5, text: "很好地平衡，工作/学习高效，个人生活丰富" }
+                ]
+            },
+            
+            // 自我调整维度题目
+            {
+                id: 21,
+                text: "你多久会回顾和评估自己的时间管理效果？",
+                dimension: "adaptation",
+                options: [
+                    { value: 1, text: "从不回顾，按习惯行事" },
+                    { value: 2, text: "很少回顾，只有在出现问题时才会" },
+                    { value: 3, text: "有时回顾，但没有固定频率" },
+                    { value: 4, text: "定期回顾，如每周或每月一次" },
+                    { value: 5, text: "经常回顾，并且会根据评估结果及时调整" }
+                ]
+            },
+            {
+                id: 22,
+                text: "当你的计划没有按预期进行时，你会怎么做？",
+                dimension: "adaptation",
+                options: [
+                    { value: 1, text: "感到沮丧，很难继续下去" },
+                    { value: 2, text: "会尝试继续，但缺乏灵活性" },
+                    { value: 3, text: "会做一些调整，但效果不明显" },
+                    { value: 4, text: "会分析原因，然后调整计划" },
+                    { value: 5, text: "将变化视为常态，有灵活的应对策略" }
+                ]
+            },
+            {
+                id: 23,
+                text: "你如何处理时间管理中的失败或挫折？",
+                dimension: "adaptation",
+                options: [
+                    { value: 1, text: "感到气馁，可能会放弃尝试" },
+                    { value: 2, text: "会继续尝试，但不知道如何改进" },
+                    { value: 3, text: "会反思，但很少采取具体行动" },
+                    { value: 4, text: "会分析问题，尝试不同的方法" },
+                    { value: 5, text: "将失败视为学习机会，系统地改进策略" }
+                ]
+            },
+            {
+                id: 24,
+                text: "你是否会尝试新的时间管理方法或工具？",
+                dimension: "adaptation",
+                options: [
+                    { value: 1, text: "很少，我喜欢保持现状" },
+                    { value: 2, text: "偶尔，但很少坚持使用" },
+                    { value: 3, text: "有时，会尝试但缺乏系统评估" },
+                    { value: 4, text: "经常尝试新方法，并评估效果" },
+                    { value: 5, text: "总是在寻找更好的方法，并愿意调整自己的习惯" }
+                ]
+            },
+            {
+                id: 25,
+                text: "你如何评估自己的时间管理效率？",
+                dimension: "adaptation",
+                options: [
+                    { value: 1, text: "很少评估，主要凭感觉" },
+                    { value: 2, text: "偶尔评估，但没有明确标准" },
+                    { value: 3, text: "有时会记录完成的任务数量" },
+                    { value: 4, text: "会评估任务完成质量和效率" },
+                    { value: 5, text: "有系统的评估方法，包括定量和定性指标" }
+                ]
+            }
+        ];
+
+        // 评分等级和描述
+        const scoreLevels = [
+            { min: 0, max: 40, title: "时间管理新手", description: "你正在开始时间管理的旅程。通过学习和实践基本的时间管理技巧，你可以显著提高效率和生活质量。" },
+            { min: 41, max: 60, title: "时间管理探索者", description: "你已经有了一些时间管理的意识和习惯，但仍有很大提升空间。通过系统化学习和实践，你可以更有效地管理时间。" },
+            { min: 61, max: 80, title: "时间管理实践者", description: "你已经掌握了良好的时间管理技能，并有意识地应用它们。继续优化你的方法，你可以达到更高的效率水平。" },
+            { min: 81, max: 100, title: "时间管理达人", description: "你是时间管理的高手，能够高效地规划和利用时间。你的方法值得分享给他人，同时你也可以继续探索更高级的技巧。" },
+            { min: 101, max: 125, title: "时间管理大师", description: "你已经将时间管理融入生活方式，达到了很高的境界。你不仅高效完成任务，还能平衡工作、学习和生活，享受充实而有意义的人生。" }
+        ];
+
+        // 维度评分等级和描述
+        const dimensionLevels = {
+            planning: [
+                { min: 0, max: 10, title: "规划能力待发展", description: "你很少制定计划，经常随机应变。建议开始培养规划习惯，从简单的每日计划开始。" },
+                { min: 11, max: 15, title: "规划能力初步形成", description: "你有时会制定计划，但不够系统和坚持。建议建立固定的规划时间和工具。" },
+                { min: 16, max: 20, title: "规划能力良好", description: "你有较好的规划习惯，能制定有效的计划。建议进一步优化规划方法，增加灵活性。" },
+                { min: 21, max: 25, title: "规划能力优秀", description: "你是规划高手，能制定全面而有效的计划。建议分享你的经验，并不断完善规划系统。" }
+            ],
+            execution: [
+                { min: 0, max: 10, title: "执行效率待提高", description: "你在执行任务时经常分心或拖延。建议从提高专注力和建立执行routine开始改进。" },
+                { min: 11, max: 15, title: "执行效率有所提升", description: "你能完成大部分任务，但有时效率不高。建议学习时间块工作法等提高效率的技巧。" },
+                { min: 16, max: 20, title: "执行效率良好", description: "你能高效执行计划，完成任务。建议进一步优化工作流程，减少时间浪费。" },
+                { min: 21, max: 25, title: "执行效率卓越", description: "你执行任务的效率非常高，很少拖延。建议探索如何在保持高效的同时，也保持创造力和思考深度。" }
+            ],
+            distraction: [
+                { min: 0, max: 10, title: "干扰应对能力较弱", description: "你经常被各种干扰影响，难以保持专注。建议学习如何创造无干扰环境和建立边界。" },
+                { min: 11, max: 15, title: "干扰应对能力一般", description: "你能应对一些干扰，但有时仍会受影响。建议学习更多干扰管理技巧，提高恢复专注的能力。" },
+                { min: 16, max: 20, title: "干扰应对能力良好", description: "你能有效管理大多数干扰，保持专注。建议继续优化你的干扰管理策略，提高抗干扰能力。" },
+                { min: 21, max: 25, title: "干扰应对能力出色", description: "你几乎不受干扰影响，能在各种环境中保持专注。建议分享你的经验，帮助他人提高抗干扰能力。" }
+            ],
+            priority: [
+                { min: 0, max: 10, title: "优先级管理需加强", description: "你经常被紧急但不重要的任务占据时间。建议学习优先级管理方法，如四象限法则。" },
+                { min: 11, max: 15, title: "优先级管理有所意识", description: "你有时能区分任务优先级，但执行时不够一致。建议建立优先级评估的固定流程。" },
+                { min: 16, max: 20, title: "优先级管理能力良好", description: "你能有效区分任务优先级，并据此分配时间。建议进一步优化你的决策过程，减少决策疲劳。" },
+                { min: 21, max: 25, title: "优先级管理能力卓越", description: "你是优先级管理的高手，总能将时间用在最有价值的事情上。建议分享你的经验，帮助他人提高决策质量。" }
+            ],
+            adaptation: [
+                { min: 0, max: 10, title: "自我调整能力有限", description: "你很少评估和调整自己的时间管理方法。建议开始定期反思，记录哪些方法有效，哪些需要改进。" },
+                { min: 11, max: 15, title: "自我调整能力初步形成", description: "你有时会评估和调整自己的方法，但不够系统。建议建立定期评估的习惯，使用更客观的指标。" },
+                { min: 16, max: 20, title: "自我调整能力良好", description: "你能系统地评估和调整自己的时间管理方法。建议继续探索新的技巧和工具，保持学习的态度。" },
+                { min: 21, max: 25, title: "自我调整能力出色", description: "你不断评估、学习和改进自己的时间管理系统。建议考虑指导他人，或记录你的经验帮助更多人。" }
+            ]
+        };
+
+        // 改进建议
+        const improvementTips = {
+            planning: [
+                "开始每天花10-15分钟制定次日计划，使用纸笔或数字工具",
+                "学习目标设定的SMART原则：具体(Specific)、可衡量(Measurable)、可实现(Achievable)、相关性(Relevant)、时限性(Time-bound)",
+                "将大任务分解为小步骤，降低启动难度",
+                "尝试使用日历或任务管理应用，如Todoist、Microsoft To Do或滴答清单",
+                "建立每周回顾和规划的习惯，评估上周成果并规划下周任务"
+            ],
+            execution: [
+                "尝试番茄工作法：25分钟专注工作，5分钟短休息，每4个循环休息15-30分钟",
+                "创造无干扰的工作环境：关闭通知、使用专注模式或噪音消除耳机",
+                "识别并消除时间浪费：记录时间使用情况，找出低效活动",
+                "建立固定的工作routine，让身体和大脑形成习惯",
+                "为重要任务安排精力充沛的时间段，如早上9-11点"
+            ],
+            distraction: [
+                "学习说\"不\"的艺术，合理拒绝非必要的请求",
+                "使用\"请勿打扰\"标志或状态，明确表示你需要专注时间",
+                "将手机放在视线外或使用专注模式，减少查看冲动",
+                "练习深呼吸和冥想，提高专注力和抗干扰能力",
+                "建立应对紧急情况的流程，避免每次都打乱计划"
+            ],
+            priority: [
+                "学习并应用艾森豪威尔矩阵（四象限法则）：区分重要且紧急、重要不紧急、紧急不重要、不紧急不重要的任务",
+                "每天首先处理1-2个最重要的任务，确保完成",
+                "学会授权或委托适合他人做的任务",
+                "定期评估你的任务清单，删除或推迟非必要任务",
+                "为重要但不紧急的任务（如学习、健康）预留固定时间"
+            ],
+            adaptation: [
+                "建立时间管理日志，记录每天的计划和实际执行情况",
+                "每周花15-30分钟回顾时间管理效果，分析成功和挑战",
+                "尝试新的时间管理方法，如GTD（Getting Things Done）或敏捷时间管理",
+                "加入时间管理社群或阅读相关书籍，持续学习",
+                "设置时间管理目标，如减少拖延时间或提高任务完成率"
+            ]
+        };
+
+        // 7天行动指南
+        const actionGuide = [
+            {
+                day: "第1天：自我评估",
+                tasks: [
+                    "记录今天的时间使用情况，每30分钟记录一次",
+                    "列出你认为最浪费时间的3个活动",
+                    "思考：如果每天多出1小时，你最想用来做什么？"
+                ]
+            },
+            {
+                day: "第2天：建立基础",
+                tasks: [
+                    "选择一个时间管理工具（如Todoist、滴答清单或纸笔）",
+                    "创建明天的任务清单，包含所有需要完成的事项",
+                    "设定一个明确的睡眠和起床时间，确保充足休息"
+                ]
+            },
+            {
+                day: "第3天：优先级练习",
+                tasks: [
+                    "使用四象限法则（重要/紧急）对任务清单进行分类",
+                    "从重要且紧急的任务开始，完成至少一项",
+                    "为重要但不紧急的任务安排固定时间"
+                ]
+            },
+            {
+                day: "第4天：专注训练",
+                tasks: [
+                    "尝试番茄工作法，完成至少4个番茄钟（25分钟工作+5分钟休息）",
+                    "关闭所有非必要通知，创造无干扰环境",
+                    "记录你的专注时长，看看是否能逐渐延长"
+                ]
+            },
+            {
+                day: "第5天：规划未来",
+                tasks: [
+                    "制定下周的大致计划，标记重要日期和任务",
+                    "设定一个本周想要完成的重要目标",
+                    "为这个目标分解出具体的步骤和时间点"
+                ]
+            },
+            {
+                day: "第6天：干扰管理",
+                tasks: [
+                    "识别今天遇到的所有干扰，记录下来",
+                    "为每种干扰制定应对策略",
+                    "练习礼貌地说\"不\"或\"稍后处理\""
+                ]
+            },
+            {
+                day: "第7天：回顾与调整",
+                tasks: [
+                    "回顾过去一周的时间管理实践",
+                    "找出最有效的方法和最大的挑战",
+                    "制定下周的改进计划，设定具体目标"
+                ]
+            }
+        ];
+
+        // 页面元素
+        const startSection = document.getElementById('start-section');
+        const testSection = document.getElementById('test-section');
+        const resultSection = document.getElementById('result-section');
+        
+        const startTestBtn = document.getElementById('start-test-btn');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        const shareBtn = document.getElementById('share-btn');
+        
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const progressText = document.getElementById('progress-text');
+        const progressValue = document.getElementById('progress-value');
+        
+        // 测评状态
+        let currentQuestionIndex = 0;
+        const userAnswers = {};
+        const dimensionScores = {
+            planning: 0,
+            execution: 0,
+            distraction: 0,
+            priority: 0,
+            adaptation: 0
+        };
+        
+        // 开始测评
+        startTestBtn.addEventListener('click', () => {
+            startSection.classList.add('hidden');
+            testSection.classList.remove('hidden');
+            showQuestion(currentQuestionIndex);
+        });
+        
+        // 显示当前问题
+        function showQuestion(index) {
+            const question = questions[index];
+            questionText.textContent = question.text;
+            progressText.textContent = `${index + 1}/${questions.length}`;
+            progressValue.style.width = `${(index + 1) / questions.length * 100}%`;
+            
+            // 清空选项容器
+            optionsContainer.innerHTML = '';
+            
+            // 添加选项
+            question.options.forEach(option => {
+                const optionCard = document.createElement('div');
+                optionCard.className = 'option-card';
+                if (userAnswers[question.id] === option.value) {
+                    optionCard.classList.add('selected');
+                }
+                
+                optionCard.innerHTML = `
+                    <div class="flex items-center">
+                        <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center mr-3">
+                            <span class="option-value">${option.value}</span>
+                        </div>
+                        <span>${option.text}</span>
+                    </div>
+                `;
+                
+                optionCard.addEventListener('click', () => {
+                    // 移除其他选项的选中状态
+                    document.querySelectorAll('.option-card').forEach(card => {
+                        card.classList.remove('selected');
+                    });
+                    
+                    // 添加当前选项的选中状态
+                    optionCard.classList.add('selected');
+                    
+                    // 记录用户选择
+                    userAnswers[question.id] = option.value;
+                });
+                
+                optionsContainer.appendChild(optionCard);
+            });
+            
+            // 更新导航按钮状态
+            prevBtn.disabled = index === 0;
+            prevBtn.classList.toggle('opacity-50', index === 0);
+            prevBtn.classList.toggle('cursor-not-allowed', index === 0);
+            
+            if (index === questions.length - 1) {
+                nextBtn.textContent = '提交';
+                nextBtn.innerHTML = '提交 <i class="fa fa-check ml-2"></i>';
+            } else {
+                nextBtn.textContent = '下一题';
+                nextBtn.innerHTML = '下一题 <i class="fa fa-arrow-right ml-2"></i>';
+            }
+        }
+        
+        // 上一题按钮
+        prevBtn.addEventListener('click', () => {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                showQuestion(currentQuestionIndex);
+            }
+        });
+        
+        // 下一题/提交按钮
+        nextBtn.addEventListener('click', () => {
+            // 检查是否已选择答案
+            if (!userAnswers[questions[currentQuestionIndex].id]) {
+                alert('请选择一个选项');
+                return;
+            }
+            
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                showQuestion(currentQuestionIndex);
+            } else {
+                calculateResults();
+                showResults();
+            }
+        });
+        
+        // 计算结果
+        function calculateResults() {
+            // 重置维度分数
+            for (const dimension in dimensionScores) {
+                dimensionScores[dimension] = 0;
+            }
+            
+            // 计算每个维度的分数
+            questions.forEach(question => {
+                if (userAnswers[question.id]) {
+                    dimensionScores[question.dimension] += userAnswers[question.id];
+                }
+            });
+        }
+        
+        // 显示结果
+        function showResults() {
+            testSection.classList.add('hidden');
+            resultSection.classList.remove('hidden');
+            
+            // 计算总分
+            const totalScore = Object.values(dimensionScores).reduce((sum, score) => sum + score, 0);
+            
+            // 显示总分和等级
+            const totalScoreCircle = document.getElementById('total-score-circle');
+            const totalScoreTitle = document.getElementById('total-score-title');
+            const totalScoreDescription = document.getElementById('total-score-description');
+            
+            totalScoreCircle.textContent = totalScore;
+            
+            // 根据总分确定等级
+            const scoreLevel = scoreLevels.find(level => totalScore >= level.min && totalScore <= level.max);
+            totalScoreTitle.textContent = scoreLevel.title;
+            totalScoreDescription.textContent = scoreLevel.description;
+            
+            // 根据分数设置颜色
+            if (totalScore < 60) {
+                totalScoreCircle.classList.remove('bg-primary', 'bg-secondary', 'bg-green-500');
+                totalScoreCircle.classList.add('bg-red-500');
+            } else if (totalScore < 80) {
+                totalScoreCircle.classList.remove('bg-primary', 'bg-secondary', 'bg-red-500');
+                totalScoreCircle.classList.add('bg-yellow-500');
+            } else if (totalScore < 100) {
+                totalScoreCircle.classList.remove('bg-primary', 'bg-red-500', 'bg-yellow-500');
+                totalScoreCircle.classList.add('bg-green-500');
+            } else {
+                totalScoreCircle.classList.remove('bg-red-500', 'bg-yellow-500', 'bg-green-500');
+                totalScoreCircle.classList.add('bg-primary');
+            }
+            
+            // 显示各维度分数和等级
+            const dimensions = [
+                { id: 'planning', name: '规划能力', color: 'bg-primary' },
+                { id: 'execution', name: '执行效率', color: 'bg-secondary' },
+                { id: 'distraction', name: '干扰应对', color: 'bg-green-500' },
+                { id: 'priority', name: '优先级管理', color: 'bg-purple-500' },
+                { id: 'adaptation', name: '自我调整', color: 'bg-pink-500' }
+            ];
+            
+            dimensions.forEach(dim => {
+                const scoreElement = document.getElementById(`${dim.id}-score`);
+                const barElement = document.getElementById(`${dim.id}-bar`);
+                const descriptionElement = document.getElementById(`${dim.id}-description`);
+                
+                scoreElement.textContent = dimensionScores[dim.id];
+                barElement.style.width = `${dimensionScores[dim.id] / 25 * 100}%`;
+                
+                // 根据分数确定等级
+                const level = dimensionLevels[dim.id].find(l => 
+                    dimensionScores[dim.id] >= l.min && dimensionScores[dim.id] <= l.max
+                );
+                
+                descriptionElement.textContent = level.description;
+            });
+            
+            // 生成详细分析
+            const detailedAnalysis = document.getElementById('detailed-analysis');
+            detailedAnalysis.innerHTML = '';
+            
+            // 找出最强和最弱的维度
+            let strongestDimension = { id: '', score: 0 };
+            let weakestDimension = { id: '', score: 25 };
+            
+            for (const dim in dimensionScores) {
+                if (dimensionScores[dim] > strongestDimension.score) {
+                    strongestDimension = { id: dim, score: dimensionScores[dim] };
+                }
+                if (dimensionScores[dim] < weakestDimension.score) {
+                    weakestDimension = { id: dim, score: dimensionScores[dim] };
+                }
+            }
+            
+            // 生成分析文本
+            const strongestDimName = dimensions.find(d => d.id === strongestDimension.id).name;
+            const weakestDimName = dimensions.find(d => d.id === weakestDimension.id).name;
+            
+            let analysisText = `
+                <p class="mb-4">根据你的测评结果，你的总体时间管理能力得分为 <strong>${totalScore}</strong> 分（满分125分），属于 <strong>${scoreLevel.title}</strong> 水平。</p>
+                
+                <p class="mb-4">在五个维度中，你的 <strong>${strongestDimName}</strong> 表现最强（得分：${strongestDimension.score}/25），这是你的优势所在。你在这方面的能力已经相当不错，建议继续保持和发扬。</p>
+                
+                <p class="mb-4">相比之下，<strong>${weakestDimName}</strong> 是你需要重点提升的方面（得分：${weakestDimension.score}/25）。通过有针对性的练习和改进，你可以在这方面取得显著进步。</p>
+            `;
+            
+            // 添加各维度的具体分析
+            dimensions.forEach(dim => {
+                const level = dimensionLevels[dim.id].find(l => 
+                    dimensionScores[dim.id] >= l.min && dimensionScores[dim.id] <= l.max
+                );
+                
+                analysisText += `
+                    <div class="mt-4">
+                        <h4 class="font-semibold mb-2">${dim.name}（${dimensionScores[dim.id]}/25）</h4>
+                        <p>${level.description}</p>
+                    </div>
+                `;
+            });
+            
+            detailedAnalysis.innerHTML = analysisText;
+            
+            // 生成改进建议
+            const improvementTipsContainer = document.getElementById('improvement-tips');
+            improvementTipsContainer.innerHTML = '';
+            
+            // 优先显示最弱维度的建议
+            const weakestDim = weakestDimension.id;
+            const weakestDimNameFull = dimensions.find(d => d.id === weakestDim).name;
+            
+            improvementTipsContainer.innerHTML += `
+                <div class="bg-red-50 rounded-lg p-5 mb-6">
+                    <h4 class="text-lg font-semibold mb-3 text-red-700">
+                        <i class="fa fa-exclamation-circle mr-2"></i>
+                        重点提升：${weakestDimNameFull}
+                    </h4>
+                    <ul class="space-y-2 text-gray-700">
+                        ${improvementTips[weakestDim].map(tip => `
+                            <li class="flex items-start">
+                                <i class="fa fa-check-circle text-red-500 mt-1 mr-2"></i>
+                                <span>${tip}</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+            `;
+            
+            // 显示其他维度的建议
+            dimensions.forEach(dim => {
+                if (dim.id !== weakestDim) {
+                    improvementTipsContainer.innerHTML += `
+                        <div class="bg-gray-50 rounded-lg p-5 mb-6">
+                            <h4 class="text-lg font-semibold mb-3 text-gray-700">
+                                <i class="fa fa-lightbulb-o mr-2"></i>
+                                ${dim.name}提升建议
+                            </h4>
+                            <ul class="space-y-2 text-gray-700">
+                                ${improvementTips[dim.id].slice(0, 3).map(tip => `
+                                    <li class="flex items-start">
+                                        <i class="fa fa-check-circle text-gray-500 mt-1 mr-2"></i>
+                                        <span>${tip}</span>
+                                    </li>
+                                `).join('')}
+                            </ul>
+                        </div>
+                    `;
+                }
+            });
+            
+            // 生成7天行动指南
+            const actionGuideContainer = document.getElementById('action-guide');
+            actionGuideContainer.innerHTML = '';
+            
+            actionGuide.forEach(day => {
+                actionGuideContainer.innerHTML += `
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-5">
+                        <h4 class="text-lg font-semibold mb-3">${day.day}</h4>
+                        <ul class="space-y-2">
+                            ${day.tasks.map(task => `
+                                <li class="flex items-start">
+                                    <i class="fa fa-circle text-xs text-primary mt-1.5 mr-2"></i>
+                                    <span>${task}</span>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                `;
+            });
+        }
+        
+        // 重新测试
+        restartBtn.addEventListener('click', () => {
+            // 重置状态
+            currentQuestionIndex = 0;
+            Object.keys(userAnswers).forEach(key => delete userAnswers[key]);
+            for (const dimension in dimensionScores) {
+                dimensionScores[dimension] = 0;
+            }
+            
+            // 返回开始页面
+            resultSection.classList.add('hidden');
+            startSection.classList.remove('hidden');
+        });
+        
+        // 分享结果
+        shareBtn.addEventListener('click', () => {
+            // 检查是否支持Web Share API
+            if (navigator.share) {
+                navigator.share({
+                    title: '我的时间管理能力测评结果',
+                    text: `我在时间管理能力测评中获得了${Object.values(dimensionScores).reduce((sum, score) => sum + score, 0)}分，来试试你能得多少分！`,
+                    url: window.location.href
+                })
+                .catch(err => {
+                    console.error('分享失败:', err);
+                    alert('分享功能不可用，请手动分享。');
+                });
+            } else {
+                // 复制链接到剪贴板
+                const url = window.location.href;
+                navigator.clipboard.writeText(url)
+                    .then(() => {
+                        alert('链接已复制到剪贴板，你可以粘贴分享给朋友。');
+                    })
+                    .catch(err => {
+                        console.error('复制失败:', err);
+                        alert('复制失败，请手动复制链接。');
+                    });
+            }
+        });
+    </script>
+</body>
+</html>
