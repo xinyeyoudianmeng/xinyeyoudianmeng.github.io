@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>「容貌悦纳度自测」原创付费测试</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#f9a8d4',
+                        secondary: '#e879f9',
+                        accent: '#d946ef',
+                        neutral: '#f3f4f6',
+                        'neutral-dark': '#6b7280'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .gradient-bg {
+                background: linear-gradient(135deg, #f9a8d4 0%, #e879f9 100%);
+            }
+            .card-hover {
+                transition: all 0.3s ease;
+            }
+            .card-hover:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px -5px rgba(249,168,212,0.3);
+            }
+        }
+    </style>
+</head>
+<body class="bg-neutral min-h-screen">
+    <div class="max-w-4xl mx-auto px-4 py-8">
+        <!-- 标题区域 -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-accent mb-4 text-shadow">「容貌悦纳度自测」</h1>
+            <p class="text-xl text-neutral-dark mb-6">探索你与自己容貌的关系，接纳每一个独特的自己</p>
+            <div class="inline-block px-6 py-3 bg-red-100 text-red-700 rounded-full text-sm font-medium">
+                ⚠️ 付费测试为原创内容服务，非专业医疗/心理测评
+            </div>
+        </div>
+
+        <!-- 原创声明 -->
+        <div class="bg-white rounded-2xl p-6 mb-8 shadow-lg">
+            <h2 class="text-2xl font-bold text-accent mb-4 flex items-center">
+                <i class="fa fa-pencil-square-o mr-3"></i>原创声明
+            </h2>
+            <div class="text-neutral-dark space-y-3">
+                <p>本测评所有题目、评分体系、结果解读均为原创设计，基于对当代年轻人容貌认知现状的观察与分析。</p>
+                <p>测评未抄袭、借鉴任何专业量表或他人原创内容，仅用于社交媒体趣味自测与自我认知参考。</p>
+                <p>内容注重正向引导，旨在帮助用户建立健康的容貌观，不具备专业诊断效力。</p>
+            </div>
+        </div>
+
+        <!-- 免责声明 -->
+        <div class="bg-white rounded-2xl p-6 mb-8 shadow-lg border-2 border-red-200">
+            <h2 class="text-2xl font-bold text-red-600 mb-4 flex items-center">
+                <i class="fa fa-exclamation-triangle mr-3"></i>免责声明
+            </h2>
+            <div class="text-neutral-dark space-y-3">
+                <p><strong>1. 非专业工具：</strong>本测评属于<span class="text-red-600 font-bold">非专业趣味自测工具</span>，结果仅供个人参考，不能替代心理咨询师、心理医生等专业人士的评估与诊断。</p>
+                <p><strong>2. 无医疗建议：</strong>测评内容不涉及医疗建议、心理治疗指导，若自测后出现明显心理困扰，建议及时寻求专业心理服务机构帮助。</p>
+                <p><strong>3. 版权保护：</strong>付费购买后即视为认可本声明，严禁二次转载、篡改、商用本测评内容。</p>
+                <p><strong>4. 结果使用：</strong>禁止将测评结果作为求职、就医、学术评估等场景的依据。</p>
+            </div>
+        </div>
+
+        <!-- 测试介绍 -->
+        <div class="bg-white rounded-2xl p-6 mb-8 shadow-lg">
+            <h2 class="text-2xl font-bold text-accent mb-4">测试说明</h2>
+            <div class="text-neutral-dark space-y-4">
+                <p>本测评从<span class="font-bold text-accent">五官认知、皮肤接纳、身材认同、社会比较、自我价值感</span>五个维度，探索你对自己容貌的接纳程度。</p>
+                <p>共20道题目，每题4个选项（A=1分，B=2分，C=3分，D=4分），请根据自己的真实感受选择最符合的选项。</p>
+                <p>测评结果将帮助你了解自己的容貌悦纳水平，并提供针对性的自我关怀建议。</p>
+            </div>
+        </div>
+
+        <!-- 测试题目 -->
+        <div class="bg-white rounded-2xl p-6 mb-8 shadow-lg">
+            <h2 class="text-2xl font-bold text-accent mb-6">测试题目</h2>
+            
+            <div class="space-y-8">
+                <!-- 第一部分：五官认知 -->
+                <div>
+                    <h3 class="text-xl font-semibold text-secondary mb-4">一、五官认知（4题）</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="p-4 bg-neutral rounded-xl">
+                            <p class="font-medium mb-3">1. 当你照镜子时，你对自己眼睛的第一感受是？</p>
+                            <div class="space-y-2">
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q1" value="1" class="mr-3 text-accent">
+                                    <span>A. 不满意，总觉得眼睛不够好看</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q1" value="2" class="mr-3 text-accent">
+                                    <span>B. 一般般，有时候会在意</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q1" value="3" class="mr-3 text-accent">
+                                    <span>C. 还不错，有自己的特点</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q1" value="4" class="mr-3 text-accent">
+                                    <span>D. 很喜欢，这是我独特的标志</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-neutral rounded-xl">
+                            <p class="font-medium mb-3">2. 你如何看待自己的鼻子形状？</p>
+                            <div class="space-y-2">
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q2" value="1" class="mr-3 text-accent">
+                                    <span>A. 很在意，总觉得不够完美</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q2" value="2" class="mr-3 text-accent">
+                                    <span>B. 偶尔会关注，希望能更理想</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q2" value="3" class="mr-3 text-accent">
+                                    <span>C. 基本接受，每个人都有差异</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q2" value="4" class="mr-3 text-accent">
+                                    <span>D. 完全接纳，这是我的一部分</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-neutral rounded-xl">
+                            <p class="font-medium mb-3">3. 当别人评价你的嘴巴或嘴唇时，你会？</p>
+                            <div class="space-y-2">
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q3" value="1" class="mr-3 text-accent">
+                                    <span>A. 很敏感，容易往坏处想</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q3" value="2" class="mr-3 text-accent">
+                                    <span>B. 有点在意，会照镜子确认</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q3" value="3" class="mr-3 text-accent">
+                                    <span>C. 理性对待，知道每个人审美不同</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q3" value="4" class="mr-3 text-accent">
+                                    <span>D. 自信面对，我喜欢自己的样子</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-neutral rounded-xl">
+                            <p class="font-medium mb-3">4. 你对自己脸型的接纳程度是？</p>
+                            <div class="space-y-2">
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q4" value="1" class="mr-3 text-accent">
+                                    <span>A. 很难接受，总觉得不好看</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q4" value="2" class="mr-3 text-accent">
+                                    <span>B. 一般，希望能有所改变</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q4" value="3" class="mr-3 text-accent">
+                                    <span>C. 基本接受，学会了修饰</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q4" value="4" class="mr-3 text-accent">
+                                    <span>D. 完全接纳，这是我的特色</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 第二部分：皮肤接纳 -->
+                <div>
+                    <h3 class="text-xl font-semibold text-secondary mb-4">二、皮肤接纳（4题）</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="p-4 bg-neutral rounded-xl">
+                            <p class="font-medium mb-3">5. 你如何看待自己的皮肤状态（如痘痘、斑点）？</p>
+                            <div class="space-y-2">
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q5" value="1" class="mr-3 text-accent">
+                                    <span>A. 无法接受，总想着遮盖</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q5" value="2" class="mr-3 text-accent">
+                                    <span>B. 很在意，会花很多时间改善</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q5" value="3" class="mr-3 text-accent">
+                                    <span>C. 接受现状，适度护理</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q5" value="4" class="mr-3 text-accent">
+                                    <span>D. 自然状态也很美，我爱我的皮肤</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-neutral rounded-xl">
+                            <p class="font-medium mb-3">6. 当皮肤出现问题时（如过敏、出油），你的心情会？</p>
+                            <div class="space-y-2">
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q6" value="1" class="mr-3 text-accent">
+                                    <span>A. 很糟糕，觉得自己变丑了</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q6" value="2" class="mr-3 text-accent">
+                                    <span>B. 有点烦躁，影响自信心</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q6" value="3" class="mr-3 text-accent">
+                                    <span>C. 平静面对，这是正常现象</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q6" value="4" class="mr-3 text-accent">
+                                    <span>D. 关心皮肤健康更重要，外观其次</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-neutral rounded-xl">
+                            <p class="font-medium mb-3">7. 你对自己肤色的看法是？</p>
+                            <div class="space-y-2">
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q7" value="1" class="mr-3 text-accent">
+                                    <span>A. 不满意，希望更白/更黑</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q7" value="2" class="mr-3 text-accent">
+                                    <span>B. 一般，会根据流行趋势调整</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q7" value="3" class="mr-3 text-accent">
+                                    <span>C. 接受，每个肤色都有魅力</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q7" value="4" class="mr-3 text-accent">
+                                    <span>D. 热爱，这是我文化和基因的一部分</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-neutral rounded-xl">
+                            <p class="font-medium mb-3">8. 你会因为皮肤问题而避免社交活动吗？</p>
+                            <div class="space-y-2">
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q8" value="1" class="mr-3 text-accent">
+                                    <span>A. 经常会，没自信见人</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q8" value="2" class="mr-3 text-accent">
+                                    <span>B. 偶尔会，看活动重要性</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q8" value="3" class="mr-3 text-accent">
+                                    <span>C. 很少会，皮肤不是全部</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q8" value="4" class="mr-3 text-accent">
+                                    <span>D. 从不，内在价值更重要</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 第三部分：身材认同 -->
+                <div>
+                    <h3 class="text-xl font-semibold text-secondary mb-4">三、身材认同（4题）</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="p-4 bg-neutral rounded-xl">
+                            <p class="font-medium mb-3">9. 你对自己的身高体重满意吗？</p>
+                            <div class="space-y-2">
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q9" value="1" class="mr-3 text-accent">
+                                    <span>A. 很不满意，总想着改变</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q9" value="2" class="mr-3 text-accent">
+                                    <span>B. 一般，希望更符合标准</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q9" value="3" class="mr-3 text-accent">
+                                    <span>C. 基本满意，健康就好</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q9" value="4" class="mr-3 text-accent">
+                                    <span>D. 非常满意，我的身材很完美</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-neutral rounded-xl">
+                            <p class="font-medium mb-3">10. 选择衣服时，你更在意？</p>
+                            <div class="space-y-2">
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q10" value="1" class="mr-3 text-accent">
+                                    <span>A. 能否遮盖身材缺点</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q10" value="2" class="mr-3 text-accent">
+                                    <span>B. 是否符合流行身材标准</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q10" value="3" class="mr-3 text-accent">
+                                    <span>C. 舒适度和个人喜好</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q10" value="4" class="mr-3 text-accent">
+                                    <span>D. 如何展现身材优势</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-neutral rounded-xl">
+                            <p class="font-medium mb-3">11. 当看到身材很好的人时，你会？</p>
+                            <div class="space-y-2">
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q11" value="1" class="mr-3 text-accent">
+                                    <span>A. 很自卑，觉得自己很差</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q11" value="2" class="mr-3 text-accent">
+                                    <span>B. 有点羡慕，想变得一样</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q11" value="3" class="mr-3 text-accent">
+                                    <span>C. 欣赏对方，也接纳自己</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q11" value="4" class="mr-3 text-accent">
+                                    <span>D. 每个人都有独特美，我也很棒</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-neutral rounded-xl">
+                            <p class="font-medium mb-3">12. 你如何看待身体的自然变化（如发胖、衰老）？</p>
+                            <div class="space-y-2">
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q12" value="1" class="mr-3 text-accent">
+                                    <span>A. 无法接受，拼命抵抗</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q12" value="2" class="mr-3 text-accent">
+                                    <span>B. 很难接受，但不得不面对</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q12" value="3" class="mr-3 text-accent">
+                                    <span>C. 接受自然规律，适度保养</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q12" value="4" class="mr-3 text-accent">
+                                    <span>D. 每个阶段都有不同的美</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 第四部分：社会比较 -->
+                <div>
+                    <h3 class="text-xl font-semibold text-secondary mb-4">四、社会比较（4题）</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="p-4 bg-neutral rounded-xl">
+                            <p class="font-medium mb-3">13. 刷社交媒体时，看到好看的照片你会？</p>
+                            <div class="space-y-2">
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q13" value="1" class="mr-3 text-accent">
+                                    <span>A. 很焦虑，觉得自己不如别人</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q13" value="2" class="mr-3 text-accent">
+                                    <span>B. 有点自卑，会对比自己</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q13" value="3" class="mr-3 text-accent">
+                                    <span>C. 理性看待，知道照片有修饰</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q13" value="4" class="mr-3 text-accent">
+                                    <span>D. 欣赏美好，不影响自我认同</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-neutral rounded-xl">
+                            <p class="font-medium mb-3">14. 当别人评论你的外貌时，你会？</p>
+                            <div class="space-y-2">
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q14" value="1" class="mr-3 text-accent">
+                                    <span>A. 非常在意，容易被影响</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q14" value="2" class="mr-3 text-accent">
+                                    <span>B. 有点在意，会放在心上</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q14" value="3" class="mr-3 text-accent">
+                                    <span>C. 选择性听取，有自己判断</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q14" value="4" class="mr-3 text-accent">
+                                    <span>D. 相信自己的感受，不受外界干扰</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-neutral rounded-xl">
+                            <p class="font-medium mb-3">15. 你会因为外貌而担心在社交场合的表现吗？</p>
+                            <div class="space-y-2">
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q15" value="1" class="mr-3 text-accent">
+                                    <span>A. 经常担心，影响社交</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q15" value="2" class="mr-3 text-accent">
+                                    <span>B. 偶尔担心，但能克服</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q15" value="3" class="mr-3 text-accent">
+                                    <span>C. 不太担心，更关注内在</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q15" value="4" class="mr-3 text-accent">
+                                    <span>D. 从不担心，自信面对</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-neutral rounded-xl">
+                            <p class="font-medium mb-3">16. 你认为外貌在人际关系中的重要性是？</p>
+                            <div class="space-y-2">
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q16" value="1" class="mr-3 text-accent">
+                                    <span>A. 非常重要，是第一印象</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q16" value="2" class="mr-3 text-accent">
+                                    <span>B. 比较重要，但不是全部</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q16" value="3" class="mr-3 text-accent">
+                                    <span>C. 一般重要，内在更长久</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q16" value="4" class="mr-3 text-accent">
+                                    <span>D. 不太重要，真诚最重要</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 第五部分：自我价值感 -->
+                <div>
+                    <h3 class="text-xl font-semibold text-secondary mb-4">五、自我价值感（4题）</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="p-4 bg-neutral rounded-xl">
+                            <p class="font-medium mb-3">17. 你觉得自己的价值与外貌有关吗？</p>
+                            <div class="space-y-2">
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q17" value="1" class="mr-3 text-accent">
+                                    <span>A. 有很大关系，好看更有价值</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q17" value="2" class="mr-3 text-accent">
+                                    <span>B. 有一定关系，外貌影响自信</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q17" value="3" class="mr-3 text-accent">
+                                    <span>C. 关系不大，能力更重要</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q17" value="4" class="mr-3 text-accent">
+                                    <span>D. 完全无关，价值在内在</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-neutral rounded-xl">
+                            <p class="font-medium mb-3">18. 当你对自己外貌不满意时，会影响你的整体情绪吗？</p>
+                            <div class="space-y-2">
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q18" value="1" class="mr-3 text-accent">
+                                    <span>A. 严重影响，心情会很差</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q18" value="2" class="mr-3 text-accent">
+                                    <span>B. 有一定影响，但能调整</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q18" value="3" class="mr-3 text-accent">
+                                    <span>C. 影响很小，很快就忘记</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q18" value="4" class="mr-3 text-accent">
+                                    <span>D. 几乎不影响，我有其他优点</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-neutral rounded-xl">
+                            <p class="font-medium mb-3">19. 你会为了变美而做出健康风险的事情吗？</p>
+                            <div class="space-y-2">
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q19" value="1" class="mr-3 text-accent">
+                                    <span>A. 会，变美最重要</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q19" value="2" class="mr-3 text-accent">
+                                    <span>B. 可能会，看风险大小</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q19" value="3" class="mr-3 text-accent">
+                                    <span>C. 不会，健康比美重要</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q19" value="4" class="mr-3 text-accent">
+                                    <span>D. 绝对不会，自然最美</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="p-4 bg-neutral rounded-xl">
+                            <p class="font-medium mb-3">20. 你是否相信每个人都有自己独特的美？</p>
+                            <div class="space-y-2">
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q20" value="1" class="mr-3 text-accent">
+                                    <span>A. 不太相信，美有统一标准</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q20" value="2" class="mr-3 text-accent">
+                                    <span>B. 有点相信，但不确定</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q20" value="3" class="mr-3 text-accent">
+                                    <span>C. 基本相信，每个人都不同</span>
+                                </label>
+                                <label class="flex items-center p-2 rounded-lg hover:bg-primary/10 cursor-pointer">
+                                    <input type="radio" name="q20" value="4" class="mr-3 text-accent">
+                                    <span>D. 完全相信，我就是独一无二的</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 提交按钮 -->
+            <div class="text-center mt-10">
+                <button id="submitBtn" class="px-8 py-4 gradient-bg text-white rounded-full text-lg font-bold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+                    <i class="fa fa-heart mr-2"></i>开始分析我的结果
+                </button>
+            </div>
+        </div>
+
+        <!-- 结果展示区域 -->
+        <div id="resultSection" class="hidden">
+            <!-- 总分结果 -->
+            <div class="bg-white rounded-2xl p-8 mb-8 shadow-lg">
+                <h2 class="text-2xl font-bold text-accent mb-6 text-center">你的容貌悦纳度结果</h2>
+                
+                <div class="text-center mb-8">
+                    <div class="inline-block p-6 rounded-full gradient-bg text-white text-4xl font-bold mb-4">
+                        <span id="totalScore">0</span>
+                    </div>
+                    <p class="text-xl font-medium" id="totalLevel"></p>
+                </div>
+
+                <div class="space-y-6">
+                    <div id="resultDescription" class="text-neutral-dark leading-relaxed"></div>
+                </div>
+            </div>
+
+            <!-- 维度分析 -->
+            <div class="bg-white rounded-2xl p-8 mb-8 shadow-lg">
+                <h3 class="text-2xl font-bold text-accent mb-6">维度详细分析</h3>
+                
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="p-4 bg-neutral rounded-xl card-hover">
+                        <h4 class="font-semibold text-secondary mb-2">五官认知</h4>
+                        <div class="flex items-center mb-2">
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div id="featureScore" class="bg-primary h-2.5 rounded-full" style="width: 0%"></div>
+                            </div>
+                            <span id="featureScoreText" class="ml-3 text-sm font-medium">0/16</span>
+                        </div>
+                        <p id="featureAnalysis" class="text-sm text-neutral-dark"></p>
+                    </div>
+
+                    <div class="p-4 bg-neutral rounded-xl card-hover">
+                        <h4 class="font-semibold text-secondary mb-2">皮肤接纳</h4>
+                        <div class="flex items-center mb-2">
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div id="skinScore" class="bg-primary h-2.5 rounded-full" style="width: 0%"></div>
+                            </div>
+                            <span id="skinScoreText" class="ml-3 text-sm font-medium">0/16</span>
+                        </div>
+                        <p id="skinAnalysis" class="text-sm text-neutral-dark"></p>
+                    </div>
+
+                    <div class="p-4 bg-neutral rounded-xl card-hover">
+                        <h4 class="font-semibold text-secondary mb-2">身材认同</h4>
+                        <div class="flex items-center mb-2">
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div id="bodyScore" class="bg-primary h-2.5 rounded-full" style="width: 0%"></div>
+                            </div>
+                            <span id="bodyScoreText" class="ml-3 text-sm font-medium">0/16</span>
+                        </div>
+                        <p id="bodyAnalysis" class="text-sm text-neutral-dark"></p>
+                    </div>
+
+                    <div class="p-4 bg-neutral rounded-xl card-hover">
+                        <h4 class="font-semibold text-secondary mb-2">社会比较</h4>
+                        <div class="flex items-center mb-2">
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div id="socialScore" class="bg-primary h-2.5 rounded-full" style="width: 0%"></div>
+                            </div>
+                            <span id="socialScoreText" class="ml-3 text-sm font-medium">0/16</span>
+                        </div>
+                        <p id="socialAnalysis" class="text-sm text-neutral-dark"></p>
+                    </div>
+
+                    <div class="p-4 bg-neutral rounded-xl card-hover md:col-span-2">
+                        <h4 class="font-semibold text-secondary mb-2">自我价值感</h4>
+                        <div class="flex items-center mb-2">
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div id="valueScore" class="bg-primary h-2.5 rounded-full" style="width: 0%"></div>
+                            </div>
+                            <span id="valueScoreText" class="ml-3 text-sm font-medium">0/16</span>
+                        </div>
+                        <p id="valueAnalysis" class="text-sm text-neutral-dark"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 建议区域 -->
+            <div class="bg-white rounded-2xl p-8 mb-8 shadow-lg">
+                <h3 class="text-2xl font-bold text-accent mb-6">给你的暖心建议</h3>
+                
+                <div class="space-y-4">
+                    <div class="flex items-start">
+                        <div class="bg-primary/20 p-3 rounded-full mr-4">
+                            <i class="fa fa-heart text-accent"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-secondary mb-1">练习自我接纳</h4>
+                            <p class="text-neutral-dark">每天对着镜子找出3个你喜欢的身体部位，大声告诉自己："我喜欢我的____，因为它____。"</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start">
+                        <div class="bg-primary/20 p-3 rounded-full mr-4">
+                            <i class="fa fa-comments text-accent"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-secondary mb-1">建立健康社交圈</h4>
+                            <p class="text-neutral-dark">远离那些只关注外貌的人和环境，多和欣赏你内在的朋友相处。</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start">
+                        <div class="bg-primary/20 p-3 rounded-full mr-4">
+                            <i class="fa fa-book text-accent"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-secondary mb-1">阅读相关书籍</h4>
+                            <p class="text-neutral-dark">推荐阅读《接纳不完美的自己》《身体正能量》等书籍，帮助建立健康的身体观。</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-start">
+                        <div class="bg-primary/20 p-3 rounded-full mr-4">
+                            <i class="fa fa-users text-accent"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-secondary mb-1">参加支持小组</h4>
+                            <p class="text-neutral-dark">寻找关注身体 positivity 的社群或活动，和志同道合的人一起成长。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 正向引导 -->
+            <div class="bg-gradient-to-r from-primary/20 to-secondary/20 rounded-2xl p-8 text-center">
+                <h3 class="text-2xl font-bold text-accent mb-4">最后的话</h3>
+                <p class="text-neutral-dark mb-6">亲爱的，容貌只是你众多美好特质中的一小部分。真正的美丽来自于内心的自信、善良和独特的灵魂。</p>
+                <p class="text-neutral-dark mb-6">如果你在这个过程中感到持续的焦虑或困扰，记住这不是你的错，寻求专业心理咨询师的帮助是非常勇敢和明智的选择。</p>
+                <div class="text-lg font-medium text-accent">
+                    <i class="fa fa-heart mr-2"></i>你已经很棒了，而且会越来越好
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 结果分析逻辑
+        document.getElementById('submitBtn').addEventListener('click', function() {
+            // 计算总分
+            let totalScore = 0;
+            let featureScore = 0;
+            let skinScore = 0;
+            let bodyScore = 0;
+            let socialScore = 0;
+            let valueScore = 0;
+
+            // 收集所有答案
+            for (let i = 1; i <= 20; i++) {
+                const radio = document.querySelector(`input[name="q${i}"]:checked`);
+                if (!radio) {
+                    alert('请完成所有题目后再提交！');
+                    return;
+                }
+                const score = parseInt(radio.value);
+                totalScore += score;
+
+                // 分类统计
+                if (i <= 4) featureScore += score;
+                else if (i <= 8) skinScore += score;
+                else if (i <= 12) bodyScore += score;
+                else if (i <= 16) socialScore += score;
+                else valueScore += score;
+            }
+
+            // 显示结果
+            document.getElementById('resultSection').classList.remove('hidden');
+            document.getElementById('totalScore').textContent = totalScore;
+
+            // 总分等级判定
+            let totalLevel, resultDescription;
+            if (totalScore <= 40) {
+                totalLevel = '容貌焦虑较高';
+                resultDescription = '你对自己的容貌存在较多的不接纳和焦虑。这可能源于社会对美的单一标准、成长经历中的负面评价，或者过度的自我要求。记住，这些感受不是你的错，但也不是真实的全部。每个人都有自己独特的美丽，包括你。';
+            } else if (totalScore <= 60) {
+                totalLevel = '容貌焦虑中等';
+                resultDescription = '你对自己的容貌有一定的接纳度，但在某些方面仍然存在焦虑。这是很正常的状态，很多人都在与容貌焦虑做斗争。尝试更多地关注自己的优点，减少与他人的比较，你会发现自己比想象中更美丽。';
+            } else if (totalScore <= 75) {
+                totalLevel = '容貌接纳良好';
+                resultDescription = '你对自己的容貌有较好的接纳度，能够理性看待自己的外貌。你明白美丽不仅仅是外表，更包括内在的品质。继续保持这种健康的心态，你的自信会让你更加光彩照人。';
+            } else {
+                totalLevel = '容貌悦纳优秀';
+                resultDescription = '恭喜你！你对自己的容貌有着极高的接纳度和欣赏能力。你明白真正的美丽来自于内心的自信和独特的个性。这种健康的身体观会让你在生活中更加自信、快乐，也会影响身边的人建立积极的自我认知。';
+            }
+
+            document.getElementById('totalLevel').textContent = totalLevel;
+            document.getElementById('resultDescription').textContent = resultDescription;
+
+            // 维度分析
+            updateDimensionAnalysis('feature', featureScore, [
+                '你对自己的五官存在较多不满意，容易关注所谓的"缺点"。尝试每天发现一个五官的优点，慢慢改变认知。',
+                '你对五官有一定接纳度，但仍有改善空间。学会欣赏每个五官的独特性。',
+                '你基本接纳自己的五官，这是很好的状态。继续培养对自己容貌的欣赏。',
+                '你完全接纳并欣赏自己的五官！这种自信会让你更有魅力。'
+            ]);
+
+            updateDimensionAnalysis('skin', skinScore, [
+                '你对皮肤状态很在意，容易因小问题产生焦虑。皮肤健康比完美更重要，学会温和对待。',
+                '你对皮肤有一定关注度，适度护理是好的，但不要过度焦虑。',
+                '你理性看待皮肤状态，注重健康而非完美。这种心态对皮肤健康有益。',
+                '你完全接纳自己的皮肤状态！健康的皮肤就是最美的皮肤。'
+            ]);
+
+            updateDimensionAnalysis('body', bodyScore, [
+                '你对自己的身材存在较多不满，容易与他人比较。每个人的身材都不同，学会欣赏自己的独特性。',
+                '你对身材有一定接纳度，但仍受社会标准影响。尝试关注身体的功能而非外观。',
+                '你基本接纳自己的身材，注重健康。继续培养对身体的感恩之心。',
+                '你完全热爱并接纳自己的身材！这种自信会让你更加美丽动人。'
+            ]);
+
+            updateDimensionAnalysis('social', socialScore, [
+                '你容易受到社交媒体和他人评价的影响，产生容貌焦虑。尝试减少比较，关注自己的生活。',
+                '你偶尔会受到外界影响，但有一定的判断力。继续培养独立的审美观念。',
+                '你理性看待社会评价，有自己的判断标准。这种独立性很宝贵。',
+                '你完全不受外界干扰，有坚定的自我认知。这种自信令人钦佩。'
+            ]);
+
+            updateDimensionAnalysis('value', valueScore, [
+                '你将自我价值过多地与外貌挂钩，这会限制你的潜能。尝试发现自己其他方面的价值。',
+                '你意识到内在价值的重要性，但仍受外貌影响。继续探索自己的多元价值。',
+                '你基本建立了健康的价值观，明白内在比外表更重要。继续丰富自己的内心世界。',
+                '你有着非常健康的价值观，完全不以外貌定义自己的价值。这种智慧令人赞赏。'
+            ]);
+
+            // 滚动到结果区域
+            document.getElementById('resultSection').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // 更新维度分析
+        function updateDimensionAnalysis(dimension, score, descriptions) {
+            const percentage = (score / 16) * 100;
+            document.getElementById(`${dimension}Score`).style.width = `${percentage}%`;
+            document.getElementById(`${dimension}ScoreText`).textContent = `${score}/16`;
+            
+            let analysis;
+            if (score <= 8) analysis = descriptions[0];
+            else if (score <= 12) analysis = descriptions[1];
+            else if (score <= 14) analysis = descriptions[2];
+            else analysis = descriptions[3];
+            
+            document.getElementById(`${dimension}Analysis`).textContent = analysis;
+        }
+
+        // 添加选项悬停效果
+        document.querySelectorAll('label').forEach(label => {
+            label.addEventListener('mouseenter', function() {
+                this.classList.add('bg-primary/10');
+            });
+            label.addEventListener('mouseleave', function() {
+                if (!this.querySelector('input').checked) {
+                    this.classList.remove('bg-primary/10');
+                }
+            });
+            label.querySelector('input').addEventListener('change', function() {
+                // 清除同组其他选项的背景
+                document.querySelectorAll(`input[name="${this.name}"]`).forEach(input => {
+                    input.parentElement.classList.remove('bg-primary/10');
+                });
+                // 添加当前选中选项的背景
+                this.parentElement.classList.add('bg-primary/10');
+            });
+        });
+    </script>
+</body>
+</html>
