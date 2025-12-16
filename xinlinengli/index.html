@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>心理能力综合测评</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4F46E5',
+                        secondary: '#EC4899',
+                        accent: '#10B981',
+                        neutral: '#6B7280',
+                        'neutral-light': '#F3F4F6',
+                        'neutral-dark': '#1F2937'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .card-hover {
+                transition: all 0.3s ease;
+            }
+            .card-hover:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            }
+            .progress-bar {
+                transition: width 0.5s ease-in-out;
+            }
+            .option-btn {
+                transition: all 0.2s ease;
+            }
+            .option-btn:hover {
+                transform: translateX(5px);
+            }
+            .option-btn.selected {
+                border-color: theme('colors.primary');
+                background-color: rgba(79, 70, 229, 0.1);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- 免责声明 -->
+    <div id="disclaimer" class="fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <h2 class="text-2xl font-bold text-neutral-dark mb-4">重要声明</h2>
+            <div class="space-y-4 text-gray-700">
+                <p class="font-semibold text-lg text-primary">付费测试为原创内容服务，非专业医疗/心理测评</p>
+                <p>本测评内容为原创设计，仅作为个人成长参考，不构成任何形式的专业诊断或医疗建议。</p>
+                <p>测评结果仅供参考，不能替代专业心理咨询师、心理医生或其他医疗专业人士的评估和建议。</p>
+                <p>如有严重心理困扰或健康问题，请及时寻求专业医疗或心理健康服务。</p>
+                <p class="text-sm text-gray-500 mt-6">点击下方按钮表示您已阅读并同意上述声明</p>
+            </div>
+            <button id="agree-btn" class="mt-6 w-full bg-primary text-white py-3 rounded-lg font-medium hover:bg-primary/90 transition-colors">
+                我已阅读并同意
+            </button>
+        </div>
+    </div>
+
+    <!-- 主容器 -->
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <!-- 头部 -->
+        <header class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-neutral-dark mb-2 text-shadow">心理能力综合测评</h1>
+            <p class="text-neutral text-lg">探索你的五大核心心理能力，发现成长空间</p>
+        </header>
+
+        <!-- 进度条 -->
+        <div class="mb-8">
+            <div class="flex justify-between text-sm text-neutral mb-1">
+                <span>进度</span>
+                <span id="progress-text">0%</span>
+            </div>
+            <div class="h-2 bg-gray-200 rounded-full overflow-hidden">
+                <div id="progress-bar" class="h-full bg-primary rounded-full progress-bar" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <!-- 测试内容区域 -->
+        <div id="test-container" class="bg-white rounded-xl shadow-md p-6 mb-8">
+            <!-- 测试介绍 -->
+            <div id="test-intro" class="text-center py-8">
+                <div class="inline-block p-4 bg-primary/10 rounded-full mb-4">
+                    <i class="fa fa-lightbulb-o text-4xl text-primary"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-neutral-dark mb-4">测评说明</h2>
+                <p class="text-neutral mb-6">本测评包含五大类心理能力评估，共50道题目，预计用时15-20分钟。</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                    <div class="bg-neutral-light rounded-lg p-4 text-center card-hover">
+                        <i class="fa fa-brain text-2xl text-primary mb-2"></i>
+                        <h3 class="font-medium">认知能力</h3>
+                    </div>
+                    <div class="bg-neutral-light rounded-lg p-4 text-center card-hover">
+                        <i class="fa fa-heart text-2xl text-secondary mb-2"></i>
+                        <h3 class="font-medium">情绪能力</h3>
+                    </div>
+                    <div class="bg-neutral-light rounded-lg p-4 text-center card-hover">
+                        <i class="fa fa-bolt text-2xl text-accent mb-2"></i>
+                        <h3 class="font-medium">意志能力</h3>
+                    </div>
+                    <div class="bg-neutral-light rounded-lg p-4 text-center card-hover">
+                        <i class="fa fa-users text-2xl text-blue-500 mb-2"></i>
+                        <h3 class="font-medium">社交能力</h3>
+                    </div>
+                    <div class="bg-neutral-light rounded-lg p-4 text-center card-hover">
+                        <i class="fa fa-eye text-2xl text-purple-500 mb-2"></i>
+                        <h3 class="font-medium">元认知能力</h3>
+                    </div>
+                </div>
+                <button id="start-test-btn" class="bg-primary text-white py-3 px-8 rounded-lg font-medium hover:bg-primary/90 transition-colors">
+                    开始测评
+                </button>
+            </div>
+
+            <!-- 测试题目 -->
+            <div id="question-container" class="hidden">
+                <div class="mb-6">
+                    <span id="category-tag" class="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium mb-2">
+                        认知类
+                    </span>
+                    <h3 id="question-text" class="text-xl font-bold text-neutral-dark">题目加载中...</h3>
+                </div>
+                <div id="options-container" class="space-y-3 mb-8">
+                    <!-- 选项将通过JS动态生成 -->
+                </div>
+                <div class="flex justify-between">
+                    <button id="prev-btn" class="px-4 py-2 border border-gray-300 rounded-lg text-neutral hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                        <i class="fa fa-arrow-left mr-2"></i>上一题
+                    </button>
+                    <button id="next-btn" class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">
+                        下一题<i class="fa fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 结果页面 -->
+            <div id="result-container" class="hidden">
+                <div class="text-center mb-8">
+                    <div class="inline-block p-4 bg-primary/10 rounded-full mb-4">
+                        <i class="fa fa-trophy text-4xl text-primary"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-neutral-dark mb-2">测评完成！</h2>
+                    <p class="text-neutral">以下是你的心理能力分析报告</p>
+                </div>
+
+                <!-- 总体评分 -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold text-neutral-dark mb-4">总体心理能力评分</h3>
+                    <div class="flex items-center justify-center">
+                        <div class="relative w-48 h-48">
+                            <svg class="w-full h-full" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="45" fill="none" stroke="#E5E7EB" stroke-width="10" />
+                                <circle id="overall-score-circle" cx="50" cy="50" r="45" fill="none" stroke="#4F46E5" stroke-width="10" stroke-dasharray="282.74" stroke-dashoffset="0" transform="rotate(-90 50 50)" />
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center flex-col">
+                                <span id="overall-score" class="text-4xl font-bold text-primary">0</span>
+                                <span class="text-sm text-neutral">总分</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 分类评分 -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold text-neutral-dark mb-4">分类能力评分</h3>
+                    <div class="space-y-4">
+                        <div class="category-score-item">
+                            <div class="flex justify-between mb-1">
+                                <span class="font-medium">认知能力</span>
+                                <span id="cognitive-score" class="text-primary font-semibold">0/10</span>
+                            </div>
+                            <div class="h-2 bg-gray-200 rounded-full">
+                                <div id="cognitive-bar" class="h-full bg-primary rounded-full" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="category-score-item">
+                            <div class="flex justify-between mb-1">
+                                <span class="font-medium">情绪能力</span>
+                                <span id="emotional-score" class="text-secondary font-semibold">0/10</span>
+                            </div>
+                            <div class="h-2 bg-gray-200 rounded-full">
+                                <div id="emotional-bar" class="h-full bg-secondary rounded-full" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="category-score-item">
+                            <div class="flex justify-between mb-1">
+                                <span class="font-medium">意志能力</span>
+                                <span id="willpower-score" class="text-accent font-semibold">0/10</span>
+                            </div>
+                            <div class="h-2 bg-gray-200 rounded-full">
+                                <div id="willpower-bar" class="h-full bg-accent rounded-full" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="category-score-item">
+                            <div class="flex justify-between mb-1">
+                                <span class="font-medium">社交能力</span>
+                                <span id="social-score" class="text-blue-500 font-semibold">0/10</span>
+                            </div>
+                            <div class="h-2 bg-gray-200 rounded-full">
+                                <div id="social-bar" class="h-full bg-blue-500 rounded-full" style="width: 0%"></div>
+                            </div>
+                        </div>
+                        <div class="category-score-item">
+                            <div class="flex justify-between mb-1">
+                                <span class="font-medium">元认知能力</span>
+                                <span id="metacognitive-score" class="text-purple-500 font-semibold">0/10</span>
+                            </div>
+                            <div class="h-2 bg-gray-200 rounded-full">
+                                <div id="metacognitive-bar" class="h-full bg-purple-500 rounded-full" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 详细分析 -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold text-neutral-dark mb-4">详细分析</h3>
+                    <div id="detailed-analysis" class="space-y-6">
+                        <!-- 分析内容将通过JS动态生成 -->
+                    </div>
+                </div>
+
+                <!-- 建议 -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold text-neutral-dark mb-4">成长建议</h3>
+                    <div id="suggestions" class="bg-neutral-light rounded-lg p-4 space-y-3">
+                        <!-- 建议内容将通过JS动态生成 -->
+                    </div>
+                </div>
+
+                <!-- 重新测试按钮 -->
+                <div class="text-center">
+                    <button id="retake-test-btn" class="bg-primary text-white py-3 px-8 rounded-lg font-medium hover:bg-primary/90 transition-colors">
+                        重新测评
+                    </button>
+                    <p class="text-sm text-neutral mt-2">如需更深入的分析，建议寻求专业心理咨询师的帮助</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 页脚 -->
+        <footer class="text-center text-neutral text-sm">
+            <p>© 2025 心理能力测评 | 原创内容，版权所有</p>
+            <p class="mt-1">本测评非专业医疗/心理测评，仅供个人成长参考</p>
+        </footer>
+    </div>
+
+    <script>
+        // 原创声明和免责说明
+        const disclaimer = `
+            【原创声明】
+            本心理能力测评内容为原创设计，所有题目、评分标准和结果分析均为独立创作，不存在任何侵权行为。未经授权，不得复制、传播或用于商业用途。
+            
+            【免责说明】
+            1. 本测评非专业医疗/心理测评工具，仅作为个人成长参考，不构成任何形式的专业诊断或医疗建议。
+            2. 测评结果仅供参考，不能替代专业心理咨询师、心理医生或其他医疗专业人士的评估和建议。
+            3. 如有严重心理困扰或健康问题，请及时寻求专业医疗或心理健康服务。
+            4. 本测评不收集任何个人身份信息，所有答题数据仅用于生成测评结果。
+            5. 未成年人参与本测评需在监护人指导下进行。
+        `;
+
+        // 测试题目数据
+        const testQuestions = [
+            // 认知类
+            {
+                category: '认知类',
+                categoryColor: 'primary',
+                question: '在阅读一篇文章时，我能够：',
+                options: [
+                    { text: '快速抓住核心观点和关键信息', score: 5 },
+                    { text: '理解大部分内容，但需要重复阅读', score: 3 },
+                    { text: '逐字逐句阅读，理解较慢', score: 1 },
+                    { text: '经常分心，难以集中注意力', score: 0 }
+                ]
+            },
+            {
+                category: '认知类',
+                categoryColor: 'primary',
+                question: '当面对一个复杂问题时，我的思考方式是：',
+                options: [
+                    { text: '系统性分析，找出因果关系', score: 5 },
+                    { text: '寻找多种可能的解决方案', score: 4 },
+                    { text: '凭直觉做决定', score: 2 },
+                    { text: '感到困惑，需要他人指导', score: 0 }
+                ]
+            },
+            {
+                category: '认知类',
+                categoryColor: 'primary',
+                question: '在学习新知识时，我：',
+                options: [
+                    { text: '能够快速理解并应用', score: 5 },
+                    { text: '需要一些时间但能掌握', score: 3 },
+                    { text: '需要反复练习才能记住', score: 2 },
+                    { text: '很难理解新概念', score: 0 }
+                ]
+            },
+            {
+                category: '认知类',
+                categoryColor: 'primary',
+                question: '我的记忆力表现为：',
+                options: [
+                    { text: '能轻松记住重要信息和细节', score: 5 },
+                    { text: '对重要事情记得清楚，细节容易忘', score: 3 },
+                    { text: '需要笔记或提醒才能记住', score: 2 },
+                    { text: '经常忘记近期发生的事情', score: 0 }
+                ]
+            },
+            {
+                category: '认知类',
+                categoryColor: 'primary',
+                question: '在处理多项任务时，我能够：',
+                options: [
+                    { text: '高效切换，同时处理多项任务', score: 5 },
+                    { text: '有序完成，但需要合理安排时间', score: 3 },
+                    { text: '一次只能专注一项任务', score: 2 },
+                    { text: '容易混乱，效率低下', score: 0 }
+                ]
+            },
+            {
+                category: '认知类',
+                categoryColor: 'primary',
+                question: '我的想象力表现为：',
+                options: [
+                    { text: '经常有新想法和创意', score: 5 },
+                    { text: '能够理解和欣赏创意内容', score: 3 },
+                    { text: '偶尔会有灵感闪现', score: 2 },
+                    { text: '更倾向于实际和具体的思考', score: 0 }
+                ]
+            },
+            {
+                category: '认知类',
+                categoryColor: 'primary',
+                question: '在表达自己的想法时，我：',
+                options: [
+                    { text: '能够清晰、有条理地表达', score: 5 },
+                    { text: '大部分时候表达清楚', score: 3 },
+                    { text: '有时会词不达意', score: 2 },
+                    { text: '经常难以用语言表达想法', score: 0 }
+                ]
+            },
+            {
+                category: '认知类',
+                categoryColor: 'primary',
+                question: '在观察周围环境时，我：',
+                options: [
+                    { text: '善于发现细节和变化', score: 5 },
+                    { text: '能注意到明显的事物', score: 3 },
+                    { text: '不太关注周围环境', score: 1 },
+                    { text: '经常错过重要细节', score: 0 }
+                ]
+            },
+            {
+                category: '认知类',
+                categoryColor: 'primary',
+                question: '在解决问题时，我：',
+                options: [
+                    { text: '能够灵活运用已有的知识', score: 5 },
+                    { text: '会寻找相关资源和方法', score: 3 },
+                    { text: '倾向于使用熟悉的方法', score: 2 },
+                    { text: '容易陷入思维定势', score: 0 }
+                ]
+            },
+            {
+                category: '认知类',
+                categoryColor: 'primary',
+                question: '在面对新的学习任务时，我：',
+                options: [
+                    { text: '充满好奇，主动探索', score: 5 },
+                    { text: '愿意尝试，但需要明确指导', score: 3 },
+                    { text: '按部就班完成要求', score: 2 },
+                    { text: '感到压力，缺乏动力', score: 0 }
+                ]
+            },
+            
+            // 情绪类
+            {
+                category: '情绪类',
+                categoryColor: 'secondary',
+                question: '当我感到压力很大时，我会：',
+                options: [
+                    { text: '找到适合的方式释放压力', score: 5 },
+                    { text: '尝试调整心态，继续面对', score: 3 },
+                    { text: '暂时逃避，等情绪平复', score: 2 },
+                    { text: '被压力击垮，无法正常工作', score: 0 }
+                ]
+            },
+            {
+                category: '情绪类',
+                categoryColor: 'secondary',
+                question: '我对自己情绪的觉察程度是：',
+                options: [
+                    { text: '能清晰识别自己的情绪状态', score: 5 },
+                    { text: '大部分时候知道自己的感受', score: 3 },
+                    { text: '有时不清楚自己为什么情绪波动', score: 2 },
+                    { text: '很少关注自己的情绪变化', score: 0 }
+                ]
+            },
+            {
+                category: '情绪类',
+                categoryColor: 'secondary',
+                question: '在与他人发生冲突时，我会：',
+                options: [
+                    { text: '冷静沟通，寻找解决方案', score: 5 },
+                    { text: '表达自己的观点，但尊重对方', score: 3 },
+                    { text: '情绪激动，但事后会反思', score: 2 },
+                    { text: '难以控制情绪，冲突升级', score: 0 }
+                ]
+            },
+            {
+                category: '情绪类',
+                categoryColor: 'secondary',
+                question: '当我感到沮丧时，我通常会：',
+                options: [
+                    { text: '主动寻求支持或自我调节', score: 5 },
+                    { text: '做一些让自己开心的事情', score: 3 },
+                    { text: '等待情绪自然好转', score: 2 },
+                    { text: '沉浸在负面情绪中难以自拔', score: 0 }
+                ]
+            },
+            {
+                category: '情绪类',
+                categoryColor: 'secondary',
+                question: '我能够识别他人情绪的程度是：',
+                options: [
+                    { text: '很容易察觉他人的情绪变化', score: 5 },
+                    { text: '能理解明显的情绪表达', score: 3 },
+                    { text: '有时会忽略他人的情绪信号', score: 2 },
+                    { text: '很少关注他人的情绪状态', score: 0 }
+                ]
+            },
+            {
+                category: '情绪类',
+                categoryColor: 'secondary',
+                question: '在表达情绪时，我：',
+                options: [
+                    { text: '能够适度表达，不伤害他人', score: 5 },
+                    { text: '大部分时候表达恰当', score: 3 },
+                    { text: '有时会过度表达情绪', score: 2 },
+                    { text: '经常压抑情绪或情绪失控', score: 0 }
+                ]
+            },
+            {
+                category: '情绪类',
+                categoryColor: 'secondary',
+                question: '当面对成功或表扬时，我会：',
+                options: [
+                    { text: '感到自豪但保持谦逊', score: 5 },
+                    { text: '享受成就并与他人分享', score: 3 },
+                    { text: '感到高兴但担心无法保持', score: 2 },
+                    { text: '感到不自在或怀疑自己', score: 0 }
+                ]
+            },
+            {
+                category: '情绪类',
+                categoryColor: 'secondary',
+                question: '我的情绪稳定性表现为：',
+                options: [
+                    { text: '情绪稳定，很少大起大落', score: 5 },
+                    { text: '大部分时候情绪平稳', score: 3 },
+                    { text: '情绪会因外界因素波动', score: 2 },
+                    { text: '情绪波动较大，难以控制', score: 0 }
+                ]
+            },
+            {
+                category: '情绪类',
+                categoryColor: 'secondary',
+                question: '在面对他人的负面情绪时，我会：',
+                options: [
+                    { text: '共情并提供支持', score: 5 },
+                    { text: '尝试理解并安慰对方', score: 3 },
+                    { text: '感到不适但会尽力帮助', score: 2 },
+                    { text: '不知道如何应对，选择回避', score: 0 }
+                ]
+            },
+            {
+                category: '情绪类',
+                categoryColor: 'secondary',
+                question: '我对生活中的小确幸的感受是：',
+                options: [
+                    { text: '经常能感受到并珍惜', score: 5 },
+                    { text: '有时会注意并享受', score: 3 },
+                    { text: '很少关注这些细节', score: 1 },
+                    { text: '几乎不会注意到', score: 0 }
+                ]
+            },
+            
+            // 意志类
+            {
+                category: '意志类',
+                categoryColor: 'accent',
+                question: '当我设定目标后，我会：',
+                options: [
+                    { text: '制定详细计划并坚持执行', score: 5 },
+                    { text: '努力实现，但会灵活调整', score: 3 },
+                    { text: '有时会因为困难而拖延', score: 2 },
+                    { text: '经常难以坚持，容易放弃', score: 0 }
+                ]
+            },
+            {
+                category: '意志类',
+                categoryColor: 'accent',
+                question: '在面对诱惑时（如刷手机、吃零食），我：',
+                options: [
+                    { text: '能够控制自己，专注于重要任务', score: 5 },
+                    { text: '大部分时候能抵制诱惑', score: 3 },
+                    { text: '有时会妥协，但能及时调整', score: 2 },
+                    { text: '经常被诱惑，影响计划', score: 0 }
+                ]
+            },
+            {
+                category: '意志类',
+                categoryColor: 'accent',
+                question: '当遇到挫折时，我的反应是：',
+                options: [
+                    { text: '分析原因，寻找解决方法', score: 5 },
+                    { text: '短暂沮丧后继续努力', score: 3 },
+                    { text: '感到挫败，但不会轻易放弃', score: 2 },
+                    { text: '容易气馁，需要他人鼓励', score: 0 }
+                ]
+            },
+            {
+                category: '意志类',
+                categoryColor: 'accent',
+                question: '在需要长期坚持的任务中，我：',
+                options: [
+                    { text: '保持动力，持续进步', score: 5 },
+                    { text: '能够坚持，但偶尔会松懈', score: 3 },
+                    { text: '需要外部监督才能坚持', score: 2 },
+                    { text: '经常半途而废', score: 0 }
+                ]
+            },
+            {
+                category: '意志类',
+                categoryColor: 'accent',
+                question: '当需要做决定时，我通常：',
+                options: [
+                    { text: '权衡利弊后迅速决定', score: 5 },
+                    { text: '收集信息后做出选择', score: 3 },
+                    { text: '有时会犹豫，但最终会决定', score: 2 },
+                    { text: '经常纠结，难以做决定', score: 0 }
+                ]
+            },
+            {
+                category: '意志类',
+                categoryColor: 'accent',
+                question: '在面对困难任务时，我会：',
+                options: [
+                    { text: '主动挑战，寻找突破', score: 5 },
+                    { text: '接受挑战，尽力而为', score: 3 },
+                    { text: '完成基本要求，但不追求卓越', score: 2 },
+                    { text: '尽量回避困难任务', score: 0 }
+                ]
+            },
+            {
+                category: '意志类',
+                categoryColor: 'accent',
+                question: '我的时间管理能力表现为：',
+                options: [
+                    { text: '能够高效安排时间，按时完成任务', score: 5 },
+                    { text: '大部分时候能合理安排时间', score: 3 },
+                    { text: '有时会拖延，但能完成任务', score: 2 },
+                    { text: '经常拖延，难以按时完成', score: 0 }
+                ]
+            },
+            {
+                category: '意志类',
+                categoryColor: 'accent',
+                question: '当需要学习新技能时，我：',
+                options: [
+                    { text: '主动学习，持之以恒', score: 5 },
+                    { text: '认真学习，直到掌握', score: 3 },
+                    { text: '学到基本够用就满足', score: 2 },
+                    { text: '遇到困难就容易放弃', score: 0 }
+                ]
+            },
+            {
+                category: '意志类',
+                categoryColor: 'accent',
+                question: '在团队合作中，我：',
+                options: [
+                    { text: '积极承担责任，按时完成任务', score: 5 },
+                    { text: '完成自己的部分，配合团队', score: 3 },
+                    { text: '有时需要提醒才会完成任务', score: 2 },
+                    { text: '经常依赖他人，难以独立完成', score: 0 }
+                ]
+            },
+            {
+                category: '意志类',
+                categoryColor: 'accent',
+                question: '当目标未达成时，我会：',
+                options: [
+                    { text: '分析原因，调整策略继续努力', score: 5 },
+                    { text: '感到失望，但不会放弃目标', score: 3 },
+                    { text: '暂时放下，寻找其他机会', score: 2 },
+                    { text: '完全放弃，不再尝试', score: 0 }
+                ]
+            },
+            
+            // 社交类
+            {
+                category: '社交类',
+                categoryColor: 'blue-500',
+                question: '在与陌生人交流时，我通常：',
+                options: [
+                    { text: '轻松自然，主动寻找话题', score: 5 },
+                    { text: '能够正常交流，保持礼貌', score: 3 },
+                    { text: '有些紧张，但能应对', score: 2 },
+                    { text: '感到不自在，避免交流', score: 0 }
+                ]
+            },
+            {
+                category: '社交类',
+                categoryColor: 'blue-500',
+                question: '当朋友遇到困难时，我会：',
+                options: [
+                    { text: '主动关心，提供实际帮助', score: 5 },
+                    { text: '倾听并给予情感支持', score: 3 },
+                    { text: '表达关心，但不知道如何帮助', score: 2 },
+                    { text: '感到尴尬，不知道如何回应', score: 0 }
+                ]
+            },
+            {
+                category: '社交类',
+                categoryColor: 'blue-500',
+                question: '在团队合作中，我的表现是：',
+                options: [
+                    { text: '积极参与，促进团队协作', score: 5 },
+                    { text: '做好自己的工作，配合他人', score: 3 },
+                    { text: '完成任务，但较少主动沟通', score: 2 },
+                    { text: '倾向于独立工作，避免团队合作', score: 0 }
+                ]
+            },
+            {
+                category: '社交类',
+                categoryColor: 'blue-500',
+                question: '我对他人的情绪和需求的敏感度是：',
+                options: [
+                    { text: '很容易察觉并理解', score: 5 },
+                    { text: '大部分时候能注意到', score: 3 },
+                    { text: '有时会忽略他人的感受', score: 2 },
+                    { text: '很少关注他人的情绪需求', score: 0 }
+                ]
+            },
+            {
+                category: '社交类',
+                categoryColor: 'blue-500',
+                question: '在解决人际冲突时，我会：',
+                options: [
+                    { text: '寻求双赢解决方案', score: 5 },
+                    { text: '尝试理解对方，寻找共识', score: 3 },
+                    { text: '表达自己的观点，但尊重对方', score: 2 },
+                    { text: '避免冲突，选择妥协', score: 0 }
+                ]
+            },
+            {
+                category: '社交类',
+                categoryColor: 'blue-500',
+                question: '我的倾听能力表现为：',
+                options: [
+                    { text: '全神贯注，理解对方意图', score: 5 },
+                    { text: '认真倾听，适时回应', score: 3 },
+                    { text: '有时会分心，需要提醒', score: 2 },
+                    { text: '经常急于表达自己的观点', score: 0 }
+                ]
+            },
+            {
+                category: '社交类',
+                categoryColor: 'blue-500',
+                question: '在建立人际关系方面，我：',
+                options: [
+                    { text: '能够轻松建立深度连接', score: 5 },
+                    { text: '有几个亲密朋友和广泛的社交圈', score: 3 },
+                    { text: '有固定的朋友圈，较少拓展', score: 2 },
+                    { text: '人际关系较为表面，难以深入', score: 0 }
+                ]
+            },
+            {
+                category: '社交类',
+                categoryColor: 'blue-500',
+                question: '当需要拒绝他人时，我会：',
+                options: [
+                    { text: '坦诚表达，说明原因', score: 5 },
+                    { text: '委婉拒绝，尽量不伤害对方', score: 3 },
+                    { text: '感到为难，但会尝试拒绝', score: 2 },
+                    { text: '很难拒绝，经常勉强自己', score: 0 }
+                ]
+            },
+            {
+                category: '社交类',
+                categoryColor: 'blue-500',
+                question: '我对他人的信任度和判断力是：',
+                options: [
+                    { text: '能够准确判断他人的可信度', score: 5 },
+                    { text: '大部分时候能正确判断', score: 3 },
+                    { text: '有时会看错人，但能及时调整', score: 2 },
+                    { text: '经常难以判断他人的真实意图', score: 0 }
+                ]
+            },
+            {
+                category: '社交类',
+                categoryColor: 'blue-500',
+                question: '在社交场合中，我的表现是：',
+                options: [
+                    { text: '自信从容，享受社交活动', score: 5 },
+                    { text: '能够适应，表现自然', score: 3 },
+                    { text: '有些拘谨，但能参与', score: 2 },
+                    { text: '感到不自在，尽量回避', score: 0 }
+                ]
+            },
+            
+            // 元认知类
+            {
+                category: '元认知类',
+                categoryColor: 'purple-500',
+                question: '我对自己的思维方式和习惯的了解程度是：',
+                options: [
+                    { text: '非常清楚自己的思维模式和偏好', score: 5 },
+                    { text: '对自己的思考方式有较好的认识', score: 3 },
+                    { text: '有时会反思自己的思维过程', score: 2 },
+                    { text: '很少关注自己是如何思考的', score: 0 }
+                ]
+            },
+            {
+                category: '元认知类',
+                categoryColor: 'purple-500',
+                question: '当发现自己的观点有偏差时，我会：',
+                options: [
+                    { text: '主动调整，接受新的信息', score: 5 },
+                    { text: '思考后调整自己的观点', score: 3 },
+                    { text: '有些犹豫，但会考虑不同意见', score: 2 },
+                    { text: '坚持自己的看法，难以改变', score: 0 }
+                ]
+            },
+            {
+                category: '元认知类',
+                categoryColor: 'purple-500',
+                question: '我对自己的情绪触发点的了解是：',
+                options: [
+                    { text: '清楚知道什么会影响我的情绪', score: 5 },
+                    { text: '对主要的情绪触发点有认识', score: 3 },
+                    { text: '有时能意识到，但不太清晰', score: 2 },
+                    { text: '很少关注情绪背后的原因', score: 0 }
+                ]
+            },
+            {
+                category: '元认知类',
+                categoryColor: 'purple-500',
+                question: '在学习或工作中，我会：',
+                options: [
+                    { text: '定期评估自己的表现并调整方法', score: 5 },
+                    { text: '完成任务后会反思改进', score: 3 },
+                    { text: '有时会思考如何做得更好', score: 2 },
+                    { text: '按部就班，很少主动反思', score: 0 }
+                ]
+            },
+            {
+                category: '元认知类',
+                categoryColor: 'purple-500',
+                question: '当面对挑战时，我对自己能力的认知是：',
+                options: [
+                    { text: '客观评估，知道自己的优势和局限', score: 5 },
+                    { text: '对自己的能力有较为准确的认识', score: 3 },
+                    { text: '有时会高估或低估自己', score: 2 },
+                    { text: '对自己的能力缺乏清晰认识', score: 0 }
+                ]
+            },
+            {
+                category: '元认知类',
+                categoryColor: 'purple-500',
+                question: '我对自己的学习风格和偏好的了解是：',
+                options: [
+                    { text: '清楚知道最适合自己的学习方式', score: 5 },
+                    { text: '了解自己的学习偏好', score: 3 },
+                    { text: '有时会尝试不同的学习方法', score: 2 },
+                    { text: '很少关注自己的学习方式', score: 0 }
+                ]
+            },
+            {
+                category: '元认知类',
+                categoryColor: 'purple-500',
+                question: '当出现错误时，我会：',
+                options: [
+                    { text: '分析原因，从中学习', score: 5 },
+                    { text: '承认错误，并尝试改进', score: 3 },
+                    { text: '感到沮丧，但会接受批评', score: 2 },
+                    { text: '回避错误，不愿面对', score: 0 }
+                ]
+            },
+            {
+                category: '元认知类',
+                categoryColor: 'purple-500',
+                question: '我对自己的注意力和专注度的控制是：',
+                options: [
+                    { text: '能够很好地控制自己的注意力', score: 5 },
+                    { text: '大部分时候能保持专注', score: 3 },
+                    { text: '有时会分心，需要调整', score: 2 },
+                    { text: '经常难以集中注意力', score: 0 }
+                ]
+            },
+            {
+                category: '元认知类',
+                categoryColor: 'purple-500',
+                question: '我对自己的目标和价值观的清晰度是：',
+                options: [
+                    { text: '有明确的价值观和长期目标', score: 5 },
+                    { text: '对自己的目标和价值观有清晰认识', score: 3 },
+                    { text: '有一些目标，但不太清晰', score: 2 },
+                    { text: '对未来缺乏明确规划', score: 0 }
+                ]
+            },
+            {
+                category: '元认知类',
+                categoryColor: 'purple-500',
+                question: '当面对压力时，我对自己状态的觉察是：',
+                options: [
+                    { text: '能及时察觉并调整状态', score: 5 },
+                    { text: '大部分时候能意识到自己的压力', score: 3 },
+                    { text: '有时会忽略压力信号', score: 2 },
+                    { text: '经常被压力影响而不自知', score: 0 }
+                ]
+            }
+        ];
+
+        // 结果分析模板
+        const resultAnalysis = {
+            cognitive: {
+                high: '你的认知能力非常出色！你具有优秀的信息处理、逻辑思维和学习能力。你能够快速理解新信息，灵活运用知识解决问题，并且有很好的记忆力和专注力。这些能力使你在学习、工作和生活中都能高效地处理各种挑战。',
+                medium: '你的认知能力处于良好水平。你具备基本的信息处理和思维能力，能够应对大多数日常任务和学习需求。在某些复杂或新颖的情况下，你可能需要更多时间或资源来理解和解决问题。',
+                low: '你的认知能力有较大的提升空间。你可能在信息处理、注意力集中或问题解决方面遇到一些挑战。建议你通过针对性的训练来提升这些能力，如阅读、 puzzles游戏、学习新技能等。'
+            },
+            emotional: {
+                high: '你的情绪能力非常出色！你能够很好地觉察、理解和管理自己的情绪，同时也能敏感地识别他人的情绪状态。你在压力下保持冷静，能够建设性地表达情绪，这使你在人际关系和心理健康方面都表现良好。',
+                medium: '你的情绪能力处于良好水平。你能够基本觉察和管理自己的情绪，在大多数情况下保持情绪稳定。在面对强烈情绪或复杂人际关系时，你可能需要更多的意识和练习来应对。',
+                low: '你的情绪能力有较大的提升空间。你可能在情绪觉察、调节或表达方面遇到一些困难。建议你通过正念练习、情绪日记、心理咨询等方式来提升情绪意识和管理能力。'
+            },
+            willpower: {
+                high: '你的意志能力非常出色！你具有坚强的意志力、高度的自律性和出色的执行力。你能够设定目标并坚持实现，面对挫折时坚韧不拔，能够有效管理时间和资源。这些品质使你在追求目标的过程中能够克服各种困难。',
+                medium: '你的意志能力处于良好水平。你能够设定目标并努力实现，在大多数情况下能够保持自律。面对较大挑战或长期目标时，你可能需要更多的策略和支持来保持动力。',
+                low: '你的意志能力有较大的提升空间。你可能在目标设定、执行或坚持方面遇到一些困难。建议你从小目标开始，培养良好的习惯，学习时间管理和自我激励的技巧。'
+            },
+            social: {
+                high: '你的社交能力非常出色！你善于与人沟通、建立连接，能够很好地理解和回应他人的需求。你在团队合作中表现优秀，能够有效处理人际冲突，建立健康的人际关系。这些能力使你在社交场合和职场环境中都能游刃有余。',
+                medium: '你的社交能力处于良好水平。你能够进行基本的社交互动，建立和维持人际关系。在复杂的社交情境或冲突处理方面，你可能需要更多的练习和技巧。',
+                low: '你的社交能力有较大的提升空间。你可能在人际沟通、共情或关系建立方面遇到一些挑战。建议你通过参与社交活动、学习沟通技巧、练习倾听等方式来提升社交能力。'
+            },
+            metacognitive: {
+                high: '你的元认知能力非常出色！你具有高度的自我觉察和反思能力，能够清晰地认识自己的思维模式、情绪状态和行为习惯。你能够客观评估自己的优势和局限，灵活调整策略，持续自我提升。这种能力使你能够更好地掌控自己的学习、工作和生活。',
+                medium: '你的元认知能力处于良好水平。你能够基本觉察自己的思维和行为模式，在某些情况下能够进行自我反思和调整。在复杂或压力情境下，你可能需要更多的意识和练习来保持自我觉察。',
+                low: '你的元认知能力有较大的提升空间。你可能在自我觉察、反思或调整方面遇到一些困难。建议你通过冥想、 journaling、寻求反馈等方式来提升自我认知和元认知能力。'
+            }
+        };
+
+        // 成长建议模板
+        const growthSuggestions = {
+            cognitive: [
+                '每天进行阅读或学习新技能，保持大脑活跃',
+                '尝试解决 puzzles、逻辑题或策略游戏，锻炼思维能力',
+                '学习思维导图等工具，提升信息组织和记忆能力',
+                '培养专注的习惯，如冥想或深度工作练习',
+                '多角度思考问题，避免思维定势'
+            ],
+            emotional: [
+                '练习正念冥想，提升情绪觉察能力',
+                '写情绪日记，记录和分析自己的情绪变化',
+                '学习情绪调节技巧，如深呼吸、渐进式肌肉放松等',
+                '多与亲友分享情绪，增强情绪表达能力',
+                '阅读心理学书籍，加深对情绪的理解'
+            ],
+            willpower: [
+                '设定明确、可衡量的短期和长期目标',
+                '分解大目标为小步骤，逐步实现',
+                '培养良好的习惯，如固定的工作/学习时间',
+                '学习时间管理技巧，如番茄工作法',
+                '寻找 accountability partner，互相监督和支持'
+            ],
+            social: [
+                '主动参与社交活动，扩展社交圈',
+                '练习积极倾听，关注他人的需求和感受',
+                '学习非暴力沟通技巧，提升表达能力',
+                '参与团队项目或志愿活动，锻炼协作能力',
+                '寻求反馈，了解自己在社交中的表现'
+            ],
+            metacognitive: [
+                '定期反思自己的思维模式和行为习惯',
+                '寻求他人的反馈，获得不同视角',
+                '学习元认知策略，如计划、监控和评估',
+                '尝试新的学习方法，找到最适合自己的方式',
+                '设定个人成长目标，持续自我提升'
+            ]
+        };
+
+        // DOM 元素
+        const disclaimerEl = document.getElementById('disclaimer');
+        const agreeBtn = document.getElementById('agree-btn');
+        const testIntro = document.getElementById('test-intro');
+        const questionContainer = document.getElementById('question-container');
+        const resultContainer = document.getElementById('result-container');
+        const startTestBtn = document.getElementById('start-test-btn');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const retakeTestBtn = document.getElementById('retake-test-btn');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        const categoryTag = document.getElementById('category-tag');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+
+        // 测试状态
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let isTestCompleted = false;
+
+        // 初始化应用
+        function initApp() {
+            agreeBtn.addEventListener('click', startTest);
+            startTestBtn.addEventListener('click', showFirstQuestion);
+            prevBtn.addEventListener('click', showPreviousQuestion);
+            nextBtn.addEventListener('click', showNextQuestion);
+            retakeTestBtn.addEventListener('click', retakeTest);
+        }
+
+        // 开始测试
+        function startTest() {
+            disclaimerEl.classList.add('hidden');
+        }
+
+        // 显示第一题
+        function showFirstQuestion() {
+            testIntro.classList.add('hidden');
+            questionContainer.classList.remove('hidden');
+            currentQuestionIndex = 0;
+            userAnswers = new Array(testQuestions.length).fill(null);
+            isTestCompleted = false;
+            updateQuestionUI();
+            updateProgress();
+        }
+
+        // 更新问题UI
+        function updateQuestionUI() {
+            const question = testQuestions[currentQuestionIndex];
+            categoryTag.textContent = question.category;
+            categoryTag.className = `inline-block px-3 py-1 bg-${question.categoryColor}/10 text-${question.categoryColor} rounded-full text-sm font-medium mb-2`;
+            questionText.textContent = question.question;
+            
+            // 清空选项容器
+            optionsContainer.innerHTML = '';
+            
+            // 添加选项
+            question.options.forEach((option, index) => {
+                const optionBtn = document.createElement('button');
+                optionBtn.className = `option-btn w-full text-left p-3 border rounded-lg hover:bg-gray-50 ${userAnswers[currentQuestionIndex] === index ? 'selected' : ''}`;
+                optionBtn.innerHTML = `
+                    <div class="flex items-center">
+                        <div class="w-6 h-6 rounded-full border border-gray-300 flex items-center justify-center mr-3 ${userAnswers[currentQuestionIndex] === index ? 'bg-primary text-white' : ''}">
+                            ${userAnswers[currentQuestionIndex] === index ? '<i class="fa fa-check"></i>' : (index + 1)}
+                        </div>
+                        <span>${option.text}</span>
+                    </div>
+                `;
+                optionBtn.addEventListener('click', () => selectOption(index));
+                optionsContainer.appendChild(optionBtn);
+            });
+            
+            // 更新按钮状态
+            prevBtn.disabled = currentQuestionIndex === 0;
+            nextBtn.textContent = currentQuestionIndex === testQuestions.length - 1 ? '完成测评' : '下一题';
+            nextBtn.innerHTML = currentQuestionIndex === testQuestions.length - 1 ? '完成测评<i class="fa fa-check ml-2"></i>' : '下一题<i class="fa fa-arrow-right ml-2"></i>';
+        }
+
+        // 选择选项
+        function selectOption(index) {
+            userAnswers[currentQuestionIndex] = index;
+            updateQuestionUI();
+        }
+
+        // 显示上一题
+        function showPreviousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                updateQuestionUI();
+                updateProgress();
+            }
+        }
+
+        // 显示下一题或完成测试
+        function showNextQuestion() {
+            // 如果当前题未作答，提示用户
+            if (userAnswers[currentQuestionIndex] === null) {
+                alert('请选择一个选项后继续');
+                return;
+            }
+            
+            if (currentQuestionIndex < testQuestions.length - 1) {
+                currentQuestionIndex++;
+                updateQuestionUI();
+                updateProgress();
+            } else {
+                completeTest();
+            }
+        }
+
+        // 更新进度条
+        function updateProgress() {
+            const progress = ((currentQuestionIndex + 1) / testQuestions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+            progressText.textContent = `${Math.round(progress)}%`;
+        }
+
+        // 完成测试
+        function completeTest() {
+            isTestCompleted = true;
+            questionContainer.classList.add('hidden');
+            resultContainer.classList.remove('hidden');
+            calculateAndShowResults();
+        }
+
+        // 计算并显示结果
+        function calculateAndShowResults() {
+            // 计算各分类得分
+            const categoryScores = {
+                cognitive: { total: 0, count: 0 },
+                emotional: { total: 0, count: 0 },
+                willpower: { total: 0, count: 0 },
+                social: { total: 0, count: 0 },
+                metacognitive: { total: 0, count: 0 }
+            };
+            
+            // 统计得分
+            testQuestions.forEach((question, index) => {
+                if (userAnswers[index] !== null) {
+                    const score = question.options[userAnswers[index]].score;
+                    const categoryKey = getCategoryKey(question.category);
+                    categoryScores[categoryKey].total += score;
+                    categoryScores[categoryKey].count++;
+                }
+            });
+            
+            // 计算标准化得分 (0-10)
+            const normalizedScores = {};
+            for (const [category, data] of Object.entries(categoryScores)) {
+                const maxPossibleScore = data.count * 5; // 每题最高5分
+                normalizedScores[category] = Math.round((data.total / maxPossibleScore) * 10);
+            }
+            
+            // 计算总分
+            const totalScore = Math.round(Object.values(normalizedScores).reduce((sum, score) => sum + score, 0) / 5);
+            
+            // 更新UI显示
+            updateResultUI(normalizedScores, totalScore);
+            
+            // 生成详细分析
+            generateDetailedAnalysis(normalizedScores);
+            
+            // 生成建议
+            generateSuggestions(normalizedScores);
+        }
+
+        // 获取分类键名
+        function getCategoryKey(categoryName) {
+            const categoryMap = {
+                '认知类': 'cognitive',
+                '情绪类': 'emotional',
+                '意志类': 'willpower',
+                '社交类': 'social',
+                '元认知类': 'metacognitive'
+            };
+            return categoryMap[categoryName];
+        }
+
+        // 更新结果UI
+        function updateResultUI(scores, totalScore) {
+            // 更新总分圆环
+            const overallCircle = document.getElementById('overall-score-circle');
+            const circumference = 2 * Math.PI * 45;
+            const offset = circumference - (totalScore / 10) * circumference;
+            overallCircle.style.strokeDasharray = circumference;
+            overallCircle.style.strokeDashoffset = offset;
+            document.getElementById('overall-score').textContent = totalScore;
+            
+            // 更新分类得分
+            const categoryElements = {
+                cognitive: { score: document.getElementById('cognitive-score'), bar: document.getElementById('cognitive-bar') },
+                emotional: { score: document.getElementById('emotional-score'), bar: document.getElementById('emotional-bar') },
+                willpower: { score: document.getElementById('willpower-score'), bar: document.getElementById('willpower-bar') },
+                social: { score: document.getElementById('social-score'), bar: document.getElementById('social-bar') },
+                metacognitive: { score: document.getElementById('metacognitive-score'), bar: document.getElementById('metacognitive-bar') }
+            };
+            
+            // 动画显示得分
+            Object.entries(scores).forEach(([category, score]) => {
+                const elements = categoryElements[category];
+                let currentScore = 0;
+                const interval = setInterval(() => {
+                    currentScore++;
+                    elements.score.textContent = `${currentScore}/10`;
+                    elements.bar.style.width = `${currentScore * 10}%`;
+                    if (currentScore >= score) {
+                        clearInterval(interval);
+                    }
+                }, 50);
+            });
+        }
+
+        // 生成详细分析
+        function generateDetailedAnalysis(scores) {
+            const analysisContainer = document.getElementById('detailed-analysis');
+            analysisContainer.innerHTML = '';
+            
+            const categoryNames = {
+                cognitive: '认知能力',
+                emotional: '情绪能力',
+                willpower: '意志能力',
+                social: '社交能力',
+                metacognitive: '元认知能力'
+            };
+            
+            const categoryColors = {
+                cognitive: 'primary',
+                emotional: 'secondary',
+                willpower: 'accent',
+                social: 'blue-500',
+                metacognitive: 'purple-500'
+            };
+            
+            Object.entries(scores).forEach(([category, score]) => {
+                let analysisType;
+                if (score >= 8) analysisType = 'high';
+                else if (score >= 5) analysisType = 'medium';
+                else analysisType = 'low';
+                
+                const analysis = resultAnalysis[category][analysisType];
+                
+                const analysisEl = document.createElement('div');
+                analysisEl.className = 'bg-white rounded-lg p-5 shadow-sm border border-gray-100';
+                analysisEl.innerHTML = `
+                    <div class="flex items-center mb-3">
+                        <div class="w-3 h-3 rounded-full bg-${categoryColors[category]} mr-2"></div>
+                        <h4 class="text-lg font-semibold">${categoryNames[category]}</h4>
+                        <span class="ml-auto text-${categoryColors[category]} font-bold">${score}/10</span>
+                    </div>
+                    <p class="text-gray-700">${analysis}</p>
+                `;
+                analysisContainer.appendChild(analysisEl);
+            });
+        }
+
+        // 生成建议
+        function generateSuggestions(scores) {
+            const suggestionsContainer = document.getElementById('suggestions');
+            suggestionsContainer.innerHTML = '';
+            
+            // 找出得分最低的两个分类
+            const sortedCategories = Object.entries(scores)
+                .sort(([,a], [,b]) => a - b)
+                .slice(0, 2);
+            
+            const categoryNames = {
+                cognitive: '认知能力',
+                emotional: '情绪能力',
+                willpower: '意志能力',
+                social: '社交能力',
+                metacognitive: '元认知能力'
+            };
+            
+            sortedCategories.forEach(([category, score]) => {
+                const suggestions = growthSuggestions[category];
+                const randomSuggestions = suggestions
+                    .sort(() => 0.5 - Math.random())
+                    .slice(0, 3);
+                
+                const categoryEl = document.createElement('div');
+                categoryEl.innerHTML = `
+                    <h4 class="font-semibold mb-2">${categoryNames[category]}提升建议：</h4>
+                    <ul class="list-disc pl-5 space-y-1">
+                        ${randomSuggestions.map(suggestion => `<li>${suggestion}</li>`).join('')}
+                    </ul>
+                `;
+                suggestionsContainer.appendChild(categoryEl);
+            });
+            
+            // 添加通用建议
+            const generalEl = document.createElement('div');
+            generalEl.innerHTML = `
+                <h4 class="font-semibold mb-2 mt-4">通用建议：</h4>
+                <p>定期进行自我反思，关注自己的成长和变化。心理能力的提升是一个持续的过程，需要耐心和坚持。如有需要，寻求专业心理咨询师的帮助可以加速个人成长。</p>
+            `;
+            suggestionsContainer.appendChild(generalEl);
+        }
+
+        // 重新测试
+        function retakeTest() {
+            resultContainer.classList.add('hidden');
+            testIntro.classList.remove('hidden');
+            progressBar.style.width = '0%';
+            progressText.textContent = '0%';
+        }
+
+        // 启动应用
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
