@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>原创能力测评</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.544.0/dist/umd/lucide.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7fafc;
+        }
+        .glass-morphism {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .progress-bar {
+            transition: width 0.5s ease-in-out;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+    <div id="app" class="min-h-screen flex flex-col items-center justify-center p-4">
+        
+        <!-- 免责声明 -->
+        <div id="disclaimer" class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 p-4">
+            <div class="bg-white rounded-lg shadow-xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                <h2 class="text-2xl font-bold text-gray-900 mb-4">免责声明</h2>
+                <div class="space-y-4 text-gray-700">
+                    <p><strong>重要提示：</strong>本测评为原创内容服务，非专业医疗/心理测评工具。测试结果仅供参考，不构成任何形式的诊断或建议。</p>
+                    <p>1. <strong>非专业性：</strong>本测评不具备专业医疗或心理诊断的资质和效力。</p>
+                    <p>2. <strong>结果解读：</strong>测评结果仅作为个人成长和自我认知的参考，不应替代专业人士的咨询和诊断。</p>
+                    <p>3. <strong>正向引导：</strong>测评内容旨在提供积极的自我探索体验，不制造焦虑或误导用户。</p>
+                    <p>4. <strong>寻求帮助：</strong>如有任何心理或情绪困扰，建议寻求专业心理咨询师或医疗机构的帮助。</p>
+                    <p>5. <strong>原创声明：</strong>本测评的所有题目、评分标准和结果解读均为原创内容，受版权保护。未经授权，不得复制、修改或用于商业用途。</p>
+                </div>
+                <div class="mt-8 flex justify-end">
+                    <button id="agree-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                        我已阅读并同意
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 测评容器 -->
+        <div id="assessment-container" class="hidden w-full max-w-4xl bg-white rounded-2xl shadow-2xl overflow-hidden">
+            
+            <!-- 进度条 -->
+            <div class="bg-gray-200 h-2 w-full">
+                <div id="progress-bar" class="bg-blue-600 h-2 progress-bar" style="width: 0%"></div>
+            </div>
+
+            <!-- 问题区域 -->
+            <div id="question-container" class="p-8 fade-in">
+                <h1 id="question-text" class="text-3xl font-bold text-center mb-8 text-gray-800"></h1>
+                <div id="options-container" class="space-y-4"></div>
+            </div>
+
+            <!-- 结果区域 -->
+            <div id="result-container" class="hidden p-8 text-center fade-in">
+                <h2 class="text-3xl font-bold text-gray-900 mb-6">测评结果</h2>
+                <div id="result-content" class="space-y-6"></div>
+                <button id="restart-btn" class="mt-8 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50">
+                    重新开始
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const questions = [
+                {
+                    text: "在面对新任务时，你通常会：",
+                    options: [
+                        { text: "制定详细计划后再开始", score: 3 },
+                        { text: "边做边调整，灵活应对", score: 5 },
+                        { text: "寻求他人建议后行动", score: 2 },
+                        { text: "等待明确指示才动手", score: 1 }
+                    ]
+                },
+                {
+                    text: "当工作中遇到困难时，你会：",
+                    options: [
+                        { text: "独立思考，尝试多种解决方案", score: 5 },
+                        { text: "向有经验的同事请教", score: 4 },
+                        { text: "查阅资料，寻找参考", score: 3 },
+                        { text: "上报问题，等待指示", score: 2 }
+                    ]
+                },
+                {
+                    text: "在团队合作中，你更倾向于：",
+                    options: [
+                        { text: "主导项目进程，分配任务", score: 5 },
+                        { text: "积极参与讨论，提供建议", score: 4 },
+                        { text: "认真完成分配的任务", score: 3 },
+                        { text: "配合他人，做好辅助工作", score: 2 }
+                    ]
+                },
+                {
+                    text: "学习新技能时，你更喜欢：",
+                    options: [
+                        { text: "通过实践操作来掌握", score: 5 },
+                        { text: "观看视频教程学习", score: 4 },
+                        { text: "阅读相关书籍和资料", score: 3 },
+                        { text: "参加系统培训课程", score: 2 }
+                    ]
+                },
+                {
+                    text: "当需要在截止日期前完成任务时，你会：",
+                    options: [
+                        { text: "提前规划，确保按时完成", score: 5 },
+                        { text: "合理安排时间，稳步推进", score: 4 },
+                        { text: "加班加点，保证完成", score: 3 },
+                        { text: "分优先级，先完成重要部分", score: 2 }
+                    ]
+                },
+                {
+                    text: "在解决问题时，你更注重：",
+                    options: [
+                        { text: "找到创新的解决方案", score: 5 },
+                        { text: "保证方案的可行性和效率", score: 4 },
+                        { text: "遵循已有的成功经验", score: 3 },
+                        { text: "避免出现错误和风险", score: 2 }
+                    ]
+                },
+                {
+                    text: "面对工作压力时，你会：",
+                    options: [
+                        { text: "调整心态，积极应对", score: 5 },
+                        { text: "分解任务，逐步完成", score: 4 },
+                        { text: "寻求支持，共同面对", score: 3 },
+                        { text: "暂时放松，恢复精力", score: 2 }
+                    ]
+                },
+                {
+                    text: "在与他人沟通时，你更倾向于：",
+                    options: [
+                        { text: "直接表达自己的想法", score: 5 },
+                        { text: "清晰条理地阐述观点", score: 4 },
+                        { text: "倾听他人意见后再发言", score: 3 },
+                        { text: "根据对方反应调整表达方式", score: 2 }
+                    ]
+                },
+                {
+                    text: "对于工作中的反馈，你会：",
+                    options: [
+                        { text: "认真分析，积极改进", score: 5 },
+                        { text: "感谢反馈，并做出调整", score: 4 },
+                        { text: "反思自身不足", score: 3 },
+                        { text: "坚持自己的观点", score: 2 }
+                    ]
+                },
+                {
+                    text: "在时间管理方面，你通常：",
+                    options: [
+                        { text: "高效利用时间，完成多项任务", score: 5 },
+                        { text: "按计划执行，确保质量", score: 4 },
+                        { text: "专注于重要任务", score: 3 },
+                        { text: "灵活调整，适应变化", score: 2 }
+                    ]
+                }
+            ];
+
+            let currentQuestionIndex = 0;
+            let totalScore = 0;
+
+            const questionContainer = document.getElementById('question-container');
+            const resultContainer = document.getElementById('result-container');
+            const questionText = document.getElementById('question-text');
+            const optionsContainer = document.getElementById('options-container');
+            const progressBar = document.getElementById('progress-bar');
+            const resultContent = document.getElementById('result-content');
+            const agreeBtn = document.getElementById('agree-btn');
+            const restartBtn = document.getElementById('restart-btn');
+            const disclaimer = document.getElementById('disclaimer');
+            const assessmentContainer = document.getElementById('assessment-container');
+
+            agreeBtn.addEventListener('click', () => {
+                disclaimer.classList.add('hidden');
+                assessmentContainer.classList.remove('hidden');
+                showQuestion(currentQuestionIndex);
+            });
+
+            restartBtn.addEventListener('click', () => {
+                currentQuestionIndex = 0;
+                totalScore = 0;
+                resultContainer.classList.add('hidden');
+                questionContainer.classList.remove('hidden');
+                showQuestion(currentQuestionIndex);
+            });
+
+            function showQuestion(index) {
+                const question = questions[index];
+                questionText.textContent = question.text;
+                optionsContainer.innerHTML = '';
+
+                question.options.forEach((option, i) => {
+                    const optionDiv = document.createElement('div');
+                    optionDiv.className = 'p-4 border border-gray-300 rounded-lg cursor-pointer transition duration-300 ease-in-out hover:bg-blue-50 hover:border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50';
+                    optionDiv.innerHTML = `
+                        <label class="flex items-center cursor-pointer w-full">
+                            <input type="radio" name="option" value="${option.score}" class="h-5 w-5 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                            <span class="ml-3 text-lg text-gray-700">${option.text}</span>
+                        </label>
+                    `;
+                    optionsContainer.appendChild(optionDiv);
+
+                    const radio = optionDiv.querySelector('input[type="radio"]');
+                    radio.addEventListener('change', () => {
+                        totalScore += option.score;
+                        setTimeout(() => {
+                            currentQuestionIndex++;
+                            if (currentQuestionIndex < questions.length) {
+                                showQuestion(currentQuestionIndex);
+                            } else {
+                                showResult();
+                            }
+                        }, 300);
+                    });
+                });
+
+                updateProgress();
+            }
+
+            function updateProgress() {
+                const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+                progressBar.style.width = `${progress}%`;
+            }
+
+            function showResult() {
+                questionContainer.classList.add('hidden');
+                resultContainer.classList.remove('hidden');
+
+                let level, description, suggestions;
+
+                if (totalScore >= 45) {
+                    level = "优秀";
+                    description = "你展现出了卓越的实操能力！在面对挑战时，你能够独立思考、创新解决问题，并高效地完成任务。你具备出色的领导力和团队协作能力，是团队中的核心力量。";
+                    suggestions = "建议：继续发挥你的优势，尝试挑战更有难度的任务。同时，可以分享你的经验和方法，帮助团队成员共同成长。";
+                } else if (totalScore >= 35) {
+                    level = "良好";
+                    description = "你的实操能力很不错！你能够有效地解决问题，合理安排时间，并在团队中发挥积极作用。你具备一定的创新思维和抗压能力。";
+                    suggestions = "建议：可以进一步提升自己的创新能力和领导力，尝试主动承担更多责任，在实践中不断完善自己的技能。";
+                } else if (totalScore >= 25) {
+                    level = "中等";
+                    description = "你的实操能力处于中等水平。你能够完成基本的任务，但在面对复杂问题时可能需要更多支持和指导。你有一定的学习能力和适应能力。";
+                    suggestions = "建议：加强实践锻炼，多参与各类项目，积累经验。同时，可以有针对性地学习相关技能，提升自己的专业水平和解决问题的能力。";
+                } else {
+                    level = "待提升";
+                    description = "你的实操能力有待提升。在工作中，你可能更倾向于遵循指示，缺乏主动解决问题的意识和能力。";
+                    suggestions = "建议：从基础任务开始，逐步培养自己的独立思考和解决问题的能力。可以多向优秀的同事学习，参加相关培训，提升自己的专业技能和综合素质。";
+                }
+
+                resultContent.innerHTML = `
+                    <div class="bg-blue-50 p-6 rounded-xl mb-6">
+                        <h3 class="text-2xl font-bold text-blue-800 mb-2">综合评级：${level}</h3>
+                        <p class="text-lg text-blue-700">得分：${totalScore} / 50</p>
+                    </div>
+                    <div class="space-y-6 text-left">
+                        <div>
+                            <h4 class="text-xl font-semibold text-gray-800 mb-3">能力描述</h4>
+                            <p class="text-gray-700 leading-relaxed">${description}</p>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-semibold text-gray-800 mb-3">提升建议</h4>
+                            <p class="text-gray-700 leading-relaxed">${suggestions}</p>
+                        </div>
+                        <div class="bg-yellow-50 p-5 rounded-lg border-l-4 border-yellow-400">
+                            <p class="text-yellow-800"><strong>温馨提示：</strong>本测评结果仅供参考，不代表专业评估。每个人都有自己的成长节奏，重要的是保持学习和进步的心态。</p>
+                        </div>
+                    </div>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>
