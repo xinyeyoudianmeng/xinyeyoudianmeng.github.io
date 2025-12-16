@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>清醒人格测评</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.544.0/dist/umd/lucide.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 1rem;
+        }
+        .header p {
+            font-size: 1.125rem;
+            color: #64748b;
+        }
+        .disclaimer {
+            background-color: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .disclaimer h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #dc2626;
+            margin-bottom: 0.75rem;
+        }
+        .disclaimer p {
+            color: #7f1d1d;
+            margin-bottom: 0.5rem;
+        }
+        .section {
+            background-color: #ffffff;
+            border-radius: 1rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        .section h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 1.5rem;
+        }
+        .question {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .question:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .question h3 {
+            font-size: 1.125rem;
+            font-weight: 500;
+            color: #334155;
+            margin-bottom: 1rem;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+        .option:hover {
+            background-color: #f8fafc;
+            border-color: #cbd5e1;
+        }
+        .option input[type="radio"] {
+            margin-right: 0.75rem;
+        }
+        .option label {
+            cursor: pointer;
+            color: #475569;
+        }
+        .submit-button {
+            background-color: #3b82f6;
+            color: #ffffff;
+            font-size: 1.125rem;
+            font-weight: 600;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+            width: 100%;
+            margin-top: 2rem;
+        }
+        .submit-button:hover {
+            background-color: #2563eb;
+        }
+        .results {
+            display: none;
+        }
+        .result-card {
+            background-color: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .result-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #0369a1;
+            margin-bottom: 0.75rem;
+        }
+        .result-card p {
+            color: #0c4a6e;
+            margin-bottom: 0.5rem;
+        }
+        .score {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #3b82f6;
+            text-align: center;
+            margin: 2rem 0;
+        }
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin: 2rem 0;
+        }
+        .suggestions {
+            background-color: #f0f9ff;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .suggestions h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #0369a1;
+            margin-bottom: 1rem;
+        }
+        .suggestions ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+        }
+        .suggestions li {
+            margin-bottom: 0.5rem;
+            color: #0c4a6e;
+        }
+        .interpretation {
+            background-color: #ffffff;
+            border-radius: 1rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        .interpretation h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #0f172a;
+            margin-bottom: 1.5rem;
+        }
+        .interpretation p {
+            color: #475569;
+            margin-bottom: 1rem;
+            line-height: 1.75;
+        }
+        .original-statement {
+            background-color: #ecfdf5;
+            border: 1px solid #a7f3d0;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        .original-statement h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #065f46;
+            margin-bottom: 0.75rem;
+        }
+        .original-statement p {
+            color: #166534;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>清醒人格测评</h1>
+            <p>探索你的心理边界感、自我掌控力与情绪自治</p>
+        </div>
+
+        <div class="disclaimer">
+            <h2>⚠️ 重要声明</h2>
+            <p>1. <strong>付费测试为原创内容服务，非专业医疗/心理测评。</strong></p>
+            <p>2. 本测评结果仅供参考，不构成任何形式的医疗诊断或心理咨询建议。</p>
+            <p>3. 如有心理困扰，请寻求专业心理咨询师或医疗机构的帮助。</p>
+            <p>4. 本测评内容系原创，未经授权，不得转载或用于商业用途。</p>
+        </div>
+
+        <div id="test-section" class="section">
+            <h2>测评题目</h2>
+            <form id="assessment-form">
+                <!-- 心理边界感 -->
+                <div class="question">
+                    <h3>1. 当他人随意翻看你的私人物品时，你的感受是？</h3>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1a" value="1">
+                            <label for="q1a">A. 无所谓，反正没什么秘密</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1b" value="2">
+                            <label for="q1b">B. 有点不舒服，但不好意思说</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1c" value="3">
+                            <label for="q1c">C. 会明确表示不满，要求对方停止</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q1" id="q1d" value="4">
+                            <label for="q1d">D. 非常愤怒，立即制止并表达强烈不满</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>2. 面对朋友提出的你并不愿意接受的请求，你通常会？</h3>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q2" id="q2a" value="1">
+                            <label for="q2a">A. 即使不情愿也会答应</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q2" id="q2b" value="2">
+                            <label for="q2b">B. 犹豫再三，最终还是答应</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q2" id="q2c" value="3">
+                            <label for="q2c">C. 找个借口委婉拒绝</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q2" id="q2d" value="4">
+                            <label for="q2d">D. 坦诚地表达自己的难处，直接拒绝</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>3. 当他人试图替你做决定时，你会？</h3>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q3" id="q3a" value="1">
+                            <label for="q3a">A. 欣然接受，省得自己麻烦</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q3" id="q3b" value="2">
+                            <label for="q3b">B. 虽有想法，但还是听从他人</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q3" id="q3c" value="3">
+                            <label for="q3c">C. 会表达自己的意见，但最终可能妥协</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q3" id="q3d" value="4">
+                            <label for="q3d">D. 坚持自己做决定，不会轻易被左右</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 自我掌控力 -->
+                <div class="question">
+                    <h3>4. 面对不公平的指责，你会？</h3>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q4" id="q4a" value="1">
+                            <label for="q4a">A. 沉默接受，不做辩解</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q4" id="q4b" value="2">
+                            <label for="q4b">B. 心里委屈，但不敢反驳</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q4" id="q4c" value="3">
+                            <label for="q4c">C. 会为自己辩解，但语气平和</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q4" id="q4d" value="4">
+                            <label for="q4d">D. 据理力争，坚决维护自己的立场</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>5. 在社交场合中，你是否经常为了迎合他人而改变自己的真实想法？</h3>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q5" id="q5a" value="1">
+                            <label for="q5a">A. 是的，经常这样做</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q5" id="q5b" value="2">
+                            <label for="q5b">B. 有时候会</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q5" id="q5c" value="3">
+                            <label for="q5c">C. 很少会</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q5" id="q5d" value="4">
+                            <label for="q5d">D. 从不，我始终坚持自己的观点</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>6. 当你的计划被他人无理打断时，你会？</h3>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q6" id="q6a" value="1">
+                            <label for="q6a">A. 放弃计划，听从他人安排</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q6" id="q6b" value="2">
+                            <label for="q6b">B. 虽不情愿，但还是调整自己的计划</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q6" id="q6c" value="3">
+                            <label for="q6c">C. 会表达自己的不满，但可能会妥协</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q6" id="q6d" value="4">
+                            <label for="q6d">D. 坚持自己的计划，不会轻易被打断</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 情绪自治 -->
+                <div class="question">
+                    <h3>7. 他人的负面情绪是否容易影响到你的心情？</h3>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q7" id="q7a" value="1">
+                            <label for="q7a">A. 是的，非常容易受影响</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q7" id="q7b" value="2">
+                            <label for="q7b">B. 有时候会被影响</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q7" id="q7c" value="3">
+                            <label for="q7c">C. 不太容易被影响</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q7" id="q7d" value="4">
+                            <label for="q7d">D. 几乎不会被影响，能保持自己的情绪稳定</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>8. 当你感到生气或难过时，你会？</h3>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q8" id="q8a" value="1">
+                            <label for="q8a">A. 完全被情绪控制，无法冷静</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q8" id="q8b" value="2">
+                            <label for="q8b">B. 努力压抑，但情绪还是会表现出来</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q8" id="q8c" value="3">
+                            <label for="q8c">C. 能部分控制自己的情绪</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q8" id="q8d" value="4">
+                            <label for="q8d">D. 能够很好地管理自己的情绪，冷静应对</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>9. 你是否会因为他人的评价而怀疑自己的价值？</h3>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q9" id="q9a" value="1">
+                            <label for="q9a">A. 是的，经常会</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q9" id="q9b" value="2">
+                            <label for="q9b">B. 有时候会</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q9" id="q9c" value="3">
+                            <label for="q9c">C. 很少会</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q9" id="q9d" value="4">
+                            <label for="q9d">D. 从不，我的自我价值感不依赖他人评价</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 独立思考能力 -->
+                <div class="question">
+                    <h3>10. 当大多数人都持有与你相反的观点时，你会？</h3>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q10" id="q10a" value="1">
+                            <label for="q10a">A. 立即放弃自己的观点，跟随大众</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q10" id="q10b" value="2">
+                            <label for="q10b">B. 开始怀疑自己，但不会轻易改变</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q10" id="q10c" value="3">
+                            <label for="q10c">C. 会重新审视自己的观点，但仍坚持有理有据的部分</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q10" id="q10d" value="4">
+                            <label for="q10d">D. 坚持自己的观点，不轻易被他人左右</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>11. 你是否经常对权威的观点提出质疑？</h3>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q11" id="q11a" value="1">
+                            <label for="q11a">A. 从不，权威说的肯定是对的</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q11" id="q11b" value="2">
+                            <label for="q11b">B. 偶尔会有疑问，但不敢表达</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q11" id="q11c" value="3">
+                            <label for="q11c">C. 会有自己的思考，并在适当的时候提出质疑</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q11" id="q11d" value="4">
+                            <label for="q11d">D. 经常质疑，并会通过自己的研究寻找答案</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>12. 在做决定时，你更倾向于？</h3>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q12" id="q12a" value="1">
+                            <label for="q12a">A. 完全听从他人的建议</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q12" id="q12b" value="2">
+                            <label for="q12b">B. 主要参考他人意见，自己做决定</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q12" id="q12c" value="3">
+                            <label for="q12c">C. 有自己的主见，也会考虑他人建议</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q12" id="q12d" value="4">
+                            <label for="q12d">D. 完全根据自己的判断做决定</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 目标清晰度 -->
+                <div class="question">
+                    <h3>13. 你对自己的人生目标有清晰的认识吗？</h3>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q13" id="q13a" value="1">
+                            <label for="q13a">A. 完全没有，走一步看一步</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q13" id="q13b" value="2">
+                            <label for="q13b">B. 有一些模糊的想法，但不太明确</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q13" id="q13c" value="3">
+                            <label for="q13c">C. 有比较清晰的短期目标</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q13" id="q13d" value="4">
+                            <label for="q13d">D. 有非常明确的长期和短期目标</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>14. 当你的目标与他人的期望冲突时，你会？</h3>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q14" id="q14a" value="1">
+                            <label for="q14a">A. 放弃自己的目标，满足他人期望</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q14" id="q14b" value="2">
+                            <label for="q14b">B. 感到矛盾，但最终可能妥协</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q14" id="q14c" value="3">
+                            <label for="q14c">C. 会尝试找到平衡点</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q14" id="q14d" value="4">
+                            <label for="q14d">D. 坚持自己的目标，不轻易妥协</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>15. 你是否经常因为他人的看法而改变自己的计划？</h3>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q15" id="q15a" value="1">
+                            <label for="q15a">A. 是的，经常改变</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q15" id="q15b" value="2">
+                            <label for="q15b">B. 有时候会</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q15" id="q15c" value="3">
+                            <label for="q15c">C. 很少会</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q15" id="q15d" value="4">
+                            <label for="q15d">D. 从不，我有自己的节奏和计划</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 社交互动模式 -->
+                <div class="question">
+                    <h3>16. 在人际关系中，你是否经常感到自己在付出，而对方在索取？</h3>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q16" id="q16a" value="1">
+                            <label for="q16a">A. 是的，经常有这种感觉</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q16" id="q16b" value="2">
+                            <label for="q16b">B. 有时候会</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q16" id="q16c" value="3">
+                            <label for="q16c">C. 很少会</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q16" id="q16d" value="4">
+                            <label for="q16d">D. 从不，我的人际关系是平等互惠的</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>17. 你是否能够轻松地表达自己的需求和感受？</h3>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q17" id="q17a" value="1">
+                            <label for="q17a">A. 完全不能，害怕被拒绝或不被理解</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q17" id="q17b" value="2">
+                            <label for="q17b">B. 不太能，会感到紧张或尴尬</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q17" id="q17c" value="3">
+                            <label for="q17c">C. 大部分时候可以</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q17" id="q17d" value="4">
+                            <label for="q17d">D. 完全可以，我很擅长表达自己</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>18. 当你与他人发生冲突时，你会？</h3>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q18" id="q18a" value="1">
+                            <label for="q18a">A. 立即妥协，避免冲突升级</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q18" id="q18b" value="2">
+                            <label for="q18b">B. 试图回避，假装问题不存在</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q18" id="q18c" value="3">
+                            <label for="q18c">C. 会尝试沟通，但希望尽快结束</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q18" id="q18d" value="4">
+                            <label for="q18d">D. 直面问题，积极沟通寻求解决方案</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 压力应对 -->
+                <div class="question">
+                    <h3>19. 当你感到压力很大时，你会？</h3>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q19" id="q19a" value="1">
+                            <label for="q19a">A. 不知所措，完全被压力击垮</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q19" id="q19b" value="2">
+                            <label for="q19b">B. 感到焦虑，但不知道如何缓解</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q19" id="q19c" value="3">
+                            <label for="q19c">C. 会尝试一些方法来缓解压力</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q19" id="q19d" value="4">
+                            <label for="q19d">D. 能够冷静应对，有效管理压力</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>20. 你是否会因为害怕失败而不敢尝试新事物？</h3>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q20" id="q20a" value="1">
+                            <label for="q20a">A. 是的，非常害怕，从不尝试</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q20" id="q20b" value="2">
+                            <label for="q20b">B. 比较害怕，很少尝试</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q20" id="q20c" value="3">
+                            <label for="q20c">C. 有一些害怕，但还是会尝试</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q20" id="q20d" value="4">
+                            <label for="q20d">D. 不怕失败，乐于尝试新事物</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>21. 当你遇到困难时，你会？</h3>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q21" id="q21a" value="1">
+                            <label for="q21a">A. 立即放弃，寻求他人帮助</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q21" id="q21b" value="2">
+                            <label for="q21b">B. 尝试一下，但很快就放弃</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q21" id="q21c" value="3">
+                            <label for="q21c">C. 坚持不懈，直到解决问题</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q21" id="q21d" value="4">
+                            <label for="q21d">D. 积极寻找多种解决方案，直到成功</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 自我认知 -->
+                <div class="question">
+                    <h3>22. 你对自己的优点和缺点有清晰的认识吗？</h3>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q22" id="q22a" value="1">
+                            <label for="q22a">A. 完全没有，从来没有想过</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q22" id="q22b" value="2">
+                            <label for="q22b">B. 有一些模糊的认识</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q22" id="q22c" value="3">
+                            <label for="q22c">C. 有比较清晰的认识</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q22" id="q22d" value="4">
+                            <label for="q22d">D. 非常清楚，并且能够客观评价自己</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>23. 你是否经常需要他人的认可来证明自己的价值？</h3>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q23" id="q23a" value="1">
+                            <label for="q23a">A. 是的，非常需要</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q23" id="q23b" value="2">
+                            <label for="q23b">B. 比较需要</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q23" id="q23c" value="3">
+                            <label for="q23c">C. 不太需要</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q23" id="q23d" value="4">
+                            <label for="q23d">D. 完全不需要，我的价值由自己定义</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>24. 你是否能够接受自己的不完美？</h3>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q24" id="q24a" value="1">
+                            <label for="q24a">A. 不能，我对自己要求很高</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q24" id="q24b" value="2">
+                            <label for="q24b">B. 不太能，经常因为不完美而沮丧</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q24" id="q24c" value="3">
+                            <label for="q24c">C. 基本能接受</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q24" id="q24d" value="4">
+                            <label for="q24d">D. 完全能接受，人无完人</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 责任感 -->
+                <div class="question">
+                    <h3>25. 当你犯了错误时，你会？</h3>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q25" id="q25a" value="1">
+                            <label for="q25a">A. 立即推卸责任，怪罪他人</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q25" id="q25b" value="2">
+                            <label for="q25b">B. 感到内疚，但不敢承认</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q25" id="q25c" value="3">
+                            <label for="q25c">C. 会承认错误，但可能找借口</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q25" id="q25d" value="4">
+                            <label for="q25d">D. 勇于承担责任，并努力弥补</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>26. 你是否会因为他人的问题而感到自责？</h3>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q26" id="q26a" value="1">
+                            <label for="q26a">A. 是的，经常这样</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q26" id="q26b" value="2">
+                            <label for="q26b">B. 有时候会</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q26" id="q26c" value="3">
+                            <label for="q26c">C. 很少会</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q26" id="q26d" value="4">
+                            <label for="q26d">D. 从不，我能分清自己和他人的责任</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>27. 你是否能够独立完成自己的任务，不依赖他人？</h3>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q27" id="q27a" value="1">
+                            <label for="q27a">A. 不能，我非常依赖他人的帮助</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q27" id="q27b" value="2">
+                            <label for="q27b">B. 不太能，经常需要他人协助</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q27" id="q27c" value="3">
+                            <label for="q27c">C. 大部分时候可以独立完成</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q27" id="q27d" value="4">
+                            <label for="q27d">D. 完全可以，我很独立</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 适应性 -->
+                <div class="question">
+                    <h3>28. 当环境发生变化时，你会？</h3>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q28" id="q28a" value="1">
+                            <label for="q28a">A. 非常不适应，需要很长时间调整</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q28" id="q28b" value="2">
+                            <label for="q28b">B. 不太适应，会感到焦虑</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q28" id="q28c" value="3">
+                            <label for="q28c">C. 能够逐渐适应</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q28" id="q28d" value="4">
+                            <label for="q28d">D. 很快就能适应，甚至享受变化</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>29. 你是否愿意尝试新的方法或思路？</h3>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q29" id="q29a" value="1">
+                            <label for="q29a">A. 不愿意，我喜欢按部就班</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q29" id="q29b" value="2">
+                            <label for="q29b">B. 不太愿意，除非必须改变</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q29" id="q29c" value="3">
+                            <label for="q29c">C. 愿意尝试，但会谨慎考虑</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q29" id="q29d" value="4">
+                            <label for="q29d">D. 非常愿意，我喜欢创新</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>30. 当你的观点被证明是错误的时，你会？</h3>
+                    <div class="options">
+                        <div class="option">
+                            <input type="radio" name="q30" id="q30a" value="1">
+                            <label for="q30a">A. 拒绝承认，坚持己见</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q30" id="q30b" value="2">
+                            <label for="q30b">B. 虽然承认，但心里不服</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q30" id="q30c" value="3">
+                            <label for="q30c">C. 能够接受并改正</label>
+                        </div>
+                        <div class="option">
+                            <input type="radio" name="q30" id="q30d" value="4">
+                            <label for="q30d">D. 欣然接受，并感谢指出我错误的人</label>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-button">提交测评</button>
+            </form>
+        </div>
+
+        <div id="results-section" class="section results">
+            <h2>测评结果</h2>
+            <div class="score" id="total-score"></div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="chart-container">
+                    <canvas id="radar-chart"></canvas>
+                </div>
+                <div class="chart-container">
+                    <canvas id="bar-chart"></canvas>
+                </div>
+            </div>
+
+            <div class="interpretation">
+                <h2>结果解读</h2>
+                <div id="overall-interpretation"></div>
+                <div id="dimension-interpretation"></div>
+                
+                <div id="suggestions-container"></div>
+                
+                <p class="mt-4 text-sm text-gray-500">* 本测评结果仅供参考，不构成任何形式的医疗诊断或心理咨询建议。如有需要，请寻求专业帮助。</p>
+            </div>
+        </div>
+
+        <div class="original-statement">
+            <h2>原创声明</h2>
+            <p>本测评内容系原创，版权所有。未经授权，不得以任何形式转载、复制或用于商业用途。</p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('assessment-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            let totalScore = 0;
+            const dimensionScores = {
+                '心理边界感': 0,
+                '自我掌控力': 0,
+                '情绪自治': 0,
+                '独立思考能力': 0,
+                '目标清晰度': 0,
+                '社交互动模式': 0,
+                '压力应对': 0,
+                '自我认知': 0,
+                '责任感': 0,
+                '适应性': 0
+            };
+
+            // 计算总分和各维度得分
+            for (let i = 1; i <= 30; i++) {
+                const radio = document.querySelector(`input[name="q${i}"]:checked`);
+                if (radio) {
+                    const score = parseInt(radio.value);
+                    totalScore += score;
+
+                    // 根据题目所属维度累加分数
+                    if (i <= 3) dimensionScores['心理边界感'] += score;
+                    else if (i <= 6) dimensionScores['自我掌控力'] += score;
+                    else if (i <= 9) dimensionScores['情绪自治'] += score;
+                    else if (i <= 12) dimensionScores['独立思考能力'] += score;
+                    else if (i <= 15) dimensionScores['目标清晰度'] += score;
+                    else if (i <= 18) dimensionScores['社交互动模式'] += score;
+                    else if (i <= 21) dimensionScores['压力应对'] += score;
+                    else if (i <= 24) dimensionScores['自我认知'] += score;
+                    else if (i <= 27) dimensionScores['责任感'] += score;
+                    else dimensionScores['适应性'] += score;
+                }
+            }
+
+            // 显示总分
+            document.getElementById('total-score').textContent = `${totalScore} / 120`;
+
+            // 生成总体结果解读
+            let overallInterpretation = '';
+            if (totalScore <= 40) {
+                overallInterpretation = `<p class="mb-4">你的得分较低，可能存在较强的被他人操控的倾向。你在维护个人边界、掌控自己的情绪和生活方面可能面临挑战。</p>
+                <p class="mb-4">建议：尝试更多地关注自己的需求和感受，练习表达自己的意见，逐步建立健康的心理边界。</p>`;
+            } else if (totalScore <= 60) {
+                overallInterpretation = `<p class="mb-4">你的得分偏低，存在一定的被他人操控的倾向。在某些情况下，你可能会为了迎合他人而牺牲自己的利益。</p>
+                <p class="mb-4">建议：增强自我意识，学会在适当的时候说“不”，培养独立思考的能力。</p>`;
+            } else if (totalScore <= 80) {
+                overallInterpretation = `<p class="mb-4">你的得分处于中等水平，被他人操控的倾向较弱。你在大多数情况下能够保持自己的独立性，但在某些压力下可能会妥协。</p>
+                <p class="mb-4">建议：继续巩固自己的心理边界，在关键问题上坚持自己的立场。</p>`;
+            } else if (totalScore <= 100) {
+                overallInterpretation = `<p class="mb-4">你的得分较高，被他人操控的倾向很弱。你具有较强的自我意识和独立思考能力，能够很好地掌控自己的生活。</p>
+                <p class="mb-4">建议：保持这种状态，同时注意不要过于自我，学会在团队中合作。</p>`;
+            } else {
+                overallInterpretation = `<p class="mb-4">你的得分很高，几乎没有被他人操控的倾向。你非常独立，有强烈的自我意识和明确的人生目标。</p>
+                <p class="mb-4">建议：在保持独立性的同时，注意倾听他人的意见，保持开放的心态。</p>`;
+            }
+
+            // 生成各维度解读
+            let dimensionInterpretation = '<h3 class="text-lg font-semibold mb-2">各维度详细解读：</h3>';
+            for (const [dimension, score] of Object.entries(dimensionScores)) {
+                dimensionInterpretation += `<div class="mb-3"><strong>${dimension}:</strong> `;
+                if (score <= 6) {
+                    dimensionInterpretation += `得分较低（${score}/12），在这一维度上需要加强。`;
+                } else if (score <= 9) {
+                    dimensionInterpretation += `得分中等（${score}/12），有一定的基础，但仍有提升空间。`;
+                } else {
+                    dimensionInterpretation += `得分较高（${score}/12），在这一维度上表现良好。`;
+                }
+                dimensionInterpretation += `</div>`;
+            }
+
+            // 显示结果
+            document.getElementById('overall-interpretation').innerHTML = overallInterpretation;
+            document.getElementById('dimension-interpretation').innerHTML = dimensionInterpretation;
+            
+            // 生成个性化建议
+            const suggestions = generateSuggestions(dimensionScores);
+            document.getElementById('suggestions-container').innerHTML = suggestions;
+            
+            // 创建可视化图表
+            createRadarChart(dimensionScores);
+            createBarChart(totalScore);
+            
+            document.getElementById('test-section').style.display = 'none';
+            document.getElementById('results-section').style.display = 'block';
+        });
+
+        function generateSuggestions(dimensionScores) {
+            let suggestionsHTML = '<div class="suggestions"><h3>个性化提升建议</h3><ul>';
+            
+            // 根据各维度得分生成具体建议
+            for (const [dimension, score] of Object.entries(dimensionScores)) {
+                if (score <= 6) {
+                    switch(dimension) {
+                        case '心理边界感':
+                            suggestionsHTML += `
+                                <li><strong>心理边界感：</strong> 练习明确表达自己的需求和感受，学会说"不"，逐步建立健康的个人边界。可以从小事做起，如拒绝一个自己不想参加的活动。</li>
+                            `;
+                            break;
+                        case '自我掌控力':
+                            suggestionsHTML += `
+                                <li><strong>自我掌控力：</strong> 尝试独立做一些小决定，如选择餐厅、规划周末活动等。在面对不公平指责时，练习平静地表达自己的观点。</li>
+                            `;
+                            break;
+                        case '情绪自治':
+                            suggestionsHTML += `
+                                <li><strong>情绪自治：</strong> 学习情绪管理技巧，如深呼吸、冥想等。尝试记录情绪日记，了解自己情绪波动的原因和模式。</li>
+                            `;
+                            break;
+                        case '独立思考能力':
+                            suggestionsHTML += `
+                                <li><strong>独立思考能力：</strong> 对信息保持批判性思维，不盲目跟风。可以尝试阅读不同观点的文章，培养自己的分析能力。</li>
+                            `;
+                            break;
+                        case '目标清晰度':
+                            suggestionsHTML += `
+                                <li><strong>目标清晰度：</strong> 花时间思考自己的价值观和长期目标，将大目标分解为小步骤，制定具体的行动计划。</li>
+                            `;
+                            break;
+                        case '社交互动模式':
+                            suggestionsHTML += `
+                                <li><strong>社交互动模式：</strong> 学习平等互惠的沟通技巧，在人际关系中关注自己的需求，同时也尊重他人的边界。</li>
+                            `;
+                            break;
+                        case '压力应对':
+                            suggestionsHTML += `
+                                <li><strong>压力应对：</strong> 学习压力管理技巧，如运动、深呼吸、时间管理等。将大问题分解为小问题，逐步解决。</li>
+                            `;
+                            break;
+                        case '自我认知':
+                            suggestionsHTML += `
+                                <li><strong>自我认知：</strong> 尝试通过写日记、反思或与信任的朋友交流来更深入地了解自己的优点和不足。</li>
+                            `;
+                            break;
+                        case '责任感':
+                            suggestionsHTML += `
+                                <li><strong>责任感：</strong> 从小事做起，对自己的行为负责。当犯错时，尝试承认错误并寻找解决方案，而不是推卸责任。</li>
+                            `;
+                            break;
+                        case '适应性':
+                            suggestionsHTML += `
+                                <li><strong>适应性：</strong> 尝试走出舒适区，接触新的环境和挑战。学习灵活思考，接受变化是生活的一部分。</li>
+                            `;
+                            break;
+                    }
+                }
+            }
+            
+            suggestionsHTML += '</ul></div>';
+            return suggestionsHTML;
+        }
+
+        function createRadarChart(dimensionScores) {
+            const ctx = document.getElementById('radar-chart').getContext('2d');
+            
+            // 准备数据
+            const labels = Object.keys(dimensionScores);
+            const scores = Object.values(dimensionScores);
+            
+            // 创建雷达图
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '得分 (满分12分)',
+                        data: scores,
+                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(59, 130, 246, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(59, 130, 246, 1)'
+                    }]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 12,
+                            ticks: {
+                                stepSize: 3
+                            }
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: '各维度得分分布',
+                            font: {
+                                size: 16
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function createBarChart(totalScore) {
+            const ctx = document.getElementById('bar-chart').getContext('2d');
+            
+            // 计算得分百分比
+            const percentage = (totalScore / 120) * 100;
+            
+            // 创建柱状图
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['你的得分', '满分'],
+                    datasets: [{
+                        label: '总分 (满分120分)',
+                        data: [totalScore, 120],
+                        backgroundColor: [
+                            'rgba(59, 130, 246, 0.8)',
+                            'rgba(203, 213, 225, 0.8)'
+                        ],
+                        borderColor: [
+                            'rgba(59, 130, 246, 1)',
+                            'rgba(203, 213, 225, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 120
+                        }
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: `总体得分：${percentage.toFixed(1)}%`,
+                            font: {
+                                size: 16
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
