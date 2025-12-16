@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBTI人格测试（93题原创版）- 小红书专属</title>
+    <style>
+        /* 基础样式 - 适配移动端（小红书场景） */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
+        }
+        body {
+            background-color: #f9f0fb;
+            color: #333;
+            padding-bottom: 60px;
+        }
+        .container {
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+        /* 合规声明栏 - 醒目置顶 */
+        .compliance-bar {
+            background-color: #fff;
+            border: 1px solid #e91e63;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #e91e63;
+            text-align: center;
+            font-weight: 600;
+        }
+        /* 卡片样式 */
+        .card {
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(156, 39, 176, 0.1);
+        }
+        /* 标题样式 */
+        h1 {
+            font-size: 22px;
+            color: #9c27b0;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        h2 {
+            font-size: 18px;
+            color: #6a1b9a;
+            margin-bottom: 15px;
+        }
+        /* 按钮样式 - 确保点击区域足够大 */
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            margin: 10px 0;
+            touch-action: manipulation; /* 修复移动端点击延迟 */
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #9c27b0 0%, #e91e63 100%);
+            color: #fff;
+        }
+        .btn-secondary {
+            background-color: #f3e5f5;
+            color: #9c27b0;
+        }
+        /* 选项样式 - 增强点击反馈 */
+        .option {
+            border: 2px solid #eee;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .option:hover {
+            border-color: #e1bee7;
+        }
+        .option.selected {
+            border-color: #9c27b0;
+            background-color: #fce4ec;
+        }
+        /* 进度条 */
+        .progress-wrap {
+            width: 100%;
+            height: 8px;
+            background-color: #eee;
+            border-radius: 4px;
+            margin: 15px 0;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #9c27b0, #e91e63);
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        /* 隐藏类 */
+        .hidden {
+            display: none !important;
+        }
+        /* 结果区域 */
+        .result-item {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        .result-item:last-child {
+            border-bottom: none;
+        }
+        .type-tag {
+            font-size: 28px;
+            font-weight: bold;
+            color: #9c27b0;
+            text-align: center;
+            margin: 10px 0;
+        }
+        /* 免责声明 */
+        .disclaimer {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.5;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f8f8f8;
+            border-radius: 6px;
+        }
+        /* 导航按钮组 */
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+        .btn-group .btn {
+            flex: 1;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 合规声明（醒目置顶） -->
+        <div class="compliance-bar">
+            付费测试为原创内容服务，非专业医疗/心理测评
+        </div>
+
+        <!-- 欢迎页 -->
+        <div id="welcome-page" class="card">
+            <h1>MBTI人格深度测试（93题原创版）</h1>
+            <p>探索你的性格偏好，解锁专属人格画像</p>
+            <p style="margin: 15px 0; color: #666;">本测试基于MBTI理论框架原创设计，共93题，分为4个维度探索你的性格特质：</p>
+            <ul style="padding-left: 20px; margin-bottom: 20px; color: #666;">
+                <li>能量维度（E/I）：你获取能量的方式</li>
+                <li>认知维度（S/N）：你接收信息的偏好</li>
+                <li>决策维度（T/F）：你做出判断的方式</li>
+                <li>生活维度（J/P）：你应对生活的态度</li>
+            </ul>
+            <button id="start-btn" class="btn btn-primary">开始测试</button>
+        </div>
+
+        <!-- 测试页 -->
+        <div id="test-page" class="hidden card">
+            <div class="progress-wrap">
+                <div id="progress-bar" class="progress-bar"></div>
+            </div>
+            <p id="progress-text" style="text-align: center; font-size: 14px; color: #666;">第1题/共93题</p>
+            <h2 id="question-text">加载中...</h2>
+            <div id="options-wrap">
+                <!-- 选项动态生成 -->
+            </div>
+            <div class="btn-group">
+                <button id="prev-btn" class="btn btn-secondary" disabled>上一题</button>
+                <button id="next-btn" class="btn btn-primary" disabled>下一题</button>
+            </div>
+        </div>
+
+        <!-- 结果页 -->
+        <div id="result-page" class="hidden card">
+            <h1>你的MBTI人格测试结果</h1>
+            <div class="type-tag" id="personality-type">INFJ</div>
+            <h2 id="personality-name">神秘理想型</h2>
+            
+            <div class="result-item">
+                <h3>维度得分</h3>
+                <p>能量维度（E/I）：<span id="ei-score">I 85% - E 15%</span></p>
+                <p>认知维度（S/N）：<span id="sn-score">N 80% - S 20%</span></p>
+                <p>决策维度（T/F）：<span id="tf-score">F 75% - T 25%</span></p>
+                <p>生活维度（J/P）：<span id="jp-score">J 70% - P 30%</span></p>
+            </div>
+
+            <div class="result-item">
+                <h3>核心特质</h3>
+                <p id="core-traits">你是洞察力极强的理想主义者，善于理解他人的内心需求，对自己的价值观有坚定的追求，愿意为理想付出持续的努力。</p>
+            </div>
+
+            <div class="result-item">
+                <h3>适配方向</h3>
+                <p id="fit-direction">适合需要深度思考、共情能力、创意表达的领域，如心理咨询、创意策划、教育、文字创作等。</p>
+            </div>
+
+            <!-- 免责声明（完整且醒目） -->
+            <div class="disclaimer">
+                <strong>原创声明：</strong>本测试所有题目、评分体系、结果解读均为原创设计，无任何侵权风险。<br>
+                <strong>免责声明：</strong>本测试结果仅作为个人性格探索的参考，非专业心理诊断工具，不构成医疗/心理建议。若你存在情绪困扰或心理问题，建议及时寻求专业心理咨询师或医疗机构的帮助。
+            </div>
+
+            <button id="retake-btn" class="btn btn-secondary">重新测试</button>
+        </div>
+    </div>
+
+    <script>
+        // ========== 核心：93道原创MBTI题目 ==========
+        const questions = [
+            // 一、能量维度（E/I）：25题
+            { text: "参加多人聚会后，你通常会觉得？", options: [
+                { text: "精力充沛，还想多聊一会儿", score: { E: 1, I: 0 } },
+                { text: "感到疲惫，需要独处恢复精力", score: { E: 0, I: 1 } }
+            ]},
+            { text: "遇到开心的事，你更想？", options: [
+                { text: "立刻分享给身边的人", score: { E: 1, I: 0 } },
+                { text: "先自己回味，再选择性分享", score: { E: 0, I: 1 } }
+            ]},
+            { text: "空闲时，你更倾向于？", options: [
+                { text: "约朋友出门逛街/吃饭/玩", score: { E: 1, I: 0 } },
+                { text: "在家看书/追剧/做手工", score: { E: 0, I: 1 } }
+            ]},
+            { text: "开会时，你更习惯？", options: [
+                { text: "边讨论边梳理思路，喜欢发言", score: { E: 1, I: 0 } },
+                { text: "先思考清楚，再针对性表达", score: { E: 0, I: 1 } }
+            ]},
+            { text: "陌生环境中，你会？", options: [
+                { text: "主动和陌生人搭话，快速融入", score: { E: 1, I: 0 } },
+                { text: "先观察，等熟悉后再交流", score: { E: 0, I: 1 } }
+            ]},
+            { text: "倾诉烦恼时，你更偏好？", options: [
+                { text: "找朋友当面聊，越聊越清晰", score: { E: 1, I: 0 } },
+                { text: "写下来或自己想，独处时梳理", score: { E: 0, I: 1 } }
+            ]},
+            { text: "接到临时的社交邀约，你会？", options: [
+                { text: "大概率答应，觉得新鲜有趣", score: { E: 1, I: 0 } },
+                { text: "大概率拒绝，觉得打乱节奏", score: { E: 0, I: 1 } }
+            ]},
+            { text: "你觉得自己的社交状态是？", options: [
+                { text: "朋友多，不同圈子都能融入", score: { E: 1, I: 0 } },
+                { text: "朋友少但精，只维系核心关系", score: { E: 0, I: 1 } }
+            ]},
+            { text: "完成一项重要任务后，你想？", options: [
+                { text: "和团队庆祝，分享成就感", score: { E: 1, I: 0 } },
+                { text: "自己安静休息，享受独处时光", score: { E: 0, I: 1 } }
+            ]},
+            { text: "面对压力时，你会？", options: [
+                { text: "找他人倾诉，寻求外部支持", score: { E: 1, I: 0 } },
+                { text: "自我消化，靠自己调整状态", score: { E: 0, I: 1 } }
+            ]},
+            { text: "你更享受哪种交流方式？", options: [
+                { text: "面对面聊天，有即时互动", score: { E: 1, I: 0 } },
+                { text: "文字沟通，有思考的空间", score: { E: 0, I: 1 } }
+            ]},
+            { text: "在集体活动中，你通常是？", options: [
+                { text: "带动气氛的活跃分子", score: { E: 1, I: 0 } },
+                { text: "默默参与的观察者", score: { E: 0, I: 1 } }
+            ]},
+            { text: "学习新技能时，你更愿意？", options: [
+                { text: "和他人一起学，互相交流", score: { E: 1, I: 0 } },
+                { text: "自己自学，按自己节奏来", score: { E: 0, I: 1 } }
+            ]},
+            { text: "你对“独处”的感受是？", options: [
+                { text: "偶尔需要，但久了会无聊", score: { E: 1, I: 0 } },
+                { text: "必不可少，是充电的方式", score: { E: 0, I: 1 } }
+            ]},
+            { text: "被人关注时，你会觉得？", options: [
+                { text: "开心，享受被关注的感觉", score: { E: 1, I: 0 } },
+                { text: "不自在，想避开焦点", score: { E: 0, I: 1 } }
+            ]},
+            { text: "制定计划时，你更倾向于？", options: [
+                { text: "和他人商量，综合大家的意见", score: { E: 1, I: 0 } },
+                { text: "自己先定，再告知相关的人", score: { E: 0, I: 1 } }
+            ]},
+            { text: "遇到有趣的话题，你会？", options: [
+                { text: "主动加入讨论，表达观点", score: { E: 1, I: 0 } },
+                { text: "旁听为主，必要时才发言", score: { E: 0, I: 1 } }
+            ]},
+            { text: "你更擅长记住？", options: [
+                { text: "和他人的聊天内容、相处细节", score: { E: 1, I: 0 } },
+                { text: "自己的思考、看过的内容", score: { E: 0, I: 1 } }
+            ]},
+            { text: "假期安排，你更偏好？", options: [
+                { text: "多人旅行/团建，热热闹闹", score: { E: 1, I: 0 } },
+                { text: "独自旅行/宅家，自由自在", score: { E: 0, I: 1 } }
+            ]},
+            { text: "表达观点时，你会？", options: [
+                { text: "想到什么说什么，即兴表达", score: { E: 1, I: 0 } },
+                { text: "先组织语言，确保准确再讲", score: { E: 0, I: 1 } }
+            ]},
+            { text: "你觉得“人脉”的意义是？", options: [
+                { text: "越多越好，能带来更多机会", score: { E: 1, I: 0 } },
+                { text: "贵在精，舒服的关系最重要", score: { E: 0, I: 1 } }
+            ]},
+            { text: "参加培训课，你喜欢？", options: [
+                { text: "互动多的课堂，有小组讨论", score: { E: 1, I: 0 } },
+                { text: "纯讲授的课堂，能专注听讲", score: { E: 0, I: 1 } }
+            ]},
+            { text: "情绪低落时，你会？", options: [
+                { text: "找朋友玩，转移注意力", score: { E: 1, I: 0 } },
+                { text: "独处反思，慢慢调整", score: { E: 0, I: 1 } }
+            ]},
+            { text: "你更适应哪种工作模式？", options: [
+                { text: "开放式办公，随时交流", score: { E: 1, I: 0 } },
+                { text: "独立办公室，减少干扰", score: { E: 0, I: 1 } }
+            ]},
+            { text: "聚会结束后，你会？", options: [
+                { text: "还想约人继续小聚", score: { E: 1, I: 0 } },
+                { text: "只想赶紧回家休息", score: { E: 0, I: 1 } }
+            ]},
+
+            // 二、认知维度（S/N）：23题
+            { text: "看书时，你更关注？", options: [
+                { text: "具体的情节、细节和数据", score: { S: 1, N: 0 } },
+                { text: "背后的寓意、规律和启发", score: { S: 0, N: 1 } }
+            ]},
+            { text: "回忆往事，你记得更清楚的是？", options: [
+                { text: "当时的具体场景、细节", score: { S: 1, N: 0 } },
+                { text: "当时的感受、整体印象", score: { S: 0, N: 1 } }
+            ]},
+            { text: "学习新知识，你更倾向于？", options: [
+                { text: "从具体案例、实操开始", score: { S: 1, N: 0 } },
+                { text: "先理解框架、概念和原理", score: { S: 0, N: 1 } }
+            ]},
+            { text: "规划旅行，你更在意？", options: [
+                { text: "具体的行程、住宿、交通", score: { S: 1, N: 0 } },
+                { text: "旅行的体验、收获和可能性", score: { S: 0, N: 1 } }
+            ]},
+            { text: "听别人说话，你更关注？", options: [
+                { text: "对方说的具体内容、事实", score: { S: 1, N: 0 } },
+                { text: "对方的潜台词、情绪和意图", score: { S: 0, N: 1 } }
+            ]},
+            { text: "解决问题时，你会？", options: [
+                { text: "基于过往经验，找现成方法", score: { S: 1, N: 0 } },
+                { text: "跳出经验，尝试新思路", score: { S: 0, N: 1 } }
+            ]},
+            { text: "你对“未来”的看法是？", options: [
+                { text: "基于当下的情况，逐步推进", score: { S: 1, N: 0 } },
+                { text: "充满可能性，喜欢畅想规划", score: { S: 0, N: 1 } }
+            ]},
+            { text: "买东西时，你更看重？", options: [
+                { text: "实用性、性价比、具体参数", score: { S: 1, N: 0 } },
+                { text: "设计感、独特性、未来价值", score: { S: 0, N: 1 } }
+            ]},
+            { text: "你更擅长？", options: [
+                { text: "记住具体的数字、日期、细节", score: { S: 1, N: 0 } },
+                { text: "记住抽象的概念、趋势、关联", score: { S: 0, N: 1 } }
+            ]},
+            { text: "面对新环境，你会？", options: [
+                { text: "先关注具体的环境细节", score: { S: 1, N: 0 } },
+                { text: "先思考整体的氛围和可能性", score: { S: 0, N: 1 } }
+            ]},
+            { text: "你更喜欢哪种学习方式？", options: [
+                { text: "手把手教学，一步一步来", score: { S: 1, N: 0 } },
+                { text: "自主探索，举一反三", score: { S: 0, N: 1 } }
+            ]},
+            { text: "你对“规律”的理解是？", options: [
+                { text: "从具体案例中总结出来的", score: { S: 1, N: 0 } },
+                { text: "先假设再验证，抽象提炼的", score: { S: 0, N: 1 } }
+            ]},
+            { text: "聊天时，你更愿意聊？", options: [
+                { text: "身边的事、具体的八卦", score: { S: 1, N: 0 } },
+                { text: "未来的事、抽象的观点", score: { S: 0, N: 1 } }
+            ]},
+            { text: "做决策时，你更依赖？", options: [
+                { text: "看得见、摸得着的证据", score: { S: 1, N: 0 } },
+                { text: "直觉、预感和潜在的可能性", score: { S: 0, N: 1 } }
+            ]},
+            { text: "你对“细节”的态度是？", options: [
+                { text: "细节决定成败，必须关注", score: { S: 1, N: 0 } },
+                { text: "抓大放小，不必纠结细节", score: { S: 0, N: 1 } }
+            ]},
+            { text: "看电影时，你更在意？", options: [
+                { text: "画面、音效、剧情的细节", score: { S: 1, N: 0 } },
+                { text: "主题、隐喻、导演的意图", score: { S: 0, N: 1 } }
+            ]},
+            { text: "工作中，你更擅长？", options: [
+                { text: "把具体的事情做扎实", score: { S: 1, N: 0 } },
+                { text: "提出创新的想法和方向", score: { S: 0, N: 1 } }
+            ]},
+            { text: "你更相信？", options: [
+                { text: "自己看到、经历过的事实", score: { S: 1, N: 0 } },
+                { text: "自己的逻辑推理和直觉", score: { S: 0, N: 1 } }
+            ]},
+            { text: "整理信息时，你会？", options: [
+                { text: "按具体的类别、时间排序", score: { S: 1, N: 0 } },
+                { text: "按逻辑、关联、重要性排序", score: { S: 0, N: 1 } }
+            ]},
+            { text: "你对“经验”的看法是？", options: [
+                { text: "经验是最好的老师，要借鉴", score: { S: 1, N: 0 } },
+                { text: "经验会限制思路，要突破", score: { S: 0, N: 1 } }
+            ]},
+            { text: "描述一件事，你会？", options: [
+                { text: "详细、具体，有很多细节", score: { S: 1, N: 0 } },
+                { text: "简洁、概括，讲核心逻辑", score: { S: 0, N: 1 } }
+            ]},
+            { text: "你更关注？", options: [
+                { text: "当下正在发生的事", score: { S: 1, N: 0 } },
+                { text: "未来可能发生的事", score: { S: 0, N: 1 } }
+            ]},
+            { text: "学习技能，你更追求？", options: [
+                { text: "熟练掌握，能稳定输出", score: { S: 1, N: 0 } },
+                { text: "灵活运用，能举一反三", score: { S: 0, N: 1 } }
+            ]},
+
+            // 三、决策维度（T/F）：22题
+            { text: "做决定时，你更倾向于？", options: [
+                { text: "理性分析，权衡利弊", score: { T: 1, F: 0 } },
+                { text: "考虑感受，追求和谐", score: { T: 0, F: 1 } }
+            ]},
+            { text: "和他人发生矛盾，你会？", options: [
+                { text: "先讲道理，分清对错", score: { T: 1, F: 0 } },
+                { text: "先安抚情绪，关注关系", score: { T: 0, F: 1 } }
+            ]},
+            { text: "评价他人时，你更看重？", options: [
+                { text: "能力、效率、结果", score: { T: 1, F: 0 } },
+                { text: "态度、人品、共情力", score: { T: 0, F: 1 } }
+            ]},
+            { text: "工作中，你更认可？", options: [
+                { text: "对事不对人，按规则来", score: { T: 1, F: 0 } },
+                { text: "兼顾人情，灵活处理", score: { T: 0, F: 1 } }
+            ]},
+            { text: "拒绝他人时，你会？", options: [
+                { text: "直接说明原因，简洁明了", score: { T: 1, F: 0 } },
+                { text: "委婉表达，怕伤害对方", score: { T: 0, F: 1 } }
+            ]},
+            { text: "面对批评，你更在意？", options: [
+                { text: "批评的内容是否客观", score: { T: 1, F: 0 } },
+                { text: "批评的方式是否伤人", score: { T: 0, F: 1 } }
+            ]},
+            { text: "分配任务时，你会？", options: [
+                { text: "按能力和效率分配", score: { T: 1, F: 0 } },
+                { text: "考虑对方的感受和意愿", score: { T: 0, F: 1 } }
+            ]},
+            { text: "你觉得“公平”是？", options: [
+                { text: "统一标准，一视同仁", score: { T: 1, F: 0 } },
+                { text: "因人而异，照顾特殊情况", score: { T: 0, F: 1 } }
+            ]},
+            { text: "解决团队冲突，你会？", options: [
+                { text: "分析问题根源，找解决方案", score: { T: 1, F: 0 } },
+                { text: "调和各方情绪，维护关系", score: { T: 0, F: 1 } }
+            ]},
+            { text: "你更擅长？", options: [
+                { text: "逻辑推理，客观分析", score: { T: 1, F: 0 } },
+                { text: "共情理解，换位思考", score: { T: 0, F: 1 } }
+            ]},
+            { text: "制定规则时，你更关注？", options: [
+                { text: "规则的合理性、可执行性", score: { T: 1, F: 0 } },
+                { text: "规则对人的影响、接受度", score: { T: 0, F: 1 } }
+            ]},
+            { text: "你对“效率”的看法是？", options: [
+                { text: "效率优先，结果导向", score: { T: 1, F: 0 } },
+                { text: "效率要兼顾人情和感受", score: { T: 0, F: 1 } }
+            ]},
+            { text: "表扬他人时，你会？", options: [
+                { text: "具体指出做得好的地方", score: { T: 1, F: 0 } },
+                { text: "先肯定对方的付出和感受", score: { T: 0, F: 1 } }
+            ]},
+            { text: "选择职业时，你更看重？", options: [
+                { text: "发展前景、薪资、能力提升", score: { T: 1, F: 0 } },
+                { text: "工作氛围、成就感、价值感", score: { T: 0, F: 1 } }
+            ]},
+            { text: "你更难接受？", options: [
+                { text: "逻辑混乱、没有道理", score: { T: 1, F: 0 } },
+                { text: "冷漠无情、不被理解", score: { T: 0, F: 1 } }
+            ]},
+            { text: "处理失误时，你会？", options: [
+                { text: "先分析原因，追责改进", score: { T: 1, F: 0 } },
+                { text: "先安抚情绪，再找办法", score: { T: 0, F: 1 } }
+            ]},
+            { text: "你更相信？", options: [
+                { text: "数据和事实", score: { T: 1, F: 0 } },
+                { text: "直觉和感受", score: { T: 0, F: 1 } }
+            ]},
+            { text: "沟通时，你更倾向于？", options: [
+                { text: "直接表达，不绕弯子", score: { T: 1, F: 0 } },
+                { text: "委婉表达，照顾对方情绪", score: { T: 0, F: 1 } }
+            ]},
+            { text: "你对“原则”的态度是？", options: [
+                { text: "原则不能轻易打破", score: { T: 1, F: 0 } },
+                { text: "原则可以灵活变通", score: { T: 0, F: 1 } }
+            ]},
+            { text: "你更关注？", options: [
+                { text: "事情的对错", score: { T: 1, F: 0 } },
+                { text: "人的感受", score: { T: 0, F: 1 } }
+            ]},
+            { text: "做选择时，你会？", options: [
+                { text: "列优缺点清单，理性对比", score: { T: 1, F: 0 } },
+                { text: "凭内心感受，选让自己舒服的", score: { T: 0, F: 1 } }
+            ]},
+            { text: "你更擅长？", options: [
+                { text: "指出问题，提出改进建议", score: { T: 1, F: 0 } },
+                { text: "鼓励他人，给予情感支持", score: { T: 0, F: 1 } }
+            ]},
+
+            // 四、生活维度（J/P）：23题
+            { text: "制定计划后，你会？", options: [
+                { text: "严格执行，尽量不改变", score: { J: 1, P: 0 } },
+                { text: "灵活调整，看实际情况", score: { J: 0, P: 1 } }
+            ]},
+            { text: "面对截止日期，你会？", options: [
+                { text: "提前完成，留缓冲时间", score: { J: 1, P: 0 } },
+                { text: "临近截止才完成，效率更高", score: { J: 0, P: 1 } }
+            ]},
+            { text: "你的桌面/房间通常是？", options: [
+                { text: "整洁有序，物品有固定位置", score: { J: 1, P: 0 } },
+                { text: "随性摆放，乱中有序", score: { J: 0, P: 1 } }
+            ]},
+            { text: "空闲时间，你会？", options: [
+                { text: "提前规划好要做的事", score: { J: 1, P: 0 } },
+                { text: "随兴所至，想做什么做什么", score: { J: 0, P: 1 } }
+            ]},
+            { text: "开始一项任务前，你会？", options: [
+                { text: "先制定详细计划和步骤", score: { J: 1, P: 0 } },
+                { text: "先动手做，边做边调整", score: { J: 0, P: 1 } }
+            ]},
+            { text: "你对“变化”的态度是？", options: [
+                { text: "不喜欢突发变化，影响节奏", score: { J: 1, P: 0 } },
+                { text: "喜欢变化，带来新鲜感", score: { J: 0, P: 1 } }
+            ]},
+            { text: "购物时，你会？", options: [
+                { text: "列清单，按清单买，不冲动", score: { J: 1, P: 0 } },
+                { text: "随缘逛，看到喜欢的就买", score: { J: 0, P: 1 } }
+            ]},
+            { text: "完成任务的方式，你更倾向于？", options: [
+                { text: "一次只做一件，做完再做下一件", score: { J: 1, P: 0 } },
+                { text: "同时做几件，穿插进行", score: { J: 0, P: 1 } }
+            ]},
+            { text: "你更享受？", options: [
+                { text: "事情有明确的结果和定论", score: { J: 1, P: 0 } },
+                { text: "事情有开放的可能性和选择", score: { J: 0, P: 1 } }
+            ]},
+            { text: "旅行前，你会？", options: [
+                { text: "做详细的行程规划，订好所有票", score: { J: 1, P: 0 } },
+                { text: "只定大致方向，到了再决定", score: { J: 0, P: 1 } }
+            ]},
+            { text: "你对“拖延”的看法是？", options: [
+                { text: "尽量避免，拖延会带来焦虑", score: { J: 1, P: 0 } },
+                { text: "偶尔拖延，不一定是坏事", score: { J: 0, P: 1 } }
+            ]},
+            { text: "工作习惯是？", options: [
+                { text: "按流程来，注重规范和秩序", score: { J: 1, P: 0 } },
+                { text: "按感觉来，注重灵活和效率", score: { J: 0, P: 1 } }
+            ]},
+            { text: "你更擅长？", options: [
+                { text: "把混乱的事情整理有序", score: { J: 1, P: 0 } },
+                { text: "在不确定中找到机会", score: { J: 0, P: 1 } }
+            ]},
+            { text: "收到新任务，你会？", options: [
+                { text: "尽快安排时间完成", score: { J: 1, P: 0 } },
+                { text: "先放一放，等合适的时机", score: { J: 0, P: 1 } }
+            ]},
+            { text: "你对“规则”的态度是？", options: [
+                { text: "遵守规则，让事情更有序", score: { J: 1, P: 0 } },
+                { text: "规则是参考，不必死守", score: { J: 0, P: 1 } }
+            ]},
+            { text: "休息时，你会？", options: [
+                { text: "有固定的作息和安排", score: { J: 1, P: 0 } },
+                { text: "想睡就睡，想玩就玩", score: { J: 0, P: 1 } }
+            ]},
+            { text: "做决定时，你会？", options: [
+                { text: "尽快做出决定，避免纠结", score: { J: 1, P: 0 } },
+                { text: "多考虑一下，不急于决定", score: { J: 0, P: 1 } }
+            ]},
+            { text: "你更在意？", options: [
+                { text: "过程的可控性", score: { J: 1, P: 0 } },
+                { text: "结果的多样性", score: { J: 0, P: 1 } }
+            ]},
+            { text: "学习时，你会？", options: [
+                { text: "按计划学习，完成既定目标", score: { J: 1, P: 0 } },
+                { text: "凭兴趣学习，想到哪学到哪", score: { J: 0, P: 1 } }
+            ]},
+            { text: "你对“完美”的看法是？", options: [
+                { text: "尽量做到完美，不留遗憾", score: { J: 1, P: 0 } },
+                { text: "完成比完美更重要", score: { J: 0, P: 1 } }
+            ]},
+            { text: "处理信息时，你会？", options: [
+                { text: "先分类整理，再慢慢看", score: { J: 1, P: 0 } },
+                { text: "先大致浏览，有需要再细看", score: { J: 0, P: 1 } }
+            ]},
+            { text: "你更适应？", options: [
+                { text: "结构化的环境和任务", score: { J: 1, P: 0 } },
+                { text: "非结构化的环境和任务", score: { J: 0, P: 1 } }
+            ]},
+            { text: "结束一天时，你会？", options: [
+                { text: "总结当天，规划明天", score: { J: 1, P: 0 } },
+                { text: "放松休息，不想明天的事", score: { J: 0, P: 1 } }
+            ]}
+        ];
+
+        // ========== 交互逻辑（修复所有点击问题） ==========
+        // 核心元素
+        const welcomePage = document.getElementById('welcome-page');
+        const testPage = document.getElementById('test-page');
+        const resultPage = document.getElementById('result-page');
+        const startBtn = document.getElementById('start-btn');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const retakeBtn = document.getElementById('retake-btn');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        const questionText = document.getElementById('question-text');
+        const optionsWrap = document.getElementById('options-wrap');
+
+        // 测试状态
+        let currentIndex = 0; // 当前题目索引
+        let answers = []; // 用户答案
+        const scores = { E:0, I:0, S:0, N:0, T:0, F:0, J:0, P:0 }; // 维度得分
+
+        // 初始化：绑定所有点击事件（确保100%可点击）
+        function initEvents() {
+            // 开始测试
+            startBtn.addEventListener('click', () => {
+                welcomePage.classList.add('hidden');
+                testPage.classList.remove('hidden');
+                renderQuestion(currentIndex);
+            });
+
+            // 上一题
+            prevBtn.addEventListener('click', () => {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    renderQuestion(currentIndex);
+                }
+            });
+
+            // 下一题/出结果
+            nextBtn.addEventListener('click', () => {
+                if (currentIndex < questions.length - 1) {
+                    currentIndex++;
+                    renderQuestion(currentIndex);
+                } else {
+                    // 最后一题，计算结果
+                    calculateResult();
+                    testPage.classList.add('hidden');
+                    resultPage.classList.remove('hidden');
+                }
+            });
+
+            // 重新测试
+            retakeBtn.addEventListener('click', () => {
+                // 重置状态
+                currentIndex = 0;
+                answers = [];
+                Object.keys(scores).forEach(key => scores[key] = 0);
+                // 切换页面
+                resultPage.classList.add('hidden');
+                testPage.classList.remove('hidden');
+                renderQuestion(currentIndex);
+            });
+        }
+
+        // 渲染当前题目（确保选项可点击）
+        function renderQuestion(index) {
+            const q = questions[index];
+            // 更新进度
+            const progress = ((index + 1) / questions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+            progressText.textContent = `第${index + 1}题/共${questions.length}题`;
+            // 更新题目
+            questionText.textContent = q.text;
+            // 更新选项
+            optionsWrap.innerHTML = '';
+            q.options.forEach((opt, optIndex) => {
+                const optEl = document.createElement('div');
+                optEl.className = `option ${answers[index] === optIndex ? 'selected' : ''}`;
+                optEl.textContent = opt.text;
+                // 选项点击事件（核心修复：确保点击生效）
+                optEl.addEventListener('click', () => {
+                    // 移除所有选中状态
+                    document.querySelectorAll('.option').forEach(el => el.classList.remove('selected'));
+                    // 添加当前选中状态
+                    optEl.classList.add('selected');
+                    // 保存答案
+                    answers[index] = optIndex;
+                    // 启用下一题按钮
+                    nextBtn.disabled = false;
+                    // 累计得分
+                    const score = q.options[optIndex].score;
+                    Object.keys(score).forEach(key => {
+                        scores[key] = score[key]; // 每道题得分独立计算
+                    });
+                });
+                optionsWrap.appendChild(optEl);
+            });
+            // 更新按钮状态
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = answers[index] === undefined;
+            // 适配移动端：自动聚焦可点击区域
+            optionsWrap.querySelector('.option')?.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // 计算测试结果
+        function calculateResult() {
+            // 统计最终得分（求和）
+            const finalScores = {
+                E: answers.reduce((sum, ans, idx) => sum + (questions[idx].options[ans]?.score.E || 0), 0),
+                I: answers.reduce((sum, ans, idx) => sum + (questions[idx].options[ans]?.score.I || 0), 0),
+                S: answers.reduce((sum, ans, idx) => sum + (questions[idx].options[ans]?.score.S || 0), 0),
+                N: answers.reduce((sum, ans, idx) => sum + (questions[idx].options[ans]?.score.N || 0), 0),
+                T: answers.reduce((sum, ans, idx) => sum + (questions[idx].options[ans]?.score.T || 0), 0),
+                F: answers.reduce((sum, ans, idx) => sum + (questions[idx].options[ans]?.score.F || 0), 0),
+                J: answers.reduce((sum, ans, idx) => sum + (questions[idx].options[ans]?.score.J || 0), 0),
+                P: answers.reduce((sum, ans, idx) => sum + (questions[idx].options[ans]?.score.P || 0), 0)
+            };
+
+            // 确定人格类型
+            const EorI = finalScores.E > finalScores.I ? 'E' : 'I';
+            const SorN = finalScores.S > finalScores.N ? 'S' : 'N';
+            const TorF = finalScores.T > finalScores.F ? 'T' : 'F';
+            const JorP = finalScores.J > finalScores.P ? 'J' : 'P';
+            const type = EorI + SorN + TorF + JorP;
+
+            // 计算维度百分比
+            const calcPercent = (a, b) => {
+                const total = a + b;
+                return total === 0 ? 50 : Math.round((a / total) * 100);
+            };
+            const eiPercent = `${EorI} ${calcPercent(finalScores[EorI], finalScores[EorI === 'E' ? 'I' : 'E'])}% - ${EorI === 'E' ? 'I' : 'E'} ${calcPercent(finalScores[EorI === 'E' ? 'I' : 'E'], finalScores[EorI])}%`;
+            const snPercent = `${SorN} ${calcPercent(finalScores[SorN], finalScores[SorN === 'S' ? 'N' : 'S'])}% - ${SorN === 'S' ? 'N' : 'S'} ${calcPercent(finalScores[SorN === 'S' ? 'N' : 'S'], finalScores[SorN])}%`;
+            const tfPercent = `${TorF} ${calcPercent(finalScores[TorF], finalScores[TorF === 'T' ? 'F' : 'T'])}% - ${TorF === 'T' ? 'F' : 'T'} ${calcPercent(finalScores[TorF === 'T' ? 'F' : 'T'], finalScores[TorF])}%`;
+            const jpPercent = `${JorP} ${calcPercent(finalScores[JorP], finalScores[JorP === 'J' ? 'P' : 'J'])}% - ${JorP === 'J' ? 'P' : 'J'} ${calcPercent(finalScores[JorP === 'J' ? 'P' : 'J'], finalScores[JorP])}%`;
+
+            // 人格类型解读（原创）
+            const typeInfo = {
+                'ISTJ': { name: '务实尽责型', traits: '你是踏实可靠的执行者，注重细节和规则，有强烈的责任感，做事严谨有序，是团队中值得信赖的稳定力量。', fit: '适合需要耐心、细致、责任心的领域，如会计、行政、工程、档案管理等。' },
+                'ISFJ': { name: '温暖守护者型', traits: '你是温柔体贴的照顾者，善于关注他人的需求，有很强的同理心，做事认真负责，愿意为身边的人付出。', fit: '适合需要共情力、耐心、服务意识的领域，如护理、教育、客服、人力资源等。' },
+                'INFJ': { name: '神秘理想型', traits: '你是洞察力极强的理想主义者，善于理解他人的内心需求，对自己的价值观有坚定的追求，愿意为理想付出持续的努力。', fit: '适合需要深度思考、共情能力、创意表达的领域，如心理咨询、创意策划、教育、文字创作等。' },
+                'INTJ': { name: '战略规划型', traits: '你是理性冷静的策略家，有极强的逻辑思维和规划能力，善于洞察事物本质，追求高效和结果，有长远的视野。', fit: '适合需要战略思维、逻辑分析、创新能力的领域，如金融分析、产品经理、科研、企业管理等。' },
+                'ISTP': { name: '灵活实操型', traits: '你是冷静务实的动手派，善于解决实际问题，适应能力强，喜欢探索事物的运作方式，注重实用性。', fit: '适合需要动手能力、应变能力、逻辑分析的领域，如技术研发、维修、设计、刑侦等。' },
+                'ISFP': { name: '温柔艺术家型', traits: '你是敏感细腻的体验者，善于感受生活中的美好，有独特的审美和创造力，做事随心而不随波逐流。', fit: '适合需要创造力、审美、共情力的领域，如艺术创作、设计、手工、宠物护理等。' },
+                'INFP': { name: '诗意理想型', traits: '你是内心丰富的理想主义者，有强烈的个人价值观，善于思考人生的意义，富有创造力和共情力。', fit: '适合需要创意、共情、深度思考的领域，如文学创作、心理咨询、教育、公益等。' },
+                'INTP': { name: '逻辑探索型', traits: '你是好奇心强的思考者，善于挖掘事物的逻辑和原理，喜欢独立思考，追求真理和理性，不拘泥于常规。', fit: '适合需要逻辑分析、创新思维、独立研究的领域，如科研、编程、学术研究、数据分析等。' },
+                'ESTP': { name: '活力行动型', traits: '你是热情外向的行动派，善于把握当下的机会，适应能力强，喜欢挑战和新鲜事物，有很强的应变能力。', fit: '适合需要沟通能力、应变能力、行动力的领域，如销售、公关、活动策划、体育行业等。' },
+                'ESFP': { name: '热情社交型', traits: '你是阳光开朗的社交家，善于带动气氛，享受和他人互动的过程，有很强的感染力，注重当下的体验。', fit: '适合需要沟通能力、表现力、共情力的领域，如演艺、客服、旅游、市场营销等。' },
+                'ENFP': { name: '灵感创意型', traits: '你是充满活力的创意家，善于发现事物的可能性，有丰富的想象力，喜欢和他人交流想法，富有感染力。', fit: '适合需要创意、沟通、共情力的领域，如广告策划、新媒体、教育、创业等。' },
+                'ENTP': { name: '机智辩论型', traits: '你是思维敏捷的创新者，善于提出独特的观点，喜欢辩论和挑战常规，有很强的逻辑思维和应变能力。', fit: '适合需要创新思维、沟通能力、逻辑分析的领域，如律师、咨询、创业、媒体评论等。' },
+                'ESTJ': { name: '果断管理者型', traits: '你是务实高效的管理者，善于组织和规划，有很强的执行力，注重规则和效率，是团队中的中坚力量。', fit: '适合需要管理能力、执行力、沟通能力的领域，如企业管理、行政主管、销售管理、物流等。' },
+                'ESFJ': { name: '热心组织者型', traits: '你是温暖外向的组织者，善于照顾他人的感受，有很强的责任心，喜欢组织活动，维护团队的和谐。', fit: '适合需要沟通能力、组织能力、服务意识的领域，如人力资源、公关、教育、活动策划等。' },
+                'ENFJ': { name: '魅力领袖型', traits: '你是温暖有魅力的领导者，善于理解和激励他人，有很强的共情力和号召力，愿意为集体的目标付出。', fit: '适合需要领导能力、共情力、沟通能力的领域，如教育管理、心理咨询、企业培训、公益组织等。' },
+                'ENTJ': { name: '强势指挥型', traits: '你是自信果断的领导者，有极强的战略思维和决策能力，善于统筹规划，追求高效和结果，有很强的掌控力。', fit: '适合需要战略思维、领导能力、决策能力的领域，如企业高管、投资分析、项目管理、创业等。' }
+            };
+
+            // 更新结果页面
+            const info = typeInfo[type] || typeInfo['INFJ']; // 默认值
+            document.getElementById('personality-type').textContent = type;
+            document.getElementById('personality-name').textContent = info.name;
+            document.getElementById('core-traits').textContent = info.traits;
+            document.getElementById('fit-direction').textContent = info.fit;
+            document.getElementById('ei-score').textContent = eiPercent;
+            document.getElementById('sn-score').textContent = snPercent;
+            document.getElementById('tf-score').textContent = tfPercent;
+            document.getElementById('jp-score').textContent = jpPercent;
+        }
+
+        // 页面加载完成后初始化
+        window.addEventListener('DOMContentLoaded', () => {
+            initEvents();
+            console.log('93题MBTI测试初始化完成，所有点击事件已绑定');
+        });
+    </script>
+</body>
+</html>
