@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>职场服从性测试识别评估</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.544.0/dist/umd/lucide.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .card {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .progress-bar {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+        }
+        .option-btn {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .option-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .option-btn.selected {
+            border-color: #667eea;
+            background-color: rgba(102, 126, 234, 0.1);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+        .disclaimer {
+            background: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid #ffc107;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <!-- 标题和说明 -->
+        <div class="card rounded-2xl p-8 mb-8 shadow-xl">
+            <h1 class="text-3xl md:text-4xl font-bold text-center mb-6 bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent">职场服从性测试识别评估</h1>
+            
+            <!-- 付费和免责声明 -->
+            <div class="disclaimer p-4 rounded-lg mb-6">
+                <p class="text-sm text-yellow-800 font-medium">
+                    <i data-lucide="alert-triangle" class="inline w-4 h-4 mr-2"></i>
+                    付费测试为原创内容服务，非专业医疗/心理测评。本测试仅作为个人成长参考，不构成任何形式的诊断或建议。
+                </p>
+            </div>
+
+            <div class="text-center mb-8">
+                <p class="text-lg text-gray-600 mb-4">这是一份帮助你识别职场中服从性测试的评估工具，包含90个问题，预计需要15-20分钟完成。</p>
+                <p class="text-gray-500 text-sm">请根据你的真实感受选择最符合的选项。答案没有对错之分。</p>
+            </div>
+
+            <div class="text-center">
+                <button id="startTest" class="btn-primary text-white px-8 py-3 rounded-full font-semibold text-lg shadow-lg">
+                    开始评估
+                </button>
+            </div>
+        </div>
+
+        <!-- 测试内容 -->
+        <div id="testContainer" class="hidden">
+            <!-- 进度条 -->
+            <div class="card rounded-lg p-4 mb-6">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="font-medium">进度</span>
+                    <span id="progressText" class="text-sm text-gray-600">1/90</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                    <div id="progressBar" class="progress-bar h-2.5 rounded-full" style="width: 1%"></div>
+                </div>
+            </div>
+
+            <!-- 题目卡片 -->
+            <div class="card rounded-2xl p-8 mb-6 shadow-xl">
+                <h2 id="questionNumber" class="text-lg font-semibold text-gray-500 mb-4">问题 1/90</h2>
+                <h3 id="questionText" class="text-2xl font-bold mb-8 text-center"></h3>
+                
+                <div id="optionsContainer" class="space-y-4">
+                    <!-- 选项将通过JavaScript动态生成 -->
+                </div>
+            </div>
+
+            <!-- 导航按钮 -->
+            <div class="flex justify-between">
+                <button id="prevBtn" class="hidden px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 transition-colors">
+                    <i data-lucide="chevron-left" class="inline w-5 h-5 mr-2"></i>上一题
+                </button>
+                <button id="nextBtn" class="btn-primary text-white px-8 py-3 rounded-lg font-semibold">
+                    下一题<i data-lucide="chevron-right" class="inline w-5 h-5 ml-2"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 结果页面 -->
+        <div id="resultContainer" class="hidden">
+            <div class="card rounded-2xl p-8 mb-8 shadow-xl">
+                <h2 class="text-3xl font-bold text-center mb-6">职场服从性测试识别报告</h2>
+                
+                <!-- 总体评分 -->
+                <div class="text-center mb-8">
+                    <div class="inline-block p-4 rounded-full bg-gradient-to-r from-purple-100 to-blue-100 mb-4">
+                        <div class="text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent" id="totalScore">0</div>
+                    </div>
+                    <p class="text-lg text-gray-600" id="overallInterpretation"></p>
+                </div>
+
+                <!-- 维度分析 -->
+                <div class="space-y-6 mb-8">
+                    <div id="dimensionAnalysis"></div>
+                </div>
+
+                <!-- 具体建议 -->
+                <div class="bg-gradient-to-r from-purple-50 to-blue-50 p-6 rounded-xl">
+                    <h3 class="text-xl font-semibold mb-4">成长建议</h3>
+                    <div id="suggestions" class="space-y-3 text-gray-700"></div>
+                </div>
+
+                <!-- 免责声明 -->
+                <div class="mt-8 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+                    <h4 class="font-semibold text-yellow-800 mb-2">重要声明</h4>
+                    <ul class="text-sm text-yellow-700 space-y-2">
+                        <li>• 本测试结果仅供个人成长参考，不构成专业诊断</li>
+                        <li>• 如你在工作中遇到严重困扰，建议寻求专业心理咨询师的帮助</li>
+                        <li>• 职场关系是复杂的，本测试仅从某些角度提供参考</li>
+                        <li>• 所有内容均为原创，© 2024 职场成长工作室</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button id="restartBtn" class="btn-primary text-white px-8 py-3 rounded-full font-semibold text-lg shadow-lg">
+                    重新测试
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 题目数据
+        const questions = [
+            // 维度1：指令性语言识别
+            { id: 1, dimension: "指令性语言识别", text: "当你的上级说\"我认为你应该无条件支持我的决定\"时，这更像是：", options: ["正常的工作指导", "在测试我的服从度", "表达个人期望", "寻求团队共识"] },
+            { id: 2, dimension: "指令性语言识别", text: "如果同事说\"大家都加班到这么晚，你怎么好意思先走？\"，你认为这是：", options: ["合理的团队要求", "在施加群体压力", "关心团队协作", "纯粹的闲聊"] },
+            { id: 3, dimension: "指令性语言识别", text: "当领导说\"我需要你证明自己的忠诚度\"时，这更像是：", options: ["正常的工作要求", "服从性测试", "建立信任的尝试", "表达担忧"] },
+            { id: 4, dimension: "指令性语言识别", text: "如果有人说\"你应该把工作放在个人生活之前\"，这是：", options: ["合理的职业建议", "在测试你的边界", "表达个人价值观", "关心你的职业发展"] },
+            { id: 5, dimension: "指令性语言识别", text: "当上级说\"我希望你能为团队做出牺牲\"时，这更像是：", options: ["正常的团队要求", "在测试你的服从程度", "表达团队精神", "寻求支持"] },
+            { id: 6, dimension: "指令性语言识别", text: "如果同事说\"聪明人都知道该怎么选择\"，这是：", options: ["友好的建议", "在暗示正确答案", "分享经验", "表达个人看法"] },
+            { id: 7, dimension: "指令性语言识别", text: "当领导说\"我需要绝对的服从\"时，这更像是：", options: ["明确的工作要求", "服从性测试", "管理风格表达", "建立权威"] },
+            { id: 8, dimension: "指令性语言识别", text: "如果有人说\"你应该学会感恩\"，这是：", options: ["善意的提醒", "在测试你的态度", "表达不满", "道德说教"] },
+            { id: 9, dimension: "指令性语言识别", text: "当上级说\"我希望你能超越职责范围做事\"时，这更像是：", options: ["提供成长机会", "在测试你的底线", "不合理要求", "表达信任"] },
+            { id: 10, dimension: "指令性语言识别", text: "如果同事说\"你不会是唯一一个不参加的人吧？\"，这是：", options: ["关心你的参与度", "在施加社交压力", "友好的邀请", "询问情况"] },
+            { id: 11, dimension: "指令性语言识别", text: "当领导说\"我需要你无条件信任我\"时，这更像是：", options: ["建立信任关系", "服从性测试", "表达安全感需求", "管理风格"] },
+            { id: 12, dimension: "指令性语言识别", text: "如果有人说\"这是为了你好\"，但要求你做不愿意的事，这是：", options: ["善意的建议", "在合理化要求", "表达关心", "道德绑架"] },
+            { id: 13, dimension: "指令性语言识别", text: "当上级说\"我希望你能主动加班\"时，这更像是：", options: ["正常的工作要求", "在测试你的奉献精神", "表达紧急需求", "管理不当"] },
+            { id: 14, dimension: "指令性语言识别", text: "如果同事说\"真正的专业人士会怎么做\"，这是：", options: ["分享专业标准", "在设定行为模板", "表达个人观点", "提供参考"] },
+            { id: 15, dimension: "指令性语言识别", text: "当领导说\"我需要你证明自己的价值\"时，这更像是：", options: ["正常的绩效要求", "服从性测试", "表达期望", "激励手段"] },
+
+            // 维度2：行为模式识别
+            { id: 16, dimension: "行为模式识别", text: "当领导在公开场合批评你，但私下又表示信任你，这更像是：", options: ["正常的管理方式", "在测试你的反应", "情绪管理问题", "表达复杂情感"] },
+            { id: 17, dimension: "行为模式识别", text: "如果同事故意在你面前讨论\"忠诚\"的重要性，这可能是：", options: ["分享价值观", "在进行服从性测试", "建立团队文化", "表达个人观点"] },
+            { id: 18, dimension: "行为模式识别", text: "当上级经常在非工作时间联系你处理琐事，这更像是：", options: ["工作需要", "在测试你的随叫随到", "时间管理问题", "表达重视"] },
+            { id: 19, dimension: "行为模式识别", text: "如果领导故意给你设置难以完成的任务，这可能是：", options: ["挑战你的能力", "在测试你的极限", "不合理的管理", "表达不满"] },
+            { id: 20, dimension: "行为模式识别", text: "当同事在你拒绝请求后表现出失望，这更像是：", options: ["真实的情感反应", "在测试你的边界", "情感操控", "沟通方式问题"] },
+            { id: 21, dimension: "行为模式识别", text: "如果领导经常拿你和其他同事比较，这可能是：", options: ["激励你进步", "在制造竞争氛围", "管理不当", "表达期望"] },
+            { id: 22, dimension: "行为模式识别", text: "当上级要求你对团队决策保密，即使这些决策影响到你，这更像是：", options: ["正常的工作流程", "在测试你的忠诚度", "信息管理问题", "建立信任"] },
+            { id: 23, dimension: "行为模式识别", text: "如果同事总是在最后一刻给你分配任务，这可能是：", options: ["工作安排问题", "在测试你的应急能力", "缺乏规划", "表达信任"] },
+            { id: 24, dimension: "行为模式识别", text: "当领导在你提出意见后反问\"你觉得你比我更懂吗？\"，这更像是：", options: ["合理的质疑", "在测试你的自信", "权威维护", "沟通障碍"] },
+            { id: 25, dimension: "行为模式识别", text: "如果同事经常要求你证明自己的观点，而不接受他人的意见，这可能是：", options: ["严谨的工作态度", "在测试你的坚持度", "控制欲表现", "沟通风格差异"] },
+            { id: 26, dimension: "行为模式识别", text: "当上级在你犯错时小题大做，这更像是：", options: ["严格要求", "在测试你的抗压能力", "过度反应", "表达失望"] },
+            { id: 27, dimension: "行为模式识别", text: "如果同事总是在你成功时表现出淡淡的态度，这可能是：", options: ["个人风格", "在测试你的反应", "嫉妒心理", "缺乏同理心"] },
+            { id: 28, dimension: "行为模式识别", text: "当领导突然改变对你的态度，这更像是：", options: ["情绪波动", "在测试你的适应性", "管理问题", "对你有意见"] },
+            { id: 29, dimension: "行为模式识别", text: "如果同事经常询问你的个人生活细节，这可能是：", options: ["关心你", "在收集信息", "社交过度", "建立关系"] },
+            { id: 30, dimension: "行为模式识别", text: "当上级要求你在休息时间参加非必要活动，这更像是：", options: ["团队建设", "在测试你的奉献度", "不合理要求", "表达重视"] },
+
+            // 维度3：边界意识与应对
+            { id: 31, dimension: "边界意识与应对", text: "当领导要求你做职责范围外的私人事务时，你会：", options: ["明确拒绝并说明边界", "委婉拒绝但感到内疚", "勉强接受以维持关系", "欣然接受以讨好对方"] },
+            { id: 32, dimension: "边界意识与应对", text: "如果同事经常占用你的工作时间闲聊，这更像是：", options: ["社交需求", "在测试你的时间管理", "缺乏边界感", "建立关系"] },
+            { id: 33, dimension: "边界意识与应对", text: "当上级频繁询问你的个人生活细节时，你会：", options: ["礼貌但模糊回应", "感到不适但如实回答", "完全开放分享", "感到压力但不表达"] },
+            { id: 34, dimension: "边界意识与应对", text: "如果领导说\"你的时间就是公司的时间\"，这更像是：", options: ["强调工作重要性", "在模糊工作边界", "管理理念表达", "激励员工"] },
+            { id: 35, dimension: "边界意识与应对", text: "当同事试图控制你的工作方式时，你会：", options: ["坚持自己的专业判断", "部分妥协以维持和谐", "感到不适但接受", "完全按照对方要求"] },
+            { id: 36, dimension: "边界意识与应对", text: "如果上级要求你对他的不当行为保密，这更像是：", options: ["不合理的要求", "在测试你的底线", "工作需要", "建立信任"] },
+            { id: 37, dimension: "边界意识与应对", text: "当你感到工作边界被侵犯时，你会：", options: ["明确表达并寻求调整", "感到不适但容忍", "默默承受直到爆发", "抱怨但不采取行动"] },
+            { id: 38, dimension: "边界意识与应对", text: "如果同事经常把自己的工作推给你，这可能是：", options: ["工作能力问题", "在测试你的接受度", "缺乏责任感", "信任你的能力"] },
+            { id: 39, dimension: "边界意识与应对", text: "当领导在休息时间频繁联系你时，你会：", options: ["设定沟通时间界限", "随时回应以表忠诚", "感到压力但不拒绝", "选择性忽略"] },
+            { id: 40, dimension: "边界意识与应对", text: "如果有人说\"你太计较个人边界了\"，这更像是：", options: ["不理解边界的重要性", "在试图突破你的边界", "表达个人看法", "建议改进"] },
+            { id: 41, dimension: "边界意识与应对", text: "当你拒绝不合理要求后，对方表现出失望，你会：", options: ["坚持边界并解释原因", "感到内疚并考虑妥协", "完全妥协以避免冲突", "感到愤怒但维持立场"] },
+            { id: 42, dimension: "边界意识与应对", text: "如果领导经常在团队中强调\"无私奉献\"，这可能是：", options: ["团队文化建设", "在测试奉献程度", "道德绑架", "激励团队"] },
+            { id: 43, dimension: "边界意识与应对", text: "当同事试图了解你的薪资或隐私信息时，你会：", options: ["礼貌回避话题", "感到不适但回答", "如实分享", "转移话题"] },
+            { id: 44, dimension: "边界意识与应对", text: "如果上级要求你参加非工作相关的社交活动，这更像是：", options: ["团队建设", "在测试你的参与度", "不合理要求", "建立私人关系"] },
+            { id: 45, dimension: "边界意识与应对", text: "当你感到被要求做出超出能力范围的承诺时，你会：", options: ["坦诚说明限制", "感到压力但接受", "勉强承诺但担心", "完全拒绝"] },
+
+            // 维度4：心理影响识别
+            { id: 46, dimension: "心理影响识别", text: "当领导经常强调\"没有我你什么都不是\"时，这更像是：", options: ["激励你努力", "在打击你的自信", "表达事实", "管理方式问题"] },
+            { id: 47, dimension: "心理影响识别", text: "如果同事总是在你成功时指出不足，这可能是：", options: ["帮助你进步", "在削弱你的成就感", "追求完美", "嫉妒心理"] },
+            { id: 48, dimension: "心理影响识别", text: "当上级说\"只有我懂你\"时，这更像是：", options: ["建立信任关系", "在制造依赖感", "表达理解", "情感连接"] },
+            { id: 49, dimension: "心理影响识别", text: "如果领导经常拿你的过去错误说事，这可能是：", options: ["提醒你改进", "在打击你的自信", "记性好", "管理方式不当"] },
+            { id: 50, dimension: "心理影响识别", text: "当同事说\"你太敏感了\"来回应你的合理感受时，这更像是：", options: ["提供反馈", "在否定你的感受", "表达关心", "沟通问题"] },
+            { id: 51, dimension: "心理影响识别", text: "如果上级经常在你面前夸奖其他同事，这可能是：", options: ["激励你进步", "在制造比较和不安", "分享优秀案例", "管理技巧"] },
+            { id: 52, dimension: "心理影响识别", text: "当领导说\"你应该感谢我给你这个机会\"时，这更像是：", options: ["表达事实", "在制造感恩心理", "提醒你珍惜", "道德说教"] },
+            { id: 53, dimension: "心理影响识别", text: "如果同事总是强调你的缺点而忽视优点，这可能是：", options: ["帮助你成长", "在降低你的自我价值", "追求完美", "个人偏见"] },
+            { id: 54, dimension: "心理影响识别", text: "当上级经常说\"你让我很失望\"时，这更像是：", options: ["表达期望", "在制造内疚感", "管理方式问题", "激励你改进"] },
+            { id: 55, dimension: "心理影响识别", text: "如果有人说\"离开这里你找不到更好的工作\"，这可能是：", options: ["提醒现实", "在制造恐惧心理", "表达关心", "个人观点"] },
+            { id: 56, dimension: "心理影响识别", text: "当领导经常打断你的发言，这更像是：", options: ["时间管理", "在不尊重你的意见", "表达急切", "沟通习惯"] },
+            { id: 57, dimension: "心理影响识别", text: "如果同事总是把你的想法据为己有，这可能是：", options: ["工作需要", "在剥夺你的成就感", "缺乏边界", "能力问题"] },
+            { id: 58, dimension: "心理影响识别", text: "当上级说\"我是为了你好才批评你\"时，这更像是：", options: ["真诚关心", "在合理化批评", "表达善意", "管理方式"] },
+            { id: 59, dimension: "心理影响识别", text: "如果有人经常说\"你应该感到幸运\"，这可能是：", options: ["提醒感恩", "在制造知足心理", "表达羡慕", "道德绑架"] },
+            { id: 60, dimension: "心理影响识别", text: "当领导经常在你面前贬低其他员工，这更像是：", options: ["表达不满", "在测试你的忠诚度", "管理问题", "个人情绪"] },
+
+            // 维度5：权力动态识别
+            { id: 61, dimension: "权力动态识别", text: "当领导在你面前强调自己的权威地位时，这更像是：", options: ["正常的管理行为", "在展示权力优势", "建立工作秩序", "缺乏安全感"] },
+            { id: 62, dimension: "权力动态识别", text: "如果同事总是试图控制团队决策，这可能是：", options: ["领导能力的体现", "在建立权力控制", "积极负责", "个人风格"] },
+            { id: 63, dimension: "权力动态识别", text: "当上级只接受自己的想法，拒绝团队建议时，这更像是：", options: ["果断决策", "在维护权威", "缺乏民主意识", "个人偏好"] },
+            { id: 64, dimension: "权力动态识别", text: "如果领导经常在你面前贬低其他部门，这可能是：", options: ["表达真实看法", "在强化内部忠诚", "部门偏见", "管理策略"] },
+            { id: 65, dimension: "权力动态识别", text: "当同事总是强调\"这是上面的决定\"时，这更像是：", options: ["传达信息", "在利用权威压人", "避免责任", "尊重层级"] },
+            { id: 66, dimension: "权力动态识别", text: "如果上级经常单独召见团队成员，这可能是：", options: ["正常的工作沟通", "在制造信息不对称", "关注个人发展", "管理方式"] },
+            { id: 67, dimension: "权力动态识别", text: "当领导在你成功时强调\"我给了你机会\"，这更像是：", options: ["表达事实", "在抢占功劳", "提醒感恩", "管理技巧"] },
+            { id: 68, dimension: "权力动态识别", text: "如果同事总是寻求上级的直接认可，绕过团队流程，这可能是：", options: ["积极表现", "在建立特殊关系", "工作需要", "个人策略"] },
+            { id: 69, dimension: "权力动态识别", text: "当上级经常改变决策标准以符合自己的喜好时，这更像是：", options: ["灵活调整", "在维持控制权", "缺乏一致性", "管理不当"] },
+            { id: 70, dimension: "权力动态识别", text: "如果领导只在公开场合表扬特定员工，这可能是：", options: ["公平认可", "在制造竞争", "个人偏好", "激励策略"] },
+            { id: 71, dimension: "权力动态识别", text: "当同事经常使用\"我们\"和\"他们\"来划分群体时，这更像是：", options: ["自然分组", "在制造内部分化", "团队建设", "社交习惯"] },
+            { id: 72, dimension: "权力动态识别", text: "如果上级要求你对其他同事的行为进行汇报，这更像是：", options: ["工作需要", "在建立监控", "信任你", "管理手段"] },
+            { id: 73, dimension: "权力动态识别", text: "当领导经常强调\"团队离不开我\"时，这更像是：", options: ["表达重要性", "在制造依赖", "事实陈述", "缺乏安全感"] },
+            { id: 74, dimension: "权力动态识别", text: "如果同事总是引用更高权威来支持自己的观点，这可能是：", options: ["增强说服力", "在利用权威背书", "缺乏独立思考", "沟通技巧"] },
+            { id: 75, dimension: "权力动态识别", text: "当上级经常在你面前批评其他员工的反抗行为时，这更像是：", options: ["分享管理经验", "在警告你不要反抗", "表达不满", "寻求共鸣"] },
+
+            // 维度6：应对策略与自我保护
+            { id: 76, dimension: "应对策略与自我保护", text: "当你识别到可能的服从性测试时，你通常会：", options: ["保持警惕，理性应对", "感到困惑但尝试理解", "感到压力并妥协", "完全没有意识到"] },
+            { id: 77, dimension: "应对策略与自我保护", text: "如果领导要求你做违背价值观的事情，你会：", options: ["明确拒绝并说明原因", "寻找折中方案", "感到矛盾但服从", "完全服从以避免冲突"] },
+            { id: 78, dimension: "应对策略与自我保护", text: "当你感到被操纵时，你会：", options: ["识别模式并保持距离", "感到不适但不确定", "怀疑自己的判断", "完全接受对方的要求"] },
+            { id: 79, dimension: "应对策略与自我保护", text: "如果同事试图让你承担过多工作，你会：", options: ["设定明确边界", "部分接受以维持关系", "感到难以拒绝", "全部接受以讨好他人"] },
+            { id: 80, dimension: "应对策略与自我保护", text: "当你面对不合理要求时，你会：", options: ["提出合理质疑", "寻求更多信息", "感到压力但执行", "无条件执行"] },
+            { id: 81, dimension: "应对策略与自我保护", text: "如果领导经常批评你的想法，你会：", options: ["坚持有价值的观点", "选择性表达", "很少再提出想法", "完全停止表达意见"] },
+            { id: 82, dimension: "应对策略与自我保护", text: "当你感到职场环境不健康时，你会：", options: ["寻找改善方法或考虑离开", "尝试适应但感到不适", "感到无助但继续忍受", "完全没有意识到问题"] },
+            { id: 83, dimension: "应对策略与自我保护", text: "如果同事试图挑拨你与他人的关系，你会：", options: ["保持中立并核实信息", "感到困惑但尝试理解", "半信半疑", "完全相信并采取行动"] },
+            { id: 84, dimension: "应对策略与自我保护", text: "当你面对职场中的不公平对待时，你会：", options: ["寻求合理解决", "收集证据后反映", "感到委屈但忍受", "完全接受现状"] },
+            { id: 85, dimension: "应对策略与自我保护", text: "如果领导经常干涉你的工作方式，你会：", options: ["解释专业判断", "部分妥协", "感到沮丧但服从", "完全按照指示执行"] },
+            { id: 86, dimension: "应对策略与自我保护", text: "当你感到被监视或控制时，你会：", options: ["保持专业并记录情况", "感到不适但继续工作", "感到焦虑但不表达", "完全没有察觉"] },
+            { id: 87, dimension: "应对策略与自我保护", text: "如果同事经常对你的个人生活评头论足，你会：", options: ["设定边界并转移话题", "感到不适但回应", "勉强应对", "完全开放分享"] },
+            { id: 88, dimension: "应对策略与自我保护", text: "当你面对职场中的权力游戏时，你会：", options: ["保持清醒并避免卷入", "感到困惑但尝试适应", "感到压力并跟随", "完全没有意识到"] },
+            { id: 89, dimension: "应对策略与自我保护", text: "如果领导经常在你面前贬低其他员工，你会：", options: ["保持中立", "表示理解但不参与", "感到不适但倾听", "积极附和"] },
+            { id: 90, dimension: "应对策略与自我保护", text: "当你需要维护自己的权益时，你会：", options: ["清晰表达并寻求支持", "谨慎表达", "感到犹豫但尝试", "很少主动维护"] }
+        ];
+
+        // 评分标准和结果解释
+        const scoring = {
+            dimensions: ["指令性语言识别", "行为模式识别", "边界意识与应对", "心理影响识别", "权力动态识别", "应对策略与自我保护"],
+            interpretation: {
+                low: "你对职场中的服从性测试识别能力较弱，可能经常处于被动地位。建议提高警惕，学习识别各种操纵模式。",
+                medium: "你对职场中的服从性测试有一定识别能力，但在某些情况下仍可能被影响。继续提升识别技巧和应对策略。",
+                high: "你拥有敏锐的识别能力，能够及时察觉职场中的各种服从性测试，并采取有效的应对措施保护自己。"
+            },
+            dimensionInterpretation: {
+                "指令性语言识别": {
+                    low: "你对带有操控性的语言模式识别能力较弱，可能经常误解他人的真实意图。",
+                    medium: "你能够识别一些明显的指令性语言，但对微妙的操控话术还不够敏感。",
+                    high: "你对各种指令性语言模式有敏锐的洞察力，能够准确识别隐藏在看似正常交流中的操控意图。"
+                },
+                "行为模式识别": {
+                    low: "你对职场中的操控行为模式识别能力有限，可能经常陷入被动而不自知。",
+                    medium: "你能够察觉一些明显的操控行为，但对复杂的行为模式还缺乏系统认识。",
+                    high: "你能够从行为模式中识别出潜在的操控意图，对各种测试手段保持高度警惕。"
+                },
+                "边界意识与应对": {
+                    low: "你的边界意识较弱，在面对边界侵犯时缺乏有效的应对策略。",
+                    medium: "你有一定的边界意识，但在压力下可能会妥协自己的底线。",
+                    high: "你有清晰的边界意识，能够坚定地维护自己的权益，同时保持专业态度。"
+                },
+                "心理影响识别": {
+                    low: "你对心理操控的影响识别能力较弱，可能经常受到他人情绪操控的影响。",
+                    medium: "你能够识别一些明显的心理影响手段，但对微妙的情绪操控还不够敏感。",
+                    high: "你对各种心理影响策略有深刻理解，能够保持心理独立，不被他人情绪操控。"
+                },
+                "权力动态识别": {
+                    low: "你对职场中的权力动态缺乏敏感度，可能经常成为权力游戏的受害者。",
+                    medium: "你对明显的权力不平等有一定认识，但对微妙的权力操控还缺乏洞察力。",
+                    high: "你能够清晰识别各种权力动态，理解权力运作的机制，避免成为权力游戏的牺牲品。"
+                },
+                "应对策略与自我保护": {
+                    low: "你在面对操控时缺乏有效的应对策略，经常感到无助和被动。",
+                    medium: "你有一些基本的应对策略，但在复杂情况下可能不够系统和有效。",
+                    high: "你拥有丰富的应对策略库，能够根据不同情况采取合适的自我保护措施。"
+                }
+            },
+            suggestions: {
+                low: [
+                    "建议你学习识别职场中的各种操控模式和服从性测试",
+                    "建立清晰的个人边界，明确自己的底线和原则",
+                    "练习说\"不\"的能力，学会拒绝不合理要求",
+                    "寻找支持系统，与信任的同事或导师分享你的经历",
+                    "考虑寻求专业心理咨询，提升自我认知和应对能力"
+                ],
+                medium: [
+                    "继续学习和识别各种微妙的服从性测试手段",
+                    "加强边界意识训练，在压力下也能坚持自己的底线",
+                    "学习更多有效的沟通技巧，既维护自己权益又保持专业",
+                    "建立职场支持网络，与志同道合的同事互相支持",
+                    "定期反思自己的职场经历，识别模式和改进空间"
+                ],
+                high: [
+                    "继续保持警惕，定期更新对新型操控手段的认识",
+                    "可以帮助和指导同事识别职场中的各种测试",
+                    "考虑分享你的经验，帮助更多人提升职场生存能力",
+                    "保持心理弹性，在复杂的职场环境中保持健康心态",
+                    "寻找更加健康和尊重的工作环境，实现职业发展"
+                ]
+            }
+        };
+
+        // DOM 元素
+        const startTestBtn = document.getElementById('startTest');
+        const testContainer = document.getElementById('testContainer');
+        const resultContainer = document.getElementById('resultContainer');
+        const questionNumber = document.getElementById('questionNumber');
+        const questionText = document.getElementById('questionText');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const restartBtn = document.getElementById('restartBtn');
+
+        // 测试状态
+        let currentQuestion = 0;
+        const answers = new Array(questions.length).fill(null);
+
+        // 初始化
+        lucide.createIcons();
+
+        // 开始测试
+        startTestBtn.addEventListener('click', () => {
+            startTestBtn.parentElement.parentElement.classList.add('hidden');
+            testContainer.classList.remove('hidden');
+            showQuestion(currentQuestion);
+        });
+
+        // 显示问题
+        function showQuestion(index) {
+            const question = questions[index];
+            questionNumber.textContent = `问题 ${index + 1}/${questions.length}`;
+            questionText.textContent = question.text;
+            
+            // 生成选项
+            optionsContainer.innerHTML = '';
+            question.options.forEach((option, i) => {
+                const optionBtn = document.createElement('button');
+                optionBtn.className = `option-btn w-full text-left p-4 rounded-lg border ${answers[index] === i ? 'selected' : 'border-gray-200 hover:border-purple-300'}`;
+                optionBtn.innerHTML = `
+                    <div class="flex items-center">
+                        <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center mr-3 ${answers[index] === i ? 'border-purple-600 bg-purple-600 text-white' : ''}">
+                            ${answers[index] === i ? '<i data-lucide="check" class="w-4 h-4"></i>' : ''}
+                        </div>
+                        <span>${option}</span>
+                    </div>
+                `;
+                optionBtn.addEventListener('click', () => {
+                    answers[index] = i;
+                    showQuestion(index); // 重新渲染以显示选中状态
+                });
+                optionsContainer.appendChild(optionBtn);
+            });
+
+            // 更新进度
+            const progress = ((index + 1) / questions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+            progressText.textContent = `${index + 1}/${questions.length}`;
+
+            // 更新导航按钮
+            prevBtn.classList.toggle('hidden', index === 0);
+            nextBtn.textContent = index === questions.length - 1 ? '查看结果' : '下一题';
+            nextBtn.innerHTML = index === questions.length - 1 ? '查看结果' : '下一题<i data-lucide="chevron-right" class="inline w-5 h-5 ml-2"></i>';
+
+            lucide.createIcons();
+        }
+
+        // 导航按钮事件
+        prevBtn.addEventListener('click', () => {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showQuestion(currentQuestion);
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (answers[currentQuestion] === null) {
+                alert('请选择一个选项');
+                return;
+            }
+
+            if (currentQuestion === questions.length - 1) {
+                showResults();
+            } else {
+                currentQuestion++;
+                showQuestion(currentQuestion);
+            }
+        });
+
+        // 显示结果
+        function showResults() {
+            testContainer.classList.add('hidden');
+            resultContainer.classList.remove('hidden');
+
+            // 计算得分（正向计分，识别能力越高得分越高）
+            const dimensionScores = {};
+            scoring.dimensions.forEach(dim => {
+                dimensionScores[dim] = { total: 0, count: 0 };
+            });
+
+            questions.forEach((q, i) => {
+                if (answers[i] !== null) {
+                    // 对于识别类题目，选项1通常是"正常情况"，选项2通常是"操控/测试"，选项3和4是其他
+                    // 这里简化处理，选择识别出操控的选项（通常是选项2）得3分，其他选项根据识别程度给分
+                    let score = 0;
+                    switch(answers[i]) {
+                        case 1: // 识别出操控/测试
+                            score = 3;
+                            break;
+                        case 0: // 认为是正常情况
+                            score = 0;
+                            break;
+                        case 2: // 其他解释
+                            score = 1;
+                            break;
+                        case 3: // 其他解释
+                            score = 1;
+                            break;
+                    }
+                    dimensionScores[q.dimension].total += score;
+                    dimensionScores[q.dimension].count++;
+                }
+            });
+
+            // 计算平均分
+            const dimensionAverages = {};
+            scoring.dimensions.forEach(dim => {
+                dimensionAverages[dim] = dimensionScores[dim].count > 0 ? dimensionScores[dim].total / dimensionScores[dim].count : 0;
+            });
+
+            // 计算总分
+            const totalScore = Object.values(dimensionAverages).reduce((sum, score) => sum + score, 0) / scoring.dimensions.length;
+            const normalizedScore = Math.round((totalScore / 3) * 100);
+
+            // 显示总分
+            document.getElementById('totalScore').textContent = normalizedScore;
+
+            // 总体解释
+            let overallLevel = 'medium';
+            if (normalizedScore >= 80) overallLevel = 'high';
+            else if (normalizedScore <= 40) overallLevel = 'low';
+            document.getElementById('overallInterpretation').textContent = scoring.interpretation[overallLevel];
+
+            // 维度分析
+            const dimensionAnalysis = document.getElementById('dimensionAnalysis');
+            dimensionAnalysis.innerHTML = '';
+
+            scoring.dimensions.forEach(dim => {
+                const score = Math.round((dimensionAverages[dim] / 3) * 100);
+                let level = 'medium';
+                if (score >= 80) level = 'high';
+                else if (score <= 40) level = 'low';
+
+                const dimensionCard = document.createElement('div');
+                dimensionCard.className = 'bg-white p-5 rounded-xl shadow-sm border border-gray-100';
+                dimensionCard.innerHTML = `
+                    <div class="flex justify-between items-center mb-3">
+                        <h4 class="font-semibold">${dim}</h4>
+                        <span class="text-lg font-bold text-purple-600">${score}</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2 mb-3">
+                        <div class="bg-gradient-to-r from-purple-500 to-blue-500 h-2 rounded-full" style="width: ${score}%"></div>
+                    </div>
+                    <p class="text-sm text-gray-600">${scoring.dimensionInterpretation[dim][level]}</p>
+                `;
+                dimensionAnalysis.appendChild(dimensionCard);
+            });
+
+            // 建议
+            const suggestions = document.getElementById('suggestions');
+            suggestions.innerHTML = '';
+            scoring.suggestions[overallLevel].forEach(suggestion => {
+                const li = document.createElement('div');
+                li.className = 'flex items-start';
+                li.innerHTML = `
+                    <i data-lucide="lightbulb" class="w-5 h-5 text-yellow-500 mr-2 mt-0.5"></i>
+                    <span>${suggestion}</span>
+                `;
+                suggestions.appendChild(li);
+            });
+
+            lucide.createIcons();
+        }
+
+        // 重新测试
+        restartBtn.addEventListener('click', () => {
+            currentQuestion = 0;
+            answers.fill(null);
+            resultContainer.classList.add('hidden');
+            testContainer.classList.remove('hidden');
+            showQuestion(currentQuestion);
+        });
+    </script>
+</body>
+</html>
