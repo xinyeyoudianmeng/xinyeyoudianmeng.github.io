@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>理财能力测评 - 原创内容服务</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FF7D00', // 温暖的橙色
+                        secondary: '#1E88E5', // 稳重的蓝色
+                        neutral: '#F5F5F5',
+                        dark: '#333333',
+                        light: '#FFFFFF'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'custom': '0 4px 20px rgba(0, 0, 0, 0.08)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            .transition-custom {
+                transition: all 0.3s ease;
+            }
+            .bg-gradient {
+                background: linear-gradient(135deg, #FF7D00 0%, #1E88E5 100%);
+            }
+        }
+    </style>
+    <style>
+        /* 自定义动画 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .animate-fadeIn {
+            animation: fadeIn 0.5s ease forwards;
+        }
+        
+        .progress-bar {
+            transition: width 0.5s ease;
+        }
+        
+        /* 确保所有选项在同一高度 */
+        .option-item {
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+        }
+        
+        /* 选项悬停效果 */
+        .option-item:hover {
+            transform: translateY(-2px);
+        }
+        
+        /* 结果卡片动画 */
+        .result-card {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+        
+        .result-card.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* 延迟显示不同的结果卡片 */
+        .result-card:nth-child(1) { transition-delay: 0.1s; }
+        .result-card:nth-child(2) { transition-delay: 0.2s; }
+        .result-card:nth-child(3) { transition-delay: 0.3s; }
+        .result-card:nth-child(4) { transition-delay: 0.4s; }
+        .result-card:nth-child(5) { transition-delay: 0.5s; }
+    </style>
+</head>
+<body class="bg-neutral min-h-screen font-sans text-dark">
+    <!-- 顶部导航 -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <i class="fa fa-line-chart text-primary text-2xl mr-2"></i>
+                <h1 class="text-xl font-bold text-dark">理财能力测评</h1>
+            </div>
+            <div class="text-sm text-gray-500">
+                <span class="bg-primary/10 text-primary px-2 py-1 rounded text-xs">付费测试</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要内容区 -->
+    <main class="container mx-auto px-4 py-8 max-w-3xl">
+        <!-- 付费提示与免责声明 -->
+        <section id="disclaimer" class="bg-white rounded-lg shadow-custom p-6 mb-8 animate-fadeIn">
+            <div class="flex items-start mb-4">
+                <div class="bg-primary/10 p-2 rounded-full mr-4">
+                    <i class="fa fa-info-circle text-primary text-xl"></i>
+                </div>
+                <div>
+                    <h2 class="text-lg font-bold mb-2">重要提示</h2>
+                    <p class="text-gray-700 mb-4"><strong class="text-primary">付费测试为原创内容服务，非专业医疗/心理测评</strong></p>
+                    <div class="bg-secondary/5 border-l-4 border-secondary p-4 rounded">
+                        <h3 class="font-bold text-secondary mb-2">免责声明</h3>
+                        <ul class="text-sm text-gray-600 space-y-2">
+                            <li><i class="fa fa-circle text-xs text-secondary mr-2"></i>本测评是原创内容服务，<strong>非专业诊断工具</strong>，仅供参考。</li>
+                            <li><i class="fa fa-circle text-xs text-secondary mr-2"></i>测评结果不构成任何形式的投资建议或财务规划指导。</li>
+                            <li><i class="fa fa-circle text-xs text-secondary mr-2"></i>理财决策请结合个人实际情况，必要时咨询专业人士。</li>
+                            <li><i class="fa fa-circle text-xs text-secondary mr-2"></i>本测评内容受版权保护，未经授权不得复制或传播。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="flex justify-center mt-6">
+                <button id="start-test" class="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg font-medium transition-custom flex items-center">
+                    <i class="fa fa-check-circle mr-2"></i>
+                    我已了解，开始测评
+                </button>
+            </div>
+        </section>
+
+        <!-- 测评介绍 -->
+        <section id="intro" class="hidden bg-white rounded-lg shadow-custom p-6 mb-8 animate-fadeIn">
+            <h2 class="text-xl font-bold mb-4 flex items-center">
+                <i class="fa fa-lightbulb-o text-primary mr-2"></i>
+                测评介绍
+            </h2>
+            <p class="text-gray-700 mb-4">本测评包含20道精心设计的题目，从理财知识、消费习惯、风险意识、投资思维和财富规划五个维度，全面评估您的理财能力。</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div class="bg-neutral p-4 rounded-lg">
+                    <h3 class="font-bold mb-2 flex items-center">
+                        <i class="fa fa-clock-o text-secondary mr-2"></i>
+                        测评时间
+                    </h3>
+                    <p class="text-gray-600">约10分钟</p>
+                </div>
+                <div class="bg-neutral p-4 rounded-lg">
+                    <h3 class="font-bold mb-2 flex items-center">
+                        <i class="fa fa-file-text-o text-secondary mr-2"></i>
+                        测评报告
+                    </h3>
+                    <p class="text-gray-600">详细的个人理财能力分析</p>
+                </div>
+            </div>
+            
+            <div class="flex justify-center">
+                <button id="begin-test" class="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg font-medium transition-custom flex items-center">
+                    <i class="fa fa-play-circle mr-2"></i>
+                    开始测评
+                </button>
+            </div>
+        </section>
+
+        <!-- 测评问卷 -->
+        <section id="questionnaire" class="hidden">
+            <!-- 进度条 -->
+            <div class="bg-white rounded-lg shadow-custom p-4 mb-6">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-sm font-medium" id="progress-text">第 1 题 / 共 20 题</span>
+                    <span class="text-sm text-gray-500" id="score-display">得分: 0</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                    <div class="bg-primary h-2.5 rounded-full progress-bar" style="width: 5%"></div>
+                </div>
+            </div>
+
+            <!-- 题目容器 -->
+            <div class="bg-white rounded-lg shadow-custom p-6 mb-6">
+                <div id="question-container">
+                    <!-- 题目将通过JavaScript动态加载 -->
+                </div>
+            </div>
+
+            <!-- 导航按钮 -->
+            <div class="flex justify-between">
+                <button id="prev-btn" class="hidden bg-gray-200 hover:bg-gray-300 text-gray-700 px-6 py-3 rounded-lg font-medium transition-custom flex items-center">
+                    <i class="fa fa-arrow-left mr-2"></i>
+                    上一题
+                </button>
+                <div class="ml-auto">
+                    <button id="next-btn" class="bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-lg font-medium transition-custom flex items-center">
+                        下一题
+                        <i class="fa fa-arrow-right ml-2"></i>
+                    </button>
+                    <button id="submit-btn" class="hidden bg-secondary hover:bg-secondary/90 text-white px-6 py-3 rounded-lg font-medium transition-custom flex items-center">
+                        提交测评
+                        <i class="fa fa-check ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 测评结果 -->
+        <section id="results" class="hidden">
+            <div class="bg-white rounded-lg shadow-custom p-6 mb-8">
+                <div class="text-center mb-6">
+                    <div class="inline-block p-4 rounded-full bg-primary/10 mb-4">
+                        <i class="fa fa-trophy text-primary text-4xl"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold mb-2">测评完成！</h2>
+                    <p class="text-gray-600">您的理财能力评分为：</p>
+                    <div class="text-5xl font-bold text-primary my-4" id="total-score">0</div>
+                    <div class="text-lg font-medium" id="overall-rating">待评估</div>
+                </div>
+
+                <!-- 理财类型画像 -->
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-4 flex items-center">
+                        <i class="fa fa-user-circle text-secondary mr-2"></i>
+                        您的理财类型画像
+                    </h3>
+                    <div class="bg-neutral p-6 rounded-lg text-center" id="financial-profile">
+                        <!-- 理财类型画像将通过JavaScript动态加载 -->
+                    </div>
+                </div>
+
+                <!-- 各维度得分 -->
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-4 flex items-center">
+                        <i class="fa fa-bar-chart text-secondary mr-2"></i>
+                        各维度得分
+                    </h3>
+                    <div class="space-y-4" id="dimension-scores">
+                        <!-- 各维度得分将通过JavaScript动态加载 -->
+                    </div>
+                </div>
+
+                <!-- 详细解读 -->
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-4 flex items-center">
+                        <i class="fa fa-file-text text-secondary mr-2"></i>
+                        详细解读
+                    </h3>
+                    <div class="space-y-6" id="detailed-analysis">
+                        <!-- 详细解读将通过JavaScript动态加载 -->
+                    </div>
+                </div>
+
+                <!-- 提升建议 -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4 flex items-center">
+                        <i class="fa fa-lightbulb-o text-secondary mr-2"></i>
+                        定制化提升建议
+                    </h3>
+                    <div class="space-y-4" id="improvement-tips">
+                        <!-- 提升建议将通过JavaScript动态加载 -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 专业建议提示 -->
+            <div class="bg-secondary/5 border-l-4 border-secondary p-6 rounded-lg">
+                <h3 class="font-bold text-secondary mb-2 flex items-center">
+                    <i class="fa fa-info-circle mr-2"></i>
+                    专业建议提示
+                </h3>
+                <p class="text-gray-700">理财是一项需要终身学习的技能。如果您希望更深入地提升理财能力，建议：</p>
+                <ul class="mt-3 space-y-2 text-gray-700">
+                    <li class="flex items-start">
+                        <i class="fa fa-check-circle text-secondary mt-1 mr-2"></i>
+                        <span>阅读权威的理财书籍和文章，建立系统的理财知识体系</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fa fa-check-circle text-secondary mt-1 mr-2"></i>
+                        <span>参加正规的理财培训课程，学习专业的理财技能</span>
+                    </li>
+                    <li class="flex items-start">
+                        <i class="fa fa-check-circle text-secondary mt-1 mr-2"></i>
+                        <span>咨询持牌金融顾问，获取个性化的理财规划建议</span>
+                    </li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-white py-6 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <p class="mb-2">© 2025 理财能力测评 - 原创内容服务</p>
+            <p class="text-sm text-gray-400">本测评内容受版权保护，未经授权不得复制或传播</p>
+        </div>
+    </footer>
+
+    <script>
+        // 测评题目数据
+        const questions = [
+            // 理财知识维度
+            {
+                id: 1,
+                dimension: "理财知识",
+                question: "以下哪种投资方式通常被认为风险最低？",
+                options: [
+                    { text: "股票", score: 0 },
+                    { text: "债券", score: 2 },
+                    { text: "定期存款", score: 3 },
+                    { text: " cryptocurrency", score: 0 }
+                ]
+            },
+            {
+                id: 2,
+                dimension: "理财知识",
+                question: "通货膨胀会对您的储蓄产生什么影响？",
+                options: [
+                    { text: "增加储蓄的实际价值", score: 0 },
+                    { text: "降低储蓄的实际价值", score: 3 },
+                    { text: "没有影响", score: 0 },
+                    { text: "不确定", score: 1 }
+                ]
+            },
+            {
+                id: 3,
+                dimension: "理财知识",
+                question: "以下哪项不属于个人资产？",
+                options: [
+                    { text: "银行存款", score: 0 },
+                    { text: "房产", score: 0 },
+                    { text: "信用卡欠款", score: 3 },
+                    { text: "股票投资", score: 0 }
+                ]
+            },
+            {
+                id: 4,
+                dimension: "理财知识",
+                question: "复利的作用是指：",
+                options: [
+                    { text: "利息只在本金上计算", score: 0 },
+                    { text: "利息在本金和累积利息上计算", score: 3 },
+                    { text: "投资亏损时的额外费用", score: 0 },
+                    { text: "定期存款的固定利率", score: 1 }
+                ]
+            },
+            
+            // 消费习惯维度
+            {
+                id: 5,
+                dimension: "消费习惯",
+                question: "当您收到一笔意外收入（如奖金）时，您通常会：",
+                options: [
+                    { text: "立即购买一直想要的东西", score: 0 },
+                    { text: "一半存起来，一半用于消费", score: 2 },
+                    { text: "全部存入银行或进行投资", score: 3 },
+                    { text: "先享受，花完再说", score: 0 }
+                ]
+            },
+            {
+                id: 6,
+                dimension: "消费习惯",
+                question: "您是否会在购物前列清单并严格遵守？",
+                options: [
+                    { text: "从不列清单", score: 0 },
+                    { text: "偶尔列清单，但经常超支", score: 1 },
+                    { text: "经常列清单，基本遵守", score: 2 },
+                    { text: "总是列清单并严格遵守", score: 3 }
+                ]
+            },
+            {
+                id: 7,
+                dimension: "消费习惯",
+                question: "面对一件价格较高的商品，您的决策方式是：",
+                options: [
+                    { text: "喜欢就买，不考虑太多", score: 0 },
+                    { text: "比较几家店的价格后购买", score: 1 },
+                    { text: "仔细研究性价比，考虑长期使用价值", score: 3 },
+                    { text: "先存钱，等有足够资金再购买", score: 2 }
+                ]
+            },
+            {
+                id: 8,
+                dimension: "消费习惯",
+                question: "您如何看待信用卡的使用？",
+                options: [
+                    { text: "经常透支，每月只还最低还款额", score: 0 },
+                    { text: "偶尔透支，但能在免息期内还清", score: 1 },
+                    { text: "尽量不透支，每月全额还款", score: 3 },
+                    { text: "主要用于应急，平时很少使用", score: 2 }
+                ]
+            },
+            
+            // 风险意识维度
+            {
+                id: 9,
+                dimension: "风险意识",
+                question: "您是否有专门的应急基金？",
+                options: [
+                    { text: "没有应急基金", score: 0 },
+                    { text: "有一点，但不足一个月生活费", score: 1 },
+                    { text: "有3-6个月生活费的应急基金", score: 3 },
+                    { text: "有超过6个月生活费的应急基金", score: 3 }
+                ]
+            },
+            {
+                id: 10,
+                dimension: "风险意识",
+                question: "在投资时，您更关注：",
+                options: [
+                    { text: "高收益，愿意承担高风险", score: 0 },
+                    { text: "较高收益，能承受一定风险", score: 1 },
+                    { text: "中等收益，风险适中", score: 2 },
+                    { text: "稳定收益，风险较低", score: 3 }
+                ]
+            },
+            {
+                id: 11,
+                dimension: "风险意识",
+                question: "您是否购买了必要的保险（如重疾险、意外险）？",
+                options: [
+                    { text: "没有购买任何保险", score: 0 },
+                    { text: "只购买了基本医保", score: 1 },
+                    { text: "购买了部分商业保险", score: 2 },
+                    { text: "购买了全面的保险保障", score: 3 }
+                ]
+            },
+            {
+                id: 12,
+                dimension: "风险意识",
+                question: "当您的投资出现亏损时，您会：",
+                options: [
+                    { text: "立即全部卖出，避免进一步损失", score: 0 },
+                    { text: "卖出部分，减少风险敞口", score: 1 },
+                    { text: "持有不动，等待市场回暖", score: 2 },
+                    { text: "分析原因，适时调整投资策略", score: 3 }
+                ]
+            },
+            
+            // 投资思维维度
+            {
+                id: 13,
+                dimension: "投资思维",
+                question: "您对投资多元化的看法是：",
+                options: [
+                    { text: "不了解什么是投资多元化", score: 0 },
+                    { text: "知道重要，但不知道如何实施", score: 1 },
+                    { text: "尝试进行多元化投资", score: 2 },
+                    { text: "已经建立了多元化的投资组合", score: 3 }
+                ]
+            },
+            {
+                id: 14,
+                dimension: "投资思维",
+                question: "您是否会定期关注和学习投资知识？",
+                options: [
+                    { text: "从不关注投资知识", score: 0 },
+                    { text: "偶尔看看相关新闻", score: 1 },
+                    { text: "定期阅读投资书籍或文章", score: 2 },
+                    { text: "积极参加投资课程，持续学习", score: 3 }
+                ]
+            },
+            {
+                id: 15,
+                dimension: "投资思维",
+                question: "您认为投资成功的关键是：",
+                options: [
+                    { text: "运气和时机", score: 0 },
+                    { text: "跟随市场热点", score: 1 },
+                    { text: "长期坚持和纪律性", score: 3 },
+                    { text: "专业的投资技巧", score: 2 }
+                ]
+            },
+            {
+                id: 16,
+                dimension: "投资思维",
+                question: "您是否有明确的投资目标和计划？",
+                options: [
+                    { text: "没有任何投资目标", score: 0 },
+                    { text: "有模糊的想法，但没有具体计划", score: 1 },
+                    { text: "有明确目标，但执行不够严格", score: 2 },
+                    { text: "有详细的投资计划并严格执行", score: 3 }
+                ]
+            },
+            
+            // 财富规划维度
+            {
+                id: 17,
+                dimension: "财富规划",
+                question: "您是否制定了长期的财务目标（如退休计划）？",
+                options: [
+                    { text: "没有考虑过长期财务目标", score: 0 },
+                    { text: "有一些想法，但没有具体规划", score: 1 },
+                    { text: "制定了目标，但没有定期检查", score: 2 },
+                    { text: "有明确目标并定期评估调整", score: 3 }
+                ]
+            },
+            {
+                id: 18,
+                dimension: "财富规划",
+                question: "您是否定期记录和分析个人收支情况？",
+                options: [
+                    { text: "从不记录收支", score: 0 },
+                    { text: "偶尔记录，但不分析", score: 1 },
+                    { text: "每月记录并简单分析", score: 2 },
+                    { text: "详细记录，定期分析并调整", score: 3 }
+                ]
+            },
+            {
+                id: 19,
+                dimension: "财富规划",
+                question: "您对税务规划的态度是：",
+                options: [
+                    { text: "不了解税务规划", score: 0 },
+                    { text: "知道重要，但不知道如何操作", score: 1 },
+                    { text: "尝试进行简单的税务规划", score: 2 },
+                    { text: "有系统的税务规划策略", score: 3 }
+                ]
+            },
+            {
+                id: 20,
+                dimension: "财富规划",
+                question: "您是否考虑过财富传承问题？",
+                options: [
+                    { text: "没有考虑过", score: 0 },
+                    { text: "偶尔想过，但没有具体计划", score: 1 },
+                    { text: "有初步想法，如立遗嘱", score: 2 },
+                    { text: "有详细的财富传承规划", score: 3 }
+                ]
+            }
+        ];
+
+        // 理财类型画像数据
+        const financialProfiles = [
+            {
+                name: "理财新手",
+                description: "您对理财知识了解有限，消费习惯较为随意，风险意识不足。",
+                features: ["理财知识基础薄弱", "消费决策较为冲动", "缺乏风险防范意识", "投资经验不足", "财务规划不明确"],
+                color: "#FF7D00",
+                icon: "fa-seedling"
+            },
+            {
+                name: "稳健起步者",
+                description: "您已经开始关注理财，有一定的储蓄习惯，但投资知识和经验仍需提升。",
+                features: ["具备基础理财知识", "消费较为理性", "开始建立风险意识", "尝试简单投资", "有初步财务规划"],
+                color: "#4CAF50",
+                icon: "fa-pagelines"
+            },
+            {
+                name: "理财达人",
+                description: "您拥有扎实的理财知识，消费习惯健康，能够理性看待投资风险。",
+                features: ["理财知识全面", "消费决策理性", "风险意识较强", "投资组合多元化", "财务规划清晰"],
+                color: "#1E88E5",
+                icon: "fa-tree"
+            },
+            {
+                name: "财富管理大师",
+                description: "您是理财领域的专家，能够全面规划财务生活，实现财富的稳健增长。",
+                features: ["理财知识系统深入", "消费习惯极为健康", "风险控制能力强", "投资策略成熟", "财务规划全面长远"],
+                color: "#9C27B0",
+                icon: "fa-sun-o"
+            }
+        ];
+
+        // 各维度详细解读
+        const dimensionAnalysis = {
+            "理财知识": {
+                low: {
+                    title: "理财知识有待提升",
+                    description: "您对基本的理财概念和工具了解有限，这可能会影响您做出明智的财务决策。建议您开始学习基础的理财知识，如储蓄、投资、保险等方面的基本概念。"
+                },
+                medium: {
+                    title: "具备基础理财知识",
+                    description: "您已经掌握了一些基本的理财概念，但在某些专业领域可能还不够深入。建议您进一步学习投资策略、税务规划等进阶知识，丰富自己的理财知识体系。"
+                },
+                high: {
+                    title: "理财知识丰富",
+                    description: "您拥有扎实的理财知识基础，能够理解复杂的金融产品和投资策略。建议您继续保持学习的热情，关注金融市场的最新动态，不断更新自己的知识储备。"
+                }
+            },
+            "消费习惯": {
+                low: {
+                    title: "消费习惯需要调整",
+                    description: "您的消费决策较为冲动，缺乏计划性，可能导致不必要的开支和财务压力。建议您开始记录日常支出，制定消费预算，并学习延迟满足的艺术。"
+                },
+                medium: {
+                    title: "消费习惯基本健康",
+                    description: "您的消费行为相对理性，但在某些情况下可能仍会出现超支现象。建议您进一步优化消费结构，区分'想要'和'需要'，提高资金的使用效率。"
+                },
+                high: {
+                    title: "消费习惯非常健康",
+                    description: "您的消费决策理性且有计划，能够很好地控制支出。建议您继续保持这种良好习惯，并将节省下来的资金用于投资，实现财富的增值。"
+                }
+            },
+            "风险意识": {
+                low: {
+                    title: "风险意识不足",
+                    description: "您对财务风险的认识不足，缺乏必要的风险防范措施。建议您建立应急基金，购买适当的保险产品，并学习基本的风险管理知识。"
+                },
+                medium: {
+                    title: "风险意识一般",
+                    description: "您对常见的财务风险有一定认识，但防范措施可能不够全面。建议您评估自己的风险承受能力，完善保险保障，并学习分散投资风险的方法。"
+                },
+                high: {
+                    title: "风险意识很强",
+                    description: "您对财务风险有深入的认识，并采取了全面的防范措施。建议您继续优化风险管理策略，定期评估风险状况，并根据人生阶段的变化调整保障方案。"
+                }
+            },
+            "投资思维": {
+                low: {
+                    title: "投资思维有待培养",
+                    description: "您对投资的理解较为有限，缺乏系统的投资思维。建议您开始学习基本的投资概念，了解不同的投资工具，并尝试小额投资实践。"
+                },
+                medium: {
+                    title: "投资思维初步形成",
+                    description: "您已经具备了一些基本的投资理念，但投资策略可能不够成熟。建议您学习资产配置的方法，了解投资组合的构建原则，并逐步优化自己的投资策略。"
+                },
+                high: {
+                    title: "投资思维成熟",
+                    description: "您拥有成熟的投资理念和策略，能够理性看待市场波动。建议您继续深入研究投资领域的专业知识，优化投资组合，并考虑多元化投资以分散风险。"
+                }
+            },
+            "财富规划": {
+                low: {
+                    title: "财富规划缺乏",
+                    description: "您对未来的财务目标和规划不够明确，缺乏长期的财富管理计划。建议您开始思考自己的财务目标，制定短期和长期的理财计划，并定期检查执行情况。"
+                },
+                medium: {
+                    title: "财富规划初步形成",
+                    description: "您已经有了一些财务目标和规划，但可能不够系统和全面。建议您进一步明确财务目标，制定详细的实现路径，并考虑税务规划、退休规划等长期议题。"
+                },
+                high: {
+                    title: "财富规划全面",
+                    description: "您拥有全面且系统的财富规划，包括短期和长期的财务目标。建议您定期评估规划的执行情况，根据生活变化适时调整，并考虑财富传承等深层次问题。"
+                }
+            }
+        };
+
+        // 提升建议数据
+        const improvementTips = {
+            "理财知识": [
+                "每天花15-30分钟阅读财经新闻或理财书籍",
+                "参加线上或线下的理财知识讲座和课程",
+                "关注权威的理财公众号或博客",
+                "加入理财学习小组，与他人交流学习心得",
+                "利用手机APP学习理财知识，如雪球、蚂蚁财富等"
+            ],
+            "消费习惯": [
+                "使用记账APP记录每日支出，分析消费模式",
+                "购物前列清单，避免冲动消费",
+                "实行'延迟满足'策略，大额消费先冷静3天",
+                "区分'想要'和'需要'，优先满足必要开支",
+                "设置每月消费预算，并严格遵守"
+            ],
+            "风险意识": [
+                "建立相当于3-6个月生活费的应急基金",
+                "购买适合自己的保险产品，如重疾险、意外险等",
+                "学习基本的风险管理知识",
+                "避免将所有资金投入单一投资品种",
+                "定期评估自己的风险承受能力"
+            ],
+            "投资思维": [
+                "学习基本的投资理论，如价值投资、指数投资等",
+                "了解不同投资工具的特点和风险收益特征",
+                "实践小额投资，积累投资经验",
+                "学习资产配置的方法，构建多元化投资组合",
+                "定期回顾和分析投资表现，总结经验教训"
+            ],
+            "财富规划": [
+                "明确短期、中期和长期的财务目标",
+                "制定详细的财富规划，包括储蓄、投资、保险等方面",
+                "定期检查规划执行情况，适时调整",
+                "考虑税务规划，合法合规地减少税负",
+                "规划退休生活，提前准备养老金"
+            ]
+        };
+
+        // DOM元素
+        const startTestBtn = document.getElementById('start-test');
+        const beginTestBtn = document.getElementById('begin-test');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const questionContainer = document.getElementById('question-container');
+        const progressText = document.getElementById('progress-text');
+        const progressBar = document.querySelector('.progress-bar');
+        const scoreDisplay = document.getElementById('score-display');
+        
+        // 页面元素
+        const disclaimerSection = document.getElementById('disclaimer');
+        const introSection = document.getElementById('intro');
+        const questionnaireSection = document.getElementById('questionnaire');
+        const resultsSection = document.getElementById('results');
+        
+        // 测评状态
+        let currentQuestionIndex = 0;
+        const userAnswers = new Array(questions.length).fill(null);
+        let currentScore = 0;
+
+        // 事件监听器
+        startTestBtn.addEventListener('click', () => {
+            disclaimerSection.classList.add('hidden');
+            introSection.classList.remove('hidden');
+        });
+
+        beginTestBtn.addEventListener('click', () => {
+            introSection.classList.add('hidden');
+            questionnaireSection.classList.remove('hidden');
+            loadQuestion(0);
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion(currentQuestionIndex);
+                updateNavigationButtons();
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion(currentQuestionIndex);
+                updateNavigationButtons();
+            }
+        });
+
+        submitBtn.addEventListener('click', () => {
+            calculateResults();
+            questionnaireSection.classList.add('hidden');
+            resultsSection.classList.remove('hidden');
+        });
+
+        // 加载题目
+        function loadQuestion(index) {
+            const question = questions[index];
+            questionContainer.innerHTML = `
+                <h2 class="text-xl font-bold mb-6">${question.question}</h2>
+                <div class="space-y-3">
+                    ${question.options.map((option, i) => `
+                        <div class="option-item bg-neutral hover:bg-neutral/70 rounded-lg p-4 cursor-pointer transition-custom ${userAnswers[index] === i ? 'ring-2 ring-primary bg-primary/5' : ''}" 
+                             data-index="${i}">
+                            <div class="flex items-center">
+                                <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center mr-3 ${userAnswers[index] === i ? 'bg-primary border-primary' : ''}">
+                                    ${userAnswers[index] === i ? '<i class="fa fa-check text-white text-xs"></i>' : ''}
+                                </div>
+                                <span>${option.text}</span>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+
+            // 添加选项点击事件
+            const options = questionContainer.querySelectorAll('.option-item');
+            options.forEach(option => {
+                option.addEventListener('click', () => {
+                    const selectedIndex = parseInt(option.dataset.index);
+                    userAnswers[index] = selectedIndex;
+                    
+                    // 更新选项样式
+                    options.forEach(opt => {
+                        opt.classList.remove('ring-2', 'ring-primary', 'bg-primary/5');
+                        opt.querySelector('.w-6').classList.remove('bg-primary', 'border-primary');
+                        opt.querySelector('.w-6').innerHTML = '';
+                    });
+                    
+                    option.classList.add('ring-2', 'ring-primary', 'bg-primary/5');
+                    option.querySelector('.w-6').classList.add('bg-primary', 'border-primary');
+                    option.querySelector('.w-6').innerHTML = '<i class="fa fa-check text-white text-xs"></i>';
+                    
+                    // 更新分数
+                    updateScore();
+                    
+                    // 如果是最后一题且已回答，显示提交按钮
+                    updateNavigationButtons();
+                });
+            });
+
+            // 更新进度
+            updateProgress();
+        }
+
+        // 更新进度条和进度文本
+        function updateProgress() {
+            const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+            progressText.textContent = `第 ${currentQuestionIndex + 1} 题 / 共 ${questions.length} 题`;
+        }
+
+        // 更新导航按钮状态
+        function updateNavigationButtons() {
+            // 上一题按钮
+            if (currentQuestionIndex === 0) {
+                prevBtn.classList.add('hidden');
+            } else {
+                prevBtn.classList.remove('hidden');
+            }
+            
+            // 下一题/提交按钮
+            if (currentQuestionIndex === questions.length - 1) {
+                nextBtn.classList.add('hidden');
+                if (userAnswers[currentQuestionIndex] !== null) {
+                    submitBtn.classList.remove('hidden');
+                } else {
+                    submitBtn.classList.add('hidden');
+                }
+            } else {
+                nextBtn.classList.remove('hidden');
+                submitBtn.classList.add('hidden');
+            }
+        }
+
+        // 更新当前分数显示
+        function updateScore() {
+            currentScore = userAnswers.reduce((score, answer, index) => {
+                if (answer !== null) {
+                    return score + questions[index].options[answer].score;
+                }
+                return score;
+            }, 0);
+            scoreDisplay.textContent = `得分: ${currentScore}`;
+        }
+
+        // 计算测评结果
+        function calculateResults() {
+            // 计算总分
+            const totalScore = userAnswers.reduce((score, answer, index) => {
+                return score + questions[index].options[answer].score;
+            }, 0);
+            
+            // 计算各维度得分
+            const dimensions = ["理财知识", "消费习惯", "风险意识", "投资思维", "财富规划"];
+            const dimensionScores = {};
+            
+            dimensions.forEach(dimension => {
+                const dimensionQuestions = questions.filter(q => q.dimension === dimension);
+                const dimensionScore = dimensionQuestions.reduce((score, q) => {
+                    const answerIndex = userAnswers[questions.indexOf(q)];
+                    return score + q.options[answerIndex].score;
+                }, 0);
+                dimensionScores[dimension] = {
+                    score: dimensionScore,
+                    maxScore: dimensionQuestions.length * 3,
+                    percentage: Math.round((dimensionScore / (dimensionQuestions.length * 3)) * 100)
+                };
+            });
+            
+            // 确定理财类型画像
+            const maxScore = questions.length * 3;
+            const scorePercentage = (totalScore / maxScore) * 100;
+            let profileIndex;
+            
+            if (scorePercentage < 40) {
+                profileIndex = 0; // 理财新手
+            } else if (scorePercentage < 60) {
+                profileIndex = 1; // 稳健起步者
+            } else if (scorePercentage < 80) {
+                profileIndex = 2; // 理财达人
+            } else {
+                profileIndex = 3; // 财富管理大师
+            }
+            
+            const profile = financialProfiles[profileIndex];
+            
+            // 显示结果
+            displayResults(totalScore, maxScore, profile, dimensionScores);
+        }
+
+        // 显示测评结果
+        function displayResults(totalScore, maxScore, profile, dimensionScores) {
+            // 显示总分和评级
+            document.getElementById('total-score').textContent = `${totalScore}/${maxScore}`;
+            document.getElementById('overall-rating').textContent = profile.name;
+            
+            // 显示理财类型画像
+            const profileContainer = document.getElementById('financial-profile');
+            profileContainer.innerHTML = `
+                <div class="inline-block p-4 rounded-full bg-${profile.color}/10 mb-4">
+                    <i class="fa ${profile.icon} text-${profile.color} text-4xl"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-2" style="color: ${profile.color}">${profile.name}</h3>
+                <p class="text-gray-700 mb-4">${profile.description}</p>
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-2 mt-4">
+                    ${profile.features.map(feature => `
+                        <div class="bg-white p-2 rounded text-center text-sm">${feature}</div>
+                    `).join('')}
+                </div>
+            `;
+            
+            // 显示各维度得分
+            const dimensionContainer = document.getElementById('dimension-scores');
+            dimensionContainer.innerHTML = Object.entries(dimensionScores).map(([dimension, data]) => {
+                // 确定维度评级
+                let rating;
+                if (data.percentage < 40) {
+                    rating = 'low';
+                } else if (data.percentage < 70) {
+                    rating = 'medium';
+                } else {
+                    rating = 'high';
+                }
+                
+                const analysis = dimensionAnalysis[dimension][rating];
+                
+                return `
+                    <div class="result-card">
+                        <div class="flex justify-between items-center mb-2">
+                            <h4 class="font-bold">${dimension}</h4>
+                            <span class="text-sm font-medium">${data.score}/${data.maxScore}</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 mb-2">
+                            <div class="bg-secondary h-2.5 rounded-full" style="width: ${data.percentage}%"></div>
+                        </div>
+                        <div class="text-sm text-gray-600">${data.percentage}%</div>
+                        <div class="mt-3 p-3 bg-neutral rounded">
+                            <h5 class="font-bold mb-1">${analysis.title}</h5>
+                            <p class="text-sm">${analysis.description}</p>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            // 显示详细解读
+            const analysisContainer = document.getElementById('detailed-analysis');
+            analysisContainer.innerHTML = Object.entries(dimensionScores).map(([dimension, data]) => {
+                // 确定维度评级
+                let rating;
+                if (data.percentage < 40) {
+                    rating = 'low';
+                } else if (data.percentage < 70) {
+                    rating = 'medium';
+                } else {
+                    rating = 'high';
+                }
+                
+                const analysis = dimensionAnalysis[dimension][rating];
+                
+                return `
+                    <div class="result-card">
+                        <h4 class="text-lg font-bold mb-2 flex items-center">
+                            <i class="fa fa-${getDimensionIcon(dimension)} text-secondary mr-2"></i>
+                            ${dimension}
+                        </h4>
+                        <div class="bg-neutral p-4 rounded">
+                            <h5 class="font-bold mb-2">${analysis.title}</h5>
+                            <p>${analysis.description}</p>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            // 显示提升建议
+            const tipsContainer = document.getElementById('improvement-tips');
+            
+            // 找出得分最低的两个维度
+            const sortedDimensions = Object.entries(dimensionScores)
+                .sort((a, b) => a[1].percentage - b[1].percentage)
+                .slice(0, 2);
+            
+            tipsContainer.innerHTML = sortedDimensions.map(([dimension, data]) => {
+                const tips = improvementTips[dimension].slice(0, 3); // 取前3条建议
+                
+                return `
+                    <div class="result-card">
+                        <h4 class="text-lg font-bold mb-3 flex items-center">
+                            <i class="fa fa-${getDimensionIcon(dimension)} text-primary mr-2"></i>
+                            ${dimension}提升建议
+                        </h4>
+                        <ul class="space-y-2">
+                            ${tips.map(tip => `
+                                <li class="flex items-start">
+                                    <i class="fa fa-check-circle text-primary mt-1 mr-2"></i>
+                                    <span>${tip}</span>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                `;
+            }).join('');
+            
+            // 添加动画效果
+            setTimeout(() => {
+                const cards = document.querySelectorAll('.result-card');
+                cards.forEach(card => {
+                    card.classList.add('show');
+                });
+            }, 100);
+        }
+
+        // 获取维度对应的图标
+        function getDimensionIcon(dimension) {
+            const icons = {
+                "理财知识": "book",
+                "消费习惯": "shopping-cart",
+                "风险意识": "shield",
+                "投资思维": "line-chart",
+                "财富规划": "calendar"
+            };
+            return icons[dimension] || "star";
+        }
+    </script>
+</body>
+</html>
