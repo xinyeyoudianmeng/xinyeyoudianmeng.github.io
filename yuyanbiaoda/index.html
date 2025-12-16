@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>语言表达能力测评 - 小红书原创内容</title>
+    <!-- Tailwind CSS v3 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <!-- 统一的 Tailwind 配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FF6B6B',
+                        secondary: '#4ECDC4',
+                        accent: '#FFD166',
+                        neutral: '#F7FFF7',
+                        dark: '#292F36'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    animation: {
+                        'bounce-light': 'bounce-light 0.5s ease-in-out',
+                    },
+                    keyframes: {
+                        'bounce-light': {
+                            '0%, 100%': { transform: 'scale(1)' },
+                            '50%': { transform: 'scale(1.05)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+            }
+            .card-hover {
+                @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+            }
+            .btn-primary {
+                @apply bg-primary text-white font-medium py-2 px-6 rounded-full shadow-md hover:bg-opacity-90 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50 active:scale-95;
+            }
+            .btn-secondary {
+                @apply bg-secondary text-white font-medium py-2 px-6 rounded-full shadow-md hover:bg-opacity-90 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-opacity-50 active:scale-95;
+            }
+            .option-btn {
+                @apply w-full text-left p-4 border-2 rounded-lg transition-all duration-300 focus:outline-none;
+            }
+            .option-btn-selected {
+                @apply border-primary bg-primary bg-opacity-10;
+            }
+            .progress-bar {
+                @apply h-2 bg-gray-200 rounded-full overflow-hidden;
+            }
+            .progress-bar-fill {
+                @apply h-full bg-primary transition-all duration-500 ease-out;
+            }
+        }
+    </style>
+</head>
+<body class="bg-neutral min-h-screen font-sans text-dark">
+    <!-- 顶部导航 -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fa fa-comments text-primary text-2xl"></i>
+                <h1 class="text-xl font-bold text-dark">语言表达能力测评</h1>
+            </div>
+            <div id="progress-container" class="hidden md:block w-1/3">
+                <div class="flex justify-between text-xs text-gray-500 mb-1">
+                    <span>进度</span>
+                    <span id="progress-text">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div id="progress-bar-fill" class="progress-bar-fill" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- 欢迎页面 -->
+        <section id="welcome-section" class="flex flex-col items-center justify-center min-h-[70vh] text-center">
+            <div class="max-w-2xl mx-auto">
+                <div class="mb-8 animate-bounce-light">
+                    <i class="fa fa-comments text-primary text-6xl"></i>
+                </div>
+                <h2 class="text-3xl font-bold mb-4 text-dark">欢迎参加语言表达能力测评</h2>
+                <p class="text-lg text-gray-600 mb-8">这是一份原创的语言表达能力自评工具，帮助你了解自己在口语表达、书面表达、逻辑思维和词汇量等方面的表现。</p>
+                
+                <!-- 付费提示 -->
+                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-8 text-left">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i class="fa fa-info-circle text-yellow-400"></i>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-yellow-700">
+                                <strong>付费测试为原创内容服务，非专业医疗/心理测评</strong>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 免责声明 -->
+                <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 mb-8 text-left text-sm">
+                    <h3 class="font-bold mb-2 flex items-center">
+                        <i class="fa fa-exclamation-triangle text-yellow-500 mr-2"></i>
+                        免责声明
+                    </h3>
+                    <p class="text-gray-600">
+                        本测评工具仅作为个人自我认知和学习参考，<strong>非专业诊断工具</strong>。测评结果不构成任何形式的医疗或专业建议。如有语言表达相关的困扰，建议寻求专业人士的帮助。
+                    </p>
+                </div>
+                
+                <button id="start-test-btn" class="btn-primary text-lg">
+                    开始测评
+                    <i class="fa fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- 测评页面 -->
+        <section id="test-section" class="hidden">
+            <div id="question-container" class="max-w-3xl mx-auto bg-white rounded-xl shadow-md p-6 md:p-8">
+                <div class="mb-6">
+                    <h3 id="question-category" class="text-sm font-medium text-primary mb-2">口语表达能力</h3>
+                    <h2 id="question-text" class="text-xl font-bold mb-6">在会议上发表意见时，我能够清晰地表达自己的观点。</h2>
+                    
+                    <div id="options-container" class="space-y-3">
+                        <!-- 选项将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+                
+                <div class="flex justify-between items-center mt-8">
+                    <button id="prev-btn" class="btn-secondary opacity-50 cursor-not-allowed" disabled>
+                        <i class="fa fa-arrow-left mr-2"></i>
+                        上一题
+                    </button>
+                    <span id="question-counter" class="text-gray-500">1/20</span>
+                    <button id="next-btn" class="btn-primary">
+                        下一题
+                        <i class="fa fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 结果页面 -->
+        <section id="result-section" class="hidden">
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-white rounded-xl shadow-md p-6 md:p-8 mb-8">
+                    <h2 class="text-2xl font-bold mb-6 text-center">你的语言表达能力测评结果</h2>
+                    
+                    <!-- 总体评分 -->
+                    <div class="text-center mb-8">
+                        <div class="inline-block relative">
+                            <svg class="w-40 h-40" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="45" fill="none" stroke="#e6e6e6" stroke-width="10"></circle>
+                                <circle id="overall-score-circle" cx="50" cy="50" r="45" fill="none" stroke="#FF6B6B" stroke-width="10" stroke-dasharray="283" stroke-dashoffset="283" transform="rotate(-90 50 50)"></circle>
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center flex-col">
+                                <span id="overall-score" class="text-4xl font-bold text-primary">0</span>
+                                <span class="text-gray-500">总分</span>
+                            </div>
+                        </div>
+                        <h3 id="overall-rating" class="text-xl font-medium mt-4">待评估</h3>
+                    </div>
+                    
+                    <!-- 雷达图 -->
+                    <div class="mb-8">
+                        <h3 class="text-lg font-medium mb-4">能力维度分析</h3>
+                        <div class="w-full h-80">
+                            <canvas id="radar-chart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <!-- 详细解读 -->
+                    <div id="detailed-interpretation" class="space-y-6">
+                        <!-- 详细解读将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+                
+                <!-- 提升建议 -->
+                <div class="bg-white rounded-xl shadow-md p-6 md:p-8 mb-8">
+                    <h3 class="text-xl font-bold mb-4 flex items-center">
+                        <i class="fa fa-lightbulb-o text-accent mr-2"></i>
+                        提升建议
+                    </h3>
+                    <div id="improvement-suggestions" class="space-y-4">
+                        <!-- 提升建议将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+                
+                <!-- 学习资源 -->
+                <div class="bg-white rounded-xl shadow-md p-6 md:p-8 mb-8">
+                    <h3 class="text-xl font-bold mb-4 flex items-center">
+                        <i class="fa fa-book text-secondary mr-2"></i>
+                        学习资源推荐
+                    </h3>
+                    <div id="learning-resources" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- 学习资源将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+                
+                <!-- 专业帮助提示 -->
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 text-center">
+                    <p class="text-blue-700">
+                        <i class="fa fa-handshake-o mr-2"></i>
+                        如果您希望进一步提升语言表达能力，建议寻求专业语言培训师或沟通教练的指导。
+                    </p>
+                </div>
+                
+                <div class="text-center mt-8">
+                    <button id="restart-btn" class="btn-primary">
+                        <i class="fa fa-refresh mr-2"></i>
+                        重新测评
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-white py-8 mt-12">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa fa-comments text-primary text-xl"></i>
+                        <h2 class="text-lg font-bold">语言表达能力测评</h2>
+                    </div>
+                    <p class="text-gray-400 text-sm mt-1">小红书原创内容 © 2025</p>
+                </div>
+                
+                <div class="text-center md:text-right">
+                    <p class="text-gray-400 text-sm">
+                        <strong>重要提示：</strong>本测评为原创内容服务，非专业医疗/心理测评
+                    </p>
+                    <p class="text-gray-400 text-sm mt-1">
+                        结果仅供参考，不构成任何形式的专业建议
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 测评题目数据
+        const questions = [
+            // 口语表达能力
+            {
+                id: 1,
+                category: "口语表达能力",
+                text: "在会议上发表意见时，我能够清晰地表达自己的观点。",
+                options: [
+                    { value: 1, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "完全符合" }
+                ]
+            },
+            {
+                id: 2,
+                category: "口语表达能力",
+                text: "与陌生人交流时，我能够轻松找到话题并保持对话流畅。",
+                options: [
+                    { value: 1, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "完全符合" }
+                ]
+            },
+            {
+                id: 3,
+                category: "口语表达能力",
+                text: "在公众场合演讲时，我能够自信地表达并吸引听众的注意力。",
+                options: [
+                    { value: 1, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "完全符合" }
+                ]
+            },
+            {
+                id: 4,
+                category: "口语表达能力",
+                text: "我能够用简洁明了的语言解释复杂的概念，让他人容易理解。",
+                options: [
+                    { value: 1, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "完全符合" }
+                ]
+            },
+            {
+                id: 5,
+                category: "口语表达能力",
+                text: "在争论或讨论中，我能够有条理地表达自己的立场并回应他人的观点。",
+                options: [
+                    { value: 1, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "完全符合" }
+                ]
+            },
+            
+            // 书面表达能力
+            {
+                id: 6,
+                category: "书面表达能力",
+                text: "写邮件或报告时，我能够清晰地组织内容并表达自己的想法。",
+                options: [
+                    { value: 1, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "完全符合" }
+                ]
+            },
+            {
+                id: 7,
+                category: "书面表达能力",
+                text: "我能够根据不同的场合和读者调整我的写作风格和语气。",
+                options: [
+                    { value: 1, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "完全符合" }
+                ]
+            },
+            {
+                id: 8,
+                category: "书面表达能力",
+                text: "我的写作很少有语法错误或用词不当的情况。",
+                options: [
+                    { value: 1, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "完全符合" }
+                ]
+            },
+            {
+                id: 9,
+                category: "书面表达能力",
+                text: "我能够通过写作有效地传达复杂的信息或情感。",
+                options: [
+                    { value: 1, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "完全符合" }
+                ]
+            },
+            {
+                id: 10,
+                category: "书面表达能力",
+                text: "我喜欢写作，并且经常通过写作来表达自己的想法。",
+                options: [
+                    { value: 1, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "完全符合" }
+                ]
+            },
+            
+            // 逻辑思维能力
+            {
+                id: 11,
+                category: "逻辑思维能力",
+                text: "在表达观点时，我能够提供充分的理由和证据支持我的说法。",
+                options: [
+                    { value: 1, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "完全符合" }
+                ]
+            },
+            {
+                id: 12,
+                category: "逻辑思维能力",
+                text: "我能够清晰地分析问题的各个方面，并提出有条理的解决方案。",
+                options: [
+                    { value: 1, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "完全符合" }
+                ]
+            },
+            {
+                id: 13,
+                category: "逻辑思维能力",
+                text: "在听他人讲话或阅读时，我能够快速抓住重点和逻辑关系。",
+                options: [
+                    { value: 1, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "完全符合" }
+                ]
+            },
+            {
+                id: 14,
+                category: "逻辑思维能力",
+                text: "我能够识别并纠正自己或他人表达中的逻辑错误。",
+                options: [
+                    { value: 1, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "完全符合" }
+                ]
+            },
+            {
+                id: 15,
+                category: "逻辑思维能力",
+                text: "在组织语言时，我会注意内容的连贯性和逻辑性。",
+                options: [
+                    { value: 1, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "完全符合" }
+                ]
+            },
+            
+            // 词汇量与用词准确性
+            {
+                id: 16,
+                category: "词汇量与用词准确性",
+                text: "我拥有丰富的词汇量，能够准确选择合适的词语表达自己的想法。",
+                options: [
+                    { value: 1, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "完全符合" }
+                ]
+            },
+            {
+                id: 17,
+                category: "词汇量与用词准确性",
+                text: "我会注意词语的感情色彩和语体色彩，避免用词不当。",
+                options: [
+                    { value: 1, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "完全符合" }
+                ]
+            },
+            {
+                id: 18,
+                category: "词汇量与用词准确性",
+                text: "我喜欢学习新词语，并尝试在日常交流中使用它们。",
+                options: [
+                    { value: 1, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "完全符合" }
+                ]
+            },
+            {
+                id: 19,
+                category: "词汇量与用词准确性",
+                text: "在表达时，我能够避免重复使用相同的词语，使语言更加丰富多样。",
+                options: [
+                    { value: 1, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "完全符合" }
+                ]
+            },
+            {
+                id: 20,
+                category: "词汇量与用词准确性",
+                text: "我能够理解并正确使用成语、谚语等固定表达方式。",
+                options: [
+                    { value: 1, text: "完全不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "完全符合" }
+                ]
+            }
+        ];
+
+        // 评分标准
+        const scoringCriteria = {
+            categories: {
+                "口语表达能力": {
+                    range: [1, 5],
+                    questions: [1, 2, 3, 4, 5]
+                },
+                "书面表达能力": {
+                    range: [6, 10],
+                    questions: [6, 7, 8, 9, 10]
+                },
+                "逻辑思维能力": {
+                    range: [11, 15],
+                    questions: [11, 12, 13, 14, 15]
+                },
+                "词汇量与用词准确性": {
+                    range: [16, 20],
+                    questions: [16, 17, 18, 19, 20]
+                }
+            },
+            overall: {
+                excellent: { min: 85, max: 100, label: "优秀", description: "你的语言表达能力非常出色，能够在各种场合自信、清晰地表达自己的想法。" },
+                good: { min: 70, max: 84, label: "良好", description: "你的语言表达能力较好，能够满足大部分日常和工作中的表达需求。" },
+                average: { min: 50, max: 69, label: "一般", description: "你的语言表达能力处于中等水平，有一定的提升空间。" },
+                belowAverage: { min: 30, max: 49, label: "需提升", description: "你的语言表达能力有待提高，建议加强练习和学习。" },
+                poor: { min: 20, max: 29, label: "亟需提升", description: "你的语言表达能力较弱，强烈建议系统学习和训练。" }
+            },
+            category: {
+                excellent: { min: 21, max: 25, label: "优秀", description: "你在这一维度表现出色，是你的优势所在。" },
+                good: { min: 16, max: 20, label: "良好", description: "你在这一维度表现不错，有一定的优势。" },
+                average: { min: 11, max: 15, label: "一般", description: "你在这一维度表现平平，可以进一步提升。" },
+                belowAverage: { min: 6, max: 10, label: "需提升", description: "你在这一维度表现较弱，需要加强练习。" },
+                poor: { min: 5, max: 5, label: "亟需提升", description: "你在这一维度表现很差，建议重点关注和改进。" }
+            }
+        };
+
+        // 提升建议
+        const improvementSuggestions = {
+            "口语表达能力": [
+                "多参加社交活动，增加与人交流的机会",
+                "练习即兴演讲，可以每天选择一个话题进行2-3分钟的演讲",
+                "录制自己的讲话，然后回听并分析不足之处",
+                "参加辩论俱乐部或演讲培训课程",
+                "学习呼吸技巧和声音控制，提高语音的清晰度和感染力"
+            ],
+            "书面表达能力": [
+                "每天坚持写日记或博客，锻炼写作能力",
+                "阅读优秀的文章和书籍，学习他人的写作风格和技巧",
+                "参加写作工作坊或课程，系统学习写作知识",
+                "请他人审阅你的作品，获取反馈和建议",
+                "练习不同类型的写作，如叙事、说明、议论等"
+            ],
+            "逻辑思维能力": [
+                "学习逻辑学基础知识，了解常见的逻辑谬误",
+                "练习思维导图，帮助整理思路和组织内容",
+                "阅读哲学、科学等需要逻辑思维的书籍",
+                "玩逻辑推理游戏，如数独、推理小说等",
+                "在表达前先在脑海中整理好内容的逻辑结构"
+            ],
+            "词汇量与用词准确性": [
+                "每天学习5-10个新词语，并尝试在日常交流中使用",
+                "阅读各类书籍和文章，扩大词汇接触面",
+                "使用词典和成语词典，了解词语的准确含义和用法",
+                "玩文字游戏，如填字游戏、成语接龙等",
+                "注意观察他人的用词，学习好的表达方式"
+            ]
+        };
+
+        // 学习资源推荐
+        const learningResources = [
+            {
+                title: "《沟通的方法》",
+                type: "书籍",
+                description: "帮助你掌握有效沟通的技巧和方法",
+                icon: "fa-book",
+                color: "text-primary"
+            },
+            {
+                title: "《金字塔原理》",
+                type: "书籍",
+                description: "教你如何构建清晰、有逻辑的思维和表达",
+                icon: "fa-sitemap",
+                color: "text-secondary"
+            },
+            {
+                title: "《演讲的力量》",
+                type: "书籍",
+                description: "提升公众演讲能力的实用指南",
+                icon: "fa-microphone",
+                color: "text-accent"
+            },
+            {
+                title: "《文心》",
+                type: "书籍",
+                description: "学习中文写作技巧的经典之作",
+                icon: "fa-pencil",
+                color: "text-primary"
+            },
+            {
+                title: "TED演讲集",
+                type: "视频",
+                description: "学习优秀演讲者的表达技巧和方式",
+                icon: "fa-play-circle",
+                color: "text-secondary"
+            },
+            {
+                title: "《词语的力量》",
+                type: "书籍",
+                description: "探索词汇如何影响我们的思维和沟通",
+                icon: "fa-language",
+                color: "text-accent"
+            }
+        ];
+
+        // 应用状态
+        let currentQuestionIndex = 0;
+        const userAnswers = new Array(questions.length).fill(null);
+        let radarChart = null;
+
+        // DOM元素
+        const welcomeSection = document.getElementById('welcome-section');
+        const testSection = document.getElementById('test-section');
+        const resultSection = document.getElementById('result-section');
+        
+        const startTestBtn = document.getElementById('start-test-btn');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        
+        const questionCategory = document.getElementById('question-category');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const questionCounter = document.getElementById('question-counter');
+        
+        const progressText = document.getElementById('progress-text');
+        const progressBarFill = document.getElementById('progress-bar-fill');
+        
+        const overallScore = document.getElementById('overall-score');
+        const overallRating = document.getElementById('overall-rating');
+        const overallScoreCircle = document.getElementById('overall-score-circle');
+        const detailedInterpretation = document.getElementById('detailed-interpretation');
+        const improvementSuggestionsContainer = document.getElementById('improvement-suggestions');
+        const learningResourcesContainer = document.getElementById('learning-resources');
+
+        // 初始化应用
+        function initApp() {
+            startTestBtn.addEventListener('click', startTest);
+            prevBtn.addEventListener('click', goToPreviousQuestion);
+            nextBtn.addEventListener('click', goToNextQuestion);
+            restartBtn.addEventListener('click', restartTest);
+        }
+
+        // 开始测评
+        function startTest() {
+            welcomeSection.classList.add('hidden');
+            testSection.classList.remove('hidden');
+            showQuestion(currentQuestionIndex);
+            updateProgress();
+        }
+
+        // 显示当前问题
+        function showQuestion(index) {
+            const question = questions[index];
+            questionCategory.textContent = question.category;
+            questionText.textContent = question.text;
+            questionCounter.textContent = `${index + 1}/${questions.length}`;
+            
+            // 清空选项容器
+            optionsContainer.innerHTML = '';
+            
+            // 添加选项按钮
+            question.options.forEach((option, optionIndex) => {
+                const optionBtn = document.createElement('button');
+                optionBtn.className = `option-btn ${userAnswers[index] === option.value ? 'option-btn-selected' : 'border-gray-200 hover:border-primary'}`;
+                optionBtn.innerHTML = `
+                    <div class="flex items-center">
+                        <div class="w-6 h-6 rounded-full border-2 flex items-center justify-center mr-3 ${userAnswers[index] === option.value ? 'border-primary text-primary' : 'border-gray-300 text-gray-400'}">
+                            ${optionIndex + 1}
+                        </div>
+                        <span>${option.text}</span>
+                    </div>
+                `;
+                
+                optionBtn.addEventListener('click', () => {
+                    selectOption(option.value);
+                });
+                
+                optionsContainer.appendChild(optionBtn);
+            });
+            
+            // 更新导航按钮状态
+            prevBtn.disabled = index === 0;
+            prevBtn.classList.toggle('opacity-50', index === 0);
+            prevBtn.classList.toggle('cursor-not-allowed', index === 0);
+            
+            nextBtn.textContent = index === questions.length - 1 ? '提交' : '下一题';
+            nextBtn.innerHTML = index === questions.length - 1 ? 
+                '提交 <i class="fa fa-check ml-2"></i>' : 
+                '下一题 <i class="fa fa-arrow-right ml-2"></i>';
+        }
+
+        // 选择选项
+        function selectOption(value) {
+            userAnswers[currentQuestionIndex] = value;
+            showQuestion(currentQuestionIndex); // 重新渲染问题以更新选项状态
+            updateProgress();
+        }
+
+        // 前往上一题
+        function goToPreviousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                showQuestion(currentQuestionIndex);
+                updateProgress();
+            }
+        }
+
+        // 前往下一题或提交
+        function goToNextQuestion() {
+            // 如果当前题未作答，提示用户
+            if (userAnswers[currentQuestionIndex] === null) {
+                alert('请选择一个选项后再继续');
+                return;
+            }
+            
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                showQuestion(currentQuestionIndex);
+                updateProgress();
+            } else {
+                // 所有问题都已回答，显示结果
+                calculateAndShowResults();
+            }
+        }
+
+        // 更新进度条
+        function updateProgress() {
+            const answeredCount = userAnswers.filter(answer => answer !== null).length;
+            const progressPercentage = Math.round((answeredCount / questions.length) * 100);
+            
+            progressText.textContent = `${progressPercentage}%`;
+            progressBarFill.style.width = `${progressPercentage}%`;
+        }
+
+        // 计算并显示结果
+        function calculateAndShowResults() {
+            // 计算各维度得分
+            const categoryScores = {};
+            let totalScore = 0;
+            
+            Object.keys(scoringCriteria.categories).forEach(category => {
+                const { questions: categoryQuestionIds } = scoringCriteria.categories[category];
+                const categoryQuestions = categoryQuestionIds.map(id => questions.find(q => q.id === id));
+                const categoryAnswers = categoryQuestions.map(q => userAnswers[questions.indexOf(q)]);
+                const categoryScore = categoryAnswers.reduce((sum, answer) => sum + answer, 0);
+                
+                categoryScores[category] = categoryScore;
+                totalScore += categoryScore;
+            });
+            
+            // 计算总体评级
+            const overallPercentage = Math.round((totalScore / (questions.length * 5)) * 100);
+            let overallRatingLabel = '';
+            let overallRatingDescription = '';
+            
+            Object.keys(scoringCriteria.overall).forEach(rating => {
+                const { min, max, label, description } = scoringCriteria.overall[rating];
+                if (overallPercentage >= min && overallPercentage <= max) {
+                    overallRatingLabel = label;
+                    overallRatingDescription = description;
+                }
+            });
+            
+            // 计算各维度评级
+            const categoryRatings = {};
+            
+            Object.keys(categoryScores).forEach(category => {
+                const score = categoryScores[category];
+                let ratingLabel = '';
+                let ratingDescription = '';
+                
+                Object.keys(scoringCriteria.category).forEach(rating => {
+                    const { min, max, label, description } = scoringCriteria.category[rating];
+                    if (score >= min && score <= max) {
+                        ratingLabel = label;
+                        ratingDescription = description;
+                    }
+                });
+                
+                categoryRatings[category] = {
+                    score,
+                    maxScore: 25,
+                    percentage: Math.round((score / 25) * 100),
+                    label: ratingLabel,
+                    description: ratingDescription
+                };
+            });
+            
+            // 显示结果
+            testSection.classList.add('hidden');
+            resultSection.classList.remove('hidden');
+            
+            // 更新总体评分
+            animateScore(overallScore, 0, overallPercentage, 1500);
+            overallRating.textContent = overallRatingLabel;
+            
+            // 绘制雷达图
+            drawRadarChart(categoryScores);
+            
+            // 生成详细解读
+            generateDetailedInterpretation(overallPercentage, overallRatingLabel, overallRatingDescription, categoryRatings);
+            
+            // 生成提升建议
+            generateImprovementSuggestions(categoryRatings);
+            
+            // 生成学习资源推荐
+            generateLearningResources();
+            
+            // 滚动到页面顶部
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 分数动画
+        function animateScore(element, start, end, duration) {
+            const startTime = performance.now();
+            
+            function updateScore(currentTime) {
+                const elapsedTime = currentTime - startTime;
+                const progress = Math.min(elapsedTime / duration, 1);
+                
+                // 使用缓动函数使动画更自然
+                const easedProgress = 1 - Math.pow(1 - progress, 3);
+                
+                const currentScore = Math.round(start + (end - start) * easedProgress);
+                element.textContent = currentScore;
+                
+                // 同步更新圆环进度
+                const circumference = 2 * Math.PI * 45;
+                const offset = circumference - (easedProgress * circumference);
+                overallScoreCircle.style.strokeDasharray = circumference;
+                overallScoreCircle.style.strokeDashoffset = offset;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(updateScore);
+                }
+            }
+            
+            requestAnimationFrame(updateScore);
+        }
+
+        // 绘制雷达图
+        function drawRadarChart(categoryScores) {
+            const ctx = document.getElementById('radar-chart').getContext('2d');
+            
+            // 如果已存在雷达图，先销毁
+            if (radarChart) {
+                radarChart.destroy();
+            }
+            
+            const labels = Object.keys(categoryScores);
+            const data = Object.values(categoryScores);
+            
+            radarChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '得分',
+                        data: data,
+                        backgroundColor: 'rgba(255, 107, 107, 0.2)',
+                        borderColor: 'rgba(255, 107, 107, 1)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(255, 107, 107, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(255, 107, 107, 1)'
+                    }]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 25,
+                            ticks: {
+                                stepSize: 5
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `得分: ${context.raw}/25`;
+                                }
+                            }
+                        }
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
+
+        // 生成详细解读
+        function generateDetailedInterpretation(overallPercentage, overallRatingLabel, overallRatingDescription, categoryRatings) {
+            detailedInterpretation.innerHTML = '';
+            
+            // 总体解读
+            const overallInterpretation = document.createElement('div');
+            overallInterpretation.className = 'mb-8';
+            overallInterpretation.innerHTML = `
+                <h3 class="text-xl font-bold mb-2">总体评估</h3>
+                <p class="text-gray-600 mb-4">
+                    你的语言表达能力总体评分为 <span class="font-bold text-primary">${overallPercentage}分</span>，属于 <span class="font-bold text-primary">${overallRatingLabel}</span> 水平。
+                </p>
+                <p class="text-gray-600">
+                    ${overallRatingDescription}
+                </p>
+            `;
+            detailedInterpretation.appendChild(overallInterpretation);
+            
+            // 各维度解读
+            const dimensionsInterpretation = document.createElement('div');
+            dimensionsInterpretation.className = 'space-y-6';
+            dimensionsInterpretation.innerHTML = '<h3 class="text-xl font-bold mb-4">各维度详细分析</h3>';
+            
+            Object.keys(categoryRatings).forEach(category => {
+                const { score, maxScore, percentage, label, description } = categoryRatings[category];
+                
+                const dimensionCard = document.createElement('div');
+                dimensionCard.className = 'bg-gray-50 rounded-lg p-4';
+                dimensionCard.innerHTML = `
+                    <div class="flex justify-between items-center mb-2">
+                        <h4 class="font-medium">${category}</h4>
+                        <span class="text-sm font-bold ${getRatingColorClass(label)}">${label}</span>
+                    </div>
+                    <div class="flex items-center mb-2">
+                        <div class="w-full bg-gray-200 rounded-full h-2 mr-2">
+                            <div class="bg-primary h-2 rounded-full" style="width: ${percentage}%"></div>
+                        </div>
+                        <span class="text-sm text-gray-600">${score}/${maxScore}</span>
+                    </div>
+                    <p class="text-sm text-gray-600">${description}</p>
+                `;
+                
+                dimensionsInterpretation.appendChild(dimensionCard);
+            });
+            
+            detailedInterpretation.appendChild(dimensionsInterpretation);
+        }
+
+        // 获取评级对应的颜色类
+        function getRatingColorClass(rating) {
+            switch (rating) {
+                case '优秀': return 'text-green-600';
+                case '良好': return 'text-blue-600';
+                case '一般': return 'text-gray-600';
+                case '需提升': return 'text-orange-600';
+                case '亟需提升': return 'text-red-600';
+                default: return 'text-gray-600';
+            }
+        }
+
+        // 生成提升建议
+        function generateImprovementSuggestions(categoryRatings) {
+            improvementSuggestionsContainer.innerHTML = '';
+            
+            // 找出需要提升的维度（评级为"需提升"或"亟需提升"）
+            const dimensionsToImprove = Object.keys(categoryRatings).filter(
+                category => categoryRatings[category].label === '需提升' || categoryRatings[category].label === '亟需提升'
+            );
+            
+            // 如果所有维度都很好，给出总体提升建议
+            if (dimensionsToImprove.length === 0) {
+                const generalSuggestion = document.createElement('div');
+                generalSuggestion.className = 'bg-green-50 border-l-4 border-green-400 p-4';
+                generalSuggestion.innerHTML = `
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i class="fa fa-check-circle text-green-400"></i>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-green-700">
+                                恭喜你！你的语言表达能力各方面都表现不错。你可以通过持续练习和学习来进一步提升自己的表达技巧，挑战更高难度的表达场景。
+                            </p>
+                        </div>
+                    </div>
+                `;
+                improvementSuggestionsContainer.appendChild(generalSuggestion);
+                return;
+            }
+            
+            // 为每个需要提升的维度生成建议
+            dimensionsToImprove.forEach(dimension => {
+                const suggestions = improvementSuggestions[dimension] || [];
+                
+                if (suggestions.length > 0) {
+                    const dimensionSuggestion = document.createElement('div');
+                    dimensionSuggestion.className = 'mb-6';
+                    dimensionSuggestion.innerHTML = `
+                        <h4 class="font-medium mb-2 flex items-center">
+                            <i class="fa fa-arrow-right text-primary mr-2"></i>
+                            ${dimension}提升建议
+                        </h4>
+                        <ul class="list-disc list-inside space-y-2 text-gray-600 pl-2">
+                            ${suggestions.map(suggestion => `<li>${suggestion}</li>`).join('')}
+                        </ul>
+                    `;
+                    improvementSuggestionsContainer.appendChild(dimensionSuggestion);
+                }
+            });
+        }
+
+        // 生成学习资源推荐
+        function generateLearningResources() {
+            learningResourcesContainer.innerHTML = '';
+            
+            learningResources.forEach(resource => {
+                const resourceCard = document.createElement('div');
+                resourceCard.className = 'bg-gray-50 rounded-lg p-4 card-hover';
+                resourceCard.innerHTML = `
+                    <div class="flex items-center mb-2">
+                        <i class="fa ${resource.icon} ${resource.color} text-xl mr-3"></i>
+                        <div>
+                            <h4 class="font-medium">${resource.title}</h4>
+                            <p class="text-xs text-gray-500">${resource.type}</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-600">${resource.description}</p>
+                `;
+                learningResourcesContainer.appendChild(resourceCard);
+            });
+        }
+
+        // 重新开始测评
+        function restartTest() {
+            // 重置状态
+            currentQuestionIndex = 0;
+            userAnswers.fill(null);
+            
+            // 重置UI
+            resultSection.classList.add('hidden');
+            welcomeSection.classList.remove('hidden');
+            
+            // 重置进度条
+            progressText.textContent = '0%';
+            progressBarFill.style.width = '0%';
+            
+            // 滚动到页面顶部
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 初始化应用
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
