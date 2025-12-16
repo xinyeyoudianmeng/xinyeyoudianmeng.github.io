@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>逆商自测表 - 原创逆商评估工具</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4F46E5',
+                        secondary: '#10B981',
+                        accent: '#F59E0B',
+                        neutral: '#6B7280',
+                        light: '#F3F4F6',
+                        dark: '#1F2937'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+                        'hover': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .glass {
+                background: rgba(255, 255, 255, 0.7);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+            }
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            .transition-all-300 {
+                transition: all 300ms ease-in-out;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-indigo-50 to-emerald-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <!-- 头部信息 -->
+        <header class="text-center mb-10">
+            <h1 class="text-4xl font-bold text-primary mb-3 text-shadow">逆商自测表</h1>
+            <p class="text-lg text-neutral max-w-2xl mx-auto">
+                从掌控感、担当力、影响度、持续性四个维度评估您面对逆境时的心态和应对能力
+            </p>
+        </header>
+
+        <!-- 免责声明 -->
+        <div class="bg-white rounded-xl p-6 shadow-soft mb-8 border border-gray-100">
+            <h2 class="text-xl font-semibold text-dark mb-3 flex items-center">
+                <i class="fa fa-info-circle text-accent mr-2"></i>
+                重要声明
+            </h2>
+            <div class="text-neutral space-y-2 text-sm">
+                <p><strong>付费测试为原创内容服务，非专业医疗/心理测评</strong></p>
+                <p>本测试是基于心理学研究的自我评估工具，旨在帮助您了解自己的逆商水平，<strong>不构成专业诊断或治疗建议</strong>。</p>
+                <p>如有严重心理困扰，请寻求专业心理咨询师或医疗机构的帮助。</p>
+                <p>测试结果仅供参考，不能替代专业的心理评估。</p>
+            </div>
+        </div>
+
+        <!-- 测试说明 -->
+        <div class="bg-white rounded-xl p-6 shadow-soft mb-8 border border-gray-100">
+            <h2 class="text-xl font-semibold text-dark mb-3">测试说明</h2>
+            <div class="text-neutral space-y-3">
+                <p>本测试包含50道题目，从以下四个维度评估您的逆商水平：</p>
+                <ul class="list-disc pl-5 space-y-1">
+                    <li><strong>掌控感</strong>：评估您在面对逆境时的控制感知和主动应对能力</li>
+                    <li><strong>担当力</strong>：评估您对逆境的责任承担和解决问题的意愿</li>
+                    <li><strong>影响度</strong>：评估您对逆境影响范围的认知和情绪调节能力</li>
+                    <li><strong>持续性</strong>：评估您对逆境持续时间的认知和长期应对策略</li>
+                </ul>
+                <p>请根据您的真实情况和第一反应选择最符合的选项，不要过多思考。</p>
+            </div>
+        </div>
+
+        <!-- 测试区域 -->
+        <div id="test-container" class="bg-white rounded-xl p-6 shadow-soft mb-8 border border-gray-100">
+            <div id="progress-bar" class="w-full bg-light rounded-full h-2.5 mb-6">
+                <div id="progress" class="bg-primary h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+            </div>
+            
+            <div id="question-container">
+                <!-- 题目将通过JavaScript动态生成 -->
+            </div>
+            
+            <div class="flex justify-between mt-8">
+                <button id="prev-btn" class="px-6 py-2.5 bg-light text-neutral rounded-lg hover:bg-gray-200 transition-all-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i class="fa fa-arrow-left mr-2"></i>上一题
+                </button>
+                <button id="next-btn" class="px-6 py-2.5 bg-primary text-white rounded-lg hover:bg-indigo-600 transition-all-300">
+                    下一题<i class="fa fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 结果区域 -->
+        <div id="result-container" class="hidden bg-white rounded-xl p-6 shadow-soft mb-8 border border-gray-100">
+            <h2 class="text-2xl font-bold text-primary mb-6 text-center">您的逆商评估结果</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-light rounded-lg p-4">
+                    <h3 class="text-lg font-semibold text-dark mb-2">总体逆商水平</h3>
+                    <div class="flex items-center">
+                        <div id="total-score" class="text-4xl font-bold text-primary mr-3">0</div>
+                        <div id="total-level" class="text-lg font-medium text-neutral"></div>
+                    </div>
+                </div>
+                
+                <div class="bg-light rounded-lg p-4">
+                    <h3 class="text-lg font-semibold text-dark mb-2">逆商类型</h3>
+                    <div id="resilience-type" class="text-lg font-medium text-neutral"></div>
+                </div>
+            </div>
+            
+            <div class="mb-8">
+                <h3 class="text-lg font-semibold text-dark mb-4">各维度得分</h3>
+                <div class="space-y-4">
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <span class="text-sm font-medium text-dark">掌控感</span>
+                            <span id="control-score" class="text-sm font-medium text-primary">0/25</span>
+                        </div>
+                        <div class="w-full bg-light rounded-full h-2">
+                            <div id="control-bar" class="bg-primary h-2 rounded-full" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <span class="text-sm font-medium text-dark">担当力</span>
+                            <span id="ownership-score" class="text-sm font-medium text-secondary">0/25</span>
+                        </div>
+                        <div class="w-full bg-light rounded-full h-2">
+                            <div id="ownership-bar" class="bg-secondary h-2 rounded-full" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <span class="text-sm font-medium text-dark">影响度</span>
+                            <span id="impact-score" class="text-sm font-medium text-accent">0/25</span>
+                        </div>
+                        <div class="w-full bg-light rounded-full h-2">
+                            <div id="impact-bar" class="bg-accent h-2 rounded-full" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <span class="text-sm font-medium text-dark">持续性</span>
+                            <span id="endurance-score" class="text-sm font-medium text-indigo-400">0/25</span>
+                        </div>
+                        <div class="w-full bg-light rounded-full h-2">
+                            <div id="endurance-bar" class="bg-indigo-400 h-2 rounded-full" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mb-8">
+                <h3 class="text-lg font-semibold text-dark mb-3">结果解读</h3>
+                <div id="result-description" class="text-neutral space-y-3"></div>
+            </div>
+            
+            <div class="mb-8">
+                <h3 class="text-lg font-semibold text-dark mb-3">提升建议</h3>
+                <div id="improvement-tips" class="text-neutral space-y-3"></div>
+            </div>
+            
+            <div class="bg-light rounded-lg p-4 mb-6">
+                <h3 class="text-lg font-semibold text-dark mb-2">专业支持资源</h3>
+                <p class="text-neutral text-sm">
+                    如果您希望进一步提升逆商或面临持续的逆境挑战，建议寻求专业心理咨询师的帮助。
+                    您也可以阅读相关书籍，参加逆商培训课程，或加入支持性社群。
+                </p>
+            </div>
+            
+            <div class="text-center">
+                <button id="restart-btn" class="px-8 py-3 bg-primary text-white rounded-lg hover:bg-indigo-600 transition-all-300">
+                    重新测试
+                </button>
+            </div>
+        </div>
+
+        <!-- 页脚 -->
+        <footer class="text-center text-neutral text-sm mt-12">
+            <p>© 2025 逆商自测表 | 原创声明：本测试内容为原创设计，未经授权不得复制或传播</p>
+            <p class="mt-1">免责说明：本测试非专业心理测评工具，结果仅供参考</p>
+        </footer>
+    </div>
+
+    <script>
+        // 测试题目数据
+        const questions = [
+            // 掌控感维度 (1-12题)
+            {
+                id: 1,
+                dimension: "control",
+                question: "当工作中出现意外困难时，您认为自己能够掌控局面吗？",
+                options: [
+                    { value: 0, text: "完全不能，我感到无能为力" },
+                    { value: 1, text: "大部分时候不能，我会感到不知所措" },
+                    { value: 2, text: "有时能，但要看具体情况" },
+                    { value: 3, text: "大部分时候能，我会积极寻找解决方法" },
+                    { value: 4, text: "完全能，我相信自己有能力应对任何挑战" }
+                ]
+            },
+            {
+                id: 2,
+                dimension: "control",
+                question: "在面对失败时，您觉得自己能够控制情绪反应的程度如何？",
+                options: [
+                    { value: 0, text: "完全不能，失败会让我情绪崩溃" },
+                    { value: 1, text: "大部分时候不能，我会沉浸在负面情绪中" },
+                    { value: 2, text: "有时能，但需要一定时间调整" },
+                    { value: 3, text: "大部分时候能，我会快速调整自己的情绪" },
+                    { value: 4, text: "完全能，我能理性面对失败并迅速恢复" }
+                ]
+            },
+            {
+                id: 3,
+                dimension: "control",
+                question: "当计划被打乱时，您能够迅速调整并找到替代方案的能力如何？",
+                options: [
+                    { value: 0, text: "很差，我会感到混乱和无助" },
+                    { value: 1, text: "较差，我需要很长时间才能接受变化" },
+                    { value: 2, text: "一般，我能调整但不够迅速" },
+                    { value: 3, text: "较好，我能较快地适应变化并寻找替代方案" },
+                    { value: 4, text: "很好，变化对我来说是常态，我能立即调整" }
+                ]
+            },
+            {
+                id: 4,
+                dimension: "control",
+                question: "在压力情境下，您保持冷静和清晰思考的能力如何？",
+                options: [
+                    { value: 0, text: "很差，压力会让我思维混乱" },
+                    { value: 1, text: "较差，我会感到紧张并影响判断" },
+                    { value: 2, text: "一般，我能保持基本的思考能力" },
+                    { value: 3, text: "较好，我能在压力下保持相对冷静" },
+                    { value: 4, text: "很好，压力反而让我更加专注和清晰" }
+                ]
+            },
+            {
+                id: 5,
+                dimension: "control",
+                question: "当他人对您的工作提出批评时，您能够控制自己的反应并从中学习的能力如何？",
+                options: [
+                    { value: 0, text: "很差，我会感到被攻击并情绪化反应" },
+                    { value: 1, text: "较差，我会感到沮丧并难以接受批评" },
+                    { value: 2, text: "一般，我能接受批评但不一定能从中学习" },
+                    { value: 3, text: "较好，我能理性对待批评并尝试改进" },
+                    { value: 4, text: "很好，我视批评为成长机会并积极采纳有价值的建议" }
+                ]
+            },
+            {
+                id: 6,
+                dimension: "control",
+                question: "在面对不确定性时，您能够保持自信并做出决策的能力如何？",
+                options: [
+                    { value: 0, text: "很差，不确定性会让我犹豫不决" },
+                    { value: 1, text: "较差，我需要更多信息才能做决定" },
+                    { value: 2, text: "一般，我能在一定程度上应对不确定性" },
+                    { value: 3, text: "较好，我能在信息不完整的情况下做出合理决策" },
+                    { value: 4, text: "很好，我擅长在不确定环境中把握机会并做出决策" }
+                ]
+            },
+            {
+                id: 7,
+                dimension: "control",
+                question: "当您感到疲惫或倦怠时，您能够自我调节并恢复精力的能力如何？",
+                options: [
+                    { value: 0, text: "很差，我会一直处于疲惫状态" },
+                    { value: 1, text: "较差，恢复需要很长时间" },
+                    { value: 2, text: "一般，我能基本恢复但效率会受影响" },
+                    { value: 3, text: "较好，我有有效的方法快速恢复精力" },
+                    { value: 4, text: "很好，我能迅速调整状态并保持高效" }
+                ]
+            },
+            {
+                id: 8,
+                dimension: "control",
+                question: "在团队合作中，当意见不合时，您能够引导讨论朝建设性方向发展的能力如何？",
+                options: [
+                    { value: 0, text: "很差，我会回避冲突或加剧矛盾" },
+                    { value: 1, text: "较差，我难以在冲突中保持中立和建设性" },
+                    { value: 2, text: "一般，我能参与讨论但影响有限" },
+                    { value: 3, text: "较好，我能促进有效沟通并寻找共同点" },
+                    { value: 4, text: "很好，我擅长化解冲突并引导团队达成共识" }
+                ]
+            },
+            {
+                id: 9,
+                dimension: "control",
+                question: "当您设定的目标遇到阻碍时，您能够坚持并调整策略的能力如何？",
+                options: [
+                    { value: 0, text: "很差，我会轻易放弃目标" },
+                    { value: 1, text: "较差，我会感到沮丧并减少努力" },
+                    { value: 2, text: "一般，我能坚持但缺乏灵活调整的能力" },
+                    { value: 3, text: "较好，我能坚持目标并适时调整方法" },
+                    { value: 4, text: "很好，阻碍只会让我更有动力找到解决方案" }
+                ]
+            },
+            {
+                id: 10,
+                dimension: "control",
+                question: "在面对突发危机时，您能够迅速采取行动并控制局面的能力如何？",
+                options: [
+                    { value: 0, text: "很差，危机让我感到恐慌和无助" },
+                    { value: 1, text: "较差，我需要他人指导才能行动" },
+                    { value: 2, text: "一般，我能采取基本行动但不够果断" },
+                    { value: 3, text: "较好，我能迅速反应并采取有效措施" },
+                    { value: 4, text: "很好，危机中我能保持冷静并有效领导他人" }
+                ]
+            },
+            {
+                id: 11,
+                dimension: "control",
+                question: "当您感到焦虑或担忧时，您能够通过自我调节减轻这些情绪的能力如何？",
+                options: [
+                    { value: 0, text: "很差，负面情绪会持续困扰我" },
+                    { value: 1, text: "较差，我需要很长时间才能平静下来" },
+                    { value: 2, text: "一般，我有一些方法但效果有限" },
+                    { value: 3, text: "较好，我能有效管理大部分负面情绪" },
+                    { value: 4, text: "很好，我能迅速调整心态并保持积极" }
+                ]
+            },
+            {
+                id: 12,
+                dimension: "control",
+                question: "在面对复杂问题时，您能够系统性分析并找到解决方案的能力如何？",
+                options: [
+                    { value: 0, text: "很差，复杂问题让我感到无从下手" },
+                    { value: 1, text: "较差，我需要他人帮助才能分析问题" },
+                    { value: 2, text: "一般，我能部分分析但缺乏系统性" },
+                    { value: 3, text: "较好，我能系统性分析并找到可行方案" },
+                    { value: 4, text: "很好，我擅长解决复杂问题并找到创新方案" }
+                ]
+            },
+            
+            // 担当力维度 (13-25题)
+            {
+                id: 13,
+                dimension: "ownership",
+                question: "当项目失败时，您愿意承担自己应负的责任的程度如何？",
+                options: [
+                    { value: 0, text: "完全不愿意，我会找各种借口推卸责任" },
+                    { value: 1, text: "不太愿意，我会尽量减少自己的责任" },
+                    { value: 2, text: "一般，我会承认部分责任但不全面" },
+                    { value: 3, text: "比较愿意，我会坦诚承认自己的责任" },
+                    { value: 4, text: "非常愿意，我会主动承担责任并寻求改进" }
+                ]
+            },
+            {
+                id: 14,
+                dimension: "ownership",
+                question: "在团队合作中，您主动承担任务和解决问题的意愿如何？",
+                options: [
+                    { value: 0, text: "很低，我只做分配给我的任务" },
+                    { value: 1, text: "较低，我很少主动承担额外工作" },
+                    { value: 2, text: "一般，我会在必要时承担额外任务" },
+                    { value: 3, text: "较高，我经常主动承担责任和解决问题" },
+                    { value: 4, text: "很高，我总是寻找机会贡献更多并解决问题" }
+                ]
+            },
+            {
+                id: 15,
+                dimension: "ownership",
+                question: "当您犯错误时，您愿意承认并道歉的程度如何？",
+                options: [
+                    { value: 0, text: "完全不愿意，我很难承认自己的错误" },
+                    { value: 1, text: "不太愿意，我会避免直接承认错误" },
+                    { value: 2, text: "一般，我会在压力下承认错误" },
+                    { value: 3, text: "比较愿意，我会坦诚承认错误并道歉" },
+                    { value: 4, text: "非常愿意，我会主动承认错误并寻求弥补" }
+                ]
+            },
+            {
+                id: 16,
+                dimension: "ownership",
+                question: "在面对挑战时，您认为自己有责任寻找解决方案的程度如何？",
+                options: [
+                    { value: 0, text: "完全不认为，我觉得这是别人的责任" },
+                    { value: 1, text: "不太认为，我更倾向于等待指示" },
+                    { value: 2, text: "一般，我会在一定程度上参与解决" },
+                    { value: 3, text: "比较认为，我会积极参与并贡献想法" },
+                    { value: 4, text: "非常认为，我视之为自己的责任并全力以赴" }
+                ]
+            },
+            {
+                id: 17,
+                dimension: "ownership",
+                question: "当您看到团队或组织中存在问题时，您主动提出并尝试解决的意愿如何？",
+                options: [
+                    { value: 0, text: "很低，我认为这不关我的事" },
+                    { value: 1, text: "较低，我只会在被问及时才会提及" },
+                    { value: 2, text: "一般，我会偶尔提出但不坚持" },
+                    { value: 3, text: "较高，我会主动提出并尝试推动解决" },
+                    { value: 4, text: "很高，我会积极倡导变革并付诸行动" }
+                ]
+            },
+            {
+                id: 18,
+                dimension: "ownership",
+                question: "在面对困难任务时，您愿意投入额外时间和精力完成的程度如何？",
+                options: [
+                    { value: 0, text: "完全不愿意，我会尽量减少投入" },
+                    { value: 1, text: "不太愿意，我只会做最低要求" },
+                    { value: 2, text: "一般，我会完成任务但不会额外投入" },
+                    { value: 3, text: "比较愿意，我会在必要时投入额外努力" },
+                    { value: 4, text: "非常愿意，我会全力以赴确保任务完成" }
+                ]
+            },
+            {
+                id: 19,
+                dimension: "ownership",
+                question: "当您的行为影响到他人时，您考虑并承担这些影响的程度如何？",
+                options: [
+                    { value: 0, text: "完全不考虑，我只关注自己的需求" },
+                    { value: 1, text: "不太考虑，我很少意识到自己的影响" },
+                    { value: 2, text: "一般，我会在事后考虑自己的影响" },
+                    { value: 3, text: "比较考虑，我会有意识地考虑自己的行为影响" },
+                    { value: 4, text: "非常考虑，我会主动调整行为以减少负面影响" }
+                ]
+            },
+            {
+                id: 20,
+                dimension: "ownership",
+                question: "在面对批评时，您愿意接受并反思自己不足的程度如何？",
+                options: [
+                    { value: 0, text: "完全不愿意，我会反驳所有批评" },
+                    { value: 1, text: "不太愿意，我会感到被冒犯并防御" },
+                    { value: 2, text: "一般，我会听但不一定接受批评" },
+                    { value: 3, text: "比较愿意，我会认真考虑合理的批评" },
+                    { value: 4, text: "非常愿意，我视批评为成长机会并感谢批评者" }
+                ]
+            },
+            {
+                id: 21,
+                dimension: "ownership",
+                question: "当您承诺做某事时，您履行承诺的可靠性如何？",
+                options: [
+                    { value: 0, text: "很差，我经常无法兑现承诺" },
+                    { value: 1, text: "较差，我有时会找借口不履行承诺" },
+                    { value: 2, text: "一般，我会尽力但不总是能兑现" },
+                    { value: 3, text: "较好，我大多数时候能履行承诺" },
+                    { value: 4, text: "很好，我总是信守承诺，即使面临困难" }
+                ]
+            },
+            {
+                id: 22,
+                dimension: "ownership",
+                question: "在面对失败时，您愿意从自身寻找原因的程度如何？",
+                options: [
+                    { value: 0, text: "完全不愿意，我总是归咎于外部因素" },
+                    { value: 1, text: "不太愿意，我很少反思自己的问题" },
+                    { value: 2, text: "一般，我会在一定程度上反思自己的角色" },
+                    { value: 3, text: "比较愿意，我会认真分析自己的责任" },
+                    { value: 4, text: "非常愿意，我会深入反思并从中学习" }
+                ]
+            },
+            {
+                id: 23,
+                dimension: "ownership",
+                question: "当您发现自己的知识或技能不足时，您主动学习和提升的意愿如何？",
+                options: [
+                    { value: 0, text: "很低，我很少意识到自己的不足" },
+                    { value: 1, text: "较低，我只会在必要时学习" },
+                    { value: 2, text: "一般，我会学习但缺乏系统性" },
+                    { value: 3, text: "较高，我会主动寻找学习机会" },
+                    { value: 4, text: "很高，我持续学习并寻求提升" }
+                ]
+            },
+            {
+                id: 24,
+                dimension: "ownership",
+                question: "在团队冲突中，您愿意承担协调和解决问题的责任的程度如何？",
+                options: [
+                    { value: 0, text: "完全不愿意，我会回避冲突" },
+                    { value: 1, text: "不太愿意，我很少主动介入" },
+                    { value: 2, text: "一般，我会在被要求时参与" },
+                    { value: 3, text: "比较愿意，我会主动尝试协调" },
+                    { value: 4, text: "非常愿意，我视之为自己的责任并积极解决" }
+                ]
+            },
+            {
+                id: 25,
+                dimension: "ownership",
+                question: "当您看到不公平或不道德的行为时，您愿意站出来反对的程度如何？",
+                options: [
+                    { value: 0, text: "完全不愿意，我会选择沉默" },
+                    { value: 1, text: "不太愿意，我只会在安全的情况下表达" },
+                    { value: 2, text: "一般，我会在一定程度上表达关切" },
+                    { value: 3, text: "比较愿意，我会明确表达反对意见" },
+                    { value: 4, text: "非常愿意，我会积极采取行动制止不公正" }
+                ]
+            },
+            
+            // 影响度维度 (26-38题)
+            {
+                id: 26,
+                dimension: "impact",
+                question: "当工作中出现问题时，您认为这会影响到您生活其他方面的程度如何？",
+                options: [
+                    { value: 0, text: "非常大，工作问题会严重影响我的整个生活" },
+                    { value: 1, text: "较大，工作问题会影响我大部分生活领域" },
+                    { value: 2, text: "一般，工作问题会影响我部分生活" },
+                    { value: 3, text: "较小，我能将工作问题限制在工作范围内" },
+                    { value: 4, text: "非常小，我能完全分离工作和生活" }
+                ]
+            },
+            {
+                id: 27,
+                dimension: "impact",
+                question: "当您在某一领域失败时，您认为这会影响您在其他领域表现的程度如何？",
+                options: [
+                    { value: 0, text: "非常大，一个领域的失败会影响我所有方面" },
+                    { value: 1, text: "较大，失败会对我多个领域产生负面影响" },
+                    { value: 2, text: "一般，失败会有一定扩散效应但有限" },
+                    { value: 3, text: "较小，我能将失败的影响控制在特定领域" },
+                    { value: 4, text: "非常小，我能完全隔离不同领域的表现" }
+                ]
+            },
+            {
+                id: 28,
+                dimension: "impact",
+                question: "当您遇到负面事件时，您能够控制其对您情绪的影响时间的能力如何？",
+                options: [
+                    { value: 0, text: "很差，负面情绪会持续很长时间" },
+                    { value: 1, text: "较差，负面情绪会影响我数天" },
+                    { value: 2, text: "一般，负面情绪会持续1-2天" },
+                    { value: 3, text: "较好，我能在当天调整好情绪" },
+                    { value: 4, text: "很好，我能快速调整并恢复积极情绪" }
+                ]
+            },
+            {
+                id: 29,
+                dimension: "impact",
+                question: "当团队中出现冲突时，您认为这会影响整体工作氛围的程度如何？",
+                options: [
+                    { value: 0, text: "非常大，冲突会严重破坏整个团队氛围" },
+                    { value: 1, text: "较大，冲突会对团队氛围产生明显负面影响" },
+                    { value: 2, text: "一般，冲突会引起一些紧张但可控" },
+                    { value: 3, text: "较小，我能保持专业并减少冲突影响" },
+                    { value: 4, text: "非常小，我能将冲突视为建设性的并保持积极" }
+                ]
+            },
+            {
+                id: 30,
+                dimension: "impact",
+                question: "当您收到负面反馈时，您能够控制其对您自信心影响的能力如何？",
+                options: [
+                    { value: 0, text: "很差，负面反馈会严重打击我的自信" },
+                    { value: 1, text: "较差，负面反馈会让我怀疑自己的能力" },
+                    { value: 2, text: "一般，负面反馈会暂时影响我的情绪" },
+                    { value: 3, text: "较好，我能理性对待并从中学习" },
+                    { value: 4, text: "很好，我视负面反馈为成长机会并保持自信" }
+                ]
+            },
+            {
+                id: 31,
+                dimension: "impact",
+                question: "当您面临压力时，您能够防止其影响您健康和生活质量的能力如何？",
+                options: [
+                    { value: 0, text: "很差，压力会严重影响我的身心健康" },
+                    { value: 1, text: "较差，压力会导致我出现一些健康问题" },
+                    { value: 2, text: "一般，我能基本应对但有时会感到不适" },
+                    { value: 3, text: "较好，我有有效的方法管理压力影响" },
+                    { value: 4, text: "很好，我能将压力转化为动力并保持健康" }
+                ]
+            },
+            {
+                id: 32,
+                dimension: "impact",
+                question: "当您在人际关系中遇到问题时，您认为这会影响您工作表现的程度如何？",
+                options: [
+                    { value: 0, text: "非常大，人际关系问题会严重影响我的工作" },
+                    { value: 1, text: "较大，人际关系问题会对我工作产生明显影响" },
+                    { value: 2, text: "一般，人际关系问题会有一定影响但可控" },
+                    { value: 3, text: "较小，我能将私人问题与工作分开" },
+                    { value: 4, text: "非常小，我能完全专注于工作不受影响" }
+                ]
+            },
+            {
+                id: 33,
+                dimension: "impact",
+                question: "当您遇到挫折时，您能够控制其对您未来决策影响的能力如何？",
+                options: [
+                    { value: 0, text: "很差，挫折会让我变得极度谨慎或回避风险" },
+                    { value: 1, text: "较差，挫折会让我在一段时间内缺乏信心" },
+                    { value: 2, text: "一般，挫折会让我更加谨慎但不会过度影响" },
+                    { value: 3, text: "较好，我能从挫折中学习并做出更明智的决策" },
+                    { value: 4, text: "很好，挫折会增强我的判断力和决策能力" }
+                ]
+            },
+            {
+                id: 34,
+                dimension: "impact",
+                question: "当您的计划被打乱时，您能够控制由此产生的焦虑和失望情绪的能力如何？",
+                options: [
+                    { value: 0, text: "很差，计划变更会让我感到极度焦虑" },
+                    { value: 1, text: "较差，计划变更会让我感到明显的沮丧" },
+                    { value: 2, text: "一般，我会感到一些不适但能基本应对" },
+                    { value: 3, text: "较好，我能快速调整并适应变化" },
+                    { value: 4, text: "很好，我视变化为机会并灵活应对" }
+                ]
+            },
+            {
+                id: 35,
+                dimension: "impact",
+                question: "当您看到他人遇到困难时，您认为自己有责任提供帮助的程度如何？",
+                options: [
+                    { value: 0, text: "完全没有，我认为每个人都应该自己解决问题" },
+                    { value: 1, text: "不太有，我只会在非常明显的情况下提供帮助" },
+                    { value: 2, text: "一般，我会在能力范围内提供一些帮助" },
+                    { value: 3, text: "比较有，我会主动提供帮助并支持他人" },
+                    { value: 4, text: "非常有，我视帮助他人为己任并积极行动" }
+                ]
+            },
+            {
+                id: 36,
+                dimension: "impact",
+                question: "当您在社交媒体上看到负面评论时，您能够控制其对您情绪影响的能力如何？",
+                options: [
+                    { value: 0, text: "很差，负面评论会严重影响我的情绪" },
+                    { value: 1, text: "较差，负面评论会让我感到不安和沮丧" },
+                    { value: 2, text: "一般，我会注意到但不会过度在意" },
+                    { value: 3, text: "较好，我能理性看待并不过度反应" },
+                    { value: 4, text: "很好，我几乎不受负面评论影响" }
+                ]
+            },
+            {
+                id: 37,
+                dimension: "impact",
+                question: "当您面临不确定性时，您能够控制由此产生的担忧和恐惧的能力如何？",
+                options: [
+                    { value: 0, text: "很差，不确定性会让我感到极度恐惧" },
+                    { value: 1, text: "较差，不确定性会引起我明显的焦虑" },
+                    { value: 2, text: "一般，我会感到一些不适但能基本应对" },
+                    { value: 3, text: "较好，我能接受不确定性并保持冷静" },
+                    { value: 4, text: "很好，我视不确定性为机会并积极面对" }
+                ]
+            },
+            {
+                id: 38,
+                dimension: "impact",
+                question: "当您的观点被他人质疑时，您能够控制由此产生的防御性反应的能力如何？",
+                options: [
+                    { value: 0, text: "很差，我会立即变得非常防御和激动" },
+                    { value: 1, text: "较差，我会感到被攻击并倾向于争论" },
+                    { value: 2, text: "一般，我会表达自己的观点但也会考虑他人意见" },
+                    { value: 3, text: "较好，我能理性讨论并接受合理的质疑" },
+                    { value: 4, text: "很好，我视质疑为学习机会并感谢提出者" }
+                ]
+            },
+            
+            // 持续性维度 (39-50题)
+            {
+                id: 39,
+                dimension: "endurance",
+                question: "当您面临长期挑战时，您能够保持动力和坚持的能力如何？",
+                options: [
+                    { value: 0, text: "很差，我很快就会失去动力并放弃" },
+                    { value: 1, text: "较差，我需要频繁的激励才能继续" },
+                    { value: 2, text: "一般，我能坚持一段时间但容易疲惫" },
+                    { value: 3, text: "较好，我能保持动力并持续努力" },
+                    { value: 4, text: "很好，长期挑战只会让我更加坚定和专注" }
+                ]
+            },
+            {
+                id: 40,
+                dimension: "endurance",
+                question: "当您的努力没有立即得到回报时，您能够继续坚持的能力如何？",
+                options: [
+                    { value: 0, text: "很差，我需要立即看到结果才会继续" },
+                    { value: 1, text: "较差，我会很快失去耐心并减少努力" },
+                    { value: 2, text: "一般，我能坚持一段时间但会开始怀疑" },
+                    { value: 3, text: "较好，我理解成功需要时间并继续努力" },
+                    { value: 4, text: "很好，我能长期坚持并不懈努力直至成功" }
+                ]
+            },
+            {
+                id: 41,
+                dimension: "endurance",
+                question: "当您感到疲惫时，您能够继续完成任务的能力如何？",
+                options: [
+                    { value: 0, text: "很差，疲惫会让我完全无法工作" },
+                    { value: 1, text: "较差，疲惫会严重影响我的工作效率" },
+                    { value: 2, text: "一般，我能继续工作但效率会下降" },
+                    { value: 3, text: "较好，我能调整节奏并保持合理效率" },
+                    { value: 4, text: "很好，我能克服疲惫并保持高效工作" }
+                ]
+            },
+            {
+                id: 42,
+                dimension: "endurance",
+                question: "当您面临反复出现的问题时，您能够保持耐心并持续寻找解决方案的能力如何？",
+                options: [
+                    { value: 0, text: "很差，我会很快感到沮丧并放弃" },
+                    { value: 1, text: "较差，我会变得烦躁并倾向于回避问题" },
+                    { value: 2, text: "一般，我会尝试几种方法但可能会放弃" },
+                    { value: 3, text: "较好，我会持续尝试不同的解决方案" },
+                    { value: 4, text: "很好，我视反复挑战为学习机会并坚持不懈" }
+                ]
+            },
+            {
+                id: 43,
+                dimension: "endurance",
+                question: "当您设定长期目标时，您能够保持专注并持续努力的能力如何？",
+                options: [
+                    { value: 0, text: "很差，我很难保持对长期目标的专注" },
+                    { value: 1, text: "较差，我经常会分心并改变目标" },
+                    { value: 2, text: "一般，我能保持一定的专注但会有波动" },
+                    { value: 3, text: "较好，我能大部分时间保持专注并努力" },
+                    { value: 4, text: "很好，我能长期保持专注并不懈追求目标" }
+                ]
+            },
+            {
+                id: 44,
+                dimension: "endurance",
+                question: "当您面临批评或否定时，您能够保持自信并继续前进的能力如何？",
+                options: [
+                    { value: 0, text: "很差，批评会严重打击我的信心并停滞不前" },
+                    { value: 1, text: "较差，批评会让我怀疑自己并减少行动" },
+                    { value: 2, text: "一般，我会受到一定影响但能继续前进" },
+                    { value: 3, text: "较好，我能保持基本自信并继续努力" },
+                    { value: 4, text: "很好，我能将批评转化为动力并更加坚定" }
+                ]
+            },
+            {
+                id: 45,
+                dimension: "endurance",
+                question: "当您处于压力下时，您能够保持健康习惯（如饮食、运动、睡眠）的能力如何？",
+                options: [
+                    { value: 0, text: "很差，压力会让我完全放弃健康习惯" },
+                    { value: 1, text: "较差，我会减少健康活动并出现一些不良习惯" },
+                    { value: 2, text: "一般，我能保持部分健康习惯但不够一致" },
+                    { value: 3, text: "较好，我能在压力下保持大部分健康习惯" },
+                    { value: 4, text: "很好，压力下我反而更加注重健康习惯" }
+                ]
+            },
+            {
+                id: 46,
+                dimension: "endurance",
+                question: "当您需要学习复杂技能时，您能够持续投入时间和精力直至掌握的能力如何？",
+                options: [
+                    { value: 0, text: "很差，我很快就会感到挫败并放弃" },
+                    { value: 1, text: "较差，我需要频繁的成功反馈才能继续" },
+                    { value: 2, text: "一般，我能学习基础但难以掌握高级内容" },
+                    { value: 3, text: "较好，我能持续学习并逐步提高技能水平" },
+                    { value: 4, text: "很好，我有很强的学习韧性并能掌握复杂技能" }
+                ]
+            },
+            {
+                id: 47,
+                dimension: "endurance",
+                question: "当您面临人际冲突时，您能够保持冷静并持续寻求解决方案的能力如何？",
+                options: [
+                    { value: 0, text: "很差，冲突会让我情绪化并回避问题" },
+                    { value: 1, text: "较差，我会变得防御性并难以理性沟通" },
+                    { value: 2, text: "一般，我能进行一定沟通但容易失去耐心" },
+                    { value: 3, text: "较好，我能保持冷静并持续寻求解决方案" },
+                    { value: 4, text: "很好，我擅长处理长期冲突并寻求双赢结果" }
+                ]
+            },
+            {
+                id: 48,
+                dimension: "endurance",
+                question: "当您的计划需要调整时，您能够保持灵活性并持续推进的能力如何？",
+                options: [
+                    { value: 0, text: "很差，计划变更会让我完全迷失方向" },
+                    { value: 1, text: "较差，我会感到困惑并需要时间适应" },
+                    { value: 2, text: "一般，我能调整但会感到一些不适" },
+                    { value: 3, text: "较好，我能灵活调整并继续推进" },
+                    { value: 4, text: "很好，我视调整为优化机会并迅速适应" }
+                ]
+            },
+            {
+                id: 49,
+                dimension: "endurance",
+                question: "当您面临模糊不清的情况时，您能够保持耐心并持续探索的能力如何？",
+                options: [
+                    { value: 0, text: "很差，模糊性会让我感到极度不适并急于结束" },
+                    { value: 1, text: "较差，我会很快感到沮丧并寻求明确答案" },
+                    { value: 2, text: "一般，我能忍受一定模糊性但会感到不适" },
+                    { value: 3, text: "较好，我能保持耐心并持续探索" },
+                    { value: 4, text: "很好，我能在模糊环境中保持冷静并发现机会" }
+                ]
+            },
+            {
+                id: 50,
+                dimension: "endurance",
+                question: "当您回顾过去的逆境经历时，您认为这些经历对您成长的积极影响程度如何？",
+                options: [
+                    { value: 0, text: "完全没有，逆境只会给我带来痛苦" },
+                    { value: 1, text: "很少，逆境主要是负面经历" },
+                    { value: 2, text: "一般，逆境有一些积极影响但主要是负面的" },
+                    { value: 3, text: "较多，逆境让我学到了很多有价值的东西" },
+                    { value: 4, text: "非常多，逆境是我最重要的成长机会" }
+                ]
+            }
+        ];
+
+        // 结果解读数据
+        const resultInterpretations = {
+            total: {
+                low: {
+                    range: [0, 80],
+                    level: "较低逆商水平",
+                    description: "您在面对逆境时可能会感到较大压力和无助。您可能倾向于将问题视为无法控制的，容易受到负面情绪的影响，并可能在长期挑战面前失去动力。这并不意味着您无法提高逆商，通过有意识的练习和成长，您可以逐步增强面对逆境的能力。"
+                },
+                medium: {
+                    range: [81, 140],
+                    level: "中等逆商水平",
+                    description: "您在面对一般逆境时能够保持基本的应对能力，但在重大挑战面前可能会感到压力和不确定。您有一定的情绪调节能力和问题解决能力，但在某些维度上可能存在提升空间。通过针对性的练习和成长，您可以进一步提高逆商水平。"
+                },
+                high: {
+                    range: [141, 200],
+                    level: "较高逆商水平",
+                    description: "您在面对逆境时展现出较强的韧性和适应能力。您能够保持冷静，有效控制情绪，承担责任，并将挑战视为成长机会。您有良好的问题解决能力和长期坚持的毅力。继续保持这种积极的心态和行为模式，您将能够应对生活中的各种挑战。"
+                }
+            },
+            dimensions: {
+                control: {
+                    low: {
+                        range: [0, 15],
+                        description: "您在面对逆境时可能感到缺乏控制感，容易被外部环境左右。您可能倾向于认为事情超出您的能力范围，从而减少主动应对的努力。"
+                    },
+                    medium: {
+                        range: [16, 35],
+                        description: "您在某些情况下能够保持一定的控制感，但在压力或不确定性面前可能会感到无力。您有一定的问题解决能力，但可能缺乏系统性和一致性。"
+                    },
+                    high: {
+                        range: [36, 60],
+                        description: "您在面对逆境时展现出强烈的控制感和主动应对能力。您相信自己有能力影响结果，能够保持冷静并寻找解决方案，即使在困难情况下也能保持清晰思考。"
+                    }
+                },
+                ownership: {
+                    low: {
+                        range: [0, 15],
+                        description: "您可能倾向于在面对问题时减少自己的责任，将原因归咎于外部因素。您可能不太愿意主动承担任务或解决问题，容易在困难面前退缩。"
+                    },
+                    medium: {
+                        range: [16, 35],
+                        description: "您在一定程度上愿意承担责任，但可能在某些情况下会犹豫不决或寻找借口。您有基本的问题解决意愿，但可能缺乏持续的动力和主动性。"
+                    },
+                    high: {
+                        range: [36, 60],
+                        description: "您展现出强烈的责任意识和主动解决问题的意愿。您愿意承认错误，承担责任，并积极寻找解决方案。您视挑战为自己的责任，不轻易放弃或推卸责任。"
+                    }
+                },
+                impact: {
+                    low: {
+                        range: [0, 15],
+                        description: "您可能倾向于将逆境的影响扩大化，认为一个问题会影响生活的多个方面。您可能难以控制负面情绪的扩散，容易被压力和焦虑所困扰。"
+                    },
+                    medium: {
+                        range: [16, 35],
+                        description: "您在一定程度上能够控制逆境的影响范围，但在某些情况下可能会感到压力扩散。您有基本的情绪调节能力，但在高强度压力下可能会受到影响。"
+                    },
+                    high: {
+                        range: [36, 60],
+                        description: "您能够有效控制逆境的影响范围，将问题限制在特定领域。您有很强的情绪调节能力，能够保持冷静并专注于解决方案，而不是被负面情绪所左右。"
+                    }
+                },
+                endurance: {
+                    low: {
+                        range: [0, 15],
+                        description: "您可能在长期挑战面前缺乏耐心和毅力，容易感到疲惫和沮丧。您可能倾向于寻求即时满足，难以坚持需要长期投入的任务。"
+                    },
+                    medium: {
+                        range: [16, 35],
+                        description: "您在一般情况下能够保持一定的毅力，但在长期或反复的挑战面前可能会感到疲惫。您有基本的坚持能力，但可能需要更多的激励和支持。"
+                    },
+                    high: {
+                        range: [36, 60],
+                        description: "您展现出很强的毅力和长期坚持的能力。您能够在面对反复挑战时保持耐心，在没有即时回报的情况下继续努力，并将逆境视为成长的机会。"
+                    }
+                }
+            },
+            types: {
+                "成长型": "您视逆境为成长和学习的机会，能够从挑战中获取价值。您具有开放的心态和持续学习的意愿，能够将负面经历转化为个人发展的动力。",
+                "坚韧型": "您在面对逆境时展现出强大的韧性和适应能力。您能够保持冷静，有效控制情绪，并找到实用的解决方案。您不轻易被困难打倒，能够迅速恢复并继续前进。",
+                "平衡型": "您在各个逆商维度上表现相对均衡，能够根据具体情况灵活调整应对策略。您既有解决问题的能力，也有照顾自己情绪的意识，能够在不同情境中保持平衡。",
+                "突破型": "您在面对重大挑战时反而能够激发最大潜能。压力和逆境不会让您退缩，反而会推动您突破自我限制，实现更大的成就。您擅长将危机转化为机遇。",
+                "适应型": "您能够快速适应变化和不确定性，在新环境中找到自己的位置。您具有灵活的思维方式和行为模式，能够根据情况调整策略，保持前进的动力。"
+            },
+            tips: {
+                control: [
+                    "练习正念冥想，提高对当下的觉察和控制能力",
+                    "设定小而具体的目标，逐步增强控制感",
+                    "学习系统性问题解决方法，如SWOT分析、PDCA循环等",
+                    "培养冷静思考的习惯，在行动前先评估情况",
+                    "关注自己能够控制的方面，减少对无法控制事物的担忧"
+                ],
+                ownership: [
+                    "主动承担更多责任，从小事做起逐步建立信心",
+                    "练习直接表达自己的想法和感受，避免回避或推卸",
+                    "培养解决问题的主动性，不等他人指示就采取行动",
+                    "学习从错误中学习，将失败视为成长机会",
+                    "建立个人责任感和职业道德，明确自己的价值观"
+                ],
+                impact: [
+                    "练习情绪调节技巧，如深呼吸、渐进式肌肉放松等",
+                    "学习将问题分类，限制其影响范围",
+                    "培养积极的自我对话，挑战负面思维模式",
+                    "建立健康的应对机制，如运动、写作、社交支持等",
+                    "保持工作与生活的平衡，避免压力过度累积"
+                ],
+                endurance: [
+                    "设定长期目标并分解为可管理的小步骤",
+                    "培养延迟满足的能力，学会等待长期回报",
+                    "建立规律的工作和生活习惯，提高持续性",
+                    "寻找内在动机，而不仅仅依赖外部奖励",
+                    "培养韧性思维，将挑战视为成长的机会"
+                ]
+            }
+        };
+
+        // 应用状态
+        let currentQuestionIndex = 0;
+        const answers = new Array(questions.length).fill(null);
+        let testCompleted = false;
+
+        // DOM 元素
+        const questionContainer = document.getElementById('question-container');
+        const progressBar = document.getElementById('progress');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const testContainer = document.getElementById('test-container');
+        const resultContainer = document.getElementById('result-container');
+        const restartBtn = document.getElementById('restart-btn');
+
+        // 初始化测试
+        function initTest() {
+            currentQuestionIndex = 0;
+            answers.fill(null);
+            testCompleted = false;
+            showQuestion(currentQuestionIndex);
+            updateNavigationButtons();
+            updateProgressBar();
+            testContainer.classList.remove('hidden');
+            resultContainer.classList.add('hidden');
+        }
+
+        // 显示当前问题
+        function showQuestion(index) {
+            const question = questions[index];
+            questionContainer.innerHTML = `
+                <div class="mb-6">
+                    <span class="inline-block px-3 py-1 bg-primary/10 text-primary rounded-full text-sm font-medium mb-3">
+                        ${getDimensionName(question.dimension)} (${index + 1}/${questions.length})
+                    </span>
+                    <h3 class="text-xl font-semibold text-dark">${question.question}</h3>
+                </div>
+                <div class="space-y-3">
+                    ${question.options.map((option, optionIndex) => `
+                        <label class="flex items-start p-4 border rounded-lg hover:bg-light transition-all-300 cursor-pointer ${answers[index] === option.value ? 'border-primary bg-primary/5' : 'border-gray-200'}">
+                            <input type="radio" name="question-${index}" value="${option.value}" class="mt-1 mr-3 text-primary focus:ring-primary" ${answers[index] === option.value ? 'checked' : ''}>
+                            <span class="text-neutral">${option.text}</span>
+                        </label>
+                    `).join('')}
+                </div>
+            `;
+
+            // 添加选项点击事件
+            const radioButtons = questionContainer.querySelectorAll(`input[name="question-${index}"]`);
+            radioButtons.forEach(radio => {
+                radio.addEventListener('change', function() {
+                    answers[index] = parseInt(this.value);
+                    // 更新选中状态的视觉效果
+                    const labels = questionContainer.querySelectorAll('label');
+                    labels.forEach(label => {
+                        label.classList.remove('border-primary', 'bg-primary/5');
+                        label.classList.add('border-gray-200');
+                    });
+                    this.closest('label').classList.remove('border-gray-200');
+                    this.closest('label').classList.add('border-primary', 'bg-primary/5');
+                });
+            });
+        }
+
+        // 获取维度名称
+        function getDimensionName(dimension) {
+            const names = {
+                control: "掌控感",
+                ownership: "担当力",
+                impact: "影响度",
+                endurance: "持续性"
+            };
+            return names[dimension] || dimension;
+        }
+
+        // 更新导航按钮状态
+        function updateNavigationButtons() {
+            prevBtn.disabled = currentQuestionIndex === 0;
+            
+            if (currentQuestionIndex === questions.length - 1) {
+                nextBtn.textContent = '完成测试';
+                nextBtn.innerHTML = '完成测试<i class="fa fa-check ml-2"></i>';
+            } else {
+                nextBtn.textContent = '下一题';
+                nextBtn.innerHTML = '下一题<i class="fa fa-arrow-right ml-2"></i>';
+            }
+        }
+
+        // 更新进度条
+        function updateProgressBar() {
+            const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+
+        // 计算得分
+        function calculateScores() {
+            const scores = {
+                total: 0,
+                control: 0,
+                ownership: 0,
+                impact: 0,
+                endurance: 0
+            };
+
+            questions.forEach((question, index) => {
+                const answer = answers[index] || 0;
+                scores.total += answer;
+                scores[question.dimension] += answer;
+            });
+
+            return scores;
+        }
+
+        // 获取逆商类型
+        function getResilienceType(scores) {
+            const types = ["成长型", "坚韧型", "平衡型", "突破型", "适应型"];
+            
+            // 基于得分分布确定类型
+            const dimensionScores = [
+                scores.control,
+                scores.ownership,
+                scores.impact,
+                scores.endurance
+            ];
+            
+            // 计算标准差，判断是否为平衡型
+            const mean = dimensionScores.reduce((a, b) => a + b, 0) / dimensionScores.length;
+            const stdDev = Math.sqrt(dimensionScores.reduce((sq, n) => sq + Math.pow(n - mean, 2), 0) / dimensionScores.length);
+            
+            if (stdDev < 8) {
+                return "平衡型";
+            }
+            
+            // 否则根据最高得分维度确定类型
+            const maxIndex = dimensionScores.indexOf(Math.max(...dimensionScores));
+            const typeMap = [
+                "突破型", // control
+                "成长型", // ownership
+                "适应型", // impact
+                "坚韧型"  // endurance
+            ];
+            
+            return typeMap[maxIndex];
+        }
+
+        // 显示结果
+        function showResults() {
+            const scores = calculateScores();
+            const resilienceType = getResilienceType(scores);
+            
+            // 更新总体得分和等级
+            document.getElementById('total-score').textContent = scores.total;
+            
+            let totalLevel, totalDescription;
+            if (scores.total <= resultInterpretations.total.low.range[1]) {
+                totalLevel = resultInterpretations.total.low.level;
+                totalDescription = resultInterpretations.total.low.description;
+            } else if (scores.total <= resultInterpretations.total.medium.range[1]) {
+                totalLevel = resultInterpretations.total.medium.level;
+                totalDescription = resultInterpretations.total.medium.description;
+            } else {
+                totalLevel = resultInterpretations.total.high.level;
+                totalDescription = resultInterpretations.total.high.description;
+            }
+            
+            document.getElementById('total-level').textContent = totalLevel;
+            
+            // 更新逆商类型
+            document.getElementById('resilience-type').textContent = `${resilienceType} - ${resultInterpretations.types[resilienceType]}`;
+            
+            // 更新各维度得分和进度条
+            updateDimensionResult('control', scores.control);
+            updateDimensionResult('ownership', scores.ownership);
+            updateDimensionResult('impact', scores.impact);
+            updateDimensionResult('endurance', scores.endurance);
+            
+            // 更新结果描述
+            document.getElementById('result-description').innerHTML = `
+                <p>${totalDescription}</p>
+                <p class="mt-3">您在四个维度上的表现各有特点，以下是详细分析：</p>
+                <ul class="list-disc pl-5 mt-2 space-y-2">
+                    <li><strong>掌控感</strong>：${getDimensionDescription('control', scores.control)}</li>
+                    <li><strong>担当力</strong>：${getDimensionDescription('ownership', scores.ownership)}</li>
+                    <li><strong>影响度</strong>：${getDimensionDescription('impact', scores.impact)}</li>
+                    <li><strong>持续性</strong>：${getDimensionDescription('endurance', scores.endurance)}</li>
+                </ul>
+            `;
+            
+            // 更新提升建议
+            let improvementTips = '<div class="grid grid-cols-1 md:grid-cols-2 gap-4">';
+            
+            // 根据得分较低的维度提供建议
+            const dimensions = ['control', 'ownership', 'impact', 'endurance'];
+            dimensions.sort((a, b) => scores[a] - scores[b]); // 按得分升序排列
+            
+            // 取得分最低的两个维度提供建议
+            for (let i = 0; i < Math.min(2, dimensions.length); i++) {
+                const dimension = dimensions[i];
+                improvementTips += `
+                    <div class="bg-light rounded-lg p-4">
+                        <h4 class="font-medium text-dark mb-2">提升${getDimensionName(dimension)}的建议：</h4>
+                        <ul class="list-disc pl-5 space-y-1 text-sm">
+                            ${resultInterpretations.tips[dimension].slice(0, 3).map(tip => `<li>${tip}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+            
+            improvementTips += '</div>';
+            document.getElementById('improvement-tips').innerHTML = improvementTips;
+            
+            // 显示结果容器，隐藏测试容器
+            testContainer.classList.add('hidden');
+            resultContainer.classList.remove('hidden');
+        }
+
+        // 获取维度描述
+        function getDimensionDescription(dimension, score) {
+            const dimensionData = resultInterpretations.dimensions[dimension];
+            
+            if (score <= dimensionData.low.range[1]) {
+                return dimensionData.low.description;
+            } else if (score <= dimensionData.medium.range[1]) {
+                return dimensionData.medium.description;
+            } else {
+                return dimensionData.high.description;
+            }
+        }
+
+        // 更新维度结果
+        function updateDimensionResult(dimension, score) {
+            const maxScore = questions.filter(q => q.dimension === dimension).length * 5;
+            const percentage = (score / maxScore) * 100;
+            
+            document.getElementById(`${dimension}-score`).textContent = `${score}/${maxScore}`;
+            document.getElementById(`${dimension}-bar`).style.width = `${percentage}%`;
+        }
+
+        // 事件监听器
+        prevBtn.addEventListener('click', function() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                showQuestion(currentQuestionIndex);
+                updateNavigationButtons();
+                updateProgressBar();
+            }
+        });
+
+        nextBtn.addEventListener('click', function() {
+            // 检查当前问题是否已回答
+            if (answers[currentQuestionIndex] === null) {
+                alert('请选择一个选项后继续');
+                return;
+            }
+            
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                showQuestion(currentQuestionIndex);
+                updateNavigationButtons();
+                updateProgressBar();
+            } else {
+                // 完成测试
+                testCompleted = true;
+                showResults();
+            }
+        });
+
+        restartBtn.addEventListener('click', initTest);
+
+        // 初始化应用
+        document.addEventListener('DOMContentLoaded', initTest);
+    </script>
+</body>
+</html>
