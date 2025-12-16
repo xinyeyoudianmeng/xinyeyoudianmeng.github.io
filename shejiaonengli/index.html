@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>社交力雷达 - 原创社交能力测评</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary-color: #8B5CF6;
+            --secondary-color: #EC4899;
+            --accent-color: #F472B6;
+            --background-color: #FEFCE8;
+            --text-color: #1F2937;
+            --light-text: #6B7280;
+            --card-bg: #FFFFFF;
+            --border-color: #E5E7EB;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        }
+        
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.4);
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background-color: var(--border-color);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            transition: width 0.3s ease;
+        }
+        
+        .question-card {
+            opacity: 0;
+            transform: translateX(20px);
+            animation: slideIn 0.5s ease forwards;
+        }
+        
+        @keyframes slideIn {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .option-btn {
+            border: 2px solid var(--border-color);
+            padding: 12px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: white;
+        }
+        
+        .option-btn:hover {
+            border-color: var(--primary-color);
+            background-color: rgba(139, 92, 246, 0.05);
+        }
+        
+        .option-btn.selected {
+            border-color: var(--primary-color);
+            background-color: rgba(139, 92, 246, 0.1);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .result-section {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .radar-chart-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+        }
+        
+        .insight-card {
+            border-left: 4px solid var(--primary-color);
+            padding-left: 16px;
+            margin: 16px 0;
+        }
+        
+        .warning-badge {
+            background-color: #FEF3C7;
+            color: #92400E;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .disclaimer-box {
+            background-color: #F3F4F6;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 20px 0;
+        }
+        
+        .disclaimer-box h4 {
+            color: #DC2626;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+        
+        .step {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--border-color);
+            color: var(--light-text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .step.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+        
+        .step.completed {
+            background-color: #10B981;
+            color: white;
+        }
+        
+        .step-line {
+            flex: 1;
+            height: 2px;
+            background-color: var(--border-color);
+            margin: 0 8px;
+            align-self: center;
+        }
+        
+        .step-line.active {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+    </style>
+</head>
+<body>
+    <div class="min-h-screen flex flex-col">
+        <!-- 头部 -->
+        <header class="gradient-bg text-white py-8 px-6 md:px-12">
+            <div class="max-w-4xl mx-auto">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1 class="text-3xl md:text-4xl font-bold">社交力雷达</h1>
+                        <p class="text-lg opacity-90 mt-2">发现你的社交优势，提升人际魅力</p>
+                    </div>
+                    <div class="warning-badge">付费内容</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- 主要内容 -->
+        <main class="flex-grow px-6 md:px-12 py-8">
+            <div class="max-w-4xl mx-auto">
+                <!-- 付费说明 -->
+                <div class="card p-6 mb-8">
+                    <div class="flex items-start space-x-4">
+                        <div class="bg-purple-100 p-3 rounded-full">
+                            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-gray-800">付费测试说明</h3>
+                            <p class="text-gray-600 mt-2">本测试为原创内容服务，非专业医疗/心理测评。通过科学的社交能力维度分析，帮助你了解自己的社交优势与提升空间。</p>
+                            <div class="mt-4 flex items-center space-x-2 text-sm text-gray-500">
+                                <i class="fa fa-clock-o"></i>
+                                <span>测试时长：约10分钟</span>
+                                <span class="mx-2">•</span>
+                                <i class="fa fa-file-text-o"></i>
+                                <span>30道精选题目</span>
+                                <span class="mx-2">•</span>
+                                <i class="fa fa-line-chart"></i>
+                                <span>详细分析报告</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 免责声明 -->
+                <div class="disclaimer-box">
+                    <h4>⚠️ 重要免责声明</h4>
+                    <ul class="list-disc pl-5 space-y-2 text-sm text-gray-700">
+                        <li>本测试为原创社交能力评估工具，非专业心理诊断或医疗评估</li>
+                        <li>测试结果仅供参考，不构成任何形式的专业建议或诊断</li>
+                        <li>请勿将测试结果作为个人能力或社交状况的唯一判断标准</li>
+                        <li>如有社交困扰或心理问题，请寻求专业心理咨询师或医生的帮助</li>
+                        <li>本测试内容受版权保护，未经授权不得复制或传播</li>
+                    </ul>
+                </div>
+
+                <!-- 测试容器 -->
+                <div id="test-container" class="mt-8">
+                    <!-- 测试介绍 -->
+                    <div id="intro-section" class="card p-8 text-center">
+                        <div class="mb-6">
+                            <div class="w-24 h-24 gradient-bg rounded-full mx-auto flex items-center justify-center">
+                                <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <h2 class="text-2xl md:text-3xl font-bold mb-4">准备好探索你的社交能力了吗？</h2>
+                        <p class="text-gray-600 mb-6">本测评将从五个关键维度评估你的社交能力：沟通表达、情绪感知、关系建立、冲突处理和社交适应。</p>
+                        <div class="space-y-4 text-left max-w-2xl mx-auto">
+                            <div class="flex items-start space-x-3">
+                                <div class="bg-green-100 p-2 rounded-full mt-1">
+                                    <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <p class="text-gray-700">回答30道精心设计的问题</p>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <div class="bg-green-100 p-2 rounded-full mt-1">
+                                    <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <p class="text-gray-700">获得个性化的社交能力雷达图</p>
+                            </div>
+                            <div class="flex items-start space-x-3">
+                                <div class="bg-green-100 p-2 rounded-full mt-1">
+                                    <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <p class="text-gray-700">获取实用的提升建议和行动计划</p>
+                            </div>
+                        </div>
+                        <button id="start-test-btn" class="btn-primary mt-8">开始测评</button>
+                    </div>
+
+                    <!-- 问题部分 -->
+                    <div id="questions-section" class="hidden">
+                        <!-- 进度条 -->
+                        <div class="mb-6">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-sm font-medium text-gray-700">进度</span>
+                                <span id="progress-text" class="text-sm font-medium text-purple-600">1/30</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div id="progress-fill" class="progress-fill" style="width: 3.33%"></div>
+                            </div>
+                        </div>
+
+                        <!-- 步骤指示器 -->
+                        <div class="step-indicator mb-8">
+                            <div class="step active">1</div>
+                            <div class="step-line"></div>
+                            <div class="step">2</div>
+                            <div class="step-line"></div>
+                            <div class="step">3</div>
+                            <div class="step-line"></div>
+                            <div class="step">4</div>
+                            <div class="step-line"></div>
+                            <div class="step">5</div>
+                        </div>
+
+                        <!-- 问题卡片 -->
+                        <div id="question-card" class="card p-6 question-card">
+                            <h3 id="question-text" class="text-xl font-semibold mb-6">在社交场合中，你通常如何开始一段对话？</h3>
+                            <div id="options-container" class="space-y-3">
+                                <!-- 选项将通过JavaScript动态生成 -->
+                            </div>
+                        </div>
+
+                        <!-- 导航按钮 -->
+                        <div class="flex justify-between mt-6">
+                            <button id="prev-btn" class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed hidden">上一题</button>
+                            <button id="next-btn" class="btn-primary" disabled>下一题</button>
+                        </div>
+                    </div>
+
+                    <!-- 结果部分 -->
+                    <div id="results-section" class="hidden">
+                        <div class="card p-6 mb-6">
+                            <h2 class="text-2xl font-bold mb-4 text-center">你的社交能力分析报告</h2>
+                            <p class="text-gray-600 text-center mb-6">基于你在30道题目中的回答，我们为你生成了这份个性化分析</p>
+                            
+                            <!-- 雷达图 -->
+                            <div class="radar-chart-container mb-8">
+                                <canvas id="radar-chart"></canvas>
+                            </div>
+
+                            <!-- 总体评分 -->
+                            <div class="text-center mb-8">
+                                <div class="inline-block p-4 bg-purple-50 rounded-full mb-4">
+                                    <span id="total-score" class="text-4xl font-bold text-purple-600">85</span>
+                                    <span class="text-lg text-gray-500">/100</span>
+                                </div>
+                                <h3 class="text-xl font-semibold">社交能力总评分</h3>
+                                <p id="overall-description" class="text-gray-600 mt-2">你拥有出色的社交能力，能够轻松应对各种社交场合</p>
+                            </div>
+
+                            <!-- 维度分析 -->
+                            <div id="dimension-analysis" class="space-y-6">
+                                <!-- 维度分析将通过JavaScript动态生成 -->
+                            </div>
+
+                            <!-- 个性化建议 -->
+                            <div class="mt-8">
+                                <h3 class="text-xl font-semibold mb-4">个性化提升建议</h3>
+                                <div id="suggestions-container" class="space-y-4">
+                                    <!-- 建议将通过JavaScript动态生成 -->
+                                </div>
+                            </div>
+
+                            <!-- 行动步骤 -->
+                            <div class="mt-8 bg-blue-50 p-6 rounded-lg">
+                                <h3 class="text-lg font-semibold text-blue-800 mb-4">7天提升行动计划</h3>
+                                <div id="action-plan" class="space-y-3">
+                                    <!-- 行动计划将通过JavaScript动态生成 -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 专业建议 -->
+                        <div class="card p-6 bg-orange-50 border border-orange-200">
+                            <div class="flex items-start space-x-4">
+                                <div class="bg-orange-100 p-3 rounded-full">
+                                    <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-orange-800">寻求专业帮助</h4>
+                                    <p class="text-orange-700 mt-2">如果您在社交方面遇到持续的困难或困扰，建议寻求专业心理咨询师的帮助。专业人士可以提供更深入的评估和个性化的指导。</p>
+                                    <div class="mt-4 text-sm text-orange-600">
+                                        <p>记住：社交能力是可以通过学习和练习不断提升的！</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 分享按钮 -->
+                        <div class="mt-8 text-center">
+                            <button id="share-btn" class="btn-primary">分享结果</button>
+                            <p class="text-sm text-gray-500 mt-2">分享你的社交力雷达图，邀请朋友一起探索</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- 页脚 -->
+        <footer class="bg-gray-50 border-t border-gray-200 py-8 px-6 md:px-12">
+            <div class="max-w-4xl mx-auto">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <div class="mb-4 md:mb-0">
+                        <h3 class="text-lg font-semibold text-gray-800">社交力雷达</h3>
+                        <p class="text-sm text-gray-600">© 2024 原创内容，保留所有权利</p>
+                    </div>
+                    <div class="flex space-x-6">
+                        <a href="#" class="text-gray-600 hover:text-purple-600">
+                            <i class="fa fa-weibo text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-600 hover:text-purple-600">
+                            <i class="fa fa-wechat text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-600 hover:text-purple-600">
+                            <i class="fa fa-instagram text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="mt-6 text-center text-sm text-gray-500">
+                    <p>本测评仅用于个人发展和自我认知，非专业心理评估工具</p>
+                    <p class="mt-2">如有疑问，请联系：contact@shejiaolida.com</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // 测评题目数据
+        const questions = [
+            // 沟通表达维度
+            {
+                id: 1,
+                dimension: "沟通表达",
+                text: "在社交场合中，你通常如何开始一段对话？",
+                options: [
+                    { value: 5, text: "主动打招呼并寻找共同话题" },
+                    { value: 4, text: "等待他人先开口，然后积极回应" },
+                    { value: 3, text: "根据对方的反应调整自己的表达方式" },
+                    { value: 2, text: "只在必要时说话，保持简洁" },
+                    { value: 1, text: "倾向于保持沉默，避免主动交流" }
+                ]
+            },
+            {
+                id: 2,
+                dimension: "沟通表达",
+                text: "当你需要表达复杂的想法时，你会：",
+                options: [
+                    { value: 5, text: "用清晰的结构和例子来解释" },
+                    { value: 4, text: "尝试用简单易懂的语言表达" },
+                    { value: 3, text: "根据听众的背景调整表达方式" },
+                    { value: 2, text: "直接表达核心观点，不多做解释" },
+                    { value: 1, text: "感到困难，经常表达不清" }
+                ]
+            },
+            {
+                id: 3,
+                dimension: "沟通表达",
+                text: "在小组讨论中，你的表现是：",
+                options: [
+                    { value: 5, text: "积极参与，表达自己的观点" },
+                    { value: 4, text: "认真倾听，适时发表意见" },
+                    { value: 3, text: "根据讨论氛围决定参与程度" },
+                    { value: 2, text: "主要倾听，较少主动发言" },
+                    { value: 1, text: "很少参与，保持沉默" }
+                ]
+            },
+            {
+                id: 4,
+                dimension: "沟通表达",
+                text: "当你需要拒绝他人的请求时，你会：",
+                options: [
+                    { value: 5, text: "坦诚表达原因，同时提供替代方案" },
+                    { value: 4, text: "委婉地说明自己的困难" },
+                    { value: 3, text: "尽量不伤害对方的感情" },
+                    { value: 2, text: "简单直接地拒绝" },
+                    { value: 1, text: "感到难以拒绝，经常勉强答应" }
+                ]
+            },
+            {
+                id: 5,
+                dimension: "沟通表达",
+                text: "在电话或视频通话中，你能够：",
+                options: [
+                    { value: 5, text: "轻松地进行交流，如同面对面" },
+                    { value: 4, text: "保持良好的沟通状态" },
+                    { value: 3, text: "基本顺畅地表达自己" },
+                    { value: 2, text: "有时会感到沟通不畅" },
+                    { value: 1, text: "明显感到不适应，沟通困难" }
+                ]
+            },
+            {
+                id: 6,
+                dimension: "沟通表达",
+                text: "当你与陌生人交流时，你会：",
+                options: [
+                    { value: 5, text: "轻松自然地建立联系" },
+                    { value: 4, text: "主动寻找话题，保持对话" },
+                    { value: 3, text: "根据对方的反应调整交流方式" },
+                    { value: 2, text: "保持基本礼貌，但不会深入交流" },
+                    { value: 1, text: "感到紧张，避免主动交流" }
+                ]
+            },
+
+            // 情绪感知维度
+            {
+                id: 7,
+                dimension: "情绪感知",
+                text: "你能够通过他人的面部表情识别出他们的情绪状态吗？",
+                options: [
+                    { value: 5, text: "几乎总是能够准确识别" },
+                    { value: 4, text: "大多数情况下能够识别" },
+                    { value: 3, text: "基本能够识别明显的情绪" },
+                    { value: 2, text: "有时需要更多线索才能判断" },
+                    { value: 1, text: "经常无法准确识别他人情绪" }
+                ]
+            },
+            {
+                id: 8,
+                dimension: "情绪感知",
+                text: "当他人说话时，你会注意到：",
+                options: [
+                    { value: 5, text: "语言内容、语调、表情等多方面信息" },
+                    { value: 4, text: "主要内容和明显的情绪变化" },
+                    { value: 3, text: "基本内容和部分情绪信号" },
+                    { value: 2, text: "主要关注语言内容" },
+                    { value: 1, text: "只听到表面内容，忽略情绪信息" }
+                ]
+            },
+            {
+                id: 9,
+                dimension: "情绪感知",
+                text: "在社交场合中，你能够察觉到氛围的变化吗？",
+                options: [
+                    { value: 5, text: "非常敏感，能迅速察觉氛围变化" },
+                    { value: 4, text: "大多数情况下能够察觉" },
+                    { value: 3, text: "基本能够察觉明显的氛围变化" },
+                    { value: 2, text: "有时需要提示才能注意到" },
+                    { value: 1, text: "很少注意到氛围的变化" }
+                ]
+            },
+            {
+                id: 10,
+                dimension: "情绪感知",
+                text: "当朋友情绪低落时，你会：",
+                options: [
+                    { value: 5, text: "敏锐察觉并给予适当的安慰" },
+                    { value: 4, text: "注意到并尝试帮助他们" },
+                    { value: 3, text: "基本能够察觉并表示关心" },
+                    { value: 2, text: "有时会注意到，但不知道如何回应" },
+                    { value: 1, text: "很少注意到他人的情绪变化" }
+                ]
+            },
+            {
+                id: 11,
+                dimension: "情绪感知",
+                text: "在团队合作中，你能够：",
+                options: [
+                    { value: 5, text: "察觉团队成员的情绪状态，协调合作" },
+                    { value: 4, text: "注意到主要成员的情绪变化" },
+                    { value: 3, text: "基本了解团队的整体氛围" },
+                    { value: 2, text: "主要关注任务本身，较少注意情绪" },
+                    { value: 1, text: "几乎不关注团队成员的情绪" }
+                ]
+            },
+            {
+                id: 12,
+                dimension: "情绪感知",
+                text: "当你与他人意见不合时，你会：",
+                options: [
+                    { value: 5, text: "考虑对方的感受，寻找共识" },
+                    { value: 4, text: "表达自己观点的同时尊重对方" },
+                    { value: 3, text: "尝试理解对方的立场" },
+                    { value: 2, text: "坚持自己的观点，较少妥协" },
+                    { value: 1, text: "容易情绪化，难以理性沟通" }
+                ]
+            },
+
+            // 关系建立维度
+            {
+                id: 13,
+                dimension: "关系建立",
+                text: "你如何看待新朋友的建立？",
+                options: [
+                    { value: 5, text: "积极主动，乐于结识新朋友" },
+                    { value: 4, text: "开放心态，愿意尝试新的社交关系" },
+                    { value: 3, text: "根据感觉决定是否深入交往" },
+                    { value: 2, text: "比较谨慎，需要时间建立信任" },
+                    { value: 1, text: "倾向于保持现有朋友圈，较少拓展" }
+                ]
+            },
+            {
+                id: 14,
+                dimension: "关系建立",
+                text: "在维护长期友谊方面，你会：",
+                options: [
+                    { value: 5, text: "主动保持联系，定期聚会" },
+                    { value: 4, text: "重要时刻会出现，表达关心" },
+                    { value: 3, text: "根据双方的时间和意愿保持联系" },
+                    { value: 2, text: "主要被动回应，较少主动联系" },
+                    { value: 1, text: "随着时间推移，联系逐渐减少" }
+                ]
+            },
+            {
+                id: 15,
+                dimension: "关系建立",
+                text: "在社交网络中，你倾向于：",
+                options: [
+                    { value: 5, text: "建立广泛的人脉，多元社交" },
+                    { value: 4, text: "有几个亲密朋友和一些普通朋友" },
+                    { value: 3, text: "质量优先，注重深度而非广度" },
+                    { value: 2, text: "主要与志同道合的人交往" },
+                    { value: 1, text: "社交圈较小，喜欢独处" }
+                ]
+            },
+            {
+                id: 16,
+                dimension: "关系建立",
+                text: "当你需要帮助时，你会：",
+                options: [
+                    { value: 5, text: "愿意向朋友求助，相信他们会帮助" },
+                    { value: 4, text: "在必要时向信任的人求助" },
+                    { value: 3, text: "视情况而定，考虑是否麻烦他人" },
+                    { value: 2, text: "尽量自己解决，很少求助" },
+                    { value: 1, text: "感到难以开口，宁愿独自面对" }
+                ]
+            },
+            {
+                id: 17,
+                dimension: "关系建立",
+                text: "在与他人建立信任方面，你认为：",
+                options: [
+                    { value: 5, text: "信任是基础，愿意先付出信任" },
+                    { value: 4, text: "通过真诚交流逐步建立信任" },
+                    { value: 3, text: "需要时间和互动来建立信任" },
+                    { value: 2, text: "谨慎对待，需要对方证明值得信任" },
+                    { value: 1, text: "很难完全信任他人，保持警惕" }
+                ]
+            },
+            {
+                id: 18,
+                dimension: "关系建立",
+                text: "在社交场合中，你如何处理尴尬的沉默？",
+                options: [
+                    { value: 5, text: "轻松自然地转换话题，缓解气氛" },
+                    { value: 4, text: "尝试找话题继续对话" },
+                    { value: 3, text: "接受短暂的沉默，不感到不适" },
+                    { value: 2, text: "感到有些尴尬，但会等待他人打破沉默" },
+                    { value: 1, text: "非常不自在，急于逃离这种情境" }
+                ]
+            },
+
+            // 冲突处理维度
+            {
+                id: 19,
+                dimension: "冲突处理",
+                text: "当与他人发生分歧时，你倾向于：",
+                options: [
+                    { value: 5, text: "积极沟通，寻找双方都能接受的解决方案" },
+                    { value: 4, text: "表达自己的观点，同时尊重对方" },
+                    { value: 3, text: "寻求 compromise，各退一步" },
+                    { value: 2, text: "坚持自己的立场，较少妥协" },
+                    { value: 1, text: "避免冲突，宁愿委屈自己" }
+                ]
+            },
+            {
+                id: 20,
+                dimension: "冲突处理",
+                text: "在处理人际冲突时，你的首要考虑是：",
+                options: [
+                    { value: 5, text: "关系的长期健康和双方的感受" },
+                    { value: 4, text: "问题的解决和共识的达成" },
+                    { value: 3, text: "平衡各方的需求和利益" },
+                    { value: 2, text: "维护自己的立场和权益" },
+                    { value: 1, text: "尽快结束冲突，避免进一步争执" }
+                ]
+            },
+            {
+                id: 21,
+                dimension: "冲突处理",
+                text: "当你感到被误解时，你会：",
+                options: [
+                    { value: 5, text: "耐心解释，确保对方理解真实意图" },
+                    { value: 4, text: "尝试用不同方式表达自己" },
+                    { value: 3, text: "澄清关键问题，其他方面可以妥协" },
+                    { value: 2, text: "感到沮丧，但不一定会深入解释" },
+                    { value: 1, text: "觉得解释没用，放弃沟通" }
+                ]
+            },
+            {
+                id: 22,
+                dimension: "冲突处理",
+                text: "在团队冲突中，你通常扮演什么角色？",
+                options: [
+                    { value: 5, text: "调解者，帮助各方找到共同点" },
+                    { value: 4, text: "积极参与者，提出建设性意见" },
+                    { value: 3, text: "观察者，根据情况决定是否介入" },
+                    { value: 2, text: "保持中立，避免站队" },
+                    { value: 1, text: "尽量避免参与，远离冲突" }
+                ]
+            },
+            {
+                id: 23,
+                dimension: "冲突处理",
+                text: "当你需要向他人道歉时，你会：",
+                options: [
+                    { value: 5, text: "真诚道歉，承认错误并提出改进" },
+                    { value: 4, text: "诚恳表达歉意，不找借口" },
+                    { value: 3, text: "道歉但可能会解释原因" },
+                    { value: 2, text: "简单道歉，希望尽快过去" },
+                    { value: 1, text: "很难开口道歉，即使知道自己有错" }
+                ]
+            },
+            {
+                id: 24,
+                dimension: "冲突处理",
+                text: "冲突解决后，你会：",
+                options: [
+                    { value: 5, text: "积极修复关系，避免留下隔阂" },
+                    { value: 4, text: "继续正常交往，不记仇" },
+                    { value: 3, text: "需要一些时间来恢复关系" },
+                    { value: 2, text: "表面和解，但内心仍有保留" },
+                    { value: 1, text: "很难完全释怀，关系可能受到影响" }
+                ]
+            },
+
+            // 社交适应维度
+            {
+                id: 25,
+                dimension: "社交适应",
+                text: "当你进入一个新的社交环境时，你会：",
+                options: [
+                    { value: 5, text: "很快适应，积极融入新环境" },
+                    { value: 4, text: "主动观察，逐步适应" },
+                    { value: 3, text: "需要一些时间来熟悉环境" },
+                    { value: 2, text: "感到有些不适应，但会努力调整" },
+                    { value: 1, text: "明显感到不适，需要很长时间适应" }
+                ]
+            },
+            {
+                id: 26,
+                dimension: "社交适应",
+                text: "在面对不同性格的人时，你能够：",
+                options: [
+                    { value: 5, text: "灵活调整自己的交流方式" },
+                    { value: 4, text: "基本适应不同人的沟通风格" },
+                    { value: 3, text: "与大多数人都能保持良好互动" },
+                    { value: 2, text: "与某些类型的人相处更自在" },
+                    { value: 1, text: "只与相似性格的人相处得来" }
+                ]
+            },
+            {
+                id: 27,
+                dimension: "社交适应",
+                text: "在正式社交场合（如商务会议、晚宴）中，你会：",
+                options: [
+                    { value: 5, text: "轻松应对，表现得体" },
+                    { value: 4, text: "基本能够适应，遵守场合规则" },
+                    { value: 3, text: "需要一些准备，但能正常参与" },
+                    { value: 2, text: "感到有些拘谨，但会尽力表现" },
+                    { value: 1, text: "非常不自在，尽量避免参与" }
+                ]
+            },
+            {
+                id: 28,
+                dimension: "社交适应",
+                text: "当社交计划突然改变时，你会：",
+                options: [
+                    { value: 5, text: "灵活调整，适应变化" },
+                    { value: 4, text: "接受变化，积极应对" },
+                    { value: 3, text: "有些意外，但能够调整" },
+                    { value: 2, text: "感到不便，但会配合" },
+                    { value: 1, text: "非常不喜欢变化，难以适应" }
+                ]
+            },
+            {
+                id: 29,
+                dimension: "社交适应",
+                text: "在跨文化或跨背景的社交场合中，你会：",
+                options: [
+                    { value: 5, text: "尊重差异，主动了解不同文化" },
+                    { value: 4, text: "保持开放心态，学习适应" },
+                    { value: 3, text: "基本能够尊重文化差异" },
+                    { value: 2, text: "有些不适应，但会保持礼貌" },
+                    { value: 1, text: "感到困惑，不知道如何应对" }
+                ]
+            },
+            {
+                id: 30,
+                dimension: "社交适应",
+                text: "在社交能量管理方面，你会：",
+                options: [
+                    { value: 5, text: "很好地平衡社交活动和独处时间" },
+                    { value: 4, text: "基本能够管理自己的社交能量" },
+                    { value: 3, text: "有时会感到社交疲劳，需要调整" },
+                    { value: 2, text: "经常感到社交消耗过大" },
+                    { value: 1, text: "社交活动后需要很长时间恢复" }
+                ]
+            }
+        ];
+
+        // 维度解释和建议
+        const dimensionInfo = {
+            "沟通表达": {
+                description: "评估你在不同场合中表达自己想法、倾听他人和有效交流的能力",
+                highScore: "你拥有出色的沟通能力，能够清晰表达自己的想法，同时善于倾听他人。在各种社交场合中，你都能保持自信和流畅的交流。",
+                midScore: "你的沟通能力处于中等水平。在熟悉的环境中，你能够较好地表达自己，但在某些情况下可能会感到不自在或表达不清。",
+                lowScore: "你在沟通方面可能存在一些挑战。在社交场合中，你可能会感到紧张，表达不够清晰，或者难以主动发起对话。",
+                suggestions: [
+                    "练习积极倾听技巧，如眼神接触、点头回应",
+                    "参加演讲或辩论活动，提升表达自信",
+                    "学习不同场合的沟通礼仪和技巧",
+                    "多阅读和学习，丰富自己的话题库",
+                    "录制自己的讲话，分析并改进表达方式"
+                ]
+            },
+            "情绪感知": {
+                description: "评估你识别、理解和回应他人情绪的能力，以及对社交氛围的敏感度",
+                highScore: "你拥有敏锐的情绪感知能力，能够准确识别他人的情绪状态，理解非语言线索，并对社交氛围变化保持敏感。",
+                midScore: "你对情绪的感知能力处于中等水平。在大多数情况下，你能够识别明显的情绪表达，但可能会错过一些微妙的信号。",
+                lowScore: "你在情绪感知方面可能需要更多练习。你可能不太注意他人的情绪变化，或者对非语言线索不够敏感，这可能影响你的社交互动质量。",
+                suggestions: [
+                    "练习观察他人的面部表情和肢体语言",
+                    "多关注他人的语调变化和用词选择",
+                    "阅读关于情绪识别的书籍或参加相关培训",
+                    "在对话中多问开放性问题，深入了解他人感受",
+                    "反思自己的社交互动，分析哪些信号被忽略了"
+                ]
+            },
+            "关系建立": {
+                description: "评估你建立、维护和深化人际关系的能力，以及在社交网络中的舒适度",
+                highScore: "你擅长建立和维护人际关系，能够轻松结识新朋友，同时保持现有友谊的活力。你的社交网络丰富多样，关系质量较高。",
+                midScore: "你在关系建立方面表现中等。你有自己的朋友圈，但可能不太主动拓展新的社交关系，或者在维护长期友谊方面需要更多努力。",
+                lowScore: "你在关系建立方面可能面临一些挑战。你可能对社交活动感到不自在，或者在建立深度关系方面存在困难，导致社交圈相对狭窄。",
+                suggestions: [
+                    "参加兴趣小组或社区活动，结识志同道合的人",
+                    "学习基本的社交技巧，如主动问候、记住名字",
+                    "定期与朋友保持联系，分享生活点滴",
+                    "练习共情和真诚关心他人",
+                    "从小范围社交活动开始，逐步扩大舒适区"
+                ]
+            },
+            "冲突处理": {
+                description: "评估你在面对分歧和冲突时的应对策略，以及寻求建设性解决方案的能力",
+                highScore: "你擅长处理人际冲突，能够在保持关系和谐的同时解决问题。你倾向于采用合作性的冲突解决策略，寻求双赢的结果。",
+                midScore: "你处理冲突的能力处于中等水平。在大多数情况下，你能够理性应对分歧，但在压力下可能会采取防御性或回避性的策略。",
+                lowScore: "你在冲突处理方面可能需要更多练习。面对分歧时，你可能会感到焦虑或不知所措，倾向于回避冲突或采取对抗性态度。",
+                suggestions: [
+                    "学习非暴力沟通技巧，表达感受而非指责",
+                    "练习深呼吸和情绪管理，保持冷静",
+                    "尝试从对方角度思考问题，培养共情能力",
+                    "学习妥协和寻求共识的技巧",
+                    "参加冲突管理工作坊或阅读相关书籍"
+                ]
+            },
+            "社交适应": {
+                description: "评估你在不同社交环境中的适应能力，以及应对变化和多样性的灵活性",
+                highScore: "你拥有出色的社交适应能力，能够轻松应对各种社交场合和人群。你能够灵活调整自己的行为和沟通方式，适应不同的社交需求。",
+                midScore: "你的社交适应能力处于中等水平。在熟悉的环境中，你表现自如，但在新环境或面对变化时可能需要一些时间来调整。",
+                lowScore: "你在社交适应方面可能面临一些挑战。你可能对新环境或变化感到不适，在跨文化或正式场合中表现拘谨，需要更多时间来适应。",
+                suggestions: [
+                    "逐步拓展自己的社交舒适区，尝试新的社交活动",
+                    "学习不同场合的社交规则和礼仪",
+                    "练习正念和放松技巧，减轻社交焦虑",
+                    "参加跨文化交流活动，提升文化敏感度",
+                    "制定小目标，逐步提升适应能力"
+                ]
+            }
+        };
+
+        // 行动计划建议
+        const actionPlans = [
+            {
+                day: "第1天：自我觉察",
+                activity: "花15分钟反思自己在社交中的优势和挑战，记录下来"
+            },
+            {
+                day: "第2天：积极倾听",
+                activity: "在今天的所有对话中，专注于倾听对方，不急于表达自己"
+            },
+            {
+                day: "第3天：主动联系",
+                activity: "联系一位很久没见的朋友，安排一次见面或通话"
+            },
+            {
+                day: "第4天：情绪识别",
+                activity: "观察并记录今天遇到的人的情绪表达和非语言线索"
+            },
+            {
+                day: "第5天：冲突练习",
+                activity: "选择一个小分歧，尝试用合作的方式解决，关注双方需求"
+            },
+            {
+                day: "第6天：新环境挑战",
+                activity: "参加一个新的社交活动或聚会，尝试结识至少一位新朋友"
+            },
+            {
+                day: "第7天：总结与计划",
+                activity: "回顾一周的练习，制定下周的社交提升目标"
+            }
+        ];
+
+        // 总体评分等级
+        const scoreLevels = [
+            { min: 90, max: 100, level: "卓越", description: "你拥有出色的社交能力，在各种社交场合中都能表现自信和得体。你的沟通、共情和关系管理能力都非常突出，是社交场合中的佼佼者。" },
+            { min: 80, max: 89, level: "优秀", description: "你的社交能力非常优秀。你能够轻松应对大多数社交场合，与不同类型的人建立良好关系。在沟通和情绪管理方面，你表现出色，能够有效处理各种社交情境。" },
+            { min: 70, max: 79, level: "良好", description: "你具备良好的社交能力。在大多数社交场合中，你都能表现自然和得体。你有自己的社交圈，能够维持良好的人际关系，但在某些挑战情境下可能需要更多努力。" },
+            { min: 60, max: 69, level: "一般", description: "你的社交能力处于一般水平。在熟悉的环境中，你能够较好地应对社交互动，但在新环境或压力下可能会感到不自在。通过一些练习和学习，你可以显著提升自己的社交表现。" },
+            { min: 50, max: 59, level: "有待提升", description: "你在社交方面可能面临一些挑战。在社交场合中，你可能会感到紧张或不自在，表达不够流畅，或者难以建立深度关系。建议你关注自己的社交技能发展，通过系统学习和练习来提升。" },
+            { min: 0, max: 49, level: "需要关注", description: "你在社交能力方面可能存在明显的困难。社交互动可能会给你带来较大的压力和不适，影响你的人际关系质量和生活质量。建议你寻求专业帮助，如心理咨询，同时通过系统的学习和练习来逐步提升。" }
+        ];
+
+        // DOM元素
+        const startTestBtn = document.getElementById('start-test-btn');
+        const introSection = document.getElementById('intro-section');
+        const questionsSection = document.getElementById('questions-section');
+        const resultsSection = document.getElementById('results-section');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const progressFill = document.getElementById('progress-fill');
+        const progressText = document.getElementById('progress-text');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const stepElements = document.querySelectorAll('.step');
+        const stepLines = document.querySelectorAll('.step-line');
+
+        // 测评状态
+        let currentQuestionIndex = 0;
+        const answers = {};
+        let selectedOption = null;
+
+        // 开始测评
+        startTestBtn.addEventListener('click', () => {
+            introSection.classList.add('hidden');
+            questionsSection.classList.remove('hidden');
+            showQuestion(currentQuestionIndex);
+        });
+
+        // 显示问题
+        function showQuestion(index) {
+            const question = questions[index];
+            questionText.textContent = question.text;
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, i) => {
+                const optionBtn = document.createElement('div');
+                optionBtn.className = `option-btn ${answers[index] === option.value ? 'selected' : ''}`;
+                optionBtn.innerHTML = `
+                    <div class="flex items-center">
+                        <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center mr-3">
+                            ${i + 1}
+                        </div>
+                        <span>${option.text}</span>
+                    </div>
+                `;
+                
+                optionBtn.addEventListener('click', () => {
+                    selectedOption = option.value;
+                    document.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('selected'));
+                    optionBtn.classList.add('selected');
+                    nextBtn.disabled = false;
+                });
+                
+                optionsContainer.appendChild(optionBtn);
+            });
+
+            // 更新进度
+            const progress = ((index + 1) / questions.length) * 100;
+            progressFill.style.width = `${progress}%`;
+            progressText.textContent = `${index + 1}/${questions.length}`;
+
+            // 更新步骤指示器
+            updateStepIndicator(index);
+
+            // 更新导航按钮
+            prevBtn.classList.toggle('hidden', index === 0);
+            nextBtn.textContent = index === questions.length - 1 ? '查看结果' : '下一题';
+            nextBtn.disabled = selectedOption === null;
+
+            // 滚动到顶部
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 更新步骤指示器
+        function updateStepIndicator(index) {
+            const stepIndex = Math.floor(index / 6); // 每6题一个步骤
+            
+            stepElements.forEach((step, i) => {
+                if (i < stepIndex) {
+                    step.classList.remove('active');
+                    step.classList.add('completed');
+                } else if (i === stepIndex) {
+                    step.classList.add('active');
+                    step.classList.remove('completed');
+                } else {
+                    step.classList.remove('active', 'completed');
+                }
+            });
+
+            stepLines.forEach((line, i) => {
+                if (i < stepIndex) {
+                    line.classList.add('active');
+                } else {
+                    line.classList.remove('active');
+                }
+            });
+        }
+
+        // 下一题
+        nextBtn.addEventListener('click', () => {
+            if (selectedOption !== null) {
+                answers[currentQuestionIndex] = selectedOption;
+                
+                if (currentQuestionIndex < questions.length - 1) {
+                    currentQuestionIndex++;
+                    showQuestion(currentQuestionIndex);
+                } else {
+                    showResults();
+                }
+            }
+        });
+
+        // 上一题
+        prevBtn.addEventListener('click', () => {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                selectedOption = answers[currentQuestionIndex] || null;
+                showQuestion(currentQuestionIndex);
+            }
+        });
+
+        // 显示结果
+        function showResults() {
+            questionsSection.classList.add('hidden');
+            resultsSection.classList.remove('hidden');
+            
+            // 计算维度得分
+            const dimensionScores = calculateDimensionScores();
+            const totalScore = calculateTotalScore(dimensionScores);
+            
+            // 显示雷达图
+            showRadarChart(dimensionScores);
+            
+            // 显示总体评分
+            document.getElementById('total-score').textContent = totalScore;
+            const levelInfo = getScoreLevel(totalScore);
+            document.getElementById('overall-description').textContent = levelInfo.description;
+            
+            // 显示维度分析
+            showDimensionAnalysis(dimensionScores);
+            
+            // 显示建议
+            showSuggestions(dimensionScores);
+            
+            // 显示行动计划
+            showActionPlan();
+            
+            // 滚动到顶部
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 计算维度得分
+        function calculateDimensionScores() {
+            const dimensions = {};
+            const dimensionCounts = {};
+            
+            questions.forEach((question, index) => {
+                const dimension = question.dimension;
+                if (!dimensions[dimension]) {
+                    dimensions[dimension] = 0;
+                    dimensionCounts[dimension] = 0;
+                }
+                dimensions[dimension] += answers[index];
+                dimensionCounts[dimension]++;
+            });
+            
+            // 计算平均分并转换为0-100分制
+            Object.keys(dimensions).forEach(dimension => {
+                dimensions[dimension] = Math.round((dimensions[dimension] / (dimensionCounts[dimension] * 5)) * 100);
+            });
+            
+            return dimensions;
+        }
+
+        // 计算总分
+        function calculateTotalScore(dimensionScores) {
+            const scores = Object.values(dimensionScores);
+            return Math.round(scores.reduce((sum, score) => sum + score, 0) / scores.length);
+        }
+
+        // 获取评分等级
+        function getScoreLevel(score) {
+            return scoreLevels.find(level => score >= level.min && score <= level.max);
+        }
+
+        // 显示雷达图
+        function showRadarChart(dimensionScores) {
+            const ctx = document.getElementById('radar-chart').getContext('2d');
+            const labels = Object.keys(dimensionScores);
+            const data = Object.values(dimensionScores);
+            
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '社交能力得分',
+                        data: data,
+                        backgroundColor: 'rgba(139, 92, 246, 0.2)',
+                        borderColor: 'rgba(139, 92, 246, 1)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(139, 92, 246, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(139, 92, 246, 1)'
+                    }]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                stepSize: 20
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    maintainAspectRatio: false
+                }
+            });
+        }
+
+        // 显示维度分析
+        function showDimensionAnalysis(dimensionScores) {
+            const analysisContainer = document.getElementById('dimension-analysis');
+            analysisContainer.innerHTML = '';
+            
+            Object.entries(dimensionScores).forEach(([dimension, score]) => {
+                const dimensionCard = document.createElement('div');
+                dimensionCard.className = 'card p-5';
+                
+                let scoreDescription;
+                if (score >= 80) scoreDescription = dimensionInfo[dimension].highScore;
+                else if (score >= 60) scoreDescription = dimensionInfo[dimension].midScore;
+                else scoreDescription = dimensionInfo[dimension].lowScore;
+                
+                dimensionCard.innerHTML = `
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h4 class="text-lg font-semibold">${dimension}</h4>
+                            <p class="text-sm text-gray-500">${dimensionInfo[dimension].description}</p>
+                        </div>
+                        <div class="bg-purple-100 px-4 py-2 rounded-lg">
+                            <span class="font-bold text-purple-600">${score}</span>
+                            <span class="text-gray-500">/100</span>
+                        </div>
+                    </div>
+                    <div class="insight-card">
+                        <p class="text-gray-700">${scoreDescription}</p>
+                    </div>
+                `;
+                
+                analysisContainer.appendChild(dimensionCard);
+            });
+        }
+
+        // 显示建议
+        function showSuggestions(dimensionScores) {
+            const suggestionsContainer = document.getElementById('suggestions-container');
+            suggestionsContainer.innerHTML = '';
+            
+            // 找出得分最低的两个维度
+            const sortedDimensions = Object.entries(dimensionScores)
+                .sort(([,a], [,b]) => a - b)
+                .slice(0, 2);
+            
+            sortedDimensions.forEach(([dimension, score]) => {
+                const suggestionsCard = document.createElement('div');
+                suggestionsCard.className = 'card p-5';
+                
+                suggestionsCard.innerHTML = `
+                    <h4 class="text-lg font-semibold mb-4">${dimension}提升建议</h4>
+                    <ul class="space-y-3">
+                        ${dimensionInfo[dimension].suggestions.map(suggestion => `
+                            <li class="flex items-start">
+                                <div class="bg-green-100 p-1 rounded-full mt-1 mr-3">
+                                    <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                </div>
+                                <span>${suggestion}</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                `;
+                
+                suggestionsContainer.appendChild(suggestionsCard);
+            });
+        }
+
+        // 显示行动计划
+        function showActionPlan() {
+            const actionPlanContainer = document.getElementById('action-plan');
+            actionPlanContainer.innerHTML = '';
+            
+            actionPlans.forEach(plan => {
+                const planItem = document.createElement('div');
+                planItem.className = 'flex items-start';
+                planItem.innerHTML = `
+                    <div class="bg-blue-100 p-2 rounded-full mt-1 mr-3">
+                        <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <span class="font-medium text-blue-800">${plan.day}</span>
+                        <p class="text-blue-700">${plan.activity}</p>
+                    </div>
+                `;
+                
+                actionPlanContainer.appendChild(planItem);
+            });
+        }
+
+        // 分享按钮
+        document.getElementById('share-btn').addEventListener('click', () => {
+            alert('分享功能即将上线，敬请期待！');
+        });
+
+        // 添加原创声明
+        const originalDeclaration = document.createElement('div');
+        originalDeclaration.className = 'bg-yellow-50 border border-yellow-200 rounded-lg p-4 mt-8';
+        originalDeclaration.innerHTML = `
+            <h4 class="font-semibold text-yellow-800 mb-2">🔒 原创声明</h4>
+            <p class="text-yellow-700 text-sm">本测评内容为原创设计，包含30道精心研发的题目、独特的评分体系和个性化分析报告。所有内容受版权保护，未经授权不得复制、传播或用于商业用途。</p>
+        `;
+        document.querySelector('#results-section .card').appendChild(originalDeclaration);
+    </script>
+</body>
+</html>
+# 社交力雷达 - 原创社交能力测评
+
+## 项目简介
+
+"社交力雷达"是一款原创的社交能力测评应用，专为小红书平台设计。该应用通过30道精心设计的题目，从五个关键维度全面评估用户的社交能力：沟通表达、情绪感知、关系建立、冲突处理和社交适应。
+
+## 核心功能
+
+- **原创测评体系**：30道原创题目，覆盖社交能力的五个核心维度
+- **个性化分析**：基于用户回答生成详细的雷达图和文字分析
+- **实用建议**：针对得分较低的维度提供具体的提升建议
+- **7天行动计划**：提供可执行的短期提升计划
+- **合规设计**：包含完整的付费说明、免责声明和原创声明
+
+## 技术特点
+
+- **纯前端实现**：使用HTML、CSS和JavaScript构建，无需后端支持
+- **响应式设计**：适配各种屏幕尺寸，移动端友好
+- **交互式体验**：平滑的动画效果和直观的用户界面
+- **数据可视化**：使用Chart.js生成专业的雷达图展示
+
+## 使用说明
+
+1. 用户打开应用后，首先看到付费说明和免责声明
+2. 点击"开始测评"按钮进入问题页面
+3. 依次回答30道问题，每题有5个选项
+4. 完成所有问题后，系统自动生成测评报告
+5. 用户可以查看雷达图、详细分析和提升建议
+
+## 部署方式
+
+1. 将所有文件上传到网站服务器
+2. 确保index.html文件可公开访问
+3. 在小红书平台创建相关内容，引导用户访问测评链接
+
+## 合规声明
+
+- 本测评为原创内容服务，非专业医疗/心理测评
+- 所有内容受版权保护，未经授权不得复制或传播
+- 测评结果仅供参考，不构成任何形式的专业建议
+- 包含完整的免责声明，明确区分非专业诊断工具
+
+## 开发团队
+
+- 设计：AI助手
+- 开发：AI助手
+- 测试：AI助手
+
+## 版权信息
+
+© 2024 社交力雷达. 保留所有权利。
