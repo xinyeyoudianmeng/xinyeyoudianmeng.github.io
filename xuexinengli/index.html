@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学习能力测评 - 原创内容服务</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.544.0/dist/umd/lucide.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #8b5cf6;
+            --accent-color: #06b6d4;
+            --background-color: #f8fafc;
+            --card-background: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --error-color: #ef4444;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--background-color) 0%, #e2e8f0 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        
+        .card {
+            background: var(--card-background);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(99, 102, 241, 0.4);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.4);
+        }
+        
+        .option-btn {
+            background: #f1f5f9;
+            border: 2px solid transparent;
+            padding: 12px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .option-btn:hover {
+            background: #e2e8f0;
+            border-color: var(--primary-color);
+        }
+        
+        .option-btn.selected {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .progress-bar {
+            background: #e2e8f0;
+            border-radius: 10px;
+            height: 8px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            height: 100%;
+            transition: width 0.5s ease;
+            border-radius: 10px;
+        }
+        
+        .result-card {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-left: 4px solid var(--accent-color);
+        }
+        
+        .score-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: conic-gradient(var(--primary-color) 0deg, var(--primary-color) var(--score-angle), #e2e8f0 var(--score-angle));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            margin: 0 auto;
+        }
+        
+        .score-circle::before {
+            content: '';
+            width: 100px;
+            height: 100px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+        }
+        
+        .score-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .disclaimer {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 20px 0;
+        }
+        
+        .disclaimer h3 {
+            color: #92400e;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .disclaimer p {
+            color: #92400e;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        
+        .step {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .step.active {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+        }
+        
+        .step.completed {
+            background: var(--success-color);
+            color: white;
+        }
+        
+        .step::after {
+            content: '';
+            position: absolute;
+            top: 15px;
+            right: -50%;
+            width: 100%;
+            height: 2px;
+            background: #e2e8f0;
+            z-index: -1;
+        }
+        
+        .step:last-child::after {
+            display: none;
+        }
+        
+        .step.active::after,
+        .step.completed::after {
+            background: var(--primary-color);
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <!-- 标题区域 -->
+        <div class="text-center mb-8 fade-in">
+            <h1 class="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-4">
+                学习能力测评
+            </h1>
+            <p class="text-lg text-gray-600">
+                探索你的学习潜能，发现提升空间
+            </p>
+        </div>
+
+        <!-- 付费性质声明 -->
+        <div class="disclaimer fade-in">
+            <h3>⚠️ 重要声明</h3>
+            <p>本测评为原创内容服务，非专业医疗/心理测评。测评结果仅供参考，不构成任何形式的诊断或建议。请理性看待测评结果。</p>
+        </div>
+
+        <!-- 主内容区域 -->
+        <div id="main-content">
+            <!-- 测评介绍 -->
+            <div id="intro-section" class="card p-8 mb-8 fade-in">
+                <h2 class="text-2xl font-bold mb-4 text-gray-800">测评说明</h2>
+                <p class="text-gray-600 mb-6">
+                    本测评包含20道精心设计的题目，涵盖记忆力、专注力、逻辑思维、学习方法等多个维度，帮助你全面了解自己的学习能力特点。
+                </p>
+                <div class="space-y-4">
+                    <div class="flex items-center">
+                        <i data-lucide="clock" class="w-5 h-5 text-indigo-500 mr-3"></i>
+                        <span>预计用时：10-15分钟</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i data-lucide="target" class="w-5 h-5 text-indigo-500 mr-3"></i>
+                        <span>测评维度：5个核心维度</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i data-lucide="bar-chart-3" class="w-5 h-5 text-indigo-500 mr-3"></i>
+                        <span>结果形式：详细分析报告</span>
+                    </div>
+                </div>
+                <button id="start-btn" class="btn-primary mt-8 w-full">
+                    开始测评
+                </button>
+            </div>
+
+            <!-- 测评问题区域 -->
+            <div id="quiz-section" class="card p-8 mb-8 hidden">
+                <div class="step-indicator mb-6">
+                    <div class="step active" data-step="1">1</div>
+                    <div class="step" data-step="2">2</div>
+                    <div class="step" data-step="3">3</div>
+                    <div class="step" data-step="4">4</div>
+                    <div class="step" data-step="5">5</div>
+                </div>
+                
+                <div class="progress-bar mb-6">
+                    <div class="progress-fill" style="width: 0%"></div>
+                </div>
+                
+                <div id="question-container">
+                    <!-- 问题将通过JavaScript动态生成 -->
+                </div>
+                
+                <div class="flex justify-between mt-8">
+                    <button id="prev-btn" class="btn-secondary hidden px-6 py-3 rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-50">
+                        上一题
+                    </button>
+                    <button id="next-btn" class="btn-primary px-6 py-3 rounded-lg">
+                        下一题
+                    </button>
+                </div>
+            </div>
+
+            <!-- 结果区域 -->
+            <div id="result-section" class="card p-8 mb-8 hidden">
+                <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">测评结果</h2>
+                
+                <div class="score-circle mb-8" style="--score-angle: 0deg">
+                    <div class="score-number" id="total-score">0</div>
+                </div>
+                
+                <div class="text-center mb-8">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-2">总体评价</h3>
+                    <p id="overall-evaluation" class="text-gray-600"></p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div class="result-card p-6 rounded-lg">
+                        <h4 class="font-semibold text-gray-800 mb-3">记忆力</h4>
+                        <div class="flex items-center mb-2">
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div id="memory-score" class="bg-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
+                            </div>
+                            <span id="memory-percentage" class="ml-3 text-sm font-medium">0%</span>
+                        </div>
+                        <p id="memory-description" class="text-sm text-gray-600"></p>
+                    </div>
+                    
+                    <div class="result-card p-6 rounded-lg">
+                        <h4 class="font-semibold text-gray-800 mb-3">专注力</h4>
+                        <div class="flex items-center mb-2">
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div id="focus-score" class="bg-green-600 h-2.5 rounded-full" style="width: 0%"></div>
+                            </div>
+                            <span id="focus-percentage" class="ml-3 text-sm font-medium">0%</span>
+                        </div>
+                        <p id="focus-description" class="text-sm text-gray-600"></p>
+                    </div>
+                    
+                    <div class="result-card p-6 rounded-lg">
+                        <h4 class="font-semibold text-gray-800 mb-3">逻辑思维</h4>
+                        <div class="flex items-center mb-2">
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div id="logic-score" class="bg-purple-600 h-2.5 rounded-full" style="width: 0%"></div>
+                            </div>
+                            <span id="logic-percentage" class="ml-3 text-sm font-medium">0%</span>
+                        </div>
+                        <p id="logic-description" class="text-sm text-gray-600"></p>
+                    </div>
+                    
+                    <div class="result-card p-6 rounded-lg">
+                        <h4 class="font-semibold text-gray-800 mb-3">学习方法</h4>
+                        <div class="flex items-center mb-2">
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div id="method-score" class="bg-orange-600 h-2.5 rounded-full" style="width: 0%"></div>
+                            </div>
+                            <span id="method-percentage" class="ml-3 text-sm font-medium">0%</span>
+                        </div>
+                        <p id="method-description" class="text-sm text-gray-600"></p>
+                    </div>
+                    
+                    <div class="result-card p-6 rounded-lg md:col-span-2">
+                        <h4 class="font-semibold text-gray-800 mb-3">学习动力</h4>
+                        <div class="flex items-center mb-2">
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div id="motivation-score" class="bg-red-600 h-2.5 rounded-full" style="width: 0%"></div>
+                            </div>
+                            <span id="motivation-percentage" class="ml-3 text-sm font-medium">0%</span>
+                        </div>
+                        <p id="motivation-description" class="text-sm text-gray-600"></p>
+                    </div>
+                </div>
+                
+                <div class="bg-blue-50 p-6 rounded-lg mb-8">
+                    <h3 class="font-semibold text-blue-800 mb-3">提升建议</h3>
+                    <ul id="improvement-tips" class="list-disc list-inside space-y-2 text-blue-700"></ul>
+                </div>
+                
+                <div class="text-center">
+                    <button id="restart-btn" class="btn-primary px-8 py-3 rounded-lg">
+                        重新测评
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 免责声明 -->
+        <div class="disclaimer fade-in">
+            <h3>免责声明</h3>
+            <p>1. 本测评为原创内容服务，非专业医疗/心理测评工具。</p>
+            <p>2. 测评结果仅供参考，不构成任何形式的诊断、治疗或建议。</p>
+            <p>3. 如有学习困难或心理困扰，请寻求专业教育工作者或心理健康专业人士的帮助。</p>
+            <p>4. 本测评不制造焦虑，不误导结果，旨在提供正向的自我认知和成长建议。</p>
+            <p>5. 测评内容受版权保护，未经授权不得复制或传播。</p>
+        </div>
+
+        <!-- 原创声明 -->
+        <div class="text-center mt-8 text-gray-500 text-sm">
+            <p>© 2024 学习能力测评 - 原创内容服务</p>
+            <p class="mt-1">本测评内容为原创设计，请勿盗用</p>
+        </div>
+    </div>
+
+    <script>
+        // 初始化图标
+        lucide.createIcons();
+
+        // 测评题目数据（原创设计）
+        const questions = [
+            // 记忆力维度
+            {
+                id: 1,
+                dimension: 'memory',
+                question: '当你学习新的知识点时，你通常需要重复多少次才能记住？',
+                options: [
+                    { value: 5, text: '1-2次就能记住' },
+                    { value: 4, text: '3-4次可以记住' },
+                    { value: 3, text: '5-6次才能记住' },
+                    { value: 2, text: '7-8次勉强记住' },
+                    { value: 1, text: '需要9次以上' }
+                ]
+            },
+            {
+                id: 2,
+                dimension: 'memory',
+                question: '你能在多大程度上回忆起一周前学习的内容？',
+                options: [
+                    { value: 5, text: '大部分都能清晰记得' },
+                    { value: 4, text: '能记住主要内容' },
+                    { value: 3, text: '记得一些关键点' },
+                    { value: 2, text: '只能模糊回忆' },
+                    { value: 1, text: '几乎完全忘记' }
+                ]
+            },
+            {
+                id: 3,
+                dimension: 'memory',
+                question: '学习时，你使用记忆技巧的频率如何？',
+                options: [
+                    { value: 5, text: '经常使用多种记忆方法' },
+                    { value: 4, text: '有时会使用记忆技巧' },
+                    { value: 3, text: '偶尔尝试记忆方法' },
+                    { value: 2, text: '很少使用记忆技巧' },
+                    { value: 1, text: '从不使用记忆方法' }
+                ]
+            },
+            {
+                id: 4,
+                dimension: 'memory',
+                question: '你的短期记忆力表现如何？',
+                options: [
+                    { value: 5, text: '能快速记住临时信息' },
+                    { value: 4, text: '短期记忆能力良好' },
+                    { value: 3, text: '短期记忆一般' },
+                    { value: 2, text: '短期记忆较弱' },
+                    { value: 1, text: '经常忘记刚学的内容' }
+                ]
+            },
+
+            // 专注力维度
+            {
+                id: 5,
+                dimension: 'focus',
+                question: '你能连续专注学习多长时间而不分心？',
+                options: [
+                    { value: 5, text: '2小时以上' },
+                    { value: 4, text: '1.5-2小时' },
+                    { value: 3, text: '1-1.5小时' },
+                    { value: 2, text: '30-60分钟' },
+                    { value: 1, text: '30分钟以下' }
+                ]
+            },
+            {
+                id: 6,
+                dimension: 'focus',
+                question: '当学习环境中有干扰时，你的表现如何？',
+                options: [
+                    { value: 5, text: '完全不受干扰影响' },
+                    { value: 4, text: '能保持大部分专注' },
+                    { value: 3, text: '会受到一些影响' },
+                    { value: 2, text: '容易被干扰分散注意力' },
+                    { value: 1, text: '几乎无法在干扰环境中学习' }
+                ]
+            },
+            {
+                id: 7,
+                dimension: 'focus',
+                question: '你制定学习计划并坚持执行的能力如何？',
+                options: [
+                    { value: 5, text: '总是按计划执行' },
+                    { value: 4, text: '大部分时间能坚持计划' },
+                    { value: 3, text: '有时能按计划学习' },
+                    { value: 2, text: '经常偏离学习计划' },
+                    { value: 1, text: '很少制定或执行计划' }
+                ]
+            },
+            {
+                id: 8,
+                dimension: 'focus',
+                question: '学习时，你检查手机或社交媒体的频率是？',
+                options: [
+                    { value: 5, text: '几乎不查看' },
+                    { value: 4, text: '偶尔查看（每小时1次）' },
+                    { value: 3, text: '有时会看（每30分钟）' },
+                    { value: 2, text: '经常查看（每15分钟）' },
+                    { value: 1, text: '频繁查看（持续分心）' }
+                ]
+            },
+
+            // 逻辑思维维度
+            {
+                id: 9,
+                dimension: 'logic',
+                question: '你解决复杂问题的能力如何？',
+                options: [
+                    { value: 5, text: '能轻松解决复杂问题' },
+                    { value: 4, text: '善于分析和解决问题' },
+                    { value: 3, text: '解决问题能力一般' },
+                    { value: 2, text: '面对难题时有些困难' },
+                    { value: 1, text: '经常被复杂问题困扰' }
+                ]
+            },
+            {
+                id: 10,
+                dimension: 'logic',
+                question: '学习新概念时，你能理解其内在逻辑关系吗？',
+                options: [
+                    { value: 5, text: '能快速理解并建立联系' },
+                    { value: 4, text: '能较好地理解逻辑关系' },
+                    { value: 3, text: '基本能理解概念逻辑' },
+                    { value: 2, text: '需要更多时间理解' },
+                    { value: 1, text: '很难理解抽象逻辑' }
+                ]
+            },
+            {
+                id: 11,
+                dimension: 'logic',
+                question: '你在学习中使用归纳和演绎思维的频率？',
+                options: [
+                    { value: 5, text: '经常使用逻辑思维方法' },
+                    { value: 4, text: '比较重视逻辑分析' },
+                    { value: 3, text: '有时会进行逻辑思考' },
+                    { value: 2, text: '很少使用逻辑方法' },
+                    { value: 1, text: '几乎不进行逻辑分析' }
+                ]
+            },
+            {
+                id: 12,
+                dimension: 'logic',
+                question: '你的推理和判断能力如何？',
+                options: [
+                    { value: 5, text: '推理能力很强' },
+                    { value: 4, text: '推理判断比较准确' },
+                    { value: 3, text: '推理能力一般' },
+                    { value: 2, text: '推理时容易出错' },
+                    { value: 1, text: '经常做出错误判断' }
+                ]
+            },
+
+            // 学习方法维度
+            {
+                id: 13,
+                dimension: 'method',
+                question: '你会根据不同学科调整学习方法吗？',
+                options: [
+                    { value: 5, text: '总是根据学科特点调整方法' },
+                    { value: 4, text: '经常调整学习策略' },
+                    { value: 3, text: '有时会尝试不同方法' },
+                    { value: 2, text: '很少改变学习方式' },
+                    { value: 1, text: '一直使用相同方法' }
+                ]
+            },
+            {
+                id: 14,
+                dimension: 'method',
+                question: '你如何评估自己的学习效果？',
+                options: [
+                    { value: 5, text: '经常测试并调整方法' },
+                    { value: 4, text: '定期检查学习成果' },
+                    { value: 3, text: '有时会评估学习效果' },
+                    { value: 2, text: '很少评估学习效果' },
+                    { value: 1, text: '从不评估学习效果' }
+                ]
+            },
+            {
+                id: 15,
+                dimension: 'method',
+                question: '你使用学习工具和资源的情况如何？',
+                options: [
+                    { value: 5, text: '广泛使用各种学习工具' },
+                    { value: 4, text: '使用多种学习资源' },
+                    { value: 3, text: '使用基本的学习工具' },
+                    { value: 2, text: '很少使用学习工具' },
+                    { value: 1, text: '几乎不使用额外资源' }
+                ]
+            },
+            {
+                id: 16,
+                dimension: 'method',
+                question: '你复习和巩固知识的频率是？',
+                options: [
+                    { value: 5, text: '经常系统复习' },
+                    { value: 4, text: '定期进行复习' },
+                    { value: 3, text: '考前会复习' },
+                    { value: 2, text: '很少主动复习' },
+                    { value: 1, text: '几乎不复习' }
+                ]
+            },
+
+            // 学习动力维度
+            {
+                id: 17,
+                dimension: 'motivation',
+                question: '你对学习新知识的兴趣程度如何？',
+                options: [
+                    { value: 5, text: '非常热爱学习' },
+                    { value: 4, text: '对学习很感兴趣' },
+                    { value: 3, text: '学习兴趣一般' },
+                    { value: 2, text: '对学习兴趣不大' },
+                    { value: 1, text: '几乎没有学习兴趣' }
+                ]
+            },
+            {
+                id: 18,
+                dimension: 'motivation',
+                question: '遇到学习困难时，你会怎么做？',
+                options: [
+                    { value: 5, text: '坚持不懈，寻找解决方法' },
+                    { value: 4, text: '努力克服困难' },
+                    { value: 3, text: '尝试一段时间后放弃' },
+                    { value: 2, text: '容易被困难打击' },
+                    { value: 1, text: '遇到困难就放弃' }
+                ]
+            },
+            {
+                id: 19,
+                dimension: 'motivation',
+                question: '你设定学习目标的情况如何？',
+                options: [
+                    { value: 5, text: '总是设定明确的学习目标' },
+                    { value: 4, text: '经常设定学习目标' },
+                    { value: 3, text: '有时会设定目标' },
+                    { value: 2, text: '很少设定学习目标' },
+                    { value: 1, text: '从不设定学习目标' }
+                ]
+            },
+            {
+                id: 20,
+                dimension: 'motivation',
+                question: '学习成功对你的意义是什么？',
+                options: [
+                    { value: 5, text: '对个人成长至关重要' },
+                    { value: 4, text: '非常重要' },
+                    { value: 3, text: '比较重要' },
+                    { value: 2, text: '不太重要' },
+                    { value: 1, text: '几乎不重要' }
+                ]
+            }
+        ];
+
+        // 结果分析数据
+        const resultAnalysis = {
+            memory: {
+                high: {
+                    description: '你的记忆力非常出色，能够快速吸收和保留信息。',
+                    tips: ['继续保持良好的记忆习惯', '可以尝试更复杂的记忆挑战', '教授他人可以巩固你的记忆']
+                },
+                medium: {
+                    description: '你的记忆力处于良好水平，有提升空间。',
+                    tips: ['使用思维导图等可视化工具', '增加复习频率', '尝试联想记忆法']
+                },
+                low: {
+                    description: '你的记忆力需要加强训练和改进方法。',
+                    tips: ['制定规律的复习计划', '使用多种感官参与学习', '保证充足的睡眠']
+                }
+            },
+            focus: {
+                high: {
+                    description: '你拥有出色的专注力，能够长时间高效学习。',
+                    tips: ['合理安排休息时间', '继续保持专注的学习环境', '可以尝试番茄工作法']
+                },
+                medium: {
+                    description: '你的专注力表现良好，但在某些情况下会受到干扰。',
+                    tips: ['创造安静的学习环境', '减少学习时的干扰源', '逐步延长专注时间']
+                },
+                low: {
+                    description: '你的专注力需要提升，容易受到外界干扰。',
+                    tips: ['从短时间专注开始训练', '使用专注类应用辅助', '避免多任务处理']
+                }
+            },
+            logic: {
+                high: {
+                    description: '你具有很强的逻辑思维能力，善于分析和推理。',
+                    tips: ['挑战更复杂的问题', '学习逻辑学知识', '多角度思考问题']
+                },
+                medium: {
+                    description: '你的逻辑思维能力良好，能够理解基本的逻辑关系。',
+                    tips: ['练习逻辑题', '学习结构化思维', '多问"为什么"']
+                },
+                low: {
+                    description: '你的逻辑思维能力有待提高，需要更多练习。',
+                    tips: ['从简单逻辑题开始练习', '学习基本的逻辑原理', '循序渐进地提高难度']
+                }
+            },
+            method: {
+                high: {
+                    description: '你掌握了有效的学习方法，能够灵活运用各种策略。',
+                    tips: ['继续探索新的学习方法', '分享你的学习经验', '定期总结和改进']
+                },
+                medium: {
+                    description: '你使用的学习方法基本有效，但可以更加系统化。',
+                    tips: ['学习科学的学习方法', '制定个性化学习计划', '定期评估学习效果']
+                },
+                low: {
+                    description: '你的学习方法需要优化，缺乏系统性和多样性。',
+                    tips: ['学习基础的学习方法', '向优秀学习者请教', '逐步建立学习体系']
+                }
+            },
+            motivation: {
+                high: {
+                    description: '你拥有强烈的学习动力，能够持续保持学习热情。',
+                    tips: ['设定更高的学习目标', '寻找学习伙伴', '分享你的学习成果']
+                },
+                medium: {
+                    description: '你的学习动力适中，在某些情况下可能会波动。',
+                    tips: ['寻找内在学习动机', '设定有意义的目标', '庆祝学习进步']
+                },
+                low: {
+                    description: '你的学习动力不足，需要重新激发学习热情。',
+                    tips: ['寻找学习的意义', '设定小而可达成的目标', '寻找学习的乐趣']
+                }
+            }
+        };
+
+        // 应用状态
+        let currentQuestionIndex = 0;
+        const userAnswers = {};
+        let scores = {
+            memory: 0,
+            focus: 0,
+            logic: 0,
+            method: 0,
+            motivation: 0
+        };
+
+        // DOM元素
+        const introSection = document.getElementById('intro-section');
+        const quizSection = document.getElementById('quiz-section');
+        const resultSection = document.getElementById('result-section');
+        const startBtn = document.getElementById('start-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const prevBtn = document.getElementById('prev-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        const questionContainer = document.getElementById('question-container');
+        const progressFill = document.querySelector('.progress-fill');
+        const stepIndicators = document.querySelectorAll('.step');
+
+        // 开始测评
+        startBtn.addEventListener('click', () => {
+            introSection.classList.add('hidden');
+            quizSection.classList.remove('hidden');
+            showQuestion(currentQuestionIndex);
+            updateProgress();
+        });
+
+        // 显示问题
+        function showQuestion(index) {
+            const question = questions[index];
+            questionContainer.innerHTML = `
+                <div class="fade-in">
+                    <h3 class="text-xl font-semibold mb-6 text-gray-800">${question.question}</h3>
+                    <div class="space-y-4">
+                        ${question.options.map((option, i) => `
+                            <button class="option-btn w-full text-left ${userAnswers[question.id] === option.value ? 'selected' : ''}" 
+                                    data-value="${option.value}">
+                                ${option.text}
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            // 添加选项点击事件
+            const optionBtns = questionContainer.querySelectorAll('.option-btn');
+            optionBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    optionBtns.forEach(b => b.classList.remove('selected'));
+                    btn.classList.add('selected');
+                    userAnswers[question.id] = parseInt(btn.dataset.value);
+                });
+            });
+
+            // 更新按钮状态
+            prevBtn.classList.toggle('hidden', index === 0);
+            nextBtn.textContent = index === questions.length - 1 ? '提交' : '下一题';
+        }
+
+        // 更新进度
+        function updateProgress() {
+            const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+            progressFill.style.width = `${progress}%`;
+            
+            // 更新步骤指示器
+            stepIndicators.forEach((step, index) => {
+                if (index < currentQuestionIndex) {
+                    step.classList.add('completed');
+                    step.classList.remove('active');
+                } else if (index === currentQuestionIndex) {
+                    step.classList.add('active');
+                    step.classList.remove('completed');
+                } else {
+                    step.classList.remove('active', 'completed');
+                }
+            });
+        }
+
+        // 下一题
+        nextBtn.addEventListener('click', () => {
+            // 检查是否选择了答案
+            const currentQuestion = questions[currentQuestionIndex];
+            if (!userAnswers[currentQuestion.id]) {
+                alert('请选择一个选项');
+                return;
+            }
+
+            // 如果是最后一题，计算结果
+            if (currentQuestionIndex === questions.length - 1) {
+                calculateResults();
+                showResults();
+                return;
+            }
+
+            // 显示下一题
+            currentQuestionIndex++;
+            showQuestion(currentQuestionIndex);
+            updateProgress();
+        });
+
+        // 上一题
+        prevBtn.addEventListener('click', () => {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                showQuestion(currentQuestionIndex);
+                updateProgress();
+            }
+        });
+
+        // 计算结果
+        function calculateResults() {
+            // 重置分数
+            scores = {
+                memory: 0,
+                focus: 0,
+                logic: 0,
+                method: 0,
+                motivation: 0
+            };
+
+            // 计算各维度分数
+            questions.forEach(question => {
+                scores[question.dimension] += userAnswers[question.id] || 0;
+            });
+
+            // 计算百分比
+            const maxScores = {
+                memory: 20,
+                focus: 20,
+                logic: 20,
+                method: 20,
+                motivation: 20
+            };
+
+            for (const dimension in scores) {
+                scores[dimension] = Math.round((scores[dimension] / maxScores[dimension]) * 100);
+            }
+        }
+
+        // 显示结果
+        function showResults() {
+            quizSection.classList.add('hidden');
+            resultSection.classList.remove('hidden');
+
+            // 计算总分
+            const totalScore = Math.round(
+                (scores.memory + scores.focus + scores.logic + scores.method + scores.motivation) / 5
+            );
+
+            // 更新总分圆环
+            const scoreCircle = document.querySelector('.score-circle');
+            const totalScoreElement = document.getElementById('total-score');
+            
+            // 动画显示分数
+            let currentDisplayScore = 0;
+            const scoreInterval = setInterval(() => {
+                currentDisplayScore++;
+                totalScoreElement.textContent = currentDisplayScore;
+                scoreCircle.style.setProperty('--score-angle', `${(currentDisplayScore / 100) * 360}deg`);
+                
+                if (currentDisplayScore >= totalScore) {
+                    clearInterval(scoreInterval);
+                }
+            }, 20);
+
+            // 更新总体评价
+            const overallEvaluation = document.getElementById('overall-evaluation');
+            if (totalScore >= 80) {
+                overallEvaluation.textContent = '你的学习能力非常出色！你在多个维度都表现优秀，具有成为高效学习者的潜力。';
+            } else if (totalScore >= 60) {
+                overallEvaluation.textContent = '你的学习能力良好。你在某些方面表现突出，有进一步提升的空间。';
+            } else if (totalScore >= 40) {
+                overallEvaluation.textContent = '你的学习能力处于中等水平。通过改进学习方法和增加训练，你可以显著提升。';
+            } else {
+                overallEvaluation.textContent = '你的学习能力需要加强。建议从基础开始，逐步建立良好的学习习惯和方法。';
+            }
+
+            // 更新各维度结果
+            updateDimensionResult('memory', scores.memory);
+            updateDimensionResult('focus', scores.focus);
+            updateDimensionResult('logic', scores.logic);
+            updateDimensionResult('method', scores.method);
+            updateDimensionResult('motivation', scores.motivation);
+
+            // 生成提升建议
+            generateImprovementTips();
+        }
+
+        // 更新维度结果
+        function updateDimensionResult(dimension, score) {
+            const scoreElement = document.getElementById(`${dimension}-score`);
+            const percentageElement = document.getElementById(`${dimension}-percentage`);
+            const descriptionElement = document.getElementById(`${dimension}-description`);
+
+            // 动画显示分数
+            let currentDisplayScore = 0;
+            const scoreInterval = setInterval(() => {
+                currentDisplayScore++;
+                scoreElement.style.width = `${currentDisplayScore}%`;
+                percentageElement.textContent = `${currentDisplayScore}%`;
+                
+                if (currentDisplayScore >= score) {
+                    clearInterval(scoreInterval);
+                }
+            }, 20);
+
+            // 获取描述
+            let level;
+            if (score >= 80) level = 'high';
+            else if (score >= 60) level = 'medium';
+            else level = 'low';
+
+            descriptionElement.textContent = resultAnalysis[dimension][level].description;
+        }
+
+        // 生成提升建议
+        function generateImprovementTips() {
+            const tipsContainer = document.getElementById('improvement-tips');
+            const tips = [];
+
+            // 获取各维度的建议
+            for (const dimension in scores) {
+                let level;
+                if (scores[dimension] >= 80) level = 'high';
+                else if (scores[dimension] >= 60) level = 'medium';
+                else level = 'low';
+
+                tips.push(...resultAnalysis[dimension][level].tips);
+            }
+
+            // 去重并显示前6条建议
+            const uniqueTips = [...new Set(tips)].slice(0, 6);
+            tipsContainer.innerHTML = uniqueTips.map(tip => `<li>${tip}</li>`).join('');
+        }
+
+        // 重新测评
+        restartBtn.addEventListener('click', () => {
+            // 重置状态
+            currentQuestionIndex = 0;
+            Object.keys(userAnswers).forEach(key => delete userAnswers[key]);
+            Object.keys(scores).forEach(key => scores[key] = 0);
+
+            // 重置UI
+            resultSection.classList.add('hidden');
+            introSection.classList.remove('hidden');
+            progressFill.style.width = '0%';
+            stepIndicators.forEach(step => {
+                step.classList.remove('active', 'completed');
+            });
+        });
+
+        // 添加页面加载动画
+        window.addEventListener('load', () => {
+            document.querySelectorAll('.fade-in').forEach((el, index) => {
+                el.style.animationDelay = `${index * 0.1}s`;
+                el.classList.add('fade-in');
+            });
+        });
+    </script>
+</body>
+</html>
