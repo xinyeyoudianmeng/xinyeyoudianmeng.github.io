@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>思维力自测 - 探索你的智力特点</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4F46E5',
+                        secondary: '#EC4899',
+                        neutral: '#F3F4F6',
+                        dark: '#1F2937',
+                        light: '#F9FAFB'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .card-hover {
+                @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+            }
+            .btn-primary {
+                @apply bg-primary text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:bg-opacity-90 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50;
+            }
+            .btn-secondary {
+                @apply bg-white text-primary border border-primary px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:bg-primary hover:text-white focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50;
+            }
+            .progress-bar {
+                @apply h-2 bg-gray-200 rounded-full overflow-hidden;
+            }
+            .progress-value {
+                @apply h-full bg-primary transition-all duration-300;
+            }
+        }
+    </style>
+</head>
+<body class="bg-light min-h-screen">
+    <!-- 欢迎页面 -->
+    <div id="welcome-screen" class="container mx-auto px-4 py-12 max-w-4xl">
+        <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl md:text-5xl font-bold text-dark mb-4">思维力自测</h1>
+                <p class="text-lg text-gray-600">探索你的智力特点，发现你的思维优势</p>
+            </div>
+            
+            <div class="mb-8">
+                <div class="bg-neutral rounded-lg p-6 mb-6">
+                    <h2 class="text-xl font-semibold mb-4 flex items-center">
+                        <i class="fa fa-info-circle text-primary mr-2"></i>
+                        测试说明
+                    </h2>
+                    <ul class="space-y-2 text-gray-700">
+                        <li class="flex items-start">
+                            <i class="fa fa-check-circle text-primary mt-1 mr-2"></i>
+                            <span>本测试包含40道题目，涵盖空间思维、逻辑推理、语言能力和记忆力等多个维度</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa fa-check-circle text-primary mt-1 mr-2"></i>
+                            <span>建议在30分钟内完成，保持放松状态，无需过度紧张</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa fa-check-circle text-primary mt-1 mr-2"></i>
+                            <span>测试结果仅作为个人参考，非专业诊断工具</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i class="fa fa-exclamation-triangle text-yellow-400"></i>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-yellow-700">
+                                <strong>重要声明：</strong>本测试为原创内容服务，非专业医疗/心理测评工具。测试结果仅供参考，不应用于任何形式的诊断或评估。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center">
+                <button id="start-test" class="btn-primary">
+                    开始测试
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 测试页面 -->
+    <div id="test-screen" class="container mx-auto px-4 py-8 max-w-4xl hidden">
+        <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8">
+            <!-- 进度条 -->
+            <div class="mb-6">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-sm font-medium text-gray-700">进度</span>
+                    <span id="progress-text" class="text-sm font-medium text-primary">1/40</span>
+                </div>
+                <div class="progress-bar">
+                    <div id="progress-value" class="progress-value" style="width: 2.5%"></div>
+                </div>
+            </div>
+            
+            <!-- 题目区域 -->
+            <div id="question-container" class="mb-8">
+                <h2 id="question-number" class="text-xl font-semibold mb-4">问题 1</h2>
+                <div id="question-text" class="text-lg mb-6">
+                    请观察下面的图形序列，选择接下来应该出现的图形。
+                </div>
+                <div id="options-container" class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <!-- 选项将通过JS动态生成 -->
+                </div>
+            </div>
+            
+            <!-- 导航按钮 -->
+            <div class="flex justify-between">
+                <button id="prev-btn" class="btn-secondary opacity-50 cursor-not-allowed" disabled>
+                    <i class="fa fa-arrow-left mr-2"></i>上一题
+                </button>
+                <button id="next-btn" class="btn-primary">
+                    下一题<i class="fa fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 结果页面 -->
+    <div id="result-screen" class="container mx-auto px-4 py-8 max-w-4xl hidden">
+        <div class="bg-white rounded-2xl shadow-xl p-6 md:p-8">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl md:text-4xl font-bold text-dark mb-4">测试完成！</h1>
+                <p class="text-lg text-gray-600">以下是你的思维力分析结果</p>
+            </div>
+            
+            <!-- 总体得分 -->
+            <div class="bg-neutral rounded-lg p-6 mb-8 text-center">
+                <h2 class="text-xl font-semibold mb-4">总体思维力指数</h2>
+                <div class="flex justify-center">
+                    <div class="relative w-48 h-48">
+                        <svg class="w-full h-full" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="45" fill="none" stroke="#E5E7EB" stroke-width="10" />
+                            <circle id="score-circle" cx="50" cy="50" r="45" fill="none" stroke="#4F46E5" stroke-width="10" stroke-dasharray="283" stroke-dashoffset="283" transform="rotate(-90 50 50)" />
+                        </svg>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center">
+                            <span id="total-score" class="text-4xl font-bold text-primary">0</span>
+                            <span class="text-sm text-gray-500">满分100</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 维度分析 -->
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold mb-4">思维维度分析</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-neutral rounded-lg p-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-medium">空间思维</span>
+                            <span id="spatial-score" class="text-primary font-semibold">0/25</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div id="spatial-progress" class="progress-value bg-blue-500" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="bg-neutral rounded-lg p-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-medium">逻辑推理</span>
+                            <span id="logical-score" class="text-primary font-semibold">0/25</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div id="logical-progress" class="progress-value bg-green-500" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="bg-neutral rounded-lg p-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-medium">语言能力</span>
+                            <span id="verbal-score" class="text-primary font-semibold">0/25</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div id="verbal-progress" class="progress-value bg-purple-500" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="bg-neutral rounded-lg p-4">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-medium">记忆力</span>
+                            <span id="memory-score" class="text-primary font-semibold">0/25</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div id="memory-progress" class="progress-value bg-orange-500" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 左右脑分析 -->
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold mb-4">左右脑思维倾向</h2>
+                <div class="bg-neutral rounded-lg p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <div class="text-center">
+                            <div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-2">
+                                <i class="fa fa-cogs text-blue-500 text-2xl"></i>
+                            </div>
+                            <span class="text-sm font-medium">左脑</span>
+                            <span id="left-brain-percent" class="block text-primary font-semibold">0%</span>
+                        </div>
+                        
+                        <div class="relative w-48 h-48">
+                            <svg class="w-full h-full" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="45" fill="none" stroke="#E5E7EB" stroke-width="10" />
+                                <circle id="brain-circle" cx="50" cy="50" r="45" fill="none" stroke="#EC4899" stroke-width="10" stroke-dasharray="283" stroke-dashoffset="141.5" transform="rotate(-90 50 50)" />
+                            </svg>
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <div class="text-center">
+                                    <span id="brain-dominance" class="text-lg font-semibold">均衡</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center">
+                            <div class="w-16 h-16 rounded-full bg-pink-100 flex items-center justify-center mx-auto mb-2">
+                                <i class="fa fa-paint-brush text-pink-500 text-2xl"></i>
+                            </div>
+                            <span class="text-sm font-medium">右脑</span>
+                            <span id="right-brain-percent" class="block text-primary font-semibold">0%</span>
+                        </div>
+                    </div>
+                    <p id="brain-description" class="text-sm text-gray-600 text-center">
+                        你的左右脑思维较为均衡，在逻辑分析和创造性思维方面都有一定优势。
+                    </p>
+                </div>
+            </div>
+            
+            <!-- 详细解读 -->
+            <div class="mb-8">
+                <h2 class="text-xl font-semibold mb-4">思维特点解读</h2>
+                <div id="detailed-analysis" class="bg-neutral rounded-lg p-6 text-gray-700 space-y-4">
+                    <!-- 详细解读将通过JS动态生成 -->
+                </div>
+            </div>
+            
+            <!-- 建议与免责声明 -->
+            <div class="space-y-6">
+                <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded">
+                    <h3 class="font-semibold text-blue-700 mb-2">发展建议</h3>
+                    <ul id="suggestions" class="text-sm text-blue-700 space-y-2">
+                        <!-- 建议将通过JS动态生成 -->
+                    </ul>
+                </div>
+                
+                <div class="bg-gray-50 border-l-4 border-gray-400 p-4 rounded">
+                    <h3 class="font-semibold text-gray-700 mb-2">免责声明</h3>
+                    <p class="text-sm text-gray-600">
+                        本测试为原创内容服务，非专业医疗/心理测评工具。测试结果仅供个人参考，不应用于任何形式的诊断或评估。
+                        每个人的智力和能力都是多元且独特的，本测试无法全面反映个人的所有能力特点。
+                        如有需要，请寻求专业人士的帮助和指导。
+                    </p>
+                </div>
+            </div>
+            
+            <div class="mt-8 text-center">
+                <button id="restart-test" class="btn-primary">
+                    重新测试
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 测试题目数据
+        const questions = [
+            // 空间思维题目
+            {
+                id: 1,
+                type: 'spatial',
+                question: '请观察下面的图形序列，选择接下来应该出现的图形。',
+                options: ['🔺', '🔻', '🔷', '🔶'],
+                answer: 1,
+                explanation: '图形序列按照上下翻转的规律变化，三角形之后应该是倒三角形。'
+            },
+            {
+                id: 2,
+                type: 'spatial',
+                question: '将一个正方形沿着对角线对折后，再沿着另一条对角线对折，展开后会有几条折痕？',
+                options: ['1条', '2条', '3条', '4条'],
+                answer: 2,
+                explanation: '两次对折后，正方形上会形成两条交叉的对角线折痕。'
+            },
+            {
+                id: 3,
+                type: 'spatial',
+                question: '以下哪个图形可以通过旋转得到左边的图形？',
+                options: ['◯', '△', '□', '◇'],
+                answer: 3,
+                explanation: '正方形旋转后仍然是正方形，其他图形旋转后形状会改变。'
+            },
+            {
+                id: 4,
+                type: 'spatial',
+                question: '一个立方体有多少个面？',
+                options: ['4个', '6个', '8个', '12个'],
+                answer: 1,
+                explanation: '立方体有6个正方形的面。'
+            },
+            {
+                id: 5,
+                type: 'spatial',
+                question: '如果将一张纸先折叠成三折，然后在折叠处剪一个洞，展开后纸上会有几个洞？',
+                options: ['1个', '2个', '3个', '4个'],
+                answer: 2,
+                explanation: '三折后剪一个洞，展开后会有3个洞，每个折层一个。'
+            },
+            {
+                id: 6,
+                type: 'spatial',
+                question: '以下哪个图形是左边图形的镜像？',
+                options: ['E', '3', 'M', 'W'],
+                answer: 0,
+                explanation: 'E的镜像是左右翻转的E，其他选项的镜像与原图形不同。'
+            },
+            {
+                id: 7,
+                type: 'spatial',
+                question: '一个圆被两条相交的直线分成了多少个区域？',
+                options: ['3个', '4个', '5个', '6个'],
+                answer: 2,
+                explanation: '两条相交直线将圆分成4个区域。'
+            },
+            {
+                id: 8,
+                type: 'spatial',
+                question: '以下哪个形状不能通过正方形切割得到？',
+                options: ['三角形', '五边形', '六边形', '圆形'],
+                answer: 3,
+                explanation: '圆形无法通过切割正方形得到，因为正方形的边都是直线。'
+            },
+            {
+                id: 9,
+                type: 'spatial',
+                question: '如果从正方体的一个顶点出发，沿着棱移动到对面的顶点，最少需要走几条棱？',
+                options: ['2条', '3条', '4条', '5条'],
+                answer: 1,
+                explanation: '正方体对角的两个顶点之间最少需要经过3条棱。'
+            },
+            {
+                id: 10,
+                type: 'spatial',
+                question: '以下哪个图形是三维的？',
+                options: ['正方形', '圆形', '三角形', '金字塔'],
+                answer: 3,
+                explanation: '金字塔是三维图形，其他选项都是二维图形。'
+            },
+            {
+                id: 11,
+                type: 'spatial',
+                question: '一个球体有多少个面？',
+                options: ['0个', '1个', '2个', '无限个'],
+                answer: 1,
+                explanation: '球体是一个连续的曲面，只有1个面。'
+            },
+            {
+                id: 12,
+                type: 'spatial',
+                question: '如果将一张纸对折两次，然后在折叠角剪一个小三角形，展开后纸上会有几个三角形洞？',
+                options: ['1个', '2个', '3个', '4个'],
+                answer: 3,
+                explanation: '对折两次后剪一个三角形，展开后会有4个三角形洞。'
+            },
+            {
+                id: 13,
+                type: 'spatial',
+                question: '以下哪个图形不能通过旋转得到？',
+                options: ['圆形', '正方形', '等边三角形', '字母J'],
+                answer: 3,
+                explanation: '字母J旋转后会变成不同的字母或符号，其他图形旋转后形状不变。'
+            },
+            {
+                id: 14,
+                type: 'spatial',
+                question: '一个圆柱体的俯视图是什么形状？',
+                options: ['圆形', '正方形', '长方形', '三角形'],
+                answer: 0,
+                explanation: '从顶部俯视圆柱体，看到的是一个圆形。'
+            },
+            {
+                id: 15,
+                type: 'spatial',
+                question: '如果将一个正方形的一个角折叠到对边上，形成的折痕是什么形状？',
+                options: ['直线', '曲线', '折线', '不确定'],
+                answer: 0,
+                explanation: '折叠后形成的折痕是一条直线。'
+            },
+            {
+                id: 16,
+                type: 'spatial',
+                question: '以下哪个图形是正四面体的展开图？',
+                options: ['四个三角形组成的菱形', '三个三角形组成的扇形', '四个三角形组成的直线排列', '五个三角形组成的星形'],
+                answer: 0,
+                explanation: '正四面体的展开图是四个三角形组成的菱形。'
+            },
+            {
+                id: 17,
+                type: 'spatial',
+                question: '一个圆锥体的侧面展开图是什么形状？',
+                options: ['圆形', '扇形', '三角形', '长方形'],
+                answer: 1,
+                explanation: '圆锥体的侧面展开图是一个扇形。'
+            },
+            {
+                id: 18,
+                type: 'spatial',
+                question: '如果将一个圆形纸片对折三次，展开后会有几条折痕？',
+                options: ['3条', '5条', '7条', '9条'],
+                answer: 2,
+                explanation: '对折三次后，圆形纸上会有7条折痕。'
+            },
+            {
+                id: 19,
+                type: 'spatial',
+                question: '以下哪个图形是左边图形旋转180度后的结果？',
+                options: ['p', 'q', 'b', 'd'],
+                answer: 2,
+                explanation: '字母p旋转180度后变成字母b。'
+            },
+            {
+                id: 20,
+                type: 'spatial',
+                question: '一个长方体有多少条棱？',
+                options: ['8条', '10条', '12条', '14条'],
+                answer: 2,
+                explanation: '长方体有12条棱。'
+            },
+            {
+                id: 21,
+                type: 'spatial',
+                question: '如果将一个正方形的对角线作为轴旋转，形成的立体图形是什么？',
+                options: ['圆柱体', '圆锥体', '球体', '双曲面体'],
+                answer: 3,
+                explanation: '正方形绕对角线旋转形成的是双曲面体。'
+            },
+            {
+                id: 22,
+                type: 'spatial',
+                question: '以下哪个图形是右边图形的俯视图？',
+                options: ['□', '△', '◯', '◇'],
+                answer: 0,
+                explanation: '从顶部俯视右边的图形，看到的是一个正方形。'
+            },
+            {
+                id: 23,
+                type: 'spatial',
+                question: '一个正八面体有多少个顶点？',
+                options: ['6个', '8个', '10个', '12个'],
+                answer: 0,
+                explanation: '正八面体有6个顶点。'
+            },
+            {
+                id: 24,
+                type: 'spatial',
+                question: '如果将一张纸先向左对折，再向上对折，然后在右上角剪一个洞，展开后洞会在纸的哪个位置？',
+                options: ['左上角', '右上角', '左下角', '右下角'],
+                answer: 3,
+                explanation: '两次对折后在右上角剪洞，展开后洞会在右下角。'
+            },
+            {
+                id: 25,
+                type: 'spatial',
+                question: '以下哪个图形不能通过折叠一张正方形纸得到？',
+                options: ['三角形', '菱形', '五边形', '六边形'],
+                answer: 3,
+                explanation: '六边形无法通过折叠正方形纸得到。'
+            },
+            
+            // 逻辑推理题目
+            {
+                id: 26,
+                type: 'logical',
+                question: '如果所有的猫都有尾巴，而咪咪是一只猫，那么咪咪有尾巴吗？',
+                options: ['有', '没有', '不确定', '以上都不对'],
+                answer: 0,
+                explanation: '这是一个逻辑推理问题。根据前提"所有的猫都有尾巴"和"咪咪是一只猫"，可以得出"咪咪有尾巴"的结论。'
+            },
+            {
+                id: 27,
+                type: 'logical',
+                question: '数列：2, 5, 11, 23, ? 下一个数字是什么？',
+                options: ['37', '41', '47', '53'],
+                answer: 2,
+                explanation: '数列的规律是：每个数字是前一个数字的2倍再加1。2×2+1=5, 5×2+1=11, 11×2+1=23, 23×2+1=47。'
+            },
+            {
+                id: 28,
+                type: 'logical',
+                question: '如果A比B高，B比C高，那么以下哪个说法正确？',
+                options: ['A比C高', 'C比A高', 'A和C一样高', '无法确定'],
+                answer: 0,
+                explanation: '根据传递性，如果A>B且B>C，那么A>C。'
+            },
+            {
+                id: 29,
+                type: 'logical',
+                question: '如果今天是星期三，那么7天后是星期几？',
+                options: ['星期一', '星期二', '星期三', '星期四'],
+                answer: 2,
+                explanation: '一周有7天，7天后的星期几与今天相同。'
+            },
+            {
+                id: 30,
+                type: 'logical',
+                question: '如果所有的鸟都会飞，而企鹅是鸟，那么企鹅会飞吗？',
+                options: ['会', '不会', '不确定', '以上都不对'],
+                answer: 1,
+                explanation: '这是一个逻辑推理问题。虽然前提"所有的鸟都会飞"可能不成立（因为企鹅不会飞），但根据给定的前提和"企鹅是鸟"，可以得出"企鹅会飞"的结论。但实际上，企鹅不会飞，所以正确答案是"不会"。'
+            },
+            {
+                id: 31,
+                type: 'logical',
+                question: '数列：1, 4, 9, 16, ? 下一个数字是什么？',
+                options: ['20', '25', '30', '36'],
+                answer: 1,
+                explanation: '数列的规律是：每个数字是其位置的平方。1²=1, 2²=4, 3²=9, 4²=16, 5²=25。'
+            },
+            {
+                id: 32,
+                type: 'logical',
+                question: '如果A和B是朋友，B和C是朋友，那么A和C一定是朋友吗？',
+                options: ['一定是', '一定不是', '可能是也可能不是', '以上都不对'],
+                answer: 2,
+                explanation: '友谊关系不具有传递性。A和B是朋友，B和C是朋友，但A和C可能是朋友也可能不是。'
+            },
+            {
+                id: 33,
+                type: 'logical',
+                question: '如果一个三角形的三个内角之和是180度，而其中两个角分别是30度和60度，那么第三个角是多少度？',
+                options: ['60度', '70度', '80度', '90度'],
+                answer: 3,
+                explanation: '三角形的三个内角之和是180度，所以第三个角是180-30-60=90度。'
+            },
+            {
+                id: 34,
+                type: 'logical',
+                question: '如果所有的哺乳动物都有肺，而鲸鱼是哺乳动物，那么鲸鱼有肺吗？',
+                options: ['有', '没有', '不确定', '以上都不对'],
+                answer: 0,
+                explanation: '这是一个逻辑推理问题。根据前提"所有的哺乳动物都有肺"和"鲸鱼是哺乳动物"，可以得出"鲸鱼有肺"的结论。'
+            },
+            {
+                id: 35,
+                type: 'logical',
+                question: '数列：1, 1, 2, 3, 5, 8, ? 下一个数字是什么？',
+                options: ['10', '12', '13', '15'],
+                answer: 2,
+                explanation: '数列的规律是斐波那契数列，每个数字是前两个数字的和。1+1=2, 1+2=3, 2+3=5, 3+5=8, 5+8=13。'
+            },
+            {
+                id: 36,
+                type: 'logical',
+                question: '如果A是B的父亲，B是C的父亲，那么A是C的什么？',
+                options: ['父亲', '祖父', '叔叔', '以上都不对'],
+                answer: 1,
+                explanation: '如果A是B的父亲，B是C的父亲，那么A是C的祖父。'
+            },
+            {
+                id: 37,
+                type: 'logical',
+                question: '如果一个正方形的边长是4厘米，那么它的面积是多少平方厘米？',
+                options: ['8', '12', '16', '20'],
+                answer: 2,
+                explanation: '正方形的面积=边长×边长=4×4=16平方厘米。'
+            },
+            {
+                id: 38,
+                type: 'logical',
+                question: '如果所有的偶数都能被2整除，而10是偶数，那么10能被2整除吗？',
+                options: ['能', '不能', '不确定', '以上都不对'],
+                answer: 0,
+                explanation: '这是一个逻辑推理问题。根据前提"所有的偶数都能被2整除"和"10是偶数"，可以得出"10能被2整除"的结论。'
+            },
+            {
+                id: 39,
+                type: 'logical',
+                question: '数列：3, 6, 12, 24, ? 下一个数字是什么？',
+                options: ['36', '42', '48', '54'],
+                answer: 2,
+                explanation: '数列的规律是：每个数字是前一个数字的2倍。3×2=6, 6×2=12, 12×2=24, 24×2=48。'
+            },
+            {
+                id: 40,
+                type: 'logical',
+                question: '如果A和B是夫妻，B和C是姐妹，那么A是C的什么？',
+                options: ['丈夫', '姐夫或妹夫', '兄弟', '以上都不对'],
+                answer: 1,
+                explanation: '如果A和B是夫妻，B和C是姐妹，那么A是C的姐夫或妹夫。'
+            }
+        ];
+
+        // 当前问题索引
+        let currentQuestionIndex = 0;
+        // 用户答案
+        const userAnswers = {};
+        // 得分
+        let scores = {
+            spatial: 0,
+            logical: 0,
+            verbal: 0,
+            memory: 0
+        };
+
+        // DOM元素
+        const welcomeScreen = document.getElementById('welcome-screen');
+        const testScreen = document.getElementById('test-screen');
+        const resultScreen = document.getElementById('result-screen');
+        const startTestBtn = document.getElementById('start-test');
+        const restartTestBtn = document.getElementById('restart-test');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const questionNumber = document.getElementById('question-number');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const progressText = document.getElementById('progress-text');
+        const progressValue = document.getElementById('progress-value');
+
+        // 开始测试
+        startTestBtn.addEventListener('click', () => {
+            welcomeScreen.classList.add('hidden');
+            testScreen.classList.remove('hidden');
+            showQuestion(currentQuestionIndex);
+        });
+
+        // 重新测试
+        restartTestBtn.addEventListener('click', () => {
+            currentQuestionIndex = 0;
+            Object.keys(userAnswers).forEach(key => delete userAnswers[key]);
+            scores = { spatial: 0, logical: 0, verbal: 0, memory: 0 };
+            resultScreen.classList.add('hidden');
+            testScreen.classList.remove('hidden');
+            showQuestion(currentQuestionIndex);
+        });
+
+        // 上一题
+        prevBtn.addEventListener('click', () => {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                showQuestion(currentQuestionIndex);
+            }
+        });
+
+        // 下一题
+        nextBtn.addEventListener('click', () => {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                showQuestion(currentQuestionIndex);
+            } else {
+                calculateScore();
+                showResult();
+            }
+        });
+
+        // 显示问题
+        function showQuestion(index) {
+            const question = questions[index];
+            questionNumber.textContent = `问题 ${index + 1}`;
+            questionText.textContent = question.question;
+            progressText.textContent = `${index + 1}/${questions.length}`;
+            progressValue.style.width = `${(index + 1) / questions.length * 100}%`;
+
+            // 更新按钮状态
+            prevBtn.disabled = index === 0;
+            prevBtn.classList.toggle('opacity-50', index === 0);
+            prevBtn.classList.toggle('cursor-not-allowed', index === 0);
+            nextBtn.textContent = index === questions.length - 1 ? '提交' : '下一题';
+            nextBtn.innerHTML = index === questions.length - 1 ? '提交' : '下一题<i class="fa fa-arrow-right ml-2"></i>';
+
+            // 清空选项容器
+            optionsContainer.innerHTML = '';
+
+            // 添加选项
+            question.options.forEach((option, i) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'option flex items-center justify-center p-4 border rounded-lg cursor-pointer transition-all duration-200 hover:bg-neutral';
+                if (userAnswers[index] === i) {
+                    optionElement.classList.add('bg-primary', 'bg-opacity-10', 'border-primary');
+                }
+                optionElement.innerHTML = `
+                    <div class="option-marker w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center mr-3">
+                        ${userAnswers[index] === i ? '<i class="fa fa-check text-primary"></i>' : ''}
+                    </div>
+                    <div class="option-text">${option}</div>
+                `;
+                optionElement.addEventListener('click', () => {
+                    userAnswers[index] = i;
+                    showQuestion(index);
+                });
+                optionsContainer.appendChild(optionElement);
+            });
+        }
+
+        // 计算得分
+        function calculateScore() {
+            questions.forEach((question, index) => {
+                if (userAnswers[index] === question.answer) {
+                    scores[question.type]++;
+                }
+            });
+        }
+
+        // 显示结果
+        function showResult() {
+            testScreen.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+
+            // 计算总分
+            const totalScore = Object.values(scores).reduce((a, b) => a + b, 0);
+            const percentageScore = Math.round(totalScore / questions.length * 100);
+
+            // 更新总分圆环
+            const scoreCircle = document.getElementById('score-circle');
+            const circumference = 2 * Math.PI * 45;
+            const offset = circumference - (percentageScore / 100) * circumference;
+            scoreCircle.style.strokeDashoffset = offset;
+            document.getElementById('total-score').textContent = percentageScore;
+
+            // 更新各维度得分
+            document.getElementById('spatial-score').textContent = `${scores.spatial}/${questions.filter(q => q.type === 'spatial').length}`;
+            document.getElementById('logical-score').textContent = `${scores.logical}/${questions.filter(q => q.type === 'logical').length}`;
+            document.getElementById('verbal-score').textContent = `${scores.verbal}/${questions.filter(q => q.type === 'verbal').length}`;
+            document.getElementById('memory-score').textContent = `${scores.memory}/${questions.filter(q => q.type === 'memory').length}`;
+
+            // 更新各维度进度条
+            const spatialPercentage = Math.round(scores.spatial / questions.filter(q => q.type === 'spatial').length * 100);
+            const logicalPercentage = Math.round(scores.logical / questions.filter(q => q.type === 'logical').length * 100);
+            const verbalPercentage = Math.round(scores.verbal / questions.filter(q => q.type === 'verbal').length * 100);
+            const memoryPercentage = Math.round(scores.memory / questions.filter(q => q.type === 'memory').length * 100);
+
+            document.getElementById('spatial-progress').style.width = `${spatialPercentage}%`;
+            document.getElementById('logical-progress').style.width = `${logicalPercentage}%`;
+            document.getElementById('verbal-progress').style.width = `${verbalPercentage}%`;
+            document.getElementById('memory-progress').style.width = `${memoryPercentage}%`;
+
+            // 计算左右脑倾向
+            const leftBrainScore = scores.logical + scores.verbal;
+            const rightBrainScore = scores.spatial + scores.memory;
+            const totalBrainScore = leftBrainScore + rightBrainScore;
+            const leftBrainPercentage = Math.round(leftBrainScore / totalBrainScore * 100);
+            const rightBrainPercentage = 100 - leftBrainPercentage;
+
+            document.getElementById('left-brain-percent').textContent = `${leftBrainPercentage}%`;
+            document.getElementById('right-brain-percent').textContent = `${rightBrainPercentage}%`;
+
+            // 更新左右脑圆环
+            const brainCircle = document.getElementById('brain-circle');
+            const brainOffset = circumference - (leftBrainPercentage / 100) * circumference;
+            brainCircle.style.strokeDashoffset = brainOffset;
+
+            // 更新左右脑描述
+            const brainDominance = document.getElementById('brain-dominance');
+            const brainDescription = document.getElementById('brain-description');
+
+            if (Math.abs(leftBrainPercentage - rightBrainPercentage) < 10) {
+                brainDominance.textContent = '均衡';
+                brainDescription.textContent = '你的左右脑思维较为均衡，在逻辑分析和创造性思维方面都有一定优势。你能够灵活地在理性思考和直觉感知之间切换，适应不同的情境和任务。';
+            } else if (leftBrainPercentage > rightBrainPercentage) {
+                brainDominance.textContent = '左脑优势';
+                brainDescription.textContent = '你更倾向于左脑思维，擅长逻辑分析、语言表达和理性思考。你做事有条理，喜欢按照计划行事，善于解决需要分析和推理的问题。';
+            } else {
+                brainDominance.textContent = '右脑优势';
+                brainDescription.textContent = '你更倾向于右脑思维，擅长空间想象、创造性思考和直觉感知。你富有创造力，喜欢尝试新事物，善于解决需要创新和想象力的问题。';
+            }
+
+            // 更新详细分析
+            updateDetailedAnalysis(percentageScore, spatialPercentage, logicalPercentage, verbalPercentage, memoryPercentage);
+
+            // 更新建议
+            updateSuggestions(spatialPercentage, logicalPercentage, verbalPercentage, memoryPercentage);
+        }
+
+        // 更新详细分析
+        function updateDetailedAnalysis(totalScore, spatialScore, logicalScore, verbalScore, memoryScore) {
+            const detailedAnalysis = document.getElementById('detailed-analysis');
+            let analysisText = '';
+
+            // 总体分析
+            if (totalScore >= 90) {
+                analysisText += '<p class="font-semibold">总体表现：优秀</p>';
+                analysisText += '<p>你的思维能力非常出色，在各个维度都表现得很好。你具有很强的问题解决能力和学习能力，能够快速理解和掌握新的知识和技能。</p>';
+            } else if (totalScore >= 75) {
+                analysisText += '<p class="font-semibold">总体表现：良好</p>';
+                analysisText += '<p>你的思维能力处于良好水平，在大多数情况下都能够有效地解决问题。你具有较强的学习能力和适应能力，能够应对各种挑战。</p>';
+            } else if (totalScore >= 60) {
+                analysisText += '<p class="font-semibold">总体表现：中等</p>';
+                analysisText += '<p>你的思维能力处于中等水平，能够解决一般的问题和挑战。通过适当的训练和练习，你可以进一步提高自己的思维能力。</p>';
+            } else {
+                analysisText += '<p class="font-semibold">总体表现：有待提高</p>';
+                analysisText += '<p>你的思维能力还有较大的提升空间。建议你多进行一些思维训练和智力游戏，以提高自己的思维能力和问题解决能力。</p>';
+            }
+
+            analysisText += '<br>';
+
+            // 空间思维分析
+            if (spatialScore >= 90) {
+                analysisText += '<p class="font-semibold">空间思维：优秀</p>';
+                analysisText += '<p>你具有出色的空间想象能力，能够轻松地理解和操作三维空间中的物体。这对你在数学、物理、工程、艺术等领域的学习和工作非常有帮助。</p>';
+            } else if (spatialScore >= 75) {
+                analysisText += '<p class="font-semibold">空间思维：良好</p>';
+                analysisText += '<p>你具有良好的空间想象能力，能够理解和操作三维空间中的物体。这对你在需要空间思维的领域有一定的优势。</p>';
+            } else if (spatialScore >= 60) {
+                analysisText += '<p class="font-semibold">空间思维：中等</p>';
+                analysisText += '<p>你具有基本的空间想象能力，能够理解简单的空间关系。通过一些空间思维训练，你可以进一步提高这方面的能力。</p>';
+            } else {
+                analysisText += '<p class="font-semibold">空间思维：有待提高</p>';
+                analysisText += '<p>你的空间想象能力还有较大的提升空间。建议你多进行一些空间思维训练，如拼图、积木、折纸等活动。</p>';
+            }
+
+            analysisText += '<br>';
+
+            // 逻辑推理分析
+            if (logicalScore >= 90) {
+                analysisText += '<p class="font-semibold">逻辑推理：优秀</p>';
+                analysisText += '<p>你具有出色的逻辑推理能力，能够轻松地分析问题、识别模式和解决逻辑难题。这对你在数学、科学、编程等领域的学习和工作非常有帮助。</p>';
+            } else if (logicalScore >= 75) {
+                analysisText += '<p class="font-semibold">逻辑推理：良好</p>';
+                analysisText += '<p>你具有良好的逻辑推理能力，能够分析问题和解决逻辑难题。这对你在需要逻辑思维的领域有一定的优势。</p>';
+            } else if (logicalScore >= 60) {
+                analysisText += '<p class="font-semibold">逻辑推理：中等</p>';
+                analysisText += '<p>你具有基本的逻辑推理能力，能够理解简单的逻辑关系。通过一些逻辑思维训练，你可以进一步提高这方面的能力。</p>';
+            } else {
+                analysisText += '<p class="font-semibold">逻辑推理：有待提高</p>';
+                analysisText += '<p>你的逻辑推理能力还有较大的提升空间。建议你多进行一些逻辑思维训练，如数独、逻辑题、棋类游戏等。</p>';
+            }
+
+            detailedAnalysis.innerHTML = analysisText;
+        }
+
+        // 更新建议
+        function updateSuggestions(spatialScore, logicalScore, verbalScore, memoryScore) {
+            const suggestions = document.getElementById('suggestions');
+            suggestions.innerHTML = '';
+
+            // 根据各维度得分提供建议
+            if (spatialScore < 60) {
+                suggestions.innerHTML += '<li class="flex items-start"><i class="fa fa-check-circle mt-1 mr-2"></i><span>多进行空间思维训练，如拼图、积木、折纸等活动。</span></li>';
+            }
+            if (logicalScore < 60) {
+                suggestions.innerHTML += '<li class="flex items-start"><i class="fa fa-check-circle mt-1 mr-2"></i><span>多进行逻辑思维训练，如数独、逻辑题、棋类游戏等。</span></li>';
+            }
+            if (verbalScore < 60) {
+                suggestions.innerHTML += '<li class="flex items-start"><i class="fa fa-check-circle mt-1 mr-2"></i><span>多读书、写作和参加辩论活动，提高语言表达和理解能力。</span></li>';
+            }
+            if (memoryScore < 60) {
+                suggestions.innerHTML += '<li class="flex items-start"><i class="fa fa-check-circle mt-1 mr-2"></i><span>多进行记忆力训练，如记忆游戏、背诵诗歌等。</span></li>';
+            }
+
+            // 通用建议
+            suggestions.innerHTML += '<li class="flex items-start"><i class="fa fa-check-circle mt-1 mr-2"></i><span>保持好奇心和学习热情，不断挑战自己的思维能力。</span></li>';
+            suggestions.innerHTML += '<li class="flex items-start"><i class="fa fa-check-circle mt-1 mr-2"></i><span>保持良好的生活习惯，包括充足的睡眠、健康的饮食和适当的运动。</span></li>';
+            suggestions.innerHTML += '<li class="flex items-start"><i class="fa fa-check-circle mt-1 mr-2"></i><span>如果对自己的思维能力有任何疑问，建议咨询专业人士的意见。</span></li>';
+        }
+    </script>
+</body>
+</html>
