@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHQ-9抑郁症自测表（支持导出）</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入截图所需库 -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <style>
+        .option-card {
+            transition: all 0.3s ease;
+        }
+        .progress-bar {
+            transition: width 0.5s ease;
+        }
+        .export-btn {
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- 核心容器 -->
+    <div class="max-w-2xl mx-auto px-4 py-8">
+        <!-- 标题 -->
+        <div class="text-center mb-8">
+            <h1 class="text-2xl font-bold text-gray-800">PHQ-9抑郁症自测表</h1>
+            <p class="text-gray-600 mt-2">请根据过去两周的感受，如实选择最符合的选项（共9题）</p>
+        </div>
+
+        <!-- 进度条 -->
+        <div class="h-2 bg-gray-200 rounded-full mb-6 overflow-hidden">
+            <div class="progress-bar h-full bg-blue-500" style="width: 0%"></div>
+        </div>
+
+        <!-- 答题区域 -->
+        <div id="question-area" class="bg-white rounded-lg shadow-sm p-6">
+            <form id="phq9-form" class="space-y-6">
+                <!-- 问题1 -->
+                <div class="question-item">
+                    <h4 class="text-gray-800 font-medium mb-3">1. 做事时提不起劲或没有兴趣</h4>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="q1" value="0" class="sr-only peer" required>
+                            <div class="option-card peer-checked:border-blue-500 peer-checked:bg-blue-50 border rounded-lg p-3 hover:border-blue-300">
+                                <span class="block text-gray-800">完全不会（0分）</span>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="q1" value="1" class="sr-only peer" required>
+                            <div class="option-card peer-checked:border-blue-500 peer-checked:bg-blue-50 border rounded-lg p-3 hover:border-blue-300">
+                                <span class="block text-gray-800">好几天（1分）</span>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="q1" value="2" class="sr-only peer" required>
+                            <div class="option-card peer-checked:border-blue-500 peer-checked:bg-blue-50 border rounded-lg p-3 hover:border-blue-300">
+                                <span class="block text-gray-800">一半以上天数（2分）</span>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="q1" value="3" class="sr-only peer" required>
+                            <div class="option-card peer-checked:border-blue-500 peer-checked:bg-blue-50 border rounded-lg p-3 hover:border-blue-300">
+                                <span class="block text-gray-800">几乎每天（3分）</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 问题2 -->
+                <div class="question-item">
+                    <h4 class="text-gray-800 font-medium mb-3">2. 感到心情低落、沮丧或绝望</h4>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="q2" value="0" class="sr-only peer" required>
+                            <div class="option-card peer-checked:border-blue-500 peer-checked:bg-blue-50 border rounded-lg p-3 hover:border-blue-300">
+                                <span class="block text-gray-800">完全不会（0分）</span>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="q2" value="1" class="sr-only peer" required>
+                            <div class="option-card peer-checked:border-blue-500 peer-checked:bg-blue-50 border rounded-lg p-3 hover:border-blue-300">
+                                <span class="block text-gray-800">好几天（1分）</span>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="q2" value="2" class="sr-only peer" required>
+                            <div class="option-card peer-checked:border-blue-500 peer-checked:bg-blue-50 border rounded-lg p-3 hover:border-blue-300">
+                                <span class="block text-gray-800">一半以上天数（2分）</span>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="q2" value="3" class="sr-only peer" required>
+                            <div class="option-card peer-checked:border-blue-500 peer-checked:bg-blue-50 border rounded-lg p-3 hover:border-blue-300">
+                                <span class="block text-gray-800">几乎每天（3分）</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 问题3 -->
+                <div class="question-item">
+                    <h4 class="text-gray-800 font-medium mb-3">3. 入睡困难、睡不安稳或睡眠过多</h4>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="q3" value="0" class="sr-only peer" required>
+                            <div class="option-card peer-checked:border-blue-500 peer-checked:bg-blue-50 border rounded-lg p-3 hover:border-blue-300">
+                                <span class="block text-gray-800">完全不会（0分）</span>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="q3" value="1" class="sr-only peer" required>
+                            <div class="option-card peer-checked:border-blue-500 peer-checked:bg-blue-50 border rounded-lg p-3 hover:border-blue-300">
+                                <span class="block text-gray-800">好几天（1分）</span>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="q3" value="2" class="sr-only peer" required>
+                            <div class="option-card peer-checked:border-blue-500 peer-checked:bg-blue-50 border rounded-lg p-3 hover:border-blue-300">
+                                <span class="block text-gray-800">一半以上天数（2分）</span>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="q3" value="3" class="sr-only peer" required>
+                            <div class="option-card peer-checked:border-blue-500 peer-checked:bg-blue-50 border rounded-lg p-3 hover:border-blue-300">
+                                <span class="block text-gray-800">几乎每天（3分）</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 问题4 -->
+                <div class="question-item">
+                    <h4 class="text-gray-800 font-medium mb-3">4. 感觉疲倦或没有活力</h4>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="q4" value="0" class="sr-only peer" required>
+                            <div class="option-card peer-checked:border-blue-500 peer-checked:bg-blue-50 border rounded-lg p-3 hover:border-blue-300">
+                                <span class="block text-gray-800">完全不会（0分）</span>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="q4" value="1" class="sr-only peer" required>
+                            <div class="option-card peer-checked:border-blue-500 peer-checked:bg-blue-50 border rounded-lg p-3 hover:border-blue-300">
+                                <span class="block text-gray-800">好几天（1分）</span>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="q4" value="2" class="sr-only peer" required>
+                            <div class="option-card peer-checked:border-blue-500 peer-checked:bg-blue-50 border rounded-lg p-3 hover:border-blue-300">
+                                <span class="block text-gray-800">一半以上天数（2分）</span>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="q4" value="3" class="sr-only peer" required>
+                            <div class="option-card peer-checked:border-blue-500 peer-checked:bg-blue-50 border rounded-lg p-3 hover:border-blue-300">
+                                <span class="block text-gray-800">几乎每天（3分）</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 问题5 -->
+                <div class="question-item">
+                    <h4 class="text-gray-800 font-medium mb-3">5. 食欲不振或吃太多</h4>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="q5" value="0" class="sr-only peer" required>
+                            <div class="option-card peer-checked:border-blue-500 peer-checked:bg-blue-50 border rounded-lg p-3 hover:border-blue-300">
+                                <span class="block text-gray-800">完全不会（0分）</span>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="q5" value="1" class="sr-only peer" required>
+                            <div class="option-card peer-checked:border-blue-500 peer-checked:bg-blue-50 border rounded-lg p-3 hover:border-blue-300">
+                                <span class="block text-gray-800">好几天（1分）</span>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="q5" value="2" class="sr-only peer" required>
+                            <div class="option-card peer-checked:border-blue-500 peer-checked:bg-blue-50 border rounded-lg p-3 hover:border-blue-300">
+                                <span class="block text-gray-800">一半以上天数（2分）</span>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="q5" value="3" class="sr-only peer" required>
+                            <div class="option-card peer-checked:border-blue-500 peer-checked:bg-blue-50 border rounded-lg p-3 hover:border-blue-300">
+                                <span class="block text-gray-800">几乎每天（3分）</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 问题6 -->
+                <div class="question-item">
+                    <h4 class="text-gray-800 font-medium mb-3">6. 觉得自己很糟糕或觉得自己很失败，或让自己/家人失望</h4>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="q6" value="0" class="sr-only peer" required>
+                            <div class="option-card peer-checked:border-blue-500 peer-checked:bg-blue-50 border rounded-lg p-3 hover:border-blue-300">
+                                <span class="block text-gray-800">完全不会（0分）</span>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="q6" value="1" class="sr-only peer" required>
+                            <div class="option-card peer-checked:border-blue-500 peer-checked:bg-blue-50 border rounded-lg p-3 hover:border-blue-300">
+                                <span class="block text-gray-800">好几天（1分）</span>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="q6" value="2" class="sr-only peer" required>
+                            <div class="option-card peer-checked:border-blue-500 peer-checked:bg-blue-50 border rounded-lg p-3 hover:border-blue-300">
+                                <span class="block text-gray-800">一半以上天数（2分）</span>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="q6" value="3" class="sr-only peer" required>
+                            <div class="option-card peer-checked:border-blue-500 peer-checked:bg-blue-50 border rounded-lg p-3 hover:border-blue-300">
+                                <span class="block text-gray-800">几乎每天（3分）</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 问题7 -->
+                <div class="question-item">
+                    <h4 class="text-gray-800 font-medium mb-3">7. 难以集中注意力（如阅读、看电视时）</h4>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="q7" value="0" class="sr-only peer" required>
+                            <div class="option-card peer-checked:border-blue-500 peer-checked:bg-blue-50 border rounded-lg p-3 hover:border-blue-300">
+                                <span class="block text-gray-800">完全不会（0分）</span>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="q7" value="1" class="sr-only peer" required>
+                            <div class="option-card peer-checked:border-blue-500 peer-checked:bg-blue-50 border rounded-lg p-3 hover:border-blue-300">
+                                <span class="block text-gray-800">好几天（1分）</span>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="q7" value="2" class="sr-only peer" required>
+                            <div class="option-card peer-checked:border-blue-500 peer-checked:bg-blue-50 border rounded-lg p-3 hover:border-blue-300">
+                                <span class="block text-gray-800">一半以上天数（2分）</span>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="q7" value="3" class="sr-only peer" required>
+                            <div class="option-card peer-checked:border-blue-500 peer-checked:bg-blue-50 border rounded-lg p-3 hover:border-blue-300">
+                                <span class="block text-gray-800">几乎每天（3分）</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 问题8 -->
+                <div class="question-item">
+                    <h4 class="text-gray-800 font-medium mb-3">8. 行动/说话缓慢（他人察觉）或坐立不安、烦躁</h4>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="q8" value="0" class="sr-only peer" required>
+                            <div class="option-card peer-checked:border-blue-500 peer-checked:bg-blue-50 border rounded-lg p-3 hover:border-blue-300">
+                                <span class="block text-gray-800">完全不会（0分）</span>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="q8" value="1" class="sr-only peer" required>
+                            <div class="option-card peer-checked:border-blue-500 peer-checked:bg-blue-50 border rounded-lg p-3 hover:border-blue-300">
+                                <span class="block text-gray-800">好几天（1分）</span>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="q8" value="2" class="sr-only peer" required>
+                            <div class="option-card peer-checked:border-blue-500 peer-checked:bg-blue-50 border rounded-lg p-3 hover:border-blue-300">
+                                <span class="block text-gray-800">一半以上天数（2分）</span>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="q8" value="3" class="sr-only peer" required>
+                            <div class="option-card peer-checked:border-blue-500 peer-checked:bg-blue-50 border rounded-lg p-3 hover:border-blue-300">
+                                <span class="block text-gray-800">几乎每天（3分）</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 问题9 -->
+                <div class="question-item">
+                    <h4 class="text-gray-800 font-medium mb-3">9. 有不如死掉或伤害自己的念头</h4>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="cursor-pointer">
+                            <input type="radio" name="q9" value="0" class="sr-only peer" required>
+                            <div class="option-card peer-checked:border-blue-500 peer-checked:bg-blue-50 border rounded-lg p-3 hover:border-blue-300">
+                                <span class="block text-gray-800">完全不会（0分）</span>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="q9" value="1" class="sr-only peer" required>
+                            <div class="option-card peer-checked:border-blue-500 peer-checked:bg-blue-50 border rounded-lg p-3 hover:border-blue-300">
+                                <span class="block text-gray-800">好几天（1分）</span>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="q9" value="2" class="sr-only peer" required>
+                            <div class="option-card peer-checked:border-blue-500 peer-checked:bg-blue-50 border rounded-lg p-3 hover:border-blue-300">
+                                <span class="block text-gray-800">一半以上天数（2分）</span>
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input type="radio" name="q9" value="3" class="sr-only peer" required>
+                            <div class="option-card peer-checked:border-blue-500 peer-checked:bg-blue-50 border rounded-lg p-3 hover:border-blue-300">
+                                <span class="block text-gray-800">几乎每天（3分）</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- 提交按钮 -->
+                <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium py-3 px-4 rounded-lg transition-colors">
+                    提交测评
+                </button>
+            </form>
+        </div>
+
+        <!-- 结果区域（初始隐藏） -->
+        <div id="result-area" class="bg-white rounded-lg shadow-sm p-6 mt-6 hidden">
+            <h2 class="text-xl font-bold text-gray-800 mb-4">PHQ-9抑郁症自测结果</h2>
+            <div class="mb-4">
+                <span class="text-gray-600">您的总得分：</span>
+                <span id="total-score" class="text-2xl font-bold text-blue-500"></span>
+                <span class="text-gray-500"> / 27分</span>
+            </div>
+            <div class="mb-4">
+                <span class="text-gray-600">抑郁程度：</span>
+                <span id="depression-level" class="text-lg font-medium"></span>
+            </div>
+            <div class="border-t pt-4 mt-4">
+                <h3 class="font-medium text-gray-800 mb-2">结果分析</h3>
+                <div id="result-analysis" class="text-gray-600 leading-relaxed"></div>
+            </div>
+            <div class="border-t pt-4 mt-4 flex gap-3">
+                <!-- 导出文本按钮 -->
+                <button id="export-text-btn" class="export-btn flex-1 bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg flex items-center justify-center">
+                    <span class="mr-2">📄</span> 导出文本报告
+                </button>
+                <!-- 导出截图按钮 -->
+                <button id="export-image-btn" class="export-btn flex-1 bg-purple-500 hover:bg-purple-600 text-white font-medium py-2 px-4 rounded-lg flex items-center justify-center">
+                    <span class="mr-2">🖼️</span> 导出结果截图
+                </button>
+            </div>
+            <button id="restart-btn" class="mt-3 w-full border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium py-2 px-4 rounded-lg transition-colors">
+                重新测评
+            </button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 核心元素获取
+            const form = document.getElementById('phq9-form');
+            const questionArea = document.getElementById('question-area');
+            const resultArea = document.getElementById('result-area');
+            const progressBar = document.querySelector('.progress-bar');
+            const totalScoreEl = document.getElementById('total-score');
+            const depressionLevelEl = document.getElementById('depression-level');
+            const resultAnalysisEl = document.getElementById('result-analysis');
+            const restartBtn = document.getElementById('restart-btn');
+            const exportTextBtn = document.getElementById('export-text-btn');
+            const exportImageBtn = document.getElementById('export-image-btn');
+
+            // 存储结果数据（供导出使用）
+            let resultData = {};
+
+            // 监听选项选择，更新进度条（修复了多余的闭合大括号错误）
+            const radioInputs = document.querySelectorAll('input[type="radio"]');
+            radioInputs.forEach(input => {
+                input.addEventListener('change', function() {
+                    let answeredCount = 0;
+                    for (let i = 1; i <= 9; i++) {
+                        if (document.querySelector(`input[name="q${i}"]:checked`)) {
+                            answeredCount++;
+                        }
+                    }
+                    // 计算进度条百分比（修复了之前多算1的错误）
+                    progressBar.style.width = `${(answeredCount / 9) * 100}%`;
+                });
+            });
+
+            // 表单提交逻辑
+            form.addEventListener('submit', function(e) {
+                // 阻止表单默认提交行为
+                e.preventDefault();
+                
+                // 先校验所有选项是否都已选择
+                let isAllAnswered = true;
+                for (let i = 1; i <= 9; i++) {
+                    if (!document.querySelector(`input[name="q${i}"]:checked`)) {
+                        isAllAnswered = false;
+                        break;
+                    }
+                }
+
+                // 如果有未回答的题目，提示用户
+                if (!isAllAnswered) {
+                    alert('请完成所有9道题的作答后再提交！');
+                    return;
+                }
+                
+                // 计算总分
+                let totalScore = 0;
+                for (let i = 1; i <= 9; i++) {
+                    const selected = document.querySelector(`input[name="q${i}"]:checked`);
+                    if (selected) {
+                        totalScore += parseInt(selected.value);
+                    }
+                }
+
+                // 隐藏答题区，显示结果区
+                questionArea.classList.add('hidden');
+                resultArea.classList.remove('hidden');
+
+                // 填充结果数据
+                totalScoreEl.textContent = totalScore;
+                let level, analysis;
+
+                // PHQ-9官方评分标准
+                if (totalScore <= 4) {
+                    level = '无抑郁症状';
+                    analysis = '您目前无明显抑郁症状，情绪状态良好。建议保持健康的生活方式，规律作息、适度运动，持续关注自身心理状态，遇到压力及时调节。';
+                } else if (totalScore <= 9) {
+                    level = '轻度抑郁';
+                    analysis = '您可能存在轻度抑郁症状，可能表现为偶尔的情绪低落、兴趣减退、睡眠轻微波动等。建议增加户外活动和社交互动，与亲友分享感受，学习放松技巧（如深呼吸、冥想），若症状持续超过1个月，可寻求心理咨询。';
+                } else if (totalScore <= 14) {
+                    level = '中度抑郁';
+                    analysis = '您可能存在中度抑郁症状，已开始影响日常生活、工作或学习，表现为持续情绪低落、睡眠/食欲明显变化、疲劳感明显、注意力下降等。建议尽快联系心理咨询师或精神科医生进行专业评估，制定个性化干预方案，避免症状进一步加重。';
+                } else if (totalScore <= 19) {
+                    level = '中重度抑郁';
+                    analysis = '您可能存在中重度抑郁症状，明显影响生活功能，表现为强烈的情绪低落、几乎完全失去兴趣、睡眠/食欲严重紊乱、自卑自责、注意力严重受损等。强烈建议立即寻求精神科医生帮助，可能需要心理治疗结合药物干预，同时告知亲友自身状态，寻求身边人的支持与陪伴。';
+                } else {
+                    level = '重度抑郁';
+                    analysis = '您可能存在重度抑郁症状，属于高危状态，可能表现为极度情绪低落、完全丧失生活兴趣、睡眠/饮食严重异常、有自杀念头或自伤倾向等。请立即联系精神科医生或前往医院就诊，必要时寻求紧急医疗帮助，确保自身安全。建议身边有人陪同，避免独处，尽快接受专业治疗。';
+                }
+
+                depressionLevelEl.textContent = level;
+                resultAnalysisEl.textContent = analysis;
+
+                // 存储结果数据（供导出）
+                resultData = {
+                    score: totalScore,
+                    level: level,
+                    analysis: analysis,
+                    date: new Date().toLocaleString() // 记录测评时间
+                };
+            });
+
+            // 重新测评逻辑
+            restartBtn.addEventListener('click', function() {
+                form.reset();
+                progressBar.style.width = '0%';
+                resultArea.classList.add('hidden');
+                questionArea.classList.remove('hidden');
+                resultData = {}; // 重置结果数据
+            });
+
+            // 导出文本报告
+            exportTextBtn.addEventListener('click', function() {
+                if (!resultData.score) return alert('暂无测评结果，请先完成测评');
+
+                // 构建文本内容
+                const textContent = `
+PHQ-9抑郁症自测报告
+====================
+测评时间：${resultData.date}
+总得分：${resultData.score} / 27分
+抑郁程度：${resultData.level}
+结果分析：
+${resultData.analysis}
+
+重要提示：
+1. 本报告基于PHQ-9国际标准量表生成，仅供参考，不构成医疗诊断；
+2. 若症状持续或加重，请及时寻求专业医疗帮助；
+3. 建议妥善保存报告，便于后续咨询医生时提供参考。
+                `.trim();
+
+                // 创建文本文件并下载
+                const blob = new Blob([textContent], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `PHQ9测评报告_${resultData.date.replace(/[:/]/g, '-')}.txt`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                alert('文本报告导出成功！');
+            });
+
+            // 导出结果截图
+            exportImageBtn.addEventListener('click', function() {
+                if (!resultData.score) return alert('暂无测评结果，请先完成测评');
+
+                // 目标截图元素（结果区域）
+                const targetElement = document.getElementById('result-area');
+                
+                // 截图配置
+                html2canvas(targetElement, {
+                    scale: 2, // 提高清晰度
+                    useCORS: true,
+                    logging: false
+                }).then(canvas => {
+                    // 转换为图片URL并下载
+                    const imgUrl = canvas.toDataURL('image/png');
+                    const a = document.createElement('a');
+                    a.href = imgUrl;
+                    a.download = `PHQ9测评结果_${resultData.date.replace(/[:/]/g, '-')}.png`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    alert('结果截图导出成功！');
+                }).catch(err => {
+                    console.error('截图失败：', err);
+                    alert('截图导出失败，请刷新页面重试');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
