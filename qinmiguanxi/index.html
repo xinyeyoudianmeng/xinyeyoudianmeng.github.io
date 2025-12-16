@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>亲密关系健康评估 - 原创自测工具</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#f9a8d4',
+                        secondary: '#93c5fd',
+                        neutral: '#f3f4f6',
+                        dark: '#4b5563',
+                        light: '#f9fafb'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+                        'hover': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            }
+            .card-hover {
+                transition: all 0.3s ease;
+            }
+            .card-hover:hover {
+                transform: translateY(-5px);
+            }
+            .progress-bar {
+                transition: width 0.5s ease-in-out;
+            }
+            .option-btn {
+                transition: all 0.2s ease;
+            }
+            .option-btn:hover {
+                transform: translateY(-2px);
+            }
+            .option-btn.selected {
+                border-color: theme('colors.primary');
+                background-color: rgba(249, 168, 212, 0.1);
+            }
+        }
+    </style>
+</head>
+<body class="bg-light min-h-screen">
+    <!-- 头部 -->
+    <header class="bg-gradient-to-r from-primary to-secondary text-white p-6 shadow-md">
+        <div class="container mx-auto">
+            <h1 class="text-3xl font-bold text-center text-shadow">亲密关系健康评估</h1>
+            <p class="text-center mt-2 opacity-90">了解关系模式，迈向更健康的亲密关系</p>
+        </div>
+    </header>
+
+    <!-- 主要内容 -->
+    <main class="container mx-auto p-4 md:p-6 max-w-4xl">
+        <!-- 付费说明 -->
+        <div class="bg-white rounded-lg shadow-soft p-6 mb-8 border-l-4 border-primary">
+            <div class="flex items-start">
+                <i class="fa fa-info-circle text-primary text-2xl mr-4 mt-1"></i>
+                <div>
+                    <h2 class="text-xl font-semibold text-dark mb-2">付费测试说明</h2>
+                    <p class="text-dark mb-2">本测试为原创内容服务，非专业医疗/心理测评工具。测试结果仅供参考，不构成任何形式的诊断或建议。</p>
+                    <p class="text-dark">完成测试后，您将获得详细的多维度分析报告和个性化建议。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 免责声明 -->
+        <div class="bg-white rounded-lg shadow-soft p-6 mb-8 border-l-4 border-yellow-400">
+            <div class="flex items-start">
+                <i class="fa fa-exclamation-triangle text-yellow-500 text-2xl mr-4 mt-1"></i>
+                <div>
+                    <h2 class="text-xl font-semibold text-dark mb-2">免责声明</h2>
+                    <p class="text-dark mb-2"><strong>非专业诊断工具：</strong>本测试非专业心理测评，结果仅供参考，不能替代专业心理咨询或治疗。</p>
+                    <p class="text-dark mb-2"><strong>隐私保护：</strong>您的所有回答仅存储在您的设备上，不会上传至任何服务器。</p>
+                    <p class="text-dark"><strong>寻求帮助：</strong>如您在关系中遇到严重困扰，建议寻求专业心理咨询师或相关机构的帮助。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 测试说明 -->
+        <div class="bg-white rounded-lg shadow-soft p-6 mb-8">
+            <h2 class="text-xl font-semibold text-dark mb-4">测试说明</h2>
+            <p class="text-dark mb-4">本测试包含90道题目，从6个维度评估亲密关系中的互动模式。请根据您在亲密关系中的真实感受和经历作答。</p>
+            <div class="bg-neutral p-4 rounded-lg">
+                <h3 class="font-medium text-dark mb-2">评分标准：</h3>
+                <ul class="list-disc list-inside text-dark space-y-1">
+                    <li><strong>1分</strong> - 从不</li>
+                    <li><strong>2分</strong> - 偶尔</li>
+                    <li><strong>3分</strong> - 有时</li>
+                    <li><strong>4分</strong> - 经常</li>
+                    <li><strong>5分</strong> - 总是</li>
+                </ul>
+            </div>
+            <div class="mt-6 text-center">
+                <button id="start-test" class="bg-primary hover:bg-pink-400 text-white font-medium py-3 px-8 rounded-full shadow-soft transition-all duration-300 hover:shadow-hover">
+                    开始测试
+                </button>
+            </div>
+        </div>
+
+        <!-- 测试区域 -->
+        <div id="test-container" class="hidden">
+            <!-- 进度条 -->
+            <div class="bg-white rounded-lg shadow-soft p-4 mb-6">
+                <div class="flex justify-between text-dark mb-2">
+                    <span>进度：<span id="progress-text">0/90</span></span>
+                    <span>题目：<span id="current-question">1</span></span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-3">
+                    <div id="progress-bar" class="bg-gradient-to-r from-primary to-secondary h-3 rounded-full progress-bar" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- 题目卡片 -->
+            <div class="bg-white rounded-lg shadow-soft p-6 mb-6">
+                <h3 id="question-text" class="text-xl font-medium text-dark mb-6"></h3>
+                <div id="options-container" class="space-y-3">
+                    <!-- 选项将通过JS动态生成 -->
+                </div>
+            </div>
+
+            <!-- 导航按钮 -->
+            <div class="flex justify-between">
+                <button id="prev-btn" class="bg-gray-200 hover:bg-gray-300 text-dark font-medium py-2 px-6 rounded-lg shadow-soft transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i class="fa fa-arrow-left mr-2"></i>上一题
+                </button>
+                <button id="next-btn" class="bg-primary hover:bg-pink-400 text-white font-medium py-2 px-6 rounded-lg shadow-soft transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                    下一题<i class="fa fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 结果区域 -->
+        <div id="results-container" class="hidden">
+            <!-- 总体评估 -->
+            <div class="bg-white rounded-lg shadow-soft p-6 mb-8">
+                <h2 class="text-2xl font-semibold text-dark mb-4 text-center">测试结果</h2>
+                <div class="flex justify-center mb-6">
+                    <div class="w-48 h-48 rounded-full bg-gradient-to-r from-primary to-secondary flex items-center justify-center shadow-soft">
+                        <div class="w-40 h-40 rounded-full bg-white flex flex-col items-center justify-center">
+                            <span class="text-4xl font-bold text-dark" id="total-score">0</span>
+                            <span class="text-dark">总分</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mb-4">
+                    <h3 class="text-xl font-medium text-dark mb-2" id="risk-level">评估结果</h3>
+                    <p class="text-dark" id="overall-assessment">评估说明将显示在这里</p>
+                </div>
+            </div>
+
+            <!-- 雷达图 -->
+            <div class="bg-white rounded-lg shadow-soft p-6 mb-8">
+                <h3 class="text-xl font-medium text-dark mb-4 text-center">多维度分析</h3>
+                <div class="flex justify-center">
+                    <div class="w-full max-w-2xl">
+                        <canvas id="radar-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 维度详情 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <div class="bg-white rounded-lg shadow-soft p-6 card-hover">
+                    <h3 class="text-lg font-medium text-dark mb-3 flex items-center">
+                        <i class="fa fa-comments text-primary mr-2"></i>语言互动
+                    </h3>
+                    <div class="flex items-center mb-2">
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 mr-2">
+                            <div class="bg-primary h-2.5 rounded-full" id="dimension-1-bar" style="width: 0%"></div>
+                        </div>
+                        <span class="text-dark font-medium w-8 text-center" id="dimension-1-score">0</span>
+                    </div>
+                    <p class="text-dark text-sm" id="dimension-1-detail">详细说明将显示在这里</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-soft p-6 card-hover">
+                    <h3 class="text-lg font-medium text-dark mb-3 flex items-center">
+                        <i class="fa fa-heart text-primary mr-2"></i>情感表达
+                    </h3>
+                    <div class="flex items-center mb-2">
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 mr-2">
+                            <div class="bg-primary h-2.5 rounded-full" id="dimension-2-bar" style="width: 0%"></div>
+                        </div>
+                        <span class="text-dark font-medium w-8 text-center" id="dimension-2-score">0</span>
+                    </div>
+                    <p class="text-dark text-sm" id="dimension-2-detail">详细说明将显示在这里</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-soft p-6 card-hover">
+                    <h3 class="text-lg font-medium text-dark mb-3 flex items-center">
+                        <i class="fa fa-hand-paper-o text-primary mr-2"></i>行为边界
+                    </h3>
+                    <div class="flex items-center mb-2">
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 mr-2">
+                            <div class="bg-primary h-2.5 rounded-full" id="dimension-3-bar" style="width: 0%"></div>
+                        </div>
+                        <span class="text-dark font-medium w-8 text-center" id="dimension-3-score">0</span>
+                    </div>
+                    <p class="text-dark text-sm" id="dimension-3-detail">详细说明将显示在这里</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-soft p-6 card-hover">
+                    <h3 class="text-lg font-medium text-dark mb-3 flex items-center">
+                        <i class="fa fa-lightbulb-o text-primary mr-2"></i>认知影响
+                    </h3>
+                    <div class="flex items-center mb-2">
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 mr-2">
+                            <div class="bg-primary h-2.5 rounded-full" id="dimension-4-bar" style="width: 0%"></div>
+                        </div>
+                        <span class="text-dark font-medium w-8 text-center" id="dimension-4-score">0</span>
+                    </div>
+                    <p class="text-dark text-sm" id="dimension-4-detail">详细说明将显示在这里</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-soft p-6 card-hover">
+                    <h3 class="text-lg font-medium text-dark mb-3 flex items-center">
+                        <i class="fa fa-users text-primary mr-2"></i>社交互动
+                    </h3>
+                    <div class="flex items-center mb-2">
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 mr-2">
+                            <div class="bg-primary h-2.5 rounded-full" id="dimension-5-bar" style="width: 0%"></div>
+                        </div>
+                        <span class="text-dark font-medium w-8 text-center" id="dimension-5-score">0</span>
+                    </div>
+                    <p class="text-dark text-sm" id="dimension-5-detail">详细说明将显示在这里</p>
+                </div>
+                <div class="bg-white rounded-lg shadow-soft p-6 card-hover">
+                    <h3 class="text-lg font-medium text-dark mb-3 flex items-center">
+                        <i class="fa fa-shield text-primary mr-2"></i>个人边界
+                    </h3>
+                    <div class="flex items-center mb-2">
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 mr-2">
+                            <div class="bg-primary h-2.5 rounded-full" id="dimension-6-bar" style="width: 0%"></div>
+                        </div>
+                        <span class="text-dark font-medium w-8 text-center" id="dimension-6-score">0</span>
+                    </div>
+                    <p class="text-dark text-sm" id="dimension-6-detail">详细说明将显示在这里</p>
+                </div>
+            </div>
+
+            <!-- 建议与资源 -->
+            <div class="bg-white rounded-lg shadow-soft p-6 mb-8">
+                <h3 class="text-xl font-medium text-dark mb-4">建议与资源</h3>
+                <div id="recommendations" class="text-dark space-y-4">
+                    <!-- 建议将通过JS动态生成 -->
+                </div>
+                <div class="mt-6 p-4 bg-neutral rounded-lg">
+                    <h4 class="font-medium text-dark mb-2 flex items-center">
+                        <i class="fa fa-info-circle text-primary mr-2"></i>寻求专业帮助
+                    </h4>
+                    <p class="text-dark text-sm">如果您在亲密关系中遇到严重困扰，建议寻求专业心理咨询师或相关机构的帮助。健康的关系建立在相互尊重、信任和支持的基础上。</p>
+                </div>
+            </div>
+
+            <!-- 分享与保存 -->
+            <div class="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-6">
+                <button id="share-result" class="bg-secondary hover:bg-blue-400 text-white font-medium py-3 px-8 rounded-full shadow-soft transition-all duration-300 hover:shadow-hover flex items-center justify-center">
+                    <i class="fa fa-share-alt mr-2"></i>分享结果
+                </button>
+                <button id="save-result" class="bg-primary hover:bg-pink-400 text-white font-medium py-3 px-8 rounded-full shadow-soft transition-all duration-300 hover:shadow-hover flex items-center justify-center">
+                    <i class="fa fa-download mr-2"></i>保存结果
+                </button>
+                <button id="restart-test" class="bg-gray-200 hover:bg-gray-300 text-dark font-medium py-3 px-8 rounded-full shadow-soft transition-all duration-300 hover:shadow-hover flex items-center justify-center">
+                    <i class="fa fa-refresh mr-2"></i>重新测试
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-white p-6 mt-12">
+        <div class="container mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <h3 class="text-lg font-medium mb-2">亲密关系健康评估</h3>
+                    <p class="text-sm opacity-75">原创自测工具，仅供参考</p>
+                </div>
+                <div class="text-sm opacity-75">
+                    <p>© 2025 原创内容，保留所有权利</p>
+                    <p>本测试非专业心理测评工具</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 测试题目数据
+        const questions = [
+            // 维度1：语言互动
+            { id: 1, dimension: 1, text: "我的伴侣经常用讽刺或挖苦的方式和我说话。" },
+            { id: 2, dimension: 1, text: "当我们意见不合时，伴侣会说我'太敏感'或'想太多'。" },
+            { id: 3, dimension: 1, text: "伴侣经常打断我说话，不让我完整表达想法。" },
+            { id: 4, dimension: 1, text: "我的伴侣会在他人面前贬低我或让我难堪。" },
+            { id: 5, dimension: 1, text: "当我提出问题或担忧时，伴侣会转移话题或拒绝讨论。" },
+            { id: 6, dimension: 1, text: "伴侣经常使用'你总是'或'你从不'这样的绝对化表述批评我。" },
+            { id: 7, dimension: 1, text: "我的伴侣会用我的过去错误来攻击我，即使与当前话题无关。" },
+            { id: 8, dimension: 1, text: "当我表达感受时，伴侣会说我'太情绪化'或'不理性'。" },
+            { id: 9, dimension: 1, text: "伴侣经常使用模糊或矛盾的语言，让我感到困惑。" },
+            { id: 10, dimension: 1, text: "我的伴侣会在争吵时翻旧账，而不是聚焦当前问题。" },
+            { id: 11, dimension: 1, text: "伴侣会用沉默来惩罚我，即使我试图沟通。" },
+            { id: 12, dimension: 1, text: "当我提出需求时，伴侣会嘲笑或忽视它们。" },
+            { id: 13, dimension: 1, text: "我的伴侣会用'开个玩笑'来掩盖伤人的言论。" },
+            { id: 14, dimension: 1, text: "伴侣经常使用威胁性语言，即使是暗示性的。" },
+            { id: 15, dimension: 1, text: "当我试图讨论关系问题时，伴侣会说我'制造问题'或'破坏气氛'。" },
+            
+            // 维度2：情感表达
+            { id: 16, dimension: 2, text: "我的伴侣会在我不按他/她的要求做时表现出失望或受伤。" },
+            { id: 17, dimension: 2, text: "伴侣会用'如果你真的爱我，你就会...'这样的表达方式。" },
+            { id: 18, dimension: 2, text: "当我拒绝伴侣的要求时，他/她会变得情绪低落或生气。" },
+            { id: 19, dimension: 2, text: "我的伴侣会用情感操纵来达到自己的目的。" },
+            { id: 20, dimension: 2, text: "伴侣会在争吵时提起过去为我做的事情，暗示我欠他/她的。" },
+            { id: 21, dimension: 2, text: "当我表达需要个人空间时，伴侣会感到被拒绝或背叛。" },
+            { id: 22, dimension: 2, text: "我的伴侣会用眼泪或情绪爆发来让我妥协。" },
+            { id: 23, dimension: 2, text: "伴侣会将自己的情绪问题归咎于我。" },
+            { id: 24, dimension: 2, text: "当我与他人交往时，伴侣会表现出过度的嫉妒或不安。" },
+            { id: 25, dimension: 2, text: "我的伴侣会用'我为你牺牲了这么多'这样的表述。" },
+            { id: 26, dimension: 2, text: "伴侣会在我面前赞美他人，暗示我不够好。" },
+            { id: 27, dimension: 2, text: "当我取得成就时，伴侣很少真诚地为我高兴。" },
+            { id: 28, dimension: 2, text: "我的伴侣会用情感忽冷忽热的方式来控制我。" },
+            { id: 29, dimension: 2, text: "伴侣会在我面前谈论其他可能的追求者，让我感到不安。" },
+            { id: 30, dimension: 2, text: "当我提出分手或结束关系时，伴侣会威胁自残或做出极端行为。" },
+            
+            // 维度3：行为边界
+            { id: 31, dimension: 3, text: "我的伴侣会检查我的手机、邮件或社交媒体。" },
+            { id: 32, dimension: 3, text: "伴侣会限制我与朋友或家人相处的时间。" },
+            { id: 33, dimension: 3, text: "当我外出时，伴侣会频繁打电话或发消息查岗。" },
+            { id: 34, dimension: 3, text: "我的伴侣会决定我们做什么、去哪里，很少考虑我的意见。" },
+            { id: 35, dimension: 3, text: "伴侣会干涉我的工作选择或职业发展。" },
+            { id: 36, dimension: 3, text: "当我与异性交谈时，伴侣会表现出明显的不满或愤怒。" },
+            { id: 37, dimension: 3, text: "我的伴侣会控制我们的财务，不让我有独立的经济支配权。" },
+            { id: 38, dimension: 3, text: "伴侣会规定我应该穿什么、不应该穿什么。" },
+            { id: 39, dimension: 3, text: "当我违背伴侣的意愿时，他/她会表现出明显的愤怒或惩罚行为。" },
+            { id: 40, dimension: 3, text: "我的伴侣会跟踪我的行踪或要求详细报告。" },
+            { id: 41, dimension: 3, text: "伴侣会干涉我的个人习惯或爱好，试图改变它们。" },
+            { id: 42, dimension: 3, text: "当我想单独活动时，伴侣会表现出不满或制造 guilt trip。" },
+            { id: 43, dimension: 3, text: "我的伴侣会替我做决定，不考虑我的意见。" },
+            { id: 44, dimension: 3, text: "伴侣会在公开场合让我难堪或贬低我。" },
+            { id: 45, dimension: 3, text: "当我与伴侣的朋友或家人相处不融洽时，他/她会要求我妥协或改变。" },
+            
+            // 维度4：认知影响
+            { id: 46, dimension: 4, text: "我的伴侣经常说我记错了事情或误解了情况。" },
+            { id: 47, dimension: 4, text: "伴侣会质疑我的判断力或决策能力。" },
+            { id: 48, dimension: 4, text: "当我表达观点时，伴侣会说我'太天真'或'不懂事'。" },
+            { id: 49, dimension: 4, text: "我的伴侣会试图改变我的价值观或信仰。" },
+            { id: 50, dimension: 4, text: "伴侣会告诉我，没有他/她我无法独立生活或做决定。" },
+            { id: 51, dimension: 4, text: "当我对伴侣的行为提出质疑时，他/她会反过来说我有问题。" },
+            { id: 52, dimension: 4, text: "我的伴侣会经常纠正我的想法或感受，说我'不应该'这样想。" },
+            { id: 53, dimension: 4, text: "伴侣会将自己的错误或问题归咎于我。" },
+            { id: 54, dimension: 4, text: "当我与伴侣意见不合时，他/她会说我'不理解'或'太固执'。" },
+            { id: 55, dimension: 4, text: "我的伴侣会试图让我相信，他/她比我更了解我自己。" },
+            { id: 56, dimension: 4, text: "伴侣会用'这是为你好'来合理化他/她的控制行为。" },
+            { id: 57, dimension: 4, text: "当我表达自信或独立想法时，伴侣会打击我的信心。" },
+            { id: 58, dimension: 4, text: "我的伴侣会经常提醒我过去的错误，让我感到自卑。" },
+            { id: 59, dimension: 4, text: "伴侣会将关系中的问题全部归咎于我的性格或行为。" },
+            { id: 60, dimension: 4, text: "当我提出分手或结束关系时，伴侣会说我以后会后悔或找不到更好的。" },
+            
+            // 维度5：社交互动
+            { id: 61, dimension: 5, text: "我的伴侣不喜欢我与朋友单独相处。" },
+            { id: 62, dimension: 5, text: "伴侣会批评我的朋友，试图让我远离他们。" },
+            { id: 63, dimension: 5, text: "当我与家人亲近时，伴侣会表现出不满或嫉妒。" },
+            { id: 64, dimension: 5, text: "我的伴侣会限制我参加社交活动或聚会。" },
+            { id: 65, dimension: 5, text: "伴侣会在我与他人交流时试图控制对话或替我回答。" },
+            { id: 66, dimension: 5, text: "当我收到异性的关注时，伴侣会表现出过度的嫉妒。" },
+            { id: 67, dimension: 5, text: "我的伴侣会要求我减少与某些人的联系。" },
+            { id: 68, dimension: 5, text: "伴侣会在社交场合让我难堪或贬低我。" },
+            { id: 69, dimension: 5, text: "当我想邀请朋友到家里时，伴侣会表现出不满。" },
+            { id: 70, dimension: 5, text: "我的伴侣会检查我与他人的聊天记录或通话记录。" },
+            { id: 71, dimension: 5, text: "伴侣会质疑我与他人的关系，即使没有任何理由。" },
+            { id: 72, dimension: 5, text: "当我与他人分享快乐时，伴侣会表现出冷漠或不满。" },
+            { id: 73, dimension: 5, text: "我的伴侣会试图让我相信，只有他/她才是真正关心我的人。" },
+            { id: 74, dimension: 5, text: "伴侣会在我与他人发生分歧时，总是站在对方那边。" },
+            { id: 75, dimension: 5, text: "当我提出需要个人空间或时间时，伴侣会怀疑我有其他想法。" },
+            
+            // 维度6：个人边界
+            { id: 76, dimension: 6, text: "我的伴侣不尊重我的个人空间需求。" },
+            { id: 77, dimension: 6, text: "伴侣会在我不想亲密时依然要求身体接触。" },
+            { id: 78, dimension: 6, text: "当我拒绝伴侣的要求时，他/她会持续施压直到我妥协。" },
+            { id: 79, dimension: 6, text: "我的伴侣会翻看我的私人物品，如日记或信件。" },
+            { id: 80, dimension: 6, text: "伴侣会在我与他人交谈时偷听或打断。" },
+            { id: 81, dimension: 6, text: "当我表达需要独处时，伴侣会感到被拒绝或受伤。" },
+            { id: 82, dimension: 6, text: "我的伴侣会不经过我同意就替我做决定。" },
+            { id: 83, dimension: 6, text: "伴侣会在我不愿意的情况下分享我的私人信息。" },
+            { id: 84, dimension: 6, text: "当我设置边界时，伴侣会说我'太自私'或'不够爱'。" },
+            { id: 85, dimension: 6, text: "我的伴侣会试图控制我的饮食、睡眠或其他个人习惯。" },
+            { id: 86, dimension: 6, text: "伴侣会在我工作或专注做某事时不断打扰我。" },
+            { id: 87, dimension: 6, text: "当我提出需要隐私时，伴侣会怀疑我有秘密或隐瞒。" },
+            { id: 88, dimension: 6, text: "我的伴侣会要求我随时报告行踪或活动。" },
+            { id: 89, dimension: 6, text: "伴侣会在我不想讨论某个话题时继续施压。" },
+            { id: 90, dimension: 6, text: "当我坚持自己的边界时，伴侣会表现出愤怒或惩罚行为。" }
+        ];
+
+        // 维度名称
+        const dimensionNames = [
+            "语言互动",
+            "情感表达",
+            "行为边界",
+            "认知影响",
+            "社交互动",
+            "个人边界"
+        ];
+
+        // 维度详情说明
+        const dimensionDetails = [
+            {
+                low: "您的伴侣尊重您的意见和感受，沟通方式健康。你们能够平等交流，即使在意见不合时也能保持基本的尊重。",
+                medium: "关系中存在一些沟通问题，您的伴侣有时可能不尊重您的意见或感受。建议加强沟通技巧，明确表达自己的需求和边界。",
+                high: "您的伴侣经常不尊重您的意见和感受，沟通方式可能具有伤害性。这种模式可能会损害您的自尊和关系健康。建议寻求专业帮助，重新评估关系。"
+            },
+            {
+                low: "您的伴侣能够健康地表达情感，不会利用情感来操控您。你们之间的情感交流是真诚和相互支持的。",
+                medium: "关系中存在一些情感操控的迹象，您的伴侣可能有时会利用情感来达到自己的目的。建议关注这些模式，明确表达自己的感受。",
+                high: "您的伴侣经常使用情感操控来控制您的行为和决定。这种模式可能会导致您感到内疚、焦虑或失去自我。建议寻求专业帮助，重新评估关系。"
+            },
+            {
+                low: "您的伴侣尊重您的个人自由和选择，不会过度控制您的行为。你们之间的互动是基于相互尊重和信任的。",
+                medium: "关系中存在一些控制行为，您的伴侣可能有时会干涉您的自由或选择。建议明确设定个人边界，与伴侣坦诚沟通。",
+                high: "您的伴侣经常试图控制您的行为、决定或日常生活。这种控制模式可能会损害您的独立性和自尊。建议寻求专业帮助，重新评估关系。"
+            },
+            {
+                low: "您的伴侣尊重您的想法和观点，不会试图改变您的认知或价值观。你们能够在差异中相互尊重。",
+                medium: "关系中存在一些认知操控的迹象，您的伴侣可能有时会质疑或贬低您的想法。建议保持自我觉察，相信自己的判断力。",
+                high: "您的伴侣经常试图改变您的想法、感受或自我认知。这种模式可能会导致您失去自信和自我认同。建议寻求专业帮助，重新评估关系。"
+            },
+            {
+                low: "您的伴侣尊重您的社交圈和人际关系，不会试图限制您与他人的交往。你们都有独立的社交生活。",
+                medium: "关系中存在一些社交控制的迹象，您的伴侣可能有时会干涉您的社交活动。建议平衡关系和个人社交需求，与伴侣坦诚沟通。",
+                high: "您的伴侣经常试图控制或限制您的社交活动和人际关系。这种孤立模式可能会切断您的支持系统。建议寻求专业帮助，重新评估关系。"
+            },
+            {
+                low: "您的伴侣尊重您的个人边界和隐私，不会过度干涉您的个人空间。你们之间的互动是基于相互尊重的。",
+                medium: "关系中存在一些边界侵犯的迹象，您的伴侣可能有时不尊重您的个人空间或隐私。建议明确设定和维护个人边界。",
+                high: "您的伴侣经常侵犯您的个人边界和隐私，不尊重您的个人空间需求。这种模式可能会导致您感到被控制或失去自我。建议寻求专业帮助，重新评估关系。"
+            }
+        ];
+
+        // 建议内容
+        const recommendations = [
+            {
+                title: "建立健康的沟通模式",
+                content: "健康的关系建立在开放、诚实和尊重的沟通基础上。尝试使用'我'语句表达感受，如'我感到...当...发生时'，而不是指责对方。"
+            },
+            {
+                title: "明确个人边界",
+                content: "了解并明确自己的个人边界，然后温和而坚定地向伴侣表达。记住，设定边界是爱自己和尊重关系的表现。"
+            },
+            {
+                title: "保持独立的社交圈",
+                content: "维护与朋友和家人的联系，保持独立的社交生活。健康的关系应该增强而不是削弱您的社交支持系统。"
+            },
+            {
+                title: "关注自己的需求",
+                content: "在关系中关注自己的需求和感受同样重要。记住，照顾好自己不是自私，而是维持健康关系的必要条件。"
+            },
+            {
+                title: "寻求专业帮助",
+                content: "如果您在关系中遇到严重困扰，考虑寻求专业心理咨询师的帮助。专业人士可以提供客观的视角和实用的建议。"
+            }
+        ];
+
+        // DOM元素
+        const startTestBtn = document.getElementById('start-test');
+        const testContainer = document.getElementById('test-container');
+        const resultsContainer = document.getElementById('results-container');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        const currentQuestionText = document.getElementById('current-question');
+
+        // 测试状态
+        let currentQuestion = 0;
+        const answers = new Array(questions.length).fill(null);
+        let dimensionScores = [0, 0, 0, 0, 0, 0];
+        let dimensionCounts = [0, 0, 0, 0, 0, 0];
+
+        // 开始测试
+        startTestBtn.addEventListener('click', () => {
+            // 隐藏测试说明部分，但保留付费说明和免责声明
+            startTestBtn.closest('.bg-white').classList.add('hidden');
+            testContainer.classList.remove('hidden');
+            showQuestion(currentQuestion);
+        });
+
+        // 显示当前问题
+        function showQuestion(index) {
+            const question = questions[index];
+            questionText.textContent = question.text;
+            currentQuestionText.textContent = index + 1;
+            progressText.textContent = `${index + 1}/${questions.length}`;
+            progressBar.style.width = `${(index + 1) / questions.length * 100}%`;
+            
+            // 生成选项
+            optionsContainer.innerHTML = '';
+            const options = [
+                { value: 1, text: '1 - 从不' },
+                { value: 2, text: '2 - 偶尔' },
+                { value: 3, text: '3 - 有时' },
+                { value: 4, text: '4 - 经常' },
+                { value: 5, text: '5 - 总是' }
+            ];
+            
+            options.forEach(option => {
+                const button = document.createElement('button');
+                button.className = `option-btn w-full text-left p-3 border rounded-lg ${answers[index] === option.value ? 'selected' : ''}`;
+                button.innerHTML = `
+                    <div class="flex items-center">
+                        <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center mr-3 ${answers[index] === option.value ? 'bg-primary border-primary text-white' : ''}">
+                            ${answers[index] === option.value ? '<i class="fa fa-check"></i>' : ''}
+                        </div>
+                        <span>${option.text}</span>
+                    </div>
+                `;
+                button.addEventListener('click', () => {
+                    selectOption(option.value);
+                });
+                optionsContainer.appendChild(button);
+            });
+            
+            // 更新导航按钮状态
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = answers[index] === null;
+            nextBtn.textContent = index === questions.length - 1 ? '查看结果' : '下一题';
+            nextBtn.innerHTML = index === questions.length - 1 ? '查看结果<i class="fa fa-arrow-right ml-2"></i>' : '下一题<i class="fa fa-arrow-right ml-2"></i>';
+        }
+
+        // 选择选项
+        function selectOption(value) {
+            answers[currentQuestion] = value;
+            
+            // 更新选项UI
+            const options = optionsContainer.querySelectorAll('.option-btn');
+            options.forEach((option, index) => {
+                if (index + 1 === value) {
+                    option.classList.add('selected');
+                    option.querySelector('div > div').classList.add('bg-primary', 'border-primary', 'text-white');
+                    option.querySelector('div > div').innerHTML = '<i class="fa fa-check"></i>';
+                } else {
+                    option.classList.remove('selected');
+                    option.querySelector('div > div').classList.remove('bg-primary', 'border-primary', 'text-white');
+                    option.querySelector('div > div').innerHTML = '';
+                }
+            });
+            
+            // 启用下一题按钮
+            nextBtn.disabled = false;
+        }
+
+        // 上一题按钮
+        prevBtn.addEventListener('click', () => {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showQuestion(currentQuestion);
+            }
+        });
+
+        // 下一题按钮
+        nextBtn.addEventListener('click', () => {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                showQuestion(currentQuestion);
+            } else {
+                calculateResults();
+                showResults();
+            }
+        });
+
+        // 计算结果
+        function calculateResults() {
+            // 重置维度分数
+            dimensionScores = [0, 0, 0, 0, 0, 0];
+            dimensionCounts = [0, 0, 0, 0, 0, 0];
+            
+            // 计算每个维度的总分
+            questions.forEach((question, index) => {
+                const dimension = question.dimension - 1;
+                dimensionScores[dimension] += answers[index];
+                dimensionCounts[dimension]++;
+            });
+            
+            // 计算每个维度的平均分（转换为10分制）
+            for (let i = 0; i < dimensionScores.length; i++) {
+                dimensionScores[i] = Math.round((dimensionScores[i] / dimensionCounts[i]) * 2);
+            }
+        }
+
+        // 显示结果
+        function showResults() {
+            testContainer.classList.add('hidden');
+            resultsContainer.classList.remove('hidden');
+            
+            // 计算总分（转换为100分制）
+            const totalScore = Math.round(dimensionScores.reduce((a, b) => a + b, 0) / dimensionScores.length * 10);
+            document.getElementById('total-score').textContent = totalScore;
+            
+            // 设置风险等级
+            let riskLevel, overallAssessment;
+            if (totalScore < 30) {
+                riskLevel = "健康关系";
+                overallAssessment = "您的关系总体健康，没有明显的操控或不健康模式。双方能够相互尊重、理解和支持。建议继续培养和维护这种健康的关系模式。";
+            } else if (totalScore < 50) {
+                riskLevel = "轻微警示";
+                overallAssessment = "您的关系中存在一些潜在的问题迹象，但尚未达到严重程度。建议关注这些问题，加强沟通，及时调整互动模式，防止问题恶化。";
+            } else if (totalScore < 70) {
+                riskLevel = "中度警示";
+                overallAssessment = "您的关系中存在较为明显的不健康模式，可能需要认真关注和调整。建议寻求专业心理咨询师的帮助，共同探讨如何改善关系质量。";
+            } else {
+                riskLevel = "高度警示";
+                overallAssessment = "您的关系中存在严重的不健康模式，可能对您的心理健康和自我价值感造成伤害。强烈建议寻求专业心理咨询师的帮助，重新评估关系的健康性。";
+            }
+            
+            document.getElementById('risk-level').textContent = riskLevel;
+            document.getElementById('overall-assessment').textContent = overallAssessment;
+            
+            // 显示维度详情
+            for (let i = 0; i < dimensionScores.length; i++) {
+                const score = dimensionScores[i];
+                document.getElementById(`dimension-${i+1}-score`).textContent = score;
+                document.getElementById(`dimension-${i+1}-bar`).style.width = `${score * 10}%`;
+                
+                let detail;
+                if (score <= 3) {
+                    detail = dimensionDetails[i].low;
+                } else if (score <= 6) {
+                    detail = dimensionDetails[i].medium;
+                } else {
+                    detail = dimensionDetails[i].high;
+                }
+                
+                document.getElementById(`dimension-${i+1}-detail`).textContent = detail;
+            }
+            
+            // 生成雷达图
+            const ctx = document.getElementById('radar-chart').getContext('2d');
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: dimensionNames,
+                    datasets: [{
+                        label: '得分（1-10分）',
+                        data: dimensionScores,
+                        backgroundColor: 'rgba(249, 168, 212, 0.2)',
+                        borderColor: 'rgba(249, 168, 212, 1)',
+                        pointBackgroundColor: 'rgba(249, 168, 212, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(249, 168, 212, 1)'
+                    }]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 10,
+                            ticks: {
+                                stepSize: 2
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+            
+            // 生成建议
+            const recommendationsContainer = document.getElementById('recommendations');
+            recommendationsContainer.innerHTML = '';
+            
+            // 根据得分最高的维度提供针对性建议
+            const highestDimensionIndex = dimensionScores.indexOf(Math.max(...dimensionScores));
+            
+            recommendations.forEach((rec, index) => {
+                const recDiv = document.createElement('div');
+                recDiv.className = 'p-4 bg-neutral rounded-lg';
+                recDiv.innerHTML = `
+                    <h4 class="font-medium text-dark mb-2 flex items-center">
+                        <i class="fa fa-check-circle text-primary mr-2"></i>${rec.title}
+                    </h4>
+                    <p class="text-dark text-sm">${rec.content}</p>
+                `;
+                recommendationsContainer.appendChild(recDiv);
+            });
+        }
+
+        // 分享结果
+        document.getElementById('share-result').addEventListener('click', () => {
+            alert('分享功能已触发！在实际应用中，这里会调用分享API或生成分享链接。');
+        });
+
+        // 保存结果
+        document.getElementById('save-result').addEventListener('click', () => {
+            alert('保存功能已触发！在实际应用中，这里会生成PDF或图片供用户下载。');
+        });
+
+        // 重新测试
+        document.getElementById('restart-test').addEventListener('click', () => {
+            // 重置测试状态
+            currentQuestion = 0;
+            answers.fill(null);
+            dimensionScores = [0, 0, 0, 0, 0, 0];
+            dimensionCounts = [0, 0, 0, 0, 0, 0];
+            
+            // 隐藏结果，显示测试
+            resultsContainer.classList.add('hidden');
+            testContainer.classList.remove('hidden');
+            
+            // 显示第一题
+            showQuestion(currentQuestion);
+        });
+    </script>
+</body>
+</html>
