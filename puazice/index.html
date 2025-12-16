@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>情感操控 30 题自测表</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.544.0/dist/umd/lucide.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+        .option-card {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .option-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .option-card.selected {
+            border-color: #667eea;
+            background-color: rgba(102, 126, 234, 0.1);
+        }
+        .progress-bar {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.5s ease;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-4xl mx-auto">
+        <!-- 免责声明 -->
+        <div class="card p-6 mb-8">
+            <h2 class="text-2xl font-bold text-red-600 mb-4 flex items-center">
+                <i data-lucide="alert-triangle" class="mr-2"></i>免责声明
+            </h2>
+            <p class="text-gray-700 mb-4">本测试为原创内容服务，非专业医疗/心理测评工具。测试结果仅供参考，不构成任何形式的诊断或治疗建议。</p>
+            <p class="text-gray-700 mb-4">请以科学、理性的态度看待测试结果。如您在情感关系中遇到困扰，建议寻求专业心理咨询师或相关机构的帮助。</p>
+            <p class="text-gray-700 font-semibold">付费测试为原创内容服务，非专业医疗/心理测评。</p>
+        </div>
+
+        <!-- 测试说明 -->
+        <div class="card p-6 mb-8">
+            <h1 class="text-3xl font-bold text-center mb-6 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">情感操控 30 题自测表</h1>
+            <p class="text-gray-700 mb-4">本测试包含 30 道题目，涉及 10 个常见的情感操控情境。请根据您在亲密关系中的真实感受选择最符合的选项。</p>
+            <div class="bg-purple-50 p-4 rounded-lg mb-4">
+                <h3 class="font-semibold text-purple-800 mb-2">评分规则：</h3>
+                <ul class="text-gray-700 space-y-1">
+                    <li>A 选项：3 分</li>
+                    <li>B 选项：2 分</li>
+                    <li>C 选项：1 分</li>
+                    <li>D 选项：0 分</li>
+                </ul>
+            </div>
+            <button id="startTest" class="btn-primary w-full py-3 px-6 rounded-lg text-white font-semibold text-lg">开始测试</button>
+        </div>
+
+        <!-- 测试区域 -->
+        <div id="testArea" class="hidden">
+            <!-- 进度条 -->
+            <div class="bg-gray-200 rounded-full h-4 mb-6 overflow-hidden">
+                <div id="progressBar" class="progress-bar h-full w-0"></div>
+            </div>
+            <div class="text-center text-gray-600 mb-4" id="progressText">第 1 题 / 共 30 题</div>
+
+            <!-- 题目卡片 -->
+            <div class="card p-6 mb-8">
+                <h3 id="questionText" class="text-xl font-semibold mb-6"></h3>
+                <div id="optionsContainer" class="space-y-4">
+                    <!-- 选项将动态生成 -->
+                </div>
+            </div>
+
+            <div class="flex justify-between">
+                <button id="prevBtn" class="bg-gray-300 text-gray-700 py-2 px-6 rounded-lg font-semibold hidden">上一题</button>
+                <button id="nextBtn" class="btn-primary py-2 px-6 rounded-lg text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed">下一题</button>
+            </div>
+        </div>
+
+        <!-- 结果区域 -->
+        <div id="resultArea" class="hidden">
+            <div class="card p-8 text-center">
+                <h2 class="text-3xl font-bold mb-6">测试结果</h2>
+                <div class="text-6xl font-bold mb-6" id="totalScore">0</div>
+                <div id="resultInterpretation" class="text-lg text-gray-700 mb-8"></div>
+                <div id="resultAdvice" class="bg-blue-50 p-6 rounded-lg text-left mb-8"></div>
+                <button id="restartTest" class="btn-primary py-3 px-8 rounded-lg text-white font-semibold text-lg">重新测试</button>
+            </div>
+        </div>
+
+        <!-- 原创声明 -->
+        <div class="card p-6 mt-8 text-center">
+            <p class="text-gray-600">© 2024 情感操控自测表 - 原创内容，侵权必究</p>
+        </div>
+    </div>
+
+    <script>
+        // 测试题目数据
+        const testQuestions = [
+            // 情境1：对方冷落反应
+            {
+                scenario: "对方冷落反应",
+                question: "当你想与伴侣分享开心的事情时，他/她通常会：",
+                options: [
+                    { text: "A. 表现出明显的不耐烦，甚至打断你", score: 3 },
+                    { text: "B. 心不在焉地听，很少回应", score: 2 },
+                    { text: "C. 偶尔会认真听，但经常走神", score: 1 },
+                    { text: "D. 认真倾听并积极回应你的分享", score: 0 }
+                ]
+            },
+            {
+                scenario: "对方冷落反应",
+                question: "在重要节日或纪念日，伴侣的态度是：",
+                options: [
+                    { text: "A. 完全忘记，对你的提醒表示不耐烦", score: 3 },
+                    { text: "B. 敷衍了事，没有任何准备", score: 2 },
+                    { text: "C. 简单庆祝，但明显不够用心", score: 1 },
+                    { text: "D. 精心准备，重视你的感受", score: 0 }
+                ]
+            },
+            {
+                scenario: "对方冷落反应",
+                question: "当你生病或情绪低落时，伴侣会：",
+                options: [
+                    { text: "A. 漠不关心，甚至指责你矫情", score: 3 },
+                    { text: "B. 口头关心，但没有实际行动", score: 2 },
+                    { text: "C. 有时会照顾你，但不够耐心", score: 1 },
+                    { text: "D. 贴心照顾，给予情感支持", score: 0 }
+                ]
+            },
+
+            // 情境2：言语打压
+            {
+                scenario: "言语打压",
+                question: "当你取得成就时，伴侣通常会：",
+                options: [
+                    { text: "A. 贬低你的成就，说这没什么了不起", score: 3 },
+                    { text: "B. 轻描淡写，很少给予肯定", score: 2 },
+                    { text: "C. 偶尔会夸奖，但很快转移话题", score: 1 },
+                    { text: "D. 真心为你高兴，给予真诚的赞美", score: 0 }
+                ]
+            },
+            {
+                scenario: "言语打压",
+                question: "在争吵时，伴侣经常会：",
+                options: [
+                    { text: "A. 翻旧账，攻击你的缺点和过去的错误", score: 3 },
+                    { text: "B. 说一些伤人的话，但事后会道歉", score: 2 },
+                    { text: "C. 偶尔会失控，但大部分时间能理性沟通", score: 1 },
+                    { text: "D. 专注于问题本身，避免人身攻击", score: 0 }
+                ]
+            },
+            {
+                scenario: "言语打压",
+                question: "当你表达自己的想法时，伴侣会：",
+                options: [
+                    { text: "A. 经常否定你的观点，认为你想法幼稚", score: 3 },
+                    { text: "B. 很少认真考虑你的意见", score: 2 },
+                    { text: "C. 有时会听取，但最终还是坚持自己的想法", score: 1 },
+                    { text: "D. 尊重你的想法，愿意平等交流", score: 0 }
+                ]
+            },
+
+            // 情境3：社交控制
+            {
+                scenario: "社交控制",
+                question: "对于你与朋友的交往，伴侣的态度是：",
+                options: [
+                    { text: "A. 强烈反对你与异性朋友来往，甚至限制同性朋友", score: 3 },
+                    { text: "B. 对某些朋友表现出明显的不满", score: 2 },
+                    { text: "C. 会询问你的行踪，但不会过度干涉", score: 1 },
+                    { text: "D. 尊重你的社交圈，给予充分信任", score: 0 }
+                ]
+            },
+            {
+                scenario: "社交控制",
+                question: "当你想单独参加社交活动时，伴侣会：",
+                options: [
+                    { text: "A. 坚决反对，甚至以分手相威胁", score: 3 },
+                    { text: "B. 百般阻挠，让你感到内疚", score: 2 },
+                    { text: "C. 有些不情愿，但最终会同意", score: 1 },
+                    { text: "D. 理解并支持你的决定", score: 0 }
+                ]
+            },
+            {
+                scenario: "社交控制",
+                question: "伴侣对你的手机或社交账号的态度是：",
+                options: [
+                    { text: "A. 要求查看你的手机，限制你的社交自由", score: 3 },
+                    { text: "B. 偶尔会翻看你的手机，查看你的聊天记录", score: 2 },
+                    { text: "C. 会问你在和谁聊天，但不会强行查看", score: 1 },
+                    { text: "D. 尊重你的隐私，从不干涉", score: 0 }
+                ]
+            },
+
+            // 情境4：情绪操控
+            {
+                scenario: "情绪操控",
+                question: "当伴侣做错事情时，通常会：",
+                options: [
+                    { text: "A. 倒打一耙，把责任推到你身上", score: 3 },
+                    { text: "B. 找各种借口，很少真诚道歉", score: 2 },
+                    { text: "C. 有时会道歉，但态度不够诚恳", score: 1 },
+                    { text: "D. 勇于承认错误，真诚道歉并改正", score: 0 }
+                ]
+            },
+            {
+                scenario: "情绪操控",
+                question: "在你提出合理要求时，伴侣会：",
+                options: [
+                    { text: "A. 指责你要求太多，让你感到内疚", score: 3 },
+                    { text: "B. 拖延或敷衍，很少真正满足你的需求", score: 2 },
+                    { text: "C. 有时会满足，但表现得很勉强", score: 1 },
+                    { text: "D. 认真考虑你的需求，尽力满足", score: 0 }
+                ]
+            },
+            {
+                scenario: "情绪操控",
+                question: "伴侣的情绪波动通常会：",
+                options: [
+                    { text: "A. 完全影响你的情绪，让你小心翼翼", score: 3 },
+                    { text: "B. 经常让你感到紧张和不安", score: 2 },
+                    { text: "C. 有时会影响你，但大部分时间能保持独立", score: 1 },
+                    { text: "D. 很少影响你的情绪状态", score: 0 }
+                ]
+            },
+
+            // 情境5：经济控制
+            {
+                scenario: "经济控制",
+                question: "关于你们的经济支配，伴侣的态度是：",
+                options: [
+                    { text: "A. 要求你交出所有收入，严格控制你的支出", score: 3 },
+                    { text: "B. 对你的消费指手画脚，限制你的经济自由", score: 2 },
+                    { text: "C. 会询问你的大额支出，但基本尊重你的决定", score: 1 },
+                    { text: "D. 尊重你的经济独立，共同商量理财计划", score: 0 }
+                ]
+            },
+            {
+                scenario: "经济控制",
+                question: "当你想为自己或家人花钱时，伴侣会：",
+                options: [
+                    { text: "A. 强烈反对，认为你自私或浪费", score: 3 },
+                    { text: "B. 不太情愿，经常抱怨你的开销", score: 2 },
+                    { text: "C. 有时会有意见，但最终会尊重你的决定", score: 1 },
+                    { text: "D. 支持你的合理消费，理解你的需求", score: 0 }
+                ]
+            },
+            {
+                scenario: "经济控制",
+                question: "在经济责任分担方面，伴侣会：",
+                options: [
+                    { text: "A. 完全依赖你，自己很少承担责任", score: 3 },
+                    { text: "B. 承担部分责任，但经常找借口逃避", score: 2 },
+                    { text: "C. 基本能承担自己的责任，但不够主动", score: 1 },
+                    { text: "D. 主动承担责任，公平分担经济压力", score: 0 }
+                ]
+            },
+
+            // 情境6：行为限制
+            {
+                scenario: "行为限制",
+                question: "对于你的个人爱好和兴趣，伴侣的态度是：",
+                options: [
+                    { text: "A. 完全不支持，甚至贬低你的爱好", score: 3 },
+                    { text: "B. 不太理解，很少给予支持", score: 2 },
+                    { text: "C. 有时会支持，但希望你花更多时间陪他/她", score: 1 },
+                    { text: "D. 理解并支持你的爱好，尊重你的个人空间", score: 0 }
+                ]
+            },
+            {
+                scenario: "行为限制",
+                question: "当你想做自己喜欢的事情时，伴侣会：",
+                options: [
+                    { text: "A. 百般阻挠，要求你优先考虑他/她的需求", score: 3 },
+                    { text: "B. 表现出不满，让你感到为难", score: 2 },
+                    { text: "C. 会有些失落，但不会过度干涉", score: 1 },
+                    { text: "D. 尊重你的选择，鼓励你追求自己的兴趣", score: 0 }
+                ]
+            },
+            {
+                scenario: "行为限制",
+                question: "在日常生活中，伴侣对你的要求是：",
+                options: [
+                    { text: "A. 要求你按照他/她的方式生活，很少考虑你的感受", score: 3 },
+                    { text: "B. 经常对你的生活习惯指手画脚", score: 2 },
+                    { text: "C. 有时会提出建议，但基本尊重你的选择", score: 1 },
+                    { text: "D. 尊重你的生活方式，相互理解包容", score: 0 }
+                ]
+            },
+
+            // 情境7：孤立策略
+            {
+                scenario: "孤立策略",
+                question: "伴侣对待你家人和朋友的态度是：",
+                options: [
+                    { text: "A. 故意疏远，试图让你与亲友断绝联系", score: 3 },
+                    { text: "B. 对他们态度冷淡，很少主动接触", score: 2 },
+                    { text: "C. 基本礼貌，但不会深入交往", score: 1 },
+                    { text: "D. 尊重并接纳你的亲友，努力建立良好关系", score: 0 }
+                ]
+            },
+            {
+                scenario: "孤立策略",
+                question: "当你与亲友聚会时，伴侣会：",
+                options: [
+                    { text: "A. 强烈反对，甚至发脾气阻止你参加", score: 3 },
+                    { text: "B. 表现出不满，让你感到内疚", score: 2 },
+                    { text: "C. 会询问聚会情况，但不会过度干涉", score: 1 },
+                    { text: "D. 理解并支持你与亲友的交往", score: 0 }
+                ]
+            },
+            {
+                scenario: "孤立策略",
+                question: "伴侣是否经常强调只有他/她才是真正关心你的人？",
+                options: [
+                    { text: "A. 经常这样说，试图让你依赖他/她", score: 3 },
+                    { text: "B. 有时会这样说，强调你们的特殊关系", score: 2 },
+                    { text: "C. 偶尔会表达，但不会过度强调", score: 1 },
+                    { text: "D. 很少这样说，尊重你与他人的情感联系", score: 0 }
+                ]
+            },
+
+            // 情境8：煤气灯效应
+            {
+                scenario: "煤气灯效应",
+                question: "当你指出伴侣的问题时，他/她通常会：",
+                options: [
+                    { text: "A. 否认事实，说你记错了或想太多", score: 3 },
+                    { text: "B. 轻描淡写，认为你太敏感", score: 2 },
+                    { text: "C. 有时会承认，但很快转移话题", score: 1 },
+                    { text: "D. 认真倾听，愿意面对问题", score: 0 }
+                ]
+            },
+            {
+                scenario: "煤气灯效应",
+                question: "在争论中，伴侣经常会：",
+                options: [
+                    { text: "A. 扭曲事实，让你怀疑自己的判断力", score: 3 },
+                    { text: "B. 坚持自己的观点，很少考虑你的感受", score: 2 },
+                    { text: "C. 有时会妥协，但内心并不认同", score: 1 },
+                    { text: "D. 愿意理性沟通，寻求共识", score: 0 }
+                ]
+            },
+            {
+                scenario: "煤气灯效应",
+                question: "长期相处后，你是否经常感到：",
+                options: [
+                    { text: "A. 越来越不自信，经常怀疑自己", score: 3 },
+                    { text: "B. 有时会感到困惑，不确定自己的感受", score: 2 },
+                    { text: "C. 基本能保持自信，但偶尔会有疑虑", score: 1 },
+                    { text: "D. 保持清晰的自我认知，很少自我怀疑", score: 0 }
+                ]
+            },
+
+            // 情境9：忽冷忽热
+            {
+                scenario: "忽冷忽热",
+                question: "伴侣的态度是否经常变化？",
+                options: [
+                    { text: "A. 是的，忽冷忽热，让你捉摸不透", score: 3 },
+                    { text: "B. 有时会这样，情绪波动较大", score: 2 },
+                    { text: "C. 偶尔会有变化，但基本稳定", score: 1 },
+                    { text: "D. 很少变化，态度始终如一", score: 0 }
+                ]
+            },
+            {
+                scenario: "忽冷忽热",
+                question: "当你想亲近伴侣时，他/她会：",
+                options: [
+                    { text: "A. 经常拒绝，态度冷淡，让你感到受伤", score: 3 },
+                    { text: "B. 有时会接受，有时会拒绝，没有规律", score: 2 },
+                    { text: "C. 大部分时间会回应，但偶尔会有情绪", score: 1 },
+                    { text: "D. 积极回应你的亲近，表达爱意", score: 0 }
+                ]
+            },
+            {
+                scenario: "忽冷忽热",
+                question: "在关系中，你是否经常感到：",
+                options: [
+                    { text: "A. 焦虑不安，总是担心对方会离开", score: 3 },
+                    { text: "B. 有时会感到不安，但大部分时间信任对方", score: 2 },
+                    { text: "C. 基本信任对方，但偶尔会有疑虑", score: 1 },
+                    { text: "D. 安全感十足，很少担心关系问题", score: 0 }
+                ]
+            },
+
+            // 情境10：条件性爱
+            {
+                scenario: "条件性爱",
+                question: "伴侣表达爱的方式通常是：",
+                options: [
+                    { text: "A. 只有当你满足他/她的要求时才会表达爱意", score: 3 },
+                    { text: "B. 经常用爱作为条件，要求你付出更多", score: 2 },
+                    { text: "C. 基本能无条件爱你，但偶尔会有抱怨", score: 1 },
+                    { text: "D. 无条件地爱你，接受你的全部", score: 0 }
+                ]
+            },
+            {
+                scenario: "条件性爱",
+                question: "当你不符合伴侣的期望时，他/她会：",
+                options: [
+                    { text: "A. 收回爱意，对你态度明显变差", score: 3 },
+                    { text: "B. 表现出失望，让你感到内疚", score: 2 },
+                    { text: "C. 会有些失落，但仍然关心你", score: 1 },
+                    { text: "D. 理解并接纳你的不足，给予支持", score: 0 }
+                ]
+            },
+            {
+                scenario: "条件性爱",
+                question: "在这段关系中，你是否经常感到：",
+                options: [
+                    { text: "A. 必须不断付出才能维持对方的爱", score: 3 },
+                    { text: "B. 有时会感到压力，担心自己不够好", score: 2 },
+                    { text: "C. 基本感到被接纳，但偶尔会有压力", score: 1 },
+                    { text: "D. 完全被接纳，无需刻意讨好", score: 0 }
+                ]
+            }
+        ];
+
+        // 全局变量
+        let currentQuestionIndex = 0;
+        let userAnswers = new Array(testQuestions.length).fill(null);
+        let totalScore = 0;
+
+        // DOM 元素
+        const startTestBtn = document.getElementById('startTest');
+        const testArea = document.getElementById('testArea');
+        const resultArea = document.getElementById('resultArea');
+        const questionText = document.getElementById('questionText');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+        const totalScoreEl = document.getElementById('totalScore');
+        const resultInterpretation = document.getElementById('resultInterpretation');
+        const resultAdvice = document.getElementById('resultAdvice');
+        const restartTestBtn = document.getElementById('restartTest');
+
+        // 初始化 Lucide 图标
+        lucide.createIcons();
+
+        // 开始测试
+        startTestBtn.addEventListener('click', () => {
+            // 隐藏测试说明区域
+            const testIntro = document.querySelector('.card:nth-of-type(2)');
+            if (testIntro) {
+                testIntro.classList.add('hidden');
+            }
+            testArea.classList.remove('hidden');
+            showQuestion(currentQuestionIndex);
+        });
+
+        // 显示当前问题
+        function showQuestion(index) {
+            const question = testQuestions[index];
+            questionText.textContent = `【${question.scenario}】${question.question}`;
+            
+            // 清空选项容器
+            optionsContainer.innerHTML = '';
+            
+            // 生成选项
+            question.options.forEach((option, optionIndex) => {
+                const optionCard = document.createElement('div');
+                optionCard.className = `option-card p-4 rounded-lg border-2 cursor-pointer ${userAnswers[index] === optionIndex ? 'selected' : ''}`;
+                optionCard.innerHTML = `
+                    <label class="flex items-center cursor-pointer">
+                        <input type="radio" name="question${index}" value="${optionIndex}" class="hidden" ${userAnswers[index] === optionIndex ? 'checked' : ''}>
+                        <span class="text-lg">${option.text}</span>
+                    </label>
+                `;
+                
+                optionCard.addEventListener('click', () => {
+                    // 清除其他选项的选中状态
+                    document.querySelectorAll('.option-card').forEach(card => {
+                        card.classList.remove('selected');
+                    });
+                    
+                    // 设置当前选项为选中状态
+                    optionCard.classList.add('selected');
+                    userAnswers[currentQuestionIndex] = optionIndex;
+                    
+                    // 启用下一题按钮
+                    nextBtn.disabled = false;
+                });
+                
+                optionsContainer.appendChild(optionCard);
+            });
+            
+            // 更新进度
+            updateProgress();
+            
+            // 更新按钮状态
+            prevBtn.classList.toggle('hidden', index === 0);
+            nextBtn.textContent = index === testQuestions.length - 1 ? '提交' : '下一题';
+            nextBtn.disabled = userAnswers[index] === null;
+        }
+
+        // 更新进度条
+        function updateProgress() {
+            const progress = ((currentQuestionIndex + 1) / testQuestions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+            progressText.textContent = `第 ${currentQuestionIndex + 1} 题 / 共 ${testQuestions.length} 题`;
+        }
+
+        // 下一题
+        nextBtn.addEventListener('click', () => {
+            if (currentQuestionIndex === testQuestions.length - 1) {
+                calculateResult();
+                showResult();
+            } else {
+                currentQuestionIndex++;
+                showQuestion(currentQuestionIndex);
+            }
+        });
+
+        // 上一题
+        prevBtn.addEventListener('click', () => {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                showQuestion(currentQuestionIndex);
+            }
+        });
+
+        // 计算得分
+        function calculateResult() {
+            totalScore = 0;
+            userAnswers.forEach((answerIndex, questionIndex) => {
+                if (answerIndex !== null) {
+                    totalScore += testQuestions[questionIndex].options[answerIndex].score;
+                }
+            });
+        }
+
+        // 显示结果
+        function showResult() {
+            testArea.classList.add('hidden');
+            resultArea.classList.remove('hidden');
+            totalScoreEl.textContent = totalScore;
+            
+            // 结果解读
+            let interpretation = '';
+            let advice = '';
+            
+            if (totalScore <= 10) {
+                interpretation = '您处于<strong>免疫体质</strong>，情感健康状况良好。您在关系中保持着清晰的自我认知和健康的边界意识，能够有效识别并避免潜在的情感操控。';
+                advice = `
+                    <h4 class="font-semibold text-lg mb-3">建议：</h4>
+                    <ul class="space-y-2 text-gray-700">
+                        <li>• 继续保持这种健康的情感状态，珍惜自己的感受和需求</li>
+                        <li>• 在未来的关系中，继续保持理性判断和自我尊重</li>
+                        <li>• 分享您的经验，帮助身边的朋友识别健康的情感关系</li>
+                        <li>• 定期自我反思，保持情感状态的健康和平衡</li>
+                    </ul>
+                `;
+            } else if (totalScore <= 20) {
+                interpretation = '您处于<strong>潜在风险</strong>状态，需要提高警惕。在某些情境中，您可能已经开始受到情感操控的影响，但仍有自我觉察的能力。';
+                advice = `
+                    <h4 class="font-semibold text-lg mb-3">建议：</h4>
+                    <ul class="space-y-2 text-gray-700">
+                        <li>• 认真审视当前关系中的问题，特别是测试中得分较高的情境</li>
+                        <li>• 与信任的亲友分享您的感受，获取客观的建议</li>
+                        <li>• 学习建立健康的情感边界，明确表达自己的需求和底线</li>
+                        <li>• 如感到困扰，建议寻求专业心理咨询师的帮助</li>
+                    </ul>
+                `;
+            } else {
+                interpretation = '您可能处于<strong>深度陷落</strong>状态，情感操控已经对您产生了显著影响。您的自我认知和判断可能已经受到严重干扰。';
+                advice = `
+                    <h4 class="font-semibold text-lg mb-3">建议：</h4>
+                    <ul class="space-y-2 text-gray-700">
+                        <li>• 立即寻求专业心理咨询师或情感专家的帮助</li>
+                        <li>• 与信任的亲友建立联系，不要独自面对这些问题</li>
+                        <li>• 给自己一些空间和时间，重新审视这段关系</li>
+                        <li>• 记住，健康的关系应该是相互尊重、支持和理解的</li>
+                        <li>• 您值得被真诚地爱和尊重，不要放弃寻求帮助的希望</li>
+                    </ul>
+                `;
+            }
+            
+            resultInterpretation.innerHTML = interpretation;
+            resultAdvice.innerHTML = advice;
+        }
+
+        // 重新测试
+        restartTestBtn.addEventListener('click', () => {
+            currentQuestionIndex = 0;
+            userAnswers = new Array(testQuestions.length).fill(null);
+            totalScore = 0;
+            resultArea.classList.add('hidden');
+            testArea.classList.remove('hidden');
+            showQuestion(currentQuestionIndex);
+        });
+    </script>
+</body>
+</html>
