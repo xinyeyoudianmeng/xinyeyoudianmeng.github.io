@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>协作能力测评 - 原创内容服务</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#f97316',
+                        neutral: '#f8fafc',
+                        dark: '#1e293b'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-in': 'slideIn 0.5s ease-in-out'
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' }
+                        },
+                        slideIn: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+            }
+            .card-hover {
+                @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+            }
+            .btn-primary {
+                @apply bg-primary text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:bg-blue-600 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50;
+            }
+            .btn-secondary {
+                @apply bg-secondary text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:bg-orange-600 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-opacity-50;
+            }
+            .input-radio {
+                @apply h-5 w-5 text-primary focus:ring-primary border-gray-300 rounded;
+            }
+            .progress-bar {
+                @apply h-2 bg-gray-200 rounded-full overflow-hidden;
+            }
+            .progress-value {
+                @apply h-full bg-primary transition-all duration-500 ease-out;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- 付费性质声明 -->
+    <div class="bg-secondary text-white py-2 px-4 text-center text-sm font-medium">
+        <i class="fa fa-info-circle mr-2"></i>
+        付费测试为原创内容服务，非专业医疗/心理测评
+    </div>
+
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <!-- 标题区域 -->
+        <header class="text-center mb-8 animate-fade-in">
+            <h1 class="text-4xl font-bold text-dark mb-2">协作能力测评</h1>
+            <p class="text-gray-600 text-lg">了解你的团队协作优势与提升空间</p>
+        </header>
+
+        <!-- 主内容区域 -->
+        <main>
+            <!-- 开始页面 -->
+            <section id="start-section" class="bg-white rounded-xl shadow-md p-8 mb-8 animate-fade-in">
+                <div class="text-center mb-6">
+                    <div class="inline-block p-4 bg-blue-100 rounded-full mb-4">
+                        <i class="fa fa-users text-4xl text-primary"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-dark mb-2">欢迎参加协作能力测评</h2>
+                    <p class="text-gray-600">本测评将帮助你了解自己在团队协作中的表现特点</p>
+                </div>
+
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold mb-3 text-dark">测评说明：</h3>
+                    <ul class="space-y-2 text-gray-700">
+                        <li class="flex items-start">
+                            <i class="fa fa-check-circle text-green-500 mt-1 mr-2"></i>
+                            <span>共25道题目，预计用时5-8分钟</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa fa-check-circle text-green-500 mt-1 mr-2"></i>
+                            <span>请根据真实情况选择最符合你的选项</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa fa-check-circle text-green-500 mt-1 mr-2"></i>
+                            <span>测评完成后将获得详细的个人分析报告</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 免责声明 -->
+                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6 text-sm">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i class="fa fa-exclamation-triangle text-yellow-400"></i>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-yellow-700 font-medium">免责声明：</p>
+                            <p class="text-yellow-700 mt-1">本测评工具为原创内容服务，非专业医疗/心理测评工具。测评结果仅供参考，不构成任何形式的专业诊断或建议。如有需要，请寻求专业人士的帮助。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button id="start-test-btn" class="btn-primary">
+                        开始测评
+                        <i class="fa fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- 问卷页面 -->
+            <section id="questionnaire-section" class="bg-white rounded-xl shadow-md p-8 mb-8 hidden animate-fade-in">
+                <!-- 进度条 -->
+                <div class="mb-6">
+                    <div class="flex justify-between text-sm text-gray-600 mb-1">
+                        <span>进度</span>
+                        <span id="progress-text">1/25</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div id="progress-value" class="progress-value" style="width: 4%"></div>
+                    </div>
+                </div>
+
+                <!-- 题目区域 -->
+                <div id="question-container" class="mb-8">
+                    <h3 id="question-text" class="text-xl font-semibold mb-6 text-dark">题目加载中...</h3>
+                    
+                    <div id="options-container" class="space-y-4">
+                        <!-- 选项将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+
+                <!-- 导航按钮 -->
+                <div class="flex justify-between">
+                    <button id="prev-btn" class="px-6 py-3 border border-gray-300 rounded-lg text-gray-700 font-medium transition-all duration-300 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-opacity-50 hidden">
+                        <i class="fa fa-arrow-left mr-2"></i>
+                        上一题
+                    </button>
+                    
+                    <div class="ml-auto">
+                        <button id="next-btn" class="btn-primary">
+                            下一题
+                            <i class="fa fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 结果页面 -->
+            <section id="result-section" class="bg-white rounded-xl shadow-md p-8 mb-8 hidden animate-fade-in">
+                <div class="text-center mb-8">
+                    <div class="inline-block p-4 bg-green-100 rounded-full mb-4">
+                        <i class="fa fa-check-circle text-4xl text-green-500"></i>
+                    </div>
+                    <h2 class="text-2xl font-bold text-dark mb-2">测评完成！</h2>
+                    <p class="text-gray-600">以下是你的协作能力分析报告</p>
+                </div>
+
+                <!-- 总体评分 -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold mb-4 text-center text-dark">总体协作能力评分</h3>
+                    <div class="flex justify-center">
+                        <div class="relative w-48 h-48">
+                            <svg class="w-full h-full" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="45" fill="none" stroke="#e6e6e6" stroke-width="10" />
+                                <circle id="score-circle" cx="50" cy="50" r="45" fill="none" stroke="#3b82f6" stroke-width="10" stroke-dasharray="282.74" stroke-dashoffset="70.69" transform="rotate(-90 50 50)" />
+                                <text id="total-score" x="50" y="50" text-anchor="middle" dominant-baseline="middle" font-size="24" font-weight="bold" fill="#1e293b">75</text>
+                            </svg>
+                        </div>
+                    </div>
+                    <p id="score-description" class="text-center text-gray-600 mt-2">你的协作能力处于良好水平</p>
+                </div>
+
+                <!-- 维度评分 -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold mb-4 text-dark">各维度评分</h3>
+                    <div class="space-y-4">
+                        <!-- 沟通能力 -->
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-sm font-medium text-gray-700">沟通表达</span>
+                                <span id="communication-score" class="text-sm font-medium text-gray-700">80%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div id="communication-bar" class="progress-value bg-blue-500" style="width: 80%"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- 倾听理解 -->
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-sm font-medium text-gray-700">倾听理解</span>
+                                <span id="listening-score" class="text-sm font-medium text-gray-700">75%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div id="listening-bar" class="progress-value bg-green-500" style="width: 75%"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- 冲突处理 -->
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-sm font-medium text-gray-700">冲突处理</span>
+                                <span id="conflict-score" class="text-sm font-medium text-gray-700">65%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div id="conflict-bar" class="progress-value bg-orange-500" style="width: 65%"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- 团队精神 -->
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-sm font-medium text-gray-700">团队精神</span>
+                                <span id="teamwork-score" class="text-sm font-medium text-gray-700">85%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div id="teamwork-bar" class="progress-value bg-purple-500" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- 适应能力 -->
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="text-sm font-medium text-gray-700">适应能力</span>
+                                <span id="adaptability-score" class="text-sm font-medium text-gray-700">70%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div id="adaptability-bar" class="progress-value bg-yellow-500" style="width: 70%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 详细分析 -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold mb-4 text-dark">详细分析</h3>
+                    <div id="detailed-analysis" class="space-y-4 text-gray-700">
+                        <!-- 分析内容将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+
+                <!-- 提升建议 -->
+                <div class="mb-8">
+                    <h3 class="text-lg font-semibold mb-4 text-dark">个性化提升建议</h3>
+                    <div id="improvement-suggestions" class="space-y-3 text-gray-700">
+                        <!-- 建议内容将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+
+                <!-- 结尾提示 -->
+                <div class="bg-blue-50 p-4 rounded-lg text-center">
+                    <p class="text-blue-700">感谢完成本次测评！如果你希望进一步提升协作能力，建议寻求专业团队建设培训或教练的帮助。</p>
+                </div>
+            </section>
+        </main>
+
+        <!-- 页脚 -->
+        <footer class="text-center text-gray-500 text-sm mt-12">
+            <p>© 2025 协作能力测评 - 原创内容服务</p>
+            <p class="mt-1">本测评工具为原创设计，版权所有</p>
+        </footer>
+    </div>
+
+    <script>
+        // 测评题目数据
+        const questions = [
+            {
+                id: 1,
+                text: "在团队讨论中，你通常会如何表达自己的想法？",
+                dimension: "communication",
+                options: [
+                    { value: 1, text: "很少发言，倾向于倾听他人" },
+                    { value: 2, text: "偶尔表达，但主要跟随他人意见" },
+                    { value: 3, text: "积极参与，清晰表达自己的观点" },
+                    { value: 4, text: "主导讨论，经常提出新想法" }
+                ]
+            },
+            {
+                id: 2,
+                text: "当团队成员提出不同意见时，你会怎么做？",
+                dimension: "listening",
+                options: [
+                    { value: 1, text: "坚持自己的观点，不轻易妥协" },
+                    { value: 2, text: "表面接受，但内心保留自己的看法" },
+                    { value: 3, text: "认真倾听，尝试理解对方的角度" },
+                    { value: 4, text: "主动询问细节，寻求共识" }
+                ]
+            },
+            {
+                id: 3,
+                text: "在团队合作中，你如何看待分工与责任？",
+                dimension: "teamwork",
+                options: [
+                    { value: 1, text: "倾向于独立完成任务，减少依赖他人" },
+                    { value: 2, text: "接受分配的任务，但很少主动承担更多" },
+                    { value: 3, text: "根据团队需要灵活调整自己的工作内容" },
+                    { value: 4, text: "主动承担责任，并帮助他人完成任务" }
+                ]
+            },
+            {
+                id: 4,
+                text: "当团队中出现冲突时，你的反应是？",
+                dimension: "conflict",
+                options: [
+                    { value: 1, text: "避免参与，希望冲突自行解决" },
+                    { value: 2, text: "保持中立，不偏向任何一方" },
+                    { value: 3, text: "尝试了解冲突原因，寻找解决方案" },
+                    { value: 4, text: "主动调解，促进双方沟通" }
+                ]
+            },
+            {
+                id: 5,
+                text: "在跨部门合作项目中，你会如何适应不同团队的工作方式？",
+                dimension: "adaptability",
+                options: [
+                    { value: 1, text: "按照自己习惯的方式工作，很少调整" },
+                    { value: 2, text: "尝试适应，但保持自己的工作风格" },
+                    { value: 3, text: "学习并接受新的工作方式" },
+                    { value: 4, text: "主动调整自己的工作方式，融入团队" }
+                ]
+            },
+            {
+                id: 6,
+                text: "当你需要向团队成员解释复杂的想法时，你会怎么做？",
+                dimension: "communication",
+                options: [
+                    { value: 1, text: "直接陈述，不考虑他人理解程度" },
+                    { value: 2, text: "尝试解释，但很少使用辅助工具" },
+                    { value: 3, text: "使用简单明了的语言，并提供例子" },
+                    { value: 4, text: "根据听众调整表达方式，确保清晰理解" }
+                ]
+            },
+            {
+                id: 7,
+                text: "在团队会议中，你如何看待他人的发言？",
+                dimension: "listening",
+                options: [
+                    { value: 1, text: "主要关注自己的想法，很少注意他人" },
+                    { value: 2, text: "倾听但很少深入思考他人的观点" },
+                    { value: 3, text: "认真倾听，并思考他人观点的价值" },
+                    { value: 4, text: "积极回应，提出相关问题或补充" }
+                ]
+            },
+            {
+                id: 8,
+                text: "当团队取得成功时，你认为功劳应该归属于谁？",
+                dimension: "teamwork",
+                options: [
+                    { value: 1, text: "主要归功于自己的贡献" },
+                    { value: 2, text: "认为是个人和团队共同努力的结果" },
+                    { value: 3, text: "强调团队整体的努力和协作" },
+                    { value: 4, text: "首先肯定他人的贡献，然后才提到自己" }
+                ]
+            },
+            {
+                id: 9,
+                text: "当你与团队成员意见严重分歧时，你会怎么做？",
+                dimension: "conflict",
+                options: [
+                    { value: 1, text: "坚持己见，不轻易让步" },
+                    { value: 2, text: "暂时妥协，但可能心怀不满" },
+                    { value: 3, text: "寻找双方都能接受的折中方案" },
+                    { value: 4, text: "深入讨论，寻求最佳解决方案，即使可能不是自己最初的想法" }
+                ]
+            },
+            {
+                id: 10,
+                text: "当项目计划突然变更时，你的反应是？",
+                dimension: "adaptability",
+                options: [
+                    { value: 1, text: "感到沮丧，需要时间适应变化" },
+                    { value: 2, text: "接受变化，但可能有怨言" },
+                    { value: 3, text: "调整自己的工作，适应新计划" },
+                    { value: 4, text: "积极应对变化，并帮助团队其他成员适应" }
+                ]
+            },
+            {
+                id: 11,
+                text: "在团队中，你如何传递重要信息？",
+                dimension: "communication",
+                options: [
+                    { value: 1, text: "想到什么说什么，很少组织语言" },
+                    { value: 2, text: "简单传达，不强调重点" },
+                    { value: 3, text: "清晰表达，确保信息准确传递" },
+                    { value: 4, text: "精心组织信息，确保接收者完全理解" }
+                ]
+            },
+            {
+                id: 12,
+                text: "当团队成员向你寻求反馈时，你会怎么做？",
+                dimension: "listening",
+                options: [
+                    { value: 1, text: "简单回应，不提供详细意见" },
+                    { value: 2, text: "给出反馈，但主要关注问题" },
+                    { value: 3, text: "提供建设性反馈，既指出优点也指出改进点" },
+                    { value: 4, text: "详细倾听需求，提供具体且有帮助的反馈" }
+                ]
+            },
+            {
+                id: 13,
+                text: "在团队面临挑战时，你会怎么做？",
+                dimension: "teamwork",
+                options: [
+                    { value: 1, text: "专注于自己的工作，避免额外责任" },
+                    { value: 2, text: "完成自己的任务，偶尔帮助他人" },
+                    { value: 3, text: "主动参与解决问题，分担团队压力" },
+                    { value: 4, text: "积极寻找解决方案，激励团队共同克服困难" }
+                ]
+            },
+            {
+                id: 14,
+                text: "当你在团队中感到被误解时，你会怎么做？",
+                dimension: "conflict",
+                options: [
+                    { value: 1, text: "感到沮丧，但不主动澄清" },
+                    { value: 2, text: "简单解释，但不深入沟通" },
+                    { value: 3, text: "寻找适当机会解释自己的想法" },
+                    { value: 4, text: "主动沟通，确保他人理解你的观点" }
+                ]
+            },
+            {
+                id: 15,
+                text: "当你需要学习新的团队协作工具或方法时，你会怎么做？",
+                dimension: "adaptability",
+                options: [
+                    { value: 1, text: "倾向于使用熟悉的工具，对新工具不太感兴趣" },
+                    { value: 2, text: "被动学习，按要求使用新工具" },
+                    { value: 3, text: "主动学习，尝试掌握新工具的基本功能" },
+                    { value: 4, text: "积极探索，快速掌握并可能向他人传授" }
+                ]
+            },
+            {
+                id: 16,
+                text: "在远程团队协作中，你如何保持有效沟通？",
+                dimension: "communication",
+                options: [
+                    { value: 1, text: "主要通过文字消息沟通，很少视频或语音" },
+                    { value: 2, text: "按照团队要求参与沟通，但不主动发起" },
+                    { value: 3, text: "定期参与团队会议，及时回复消息" },
+                    { value: 4, text: "主动保持联系，确保信息畅通，使用多种沟通渠道" }
+                ]
+            },
+            {
+                id: 17,
+                text: "当团队讨论偏离主题时，你会怎么做？",
+                dimension: "listening",
+                options: [
+                    { value: 1, text: "跟随讨论，不引导回主题" },
+                    { value: 2, text: "注意到偏离，但不主动干预" },
+                    { value: 3, text: "在适当时候提醒团队回到主题" },
+                    { value: 4, text: "巧妙引导讨论，既尊重大家的发言又能回到主题" }
+                ]
+            },
+            {
+                id: 18,
+                text: "在团队中，你如何看待不同背景和观点的成员？",
+                dimension: "teamwork",
+                options: [
+                    { value: 1, text: "倾向于与相似背景的人合作" },
+                    { value: 2, text: "接受差异，但很少主动了解" },
+                    { value: 3, text: "尊重并欣赏团队成员的多样性" },
+                    { value: 4, text: "积极寻求不同观点，认为多样性能带来更好的结果" }
+                ]
+            },
+            {
+                id: 19,
+                text: "当你在团队中犯错时，你会怎么做？",
+                dimension: "conflict",
+                options: [
+                    { value: 1, text: "尽量掩盖错误，避免被发现" },
+                    { value: 2, text: "承认错误，但不主动解决问题" },
+                    { value: 3, text: "坦诚承认错误，并尝试弥补" },
+                    { value: 4, text: "公开承认错误，分析原因，提出解决方案，并从中学习" }
+                ]
+            },
+            {
+                id: 20,
+                text: "当团队工作方式需要调整以适应新情况时，你会怎么做？",
+                dimension: "adaptability",
+                options: [
+                    { value: 1, text: "坚持原有方式，抵制变化" },
+                    { value: 2, text: "勉强接受变化，但内心保留意见" },
+                    { value: 3, text: "理解变化的必要性，努力适应" },
+                    { value: 4, text: "积极支持变化，帮助团队顺利过渡" }
+                ]
+            },
+            {
+                id: 21,
+                text: "在团队中，你如何表达对他人工作的赞赏？",
+                dimension: "communication",
+                options: [
+                    { value: 1, text: "很少表达赞赏，认为工作完成是理所当然的" },
+                    { value: 2, text: "在必要时给予简单的肯定" },
+                    { value: 3, text: "真诚地表达赞赏，指出具体的优点" },
+                    { value: 4, text: "经常给予具体且真诚的赞赏，增强团队士气" }
+                ]
+            },
+            {
+                id: 22,
+                text: "当团队成员分享个人困难时，你会怎么做？",
+                dimension: "listening",
+                options: [
+                    { value: 1, text: "感到不自在，尽快转移话题" },
+                    { value: 2, text: "表示同情，但不深入了解" },
+                    { value: 3, text: "认真倾听，表示理解和支持" },
+                    { value: 4, text: "真诚关心，提供实际帮助和支持" }
+                ]
+            },
+            {
+                id: 23,
+                text: "在团队项目中，你如何看待个人目标与团队目标的关系？",
+                dimension: "teamwork",
+                options: [
+                    { value: 1, text: "优先考虑个人目标，团队目标次之" },
+                    { value: 2, text: "平衡个人和团队目标，尽量兼顾" },
+                    { value: 3, text: "以团队目标为主，个人目标服从团队需要" },
+                    { value: 4, text: "将个人目标与团队目标统一，认为团队成功即个人成功" }
+                ]
+            },
+            {
+                id: 24,
+                text: "当团队中出现紧张气氛时，你会怎么做？",
+                dimension: "conflict",
+                options: [
+                    { value: 1, text: "避免参与，保持距离" },
+                    { value: 2, text: "观察情况，但不主动干预" },
+                    { value: 3, text: "尝试缓和气氛，促进积极交流" },
+                    { value: 4, text: "主动介入，帮助解决问题，恢复团队和谐" }
+                ]
+            },
+            {
+                id: 25,
+                text: "当你需要与不同文化背景的团队成员合作时，你会怎么做？",
+                dimension: "adaptability",
+                options: [
+                    { value: 1, text: "按照自己的文化习惯工作，很少考虑差异" },
+                    { value: 2, text: "了解基本文化差异，但保持自己的工作方式" },
+                    { value: 3, text: "尊重文化差异，调整自己的沟通方式" },
+                    { value: 4, text: "积极学习其他文化，灵活适应不同的工作风格" }
+                ]
+            }
+        ];
+
+        // 结果分析模板
+        const resultTemplates = {
+            communication: {
+                low: {
+                    title: "沟通表达能力有待提升",
+                    description: "你在团队沟通中可能不够主动，表达自己想法的方式不够清晰。这可能导致团队成员难以理解你的观点，影响协作效率。",
+                    suggestions: [
+                        "练习清晰、简洁地表达自己的想法",
+                        "在团队讨论前准备好自己的观点",
+                        "学习使用不同的沟通方式（口头、书面、视觉等）",
+                        "寻求反馈，了解他人对你沟通方式的看法"
+                    ]
+                },
+                medium: {
+                    title: "沟通表达能力良好",
+                    description: "你能够在团队中清晰地表达自己的想法，大多数情况下能够被他人理解。你在沟通中保持适度的主动性，能够适应不同的沟通场景。",
+                    suggestions: [
+                        "进一步提升表达的逻辑性和条理性",
+                        "学习在不同场合调整沟通风格",
+                        "增强非语言沟通能力（肢体语言、表情等）",
+                        "练习更有效地倾听和回应他人"
+                    ]
+                },
+                high: {
+                    title: "沟通表达能力优秀",
+                    description: "你是团队中的优秀沟通者，能够清晰、有力地表达自己的想法。你善于根据不同的听众和场景调整沟通方式，确保信息被准确理解。",
+                    suggestions: [
+                        "分享你的沟通技巧，帮助团队其他成员",
+                        "学习更高级的沟通策略，如说服技巧和演讲技巧",
+                        "探索跨文化沟通的最佳实践",
+                        "进一步提升倾听和反馈能力"
+                    ]
+                }
+            },
+            listening: {
+                low: {
+                    title: "倾听理解能力有待提升",
+                    description: "你在团队中可能更关注表达自己的想法，而较少关注他人的意见。这可能导致错过重要信息，影响团队协作和决策质量。",
+                    suggestions: [
+                        "练习专注倾听，不打断他人发言",
+                        "使用积极倾听技巧，如点头、眼神接触等",
+                        "提问以确保理解准确",
+                        "总结他人观点，展示你在认真倾听"
+                    ]
+                },
+                medium: {
+                    title: "倾听理解能力良好",
+                    description: "你能够在团队中保持适度的倾听，大多数情况下能够理解他人的观点。你在倾听时能够保持专注，并给予适当的回应。",
+                    suggestions: [
+                        "进一步提升积极倾听的技巧",
+                        "学习识别他人的情绪和隐含信息",
+                        "练习更好地回应复杂或模糊的信息",
+                        "在倾听后提供更有建设性的反馈"
+                    ]
+                },
+                high: {
+                    title: "倾听理解能力优秀",
+                    description: "你是团队中的优秀倾听者，能够完全专注于他人的发言，并准确理解其含义和情感。你善于通过提问和反馈展示你的理解，并能够从他人的观点中获取价值。",
+                    suggestions: [
+                        "分享你的倾听技巧，帮助团队提升沟通质量",
+                        "学习更高级的倾听技巧，如共情倾听",
+                        "探索如何在虚拟团队环境中保持有效倾听",
+                        "进一步提升理解复杂观点的能力"
+                    ]
+                }
+            },
+            teamwork: {
+                low: {
+                    title: "团队精神有待提升",
+                    description: "你在团队中可能更关注个人目标和成就，而较少考虑团队整体利益。这可能导致协作不够顺畅，影响团队凝聚力和效率。",
+                    suggestions: [
+                        "学习理解团队目标与个人目标的关系",
+                        "主动参与团队活动和讨论",
+                        "尝试帮助团队其他成员解决问题",
+                        "学习欣赏团队多样性的价值"
+                    ]
+                },
+                medium: {
+                    title: "团队精神良好",
+                    description: "你能够在团队中保持适度的团队精神，能够平衡个人和团队目标。你在必要时愿意为团队利益做出调整，并能够与不同类型的团队成员合作。",
+                    suggestions: [
+                        "进一步增强对团队目标的认同和承诺",
+                        "学习更有效地与不同性格和工作风格的人合作",
+                        "提升团队建设和团队激励的能力",
+                        "探索如何在远程团队中保持团队精神"
+                    ]
+                },
+                high: {
+                    title: "团队精神优秀",
+                    description: "你是团队中的核心成员，具有强烈的团队意识和合作精神。你能够将团队目标置于个人目标之上，并能够激励和支持其他团队成员。你善于促进团队凝聚力和协作效率。",
+                    suggestions: [
+                        "发展团队领导能力，帮助引导团队发展",
+                        "学习高级团队建设技巧",
+                        "探索如何在多元化团队中促进包容性",
+                        "分享你的团队合作经验，帮助提升整体团队效能"
+                    ]
+                }
+            },
+            conflict: {
+                low: {
+                    title: "冲突处理能力有待提升",
+                    description: "你在团队冲突中可能倾向于避免或忽视问题，而不是积极解决。这可能导致问题积累，影响团队关系和工作效率。",
+                    suggestions: [
+                        "学习认识冲突的积极面，如促进创新和改进",
+                        "练习基本的冲突解决技巧，如冷静沟通和寻求共识",
+                        "学习识别冲突的早期迹象，及时介入",
+                        "提升情绪管理能力，在冲突中保持冷静"
+                    ]
+                },
+                medium: {
+                    title: "冲突处理能力良好",
+                    description: "你能够在团队中处理大多数常见的冲突情况，能够保持冷静并寻求合理的解决方案。你在冲突中能够表达自己的观点，同时尊重他人的意见。",
+                    suggestions: [
+                        "进一步学习不同的冲突解决策略",
+                        "提升调解技巧，帮助他人解决冲突",
+                        "学习识别和管理不同类型的冲突",
+                        "探索如何将冲突转化为团队学习和成长的机会"
+                    ]
+                },
+                high: {
+                    title: "冲突处理能力优秀",
+                    description: "你是团队中的冲突管理专家，能够有效地识别、预防和解决各种冲突。你善于将冲突转化为建设性的讨论，并能够帮助团队成员建立更好的工作关系。",
+                    suggestions: [
+                        "发展调解和谈判的高级技巧",
+                        "学习处理复杂的团队动态和权力关系",
+                        "探索如何在跨文化环境中管理冲突",
+                        "分享你的经验，帮助团队建立健康的冲突文化"
+                    ]
+                }
+            },
+            adaptability: {
+                low: {
+                    title: "适应能力有待提升",
+                    description: "你在团队环境变化时可能需要较长时间调整，对新的工作方式或流程可能存在抵触。这可能影响你在变化中的表现和团队协作效率。",
+                    suggestions: [
+                        "尝试更开放地接受变化，理解变化的必要性",
+                        "学习基本的变化管理技巧",
+                        "主动寻求关于新流程或工具的培训",
+                        "练习在小范围内适应变化，逐步提升适应能力"
+                    ]
+                },
+                medium: {
+                    title: "适应能力良好",
+                    description: "你能够在团队环境变化时保持适度的适应能力，能够接受并学习新的工作方式。你在变化中能够保持基本的工作效率，并能够帮助他人适应变化。",
+                    suggestions: [
+                        "进一步提升对变化的积极态度",
+                        "学习更系统的变化管理方法",
+                        "提升在变化中保持生产力的技巧",
+                        "探索如何在变化中发现机会和创新点"
+                    ]
+                },
+                high: {
+                    title: "适应能力优秀",
+                    description: "你是团队中的适应力强者，能够快速适应各种变化和挑战。你不仅能够在变化中保持高效，还能够帮助团队其他成员适应变化，并在变化中发现机会。",
+                    suggestions: [
+                        "发展变化领导力，帮助引导团队度过变革期",
+                        "学习更高级的变化管理策略",
+                        "探索如何在变化中促进创新和改进",
+                        "分享你的适应技巧，帮助提升团队整体适应能力"
+                    ]
+                }
+            }
+        };
+
+        // 总体评分描述
+        const overallDescriptions = {
+            low: "你的协作能力处于发展阶段，有较大提升空间。通过有意识的练习和学习，你可以显著提升团队协作效果。",
+            medium: "你的协作能力处于良好水平，能够在大多数团队环境中表现良好。通过针对性的提升，你可以成为更优秀的团队成员。",
+            high: "你的协作能力非常出色，是团队中的宝贵资产。你能够有效地与他人合作，解决问题，并适应变化。继续保持并分享你的经验。"
+        };
+
+        // 应用状态
+        const appState = {
+            currentQuestionIndex: 0,
+            answers: [],
+            scores: {
+                communication: 0,
+                listening: 0,
+                teamwork: 0,
+                conflict: 0,
+                adaptability: 0
+            },
+            totalScore: 0
+        };
+
+        // DOM元素
+        const startSection = document.getElementById('start-section');
+        const questionnaireSection = document.getElementById('questionnaire-section');
+        const resultSection = document.getElementById('result-section');
+        
+        const startTestBtn = document.getElementById('start-test-btn');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        
+        const progressText = document.getElementById('progress-text');
+        const progressValue = document.getElementById('progress-value');
+        
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        
+        // 开始测评按钮点击事件
+        startTestBtn.addEventListener('click', () => {
+            startSection.classList.add('hidden');
+            questionnaireSection.classList.remove('hidden');
+            showQuestion(appState.currentQuestionIndex);
+        });
+
+        // 上一题按钮点击事件
+        prevBtn.addEventListener('click', () => {
+            if (appState.currentQuestionIndex > 0) {
+                appState.currentQuestionIndex--;
+                showQuestion(appState.currentQuestionIndex);
+                updateProgress();
+            }
+        });
+
+        // 下一题按钮点击事件
+        nextBtn.addEventListener('click', () => {
+            const selectedOption = document.querySelector('input[name="option"]:checked');
+            
+            if (!selectedOption && appState.currentQuestionIndex < questions.length - 1) {
+                alert('请选择一个选项');
+                return;
+            }
+            
+            if (appState.currentQuestionIndex < questions.length - 1) {
+                // 保存当前答案
+                if (selectedOption) {
+                    appState.answers[appState.currentQuestionIndex] = parseInt(selectedOption.value);
+                }
+                
+                appState.currentQuestionIndex++;
+                showQuestion(appState.currentQuestionIndex);
+                updateProgress();
+            } else {
+                // 保存最后一题答案
+                if (selectedOption) {
+                    appState.answers[appState.currentQuestionIndex] = parseInt(selectedOption.value);
+                }
+                
+                // 计算得分
+                calculateScores();
+                
+                // 显示结果
+                showResults();
+                
+                // 切换到结果页面
+                questionnaireSection.classList.add('hidden');
+                resultSection.classList.remove('hidden');
+            }
+        });
+
+        // 显示问题
+        function showQuestion(index) {
+            const question = questions[index];
+            questionText.textContent = `${index + 1}. ${question.text}`;
+            
+            // 清空选项容器
+            optionsContainer.innerHTML = '';
+            
+            // 添加选项
+            question.options.forEach(option => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'flex items-center';
+                
+                const input = document.createElement('input');
+                input.type = 'radio';
+                input.id = `option-${option.value}`;
+                input.name = 'option';
+                input.value = option.value;
+                input.className = 'input-radio mr-3';
+                
+                // 如果有保存的答案，选中对应的选项
+                if (appState.answers[index] === option.value) {
+                    input.checked = true;
+                }
+                
+                const label = document.createElement('label');
+                label.htmlFor = `option-${option.value}`;
+                label.textContent = option.text;
+                label.className = 'text-gray-700';
+                
+                optionDiv.appendChild(input);
+                optionDiv.appendChild(label);
+                optionsContainer.appendChild(optionDiv);
+            });
+            
+            // 更新导航按钮状态
+            if (index === 0) {
+                prevBtn.classList.add('hidden');
+            } else {
+                prevBtn.classList.remove('hidden');
+            }
+            
+            if (index === questions.length - 1) {
+                nextBtn.textContent = '提交';
+                nextBtn.innerHTML = '提交 <i class="fa fa-check ml-2"></i>';
+            } else {
+                nextBtn.textContent = '下一题';
+                nextBtn.innerHTML = '下一题 <i class="fa fa-arrow-right ml-2"></i>';
+            }
+        }
+
+        // 更新进度条
+        function updateProgress() {
+            const progress = ((appState.currentQuestionIndex + 1) / questions.length) * 100;
+            progressValue.style.width = `${progress}%`;
+            progressText.textContent = `${appState.currentQuestionIndex + 1}/${questions.length}`;
+        }
+
+        // 计算得分
+        function calculateScores() {
+            // 初始化得分
+            appState.scores = {
+                communication: 0,
+                listening: 0,
+                teamwork: 0,
+                conflict: 0,
+                adaptability: 0
+            };
+            
+            // 统计各维度得分
+            questions.forEach((question, index) => {
+                const answer = appState.answers[index] || 0;
+                appState.scores[question.dimension] += answer;
+            });
+            
+            // 计算各维度平均分（转换为百分比）
+            const dimensionCounts = {
+                communication: 5,
+                listening: 5,
+                teamwork: 5,
+                conflict: 5,
+                adaptability: 5
+            };
+            
+            for (const dimension in appState.scores) {
+                appState.scores[dimension] = Math.round((appState.scores[dimension] / (dimensionCounts[dimension] * 4)) * 100);
+            }
+            
+            // 计算总分
+            appState.totalScore = Math.round(
+                (appState.scores.communication + 
+                 appState.scores.listening + 
+                 appState.scores.teamwork + 
+                 appState.scores.conflict + 
+                 appState.scores.adaptability) / 5
+            );
+        }
+
+        // 显示结果
+        function showResults() {
+            // 更新总分圆环
+            const totalScoreElement = document.getElementById('total-score');
+            const scoreCircle = document.getElementById('score-circle');
+            const scoreDescription = document.getElementById('score-description');
+            
+            totalScoreElement.textContent = appState.totalScore;
+            
+            // 计算圆环偏移
+            const circumference = 2 * Math.PI * 45;
+            const offset = circumference - (appState.totalScore / 100) * circumference;
+            scoreCircle.style.strokeDasharray = circumference;
+            scoreCircle.style.strokeDashoffset = offset;
+            
+            // 更新总分描述
+            let overallLevel = 'medium';
+            if (appState.totalScore < 60) overallLevel = 'low';
+            else if (appState.totalScore >= 80) overallLevel = 'high';
+            
+            scoreDescription.textContent = overallDescriptions[overallLevel];
+            
+            // 更新各维度得分条
+            updateDimensionScore('communication', appState.scores.communication);
+            updateDimensionScore('listening', appState.scores.listening);
+            updateDimensionScore('teamwork', appState.scores.teamwork);
+            updateDimensionScore('conflict', appState.scores.conflict);
+            updateDimensionScore('adaptability', appState.scores.adaptability);
+            
+            // 生成详细分析
+            generateDetailedAnalysis();
+        }
+
+        // 更新维度得分条
+        function updateDimensionScore(dimension, score) {
+            const scoreElement = document.getElementById(`${dimension}-score`);
+            const barElement = document.getElementById(`${dimension}-bar`);
+            
+            scoreElement.textContent = `${score}%`;
+            barElement.style.width = `${score}%`;
+        }
+
+        // 生成详细分析
+        function generateDetailedAnalysis() {
+            const analysisContainer = document.getElementById('detailed-analysis');
+            const suggestionsContainer = document.getElementById('improvement-suggestions');
+            
+            // 清空容器
+            analysisContainer.innerHTML = '';
+            suggestionsContainer.innerHTML = '';
+            
+            // 为每个维度生成分析
+            const dimensions = [
+                { key: 'communication', name: '沟通表达' },
+                { key: 'listening', name: '倾听理解' },
+                { key: 'teamwork', name: '团队精神' },
+                { key: 'conflict', name: '冲突处理' },
+                { key: 'adaptability', name: '适应能力' }
+            ];
+            
+            dimensions.forEach(dimension => {
+                const score = appState.scores[dimension.key];
+                let level = 'medium';
+                if (score < 60) level = 'low';
+                else if (score >= 80) level = 'high';
+                
+                const template = resultTemplates[dimension.key][level];
+                
+                // 添加分析
+                const analysisCard = document.createElement('div');
+                analysisCard.className = 'bg-gray-50 p-4 rounded-lg mb-4';
+                
+                analysisCard.innerHTML = `
+                    <h4 class="font-semibold text-lg mb-2 text-dark">${dimension.name}: ${template.title}</h4>
+                    <p class="text-gray-700">${template.description}</p>
+                `;
+                
+                analysisContainer.appendChild(analysisCard);
+                
+                // 添加建议
+                template.suggestions.forEach(suggestion => {
+                    const suggestionItem = document.createElement('div');
+                    suggestionItem.className = 'flex items-start mb-2';
+                    
+                    suggestionItem.innerHTML = `
+                        <i class="fa fa-lightbulb-o text-yellow-500 mt-1 mr-2"></i>
+                        <span>${suggestion}</span>
+                    `;
+                    
+                    suggestionsContainer.appendChild(suggestionItem);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
