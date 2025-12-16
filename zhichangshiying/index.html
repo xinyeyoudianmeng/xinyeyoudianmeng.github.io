@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>职场互动模式评估</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.544.0/dist/umd/lucide.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .card {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .progress-bar {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+        }
+        .option-btn {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        .option-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .option-btn.selected {
+            border-color: #667eea;
+            background-color: rgba(102, 126, 234, 0.1);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+        .disclaimer {
+            background: rgba(255, 193, 7, 0.1);
+            border-left: 4px solid #ffc107;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <!-- 标题和说明 -->
+        <div class="card rounded-2xl p-8 mb-8 shadow-xl">
+            <h1 class="text-3xl md:text-4xl font-bold text-center mb-6 bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent">职场互动模式评估</h1>
+            
+            <!-- 付费和免责声明 -->
+            <div class="disclaimer p-4 rounded-lg mb-6">
+                <p class="text-sm text-yellow-800 font-medium">
+                    <i data-lucide="alert-triangle" class="inline w-4 h-4 mr-2"></i>
+                    付费测试为原创内容服务，非专业医疗/心理测评。本测试仅作为个人成长参考，不构成任何形式的诊断或建议。
+                </p>
+            </div>
+
+            <div class="text-center mb-8">
+                <p class="text-lg text-gray-600 mb-4">这是一份帮助你了解职场互动模式的评估工具，包含90个问题，预计需要15-20分钟完成。</p>
+                <p class="text-gray-500 text-sm">请根据你的真实感受选择最符合的选项。答案没有对错之分。</p>
+            </div>
+
+            <div class="text-center">
+                <button id="startTest" class="btn-primary text-white px-8 py-3 rounded-full font-semibold text-lg shadow-lg">
+                    开始评估
+                </button>
+            </div>
+        </div>
+
+        <!-- 测试内容 -->
+        <div id="testContainer" class="hidden">
+            <!-- 进度条 -->
+            <div class="card rounded-lg p-4 mb-6">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="font-medium">进度</span>
+                    <span id="progressText" class="text-sm text-gray-600">1/90</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                    <div id="progressBar" class="progress-bar h-2.5 rounded-full" style="width: 1%"></div>
+                </div>
+            </div>
+
+            <!-- 题目卡片 -->
+            <div class="card rounded-2xl p-8 mb-6 shadow-xl">
+                <h2 id="questionNumber" class="text-lg font-semibold text-gray-500 mb-4">问题 1/90</h2>
+                <h3 id="questionText" class="text-2xl font-bold mb-8 text-center"></h3>
+                
+                <div id="optionsContainer" class="space-y-4">
+                    <!-- 选项将通过JavaScript动态生成 -->
+                </div>
+            </div>
+
+            <!-- 导航按钮 -->
+            <div class="flex justify-between">
+                <button id="prevBtn" class="hidden px-6 py-3 bg-gray-200 text-gray-700 rounded-lg font-medium hover:bg-gray-300 transition-colors">
+                    <i data-lucide="chevron-left" class="inline w-5 h-5 mr-2"></i>上一题
+                </button>
+                <button id="nextBtn" class="btn-primary text-white px-8 py-3 rounded-lg font-semibold">
+                    下一题<i data-lucide="chevron-right" class="inline w-5 h-5 ml-2"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- 结果页面 -->
+        <div id="resultContainer" class="hidden">
+            <div class="card rounded-2xl p-8 mb-8 shadow-xl">
+                <h2 class="text-3xl font-bold text-center mb-6">你的职场互动模式分析</h2>
+                
+                <!-- 总体评分 -->
+                <div class="text-center mb-8">
+                    <div class="inline-block p-4 rounded-full bg-gradient-to-r from-purple-100 to-blue-100 mb-4">
+                        <div class="text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent" id="totalScore">0</div>
+                    </div>
+                    <p class="text-lg text-gray-600" id="overallInterpretation"></p>
+                </div>
+
+                <!-- 维度分析 -->
+                <div class="space-y-6 mb-8">
+                    <div id="dimensionAnalysis"></div>
+                </div>
+
+                <!-- 具体建议 -->
+                <div class="bg-gradient-to-r from-purple-50 to-blue-50 p-6 rounded-xl">
+                    <h3 class="text-xl font-semibold mb-4">成长建议</h3>
+                    <div id="suggestions" class="space-y-3 text-gray-700"></div>
+                </div>
+
+                <!-- 免责声明 -->
+                <div class="mt-8 p-4 bg-yellow-50 rounded-lg border border-yellow-200">
+                    <h4 class="font-semibold text-yellow-800 mb-2">重要声明</h4>
+                    <ul class="text-sm text-yellow-700 space-y-2">
+                        <li>• 本测试结果仅供个人成长参考，不构成专业诊断</li>
+                        <li>• 如你在工作中遇到严重困扰，建议寻求专业心理咨询师的帮助</li>
+                        <li>• 职场关系是复杂的，本测试仅从某些角度提供参考</li>
+                        <li>• 所有内容均为原创，© 2024 职场成长工作室</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button id="restartBtn" class="btn-primary text-white px-8 py-3 rounded-full font-semibold text-lg shadow-lg">
+                    重新测试
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 题目数据
+        const questions = [
+            // 维度1：自我认知与边界
+            { id: 1, dimension: "自我认知与边界", text: "在团队会议中，当你的观点被同事质疑时，你通常会：", options: ["坚持己见并详细解释", "寻求更多信息后再决定", "倾向于妥协以维持和谐", "感到紧张并放弃表达"] },
+            { id: 2, dimension: "自我认知与边界", text: "当领导分配给你超出能力范围的任务时，你会：", options: ["接受并尽力而为", "坦诚沟通自己的顾虑", "担心被看轻而硬撑", "找借口推掉任务"] },
+            { id: 3, dimension: "自我认知与边界", text: "你如何看待工作与个人生活的平衡？", options: ["认为两者同等重要", "工作优先，个人生活可以妥协", "个人生活更重要", "经常感到难以平衡"] },
+            { id: 4, dimension: "自我认知与边界", text: "当同事要求你帮忙完成他们的工作时，你通常会：", options: ["根据自己的能力决定", "尽量帮助他人", "感到难以拒绝", "直接拒绝以保护自己的时间"] },
+            { id: 5, dimension: "自我认知与边界", text: "你对自己的职业价值有清晰的认识吗？", options: ["非常清晰", "比较清晰", "有时会怀疑", "经常感到迷茫"] },
+            { id: 6, dimension: "自我认知与边界", text: "当工作中出现失误时，你会：", options: ["主动承担责任并寻找解决方案", "分析原因并从中学习", "感到非常自责", "倾向于找借口或推卸责任"] },
+            { id: 7, dimension: "自我认知与边界", text: "你是否有明确的职业发展目标？", options: ["有清晰的长期和短期目标", "有大致方向", "只有短期计划", "没有明确目标"] },
+            { id: 8, dimension: "自我认知与边界", text: "当你感到工作压力过大时，你会：", options: ["寻找有效的减压方法", "与上级沟通调整工作量", "默默承受直到无法承受", "抱怨但不采取行动"] },
+            { id: 9, dimension: "自我认知与边界", text: "你如何看待职场中的批评？", options: ["视为成长的机会", "会认真反思", "感到受伤但会接受", "认为是对自己的攻击"] },
+            { id: 10, dimension: "自我认知与边界", text: "在团队合作中，你是否能清晰表达自己的需求？", options: ["总是能够清晰表达", "大多数时候可以", "有时会犹豫", "很少表达自己的需求"] },
+            { id: 11, dimension: "自我认知与边界", text: "当你完成一项重要工作时，你会：", options: ["为自己感到骄傲", "寻求他人的认可", "认为这是应该的", "担心做得不够好"] },
+            { id: 12, dimension: "自我认知与边界", text: "你是否了解自己的核心优势？", options: ["非常清楚", "比较清楚", "有一些了解", "不太清楚"] },
+            { id: 13, dimension: "自我认知与边界", text: "当同事在背后议论你时，你会：", options: ["理性面对，不影响工作", "找机会澄清事实", "感到难过和沮丧", "以牙还牙"] },
+            { id: 14, dimension: "自我认知与边界", text: "你如何处理工作中的不公平待遇？", options: ["寻求合理沟通解决", "收集证据后反映", "默默忍受", "感到愤怒但无能为力"] },
+            { id: 15, dimension: "自我认知与边界", text: "你是否有明确的职场底线？", options: ["有非常清晰的底线", "有一些基本原则", "根据情况灵活调整", "很少考虑这个问题"] },
+
+            // 维度2：沟通表达与互动
+            { id: 16, dimension: "沟通表达与互动", text: "在与上级沟通时，你通常会：", options: ["清晰表达自己的想法", "根据上级的喜好调整表达方式", "尽量避免冲突", "感到紧张和不自在"] },
+            { id: 17, dimension: "沟通表达与互动", text: "当你不同意同事的观点时，你会：", options: ["提出建设性的不同意见", "先肯定再表达差异", "保持沉默以避免争论", "直接指出对方的错误"] },
+            { id: 18, dimension: "沟通表达与互动", text: "你在团队中的沟通风格是：", options: ["直接且坦诚", "注重和谐与共识", "谨慎且深思熟虑", "被动且很少主动"] },
+            { id: 19, dimension: "沟通表达与互动", text: "当你需要拒绝他人的请求时，你会：", options: ["坦诚说明原因", "找合适的借口", "感到内疚但还是拒绝", "难以拒绝而勉强接受"] },
+            { id: 20, dimension: "沟通表达与互动", text: "你如何看待职场中的赞美？", options: ["真诚接受并表示感谢", "谦虚回应", "怀疑对方的动机", "感到不自在"] },
+            { id: 21, dimension: "沟通表达与互动", text: "在处理工作冲突时，你倾向于：", options: ["寻求双赢的解决方案", "寻找妥协点", "避免正面冲突", "坚持自己的立场"] },
+            { id: 22, dimension: "沟通表达与互动", text: "你是否经常主动与同事交流工作想法？", options: ["经常主动分享", "有时会分享", "主要回应他人", "很少主动交流"] },
+            { id: 23, dimension: "沟通表达与互动", text: "当你需要向上级汇报工作时，你会：", options: ["准备充分，条理清晰", "如实汇报但缺乏结构", "只报喜不报忧", "感到紧张而表达不清"] },
+            { id: 24, dimension: "沟通表达与互动", text: "你如何处理职场中的负面反馈？", options: ["认真倾听并思考改进", "感谢反馈并询问具体建议", "感到沮丧但会尝试改进", "认为是对方的偏见"] },
+            { id: 25, dimension: "沟通表达与互动", text: "在跨部门合作中，你会：", options: ["主动了解其他部门的需求", "专注于自己部门的目标", "尽量配合但保持距离", "感到困难和不适应"] },
+            { id: 26, dimension: "沟通表达与互动", text: "你是否善于倾听他人的意见？", options: ["总是认真倾听", "大多数时候能专注", "有时会走神", "很少真正倾听"] },
+            { id: 27, dimension: "沟通表达与互动", text: "当你对工作安排有异议时，你会：", options: ["及时提出并说明理由", "先执行再找机会反映", "私下抱怨但不正面提出", "默默接受"] },
+            { id: 28, dimension: "沟通表达与互动", text: "你在团队中的存在感如何？", options: ["积极参与，有影响力", "正常参与团队活动", "偶尔发表意见", "很少被注意到"] },
+            { id: 29, dimension: "沟通表达与互动", text: "你如何处理职场中的谣言或八卦？", options: ["不参与，保持中立", "适当了解但不传播", "偶尔参与讨论", "积极传播"] },
+            { id: 30, dimension: "沟通表达与互动", text: "在表达自己的观点时，你会：", options: ["逻辑清晰，有理有据", "注重情感连接", "谨慎选择用词", "直接表达，不考虑他人感受"] },
+
+            // 维度3：压力应对与情绪管理
+            { id: 31, dimension: "压力应对与情绪管理", text: "当面临紧迫的工作 deadline 时，你会：", options: ["制定计划，有序完成", "加班加点确保完成", "感到焦虑但能坚持", "手足无措，效率低下"] },
+            { id: 32, dimension: "压力应对与情绪管理", text: "你如何看待工作中的挫折？", options: ["视为成长的机会", "会感到失望但能调整", "容易陷入自我怀疑", "认为是自己能力不足"] },
+            { id: 33, dimension: "压力应对与情绪管理", text: "当你感到工作倦怠时，你会：", options: ["寻找方法调整状态", "休息后重新投入", "勉强坚持但效率下降", "抱怨并影响工作质量"] },
+            { id: 34, dimension: "压力应对与情绪管理", text: "你是否经常在工作中感到焦虑？", options: ["很少感到焦虑", "偶尔在压力大时会", "经常感到焦虑", "几乎每天都很焦虑"] },
+            { id: 35, dimension: "压力应对与情绪管理", text: "当同事的工作影响到你的进度时，你会：", options: ["及时沟通寻求解决方案", "自己想办法弥补", "感到不满但不表达", "抱怨并指责对方"] },
+            { id: 36, dimension: "压力应对与情绪管理", text: "你如何处理工作中的突发状况？", options: ["冷静分析，迅速应对", "寻求帮助共同解决", "感到压力但能处理", "不知所措，需要他人指导"] },
+            { id: 37, dimension: "压力应对与情绪管理", text: "你是否有有效的减压方法？", options: ["有多种有效的方法", "有一些方法但效果一般", "偶尔尝试但效果不明显", "很少主动减压"] },
+            { id: 38, dimension: "压力应对与情绪管理", text: "当你在工作中犯错时，你会：", options: ["承认错误并改进", "感到内疚但会纠正", "担心被批评而隐瞒", "推卸责任"] },
+            { id: 39, dimension: "压力应对与情绪管理", text: "你如何看待职场竞争？", options: ["视为动力，积极参与", "接受竞争但保持原则", "感到压力但能应对", "非常排斥，希望避免"] },
+            { id: 40, dimension: "压力应对与情绪管理", text: "当工作负荷过重时，你会：", options: ["合理规划，优先处理重要任务", "加班完成所有工作", "尽力而为，接受不完美", "感到崩溃，无法有效工作"] },
+            { id: 41, dimension: "压力应对与情绪管理", text: "你是否能在工作中保持情绪稳定？", options: ["大多数时候能保持平静", "一般情况下可以", "情绪波动较大", "经常被情绪影响工作"] },
+            { id: 42, dimension: "压力应对与情绪管理", text: "当你与同事发生矛盾时，你会：", options: ["冷静沟通解决问题", "寻求第三方调解", "避免接触，等待时间化解", "带着情绪工作"] },
+            { id: 43, dimension: "压力应对与情绪管理", text: "你如何看待工作中的不确定性？", options: ["接受变化，灵活应对", "会做准备但能适应", "感到不安但能处理", "非常不喜欢，希望一切按计划"] },
+            { id: 44, dimension: "压力应对与情绪管理", text: "当你感到被误解时，你会：", options: ["主动澄清事实", "等待合适时机解释", "感到委屈但不解释", "生气并疏远对方"] },
+            { id: 45, dimension: "压力应对与情绪管理", text: "你是否经常在工作后感到身心疲惫？", options: ["很少有这种感觉", "偶尔会有", "经常感到疲惫", "几乎每天都精疲力尽"] },
+
+            // 维度4：价值认同与动机
+            { id: 46, dimension: "价值认同与动机", text: "你选择当前工作的主要原因是：", options: ["认同公司的价值观和使命", "喜欢工作内容和挑战", "为了稳定的收入", "没有更好的选择"] },
+            { id: 47, dimension: "价值认同与动机", text: "你如何看待工作中的成就感？", options: ["来自于创造的价值和成长", "来自于他人的认可", "来自于完成任务", "很少有成就感"] },
+            { id: 48, dimension: "价值认同与动机", text: "当你的工作成果没有得到应有的认可时，你会：", options: ["继续专注于工作质量", "寻找机会展示自己的贡献", "感到失望但继续工作", "减少投入，得过且过"] },
+            { id: 49, dimension: "价值认同与动机", text: "你对自己的职业发展有什么期望？", options: ["希望能不断成长和突破", "希望能获得更多认可和回报", "希望工作稳定，压力小", "没有明确期望"] },
+            { id: 50, dimension: "价值认同与动机", text: "你是否愿意为了工作目标付出额外努力？", options: ["非常愿意，享受挑战", "在重要项目中愿意", "视情况而定", "倾向于按部就班"] },
+            { id: 51, dimension: "价值认同与动机", text: "你如何看待工作中的创新和改变？", options: ["积极拥抱变化", "愿意尝试新方法", "保持谨慎态度", "更喜欢稳定和熟悉的方式"] },
+            { id: 52, dimension: "价值认同与动机", text: "当你在工作中遇到困难时，你会：", options: ["积极寻找解决方案", "寻求帮助和支持", "坚持尝试直到解决", "容易放弃或妥协"] },
+            { id: 53, dimension: "价值认同与动机", text: "你是否对自己的工作有自豪感？", options: ["非常自豪", "比较自豪", "一般", "很少有自豪感"] },
+            { id: 54, dimension: "价值认同与动机", text: "你如何看待职场中的学习和成长？", options: ["认为是持续的过程", "在需要时会学习", "偶尔关注", "很少主动学习"] },
+            { id: 55, dimension: "价值认同与动机", text: "当你完成一项有挑战性的工作时，你会：", options: ["感到满足并总结经验", "庆祝一下然后继续", "等待他人的肯定", "很快就忘记，继续下一个任务"] },
+            { id: 56, dimension: "价值认同与动机", text: "你是否有明确的职业价值观？", options: ["有清晰的价值观", "有一些基本准则", "价值观比较模糊", "很少考虑这个问题"] },
+            { id: 57, dimension: "价值认同与动机", text: "你如何看待工作与生活的关系？", options: ["追求平衡，相互促进", "工作是生活的重要部分", "工作主要是为了生活", "工作占用了太多生活时间"] },
+            { id: 58, dimension: "价值认同与动机", text: "当你对工作感到厌倦时，你会：", options: ["寻找新的挑战和学习机会", "调整心态，重新发现价值", "考虑换工作", "消极应对，等待变化"] },
+            { id: 59, dimension: "价值认同与动机", text: "你是否相信自己能在工作中取得成功？", options: ["非常相信", "比较有信心", "有时会怀疑", "经常缺乏信心"] },
+            { id: 60, dimension: "价值认同与动机", text: "你如何看待职场中的公平？", options: ["相信努力终会有回报", "认为需要主动争取", "感到不公平但无奈", "认为职场没有真正的公平"] },
+
+            // 维度5：决策与行动能力
+            { id: 61, dimension: "决策与行动能力", text: "当需要做重要决策时，你通常会：", options: ["分析利弊后迅速决定", "收集充分信息后决策", "与他人讨论后决定", "犹豫不决，需要他人推动"] },
+            { id: 62, dimension: "决策与行动能力", text: "你如何看待工作中的风险？", options: ["愿意在评估后承担合理风险", "谨慎评估，尽量规避", "倾向于保守，避免风险", "害怕风险，尽量不做改变"] },
+            { id: 63, dimension: "决策与行动能力", text: "当计划被打乱时，你会：", options: ["快速调整，寻找替代方案", "重新评估并制定新计划", "感到沮丧但能适应", "不知所措，需要他人指导"] },
+            { id: 64, dimension: "决策与行动能力", text: "你是否善于设定工作优先级？", options: ["非常擅长，总能抓住重点", "大多数时候能合理安排", "有时会分不清主次", "经常感到混乱和忙碌"] },
+            { id: 65, dimension: "决策与行动能力", text: "当你发现工作方法有问题时，你会：", options: ["立即调整，寻找更好的方法", "分析原因后改进", "继续使用直到完全无效", "抱怨但不主动改变"] },
+            { id: 66, dimension: "决策与行动能力", text: "你如何处理工作中的突发任务？", options: ["灵活调整，有效整合", "优先处理紧急任务", "感到压力但能应对", "被打乱节奏，效率下降"] },
+            { id: 67, dimension: "决策与行动能力", text: "你是否有拖延的习惯？", options: ["很少拖延，及时完成", "偶尔拖延但能控制", "经常拖延重要任务", "严重拖延，影响工作"] },
+            { id: 68, dimension: "决策与行动能力", text: "当你需要学习新技能时，你会：", options: ["制定计划，系统学习", "边做边学，实践中掌握", "参加培训课程", "感到压力，需要督促"] },
+            { id: 69, dimension: "决策与行动能力", text: "你如何看待职场中的机会？", options: ["主动寻找和把握", "等待机会出现", "需要他人提醒", "很少注意到机会"] },
+            { id: 70, dimension: "决策与行动能力", text: "当你负责一个项目时，你会：", options: ["制定详细计划并有效执行", "按部就班完成任务", "主要依赖团队成员", "感到压力大，需要支持"] },
+            { id: 71, dimension: "决策与行动能力", text: "你是否善于解决复杂问题？", options: ["擅长分析和解决", "一般情况下可以", "有时需要帮助", "经常感到困难"] },
+            { id: 72, dimension: "决策与行动能力", text: "当你与他人意见不合时，你会：", options: ["寻求共识，找到共同点", "坚持自己的观点", "妥协以避免冲突", "感到沮丧，放弃表达"] },
+            { id: 73, dimension: "决策与行动能力", text: "你如何看待职场中的责任？", options: ["主动承担，勇于负责", "完成自己分内的事", "尽量避免额外责任", "经常推卸责任"] },
+            { id: 74, dimension: "决策与行动能力", text: "当你需要向上级提出建议时，你会：", options: ["准备充分，有理有据", "如实表达自己的想法", "犹豫是否应该提出", "害怕被否定而不提出"] },
+            { id: 75, dimension: "决策与行动能力", text: "你是否善于时间管理？", options: ["非常擅长，效率很高", "大多数时候能合理安排", "有时会浪费时间", "经常感到时间不够用"] },
+
+            // 维度6：关系建立与团队协作
+            { id: 76, dimension: "关系建立与团队协作", text: "你如何看待职场中的人际关系？", options: ["重要且值得投入", "工作的一部分", "必要的社交", "负担和干扰"] },
+            { id: 77, dimension: "关系建立与团队协作", text: "当新同事加入团队时，你会：", options: ["主动欢迎并提供帮助", "友好相处，保持距离", "等待对方先接触", "很少关注"] },
+            { id: 78, dimension: "关系建立与团队协作", text: "你在团队中的角色通常是：", options: ["积极贡献，推动进展", "可靠的执行者", "提供支持和建议", "跟随他人的节奏"] },
+            { id: 79, dimension: "关系建立与团队协作", text: "当团队成员遇到困难时，你会：", options: ["主动提供帮助", "在能力范围内支持", "表示关心但不介入", "专注于自己的工作"] },
+            { id: 80, dimension: "关系建立与团队协作", text: "你如何处理团队中的冲突？", options: ["寻求建设性的解决方案", "促进沟通和理解", "保持中立，避免介入", "感到不适，希望他人解决"] },
+            { id: 81, dimension: "关系建立与团队协作", text: "你是否经常参与团队活动？", options: ["积极参与", "选择性参加", "偶尔参加", "很少参与"] },
+            { id: 82, dimension: "关系建立与团队协作", text: "你如何看待职场中的信任？", options: ["重要且需要维护", "工作中的必要条件", "需要时间建立", "很难真正建立"] },
+            { id: 83, dimension: "关系建立与团队协作", text: "当你需要他人配合时，你会：", options: ["清晰表达需求和原因", "礼貌请求，尊重对方", "强调任务的重要性", "感到难以开口"] },
+            { id: 84, dimension: "关系建立与团队协作", text: "你在团队中是否感到归属感？", options: ["强烈的归属感", "一般的归属感", "偶尔感到归属感", "很少有归属感"] },
+            { id: 85, dimension: "关系建立与团队协作", text: "你如何看待职场中的竞争与合作？", options: ["良性竞争促进合作", "合作更重要", "竞争不可避免", "竞争多于合作"] },
+            { id: 86, dimension: "关系建立与团队协作", text: "当同事取得成就时，你会：", options: ["真诚祝贺并学习", "表示认可", "保持中立", "感到嫉妒或不满"] },
+            { id: 87, dimension: "关系建立与团队协作", text: "你是否善于发现他人的优点？", options: ["总是能看到他人的长处", "经常能发现", "有时会注意到", "很少关注"] },
+            { id: 88, dimension: "关系建立与团队协作", text: "你如何处理职场中的分歧？", options: ["尊重差异，寻求共识", "求同存异", "避免讨论敏感话题", "坚持自己的观点"] },
+            { id: 89, dimension: "关系建立与团队协作", text: "你是否愿意分享自己的知识和经验？", options: ["非常愿意分享", "在适当的时候分享", "选择性分享", "很少分享"] },
+            { id: 90, dimension: "关系建立与团队协作", text: "你如何看待团队的成功与失败？", options: ["视为共同的责任和荣誉", "与个人表现相关", "主要看领导的能力", "觉得与自己关系不大"] }
+        ];
+
+        // 评分标准和结果解释
+        const scoring = {
+            dimensions: ["自我认知与边界", "沟通表达与互动", "压力应对与情绪管理", "价值认同与动机", "决策与行动能力", "关系建立与团队协作"],
+            interpretation: {
+                low: "你在工作环境中可能经常感到不适和压力，建议关注自我成长和寻求支持。",
+                medium: "你在职场中有一定的适应能力，但仍有提升空间。",
+                high: "你拥有健康的职场互动模式，能够有效应对各种挑战。"
+            },
+            dimensionInterpretation: {
+                "自我认知与边界": {
+                    low: "你可能对自己的价值和边界认识不够清晰，容易受到外界影响。",
+                    medium: "你对自己有一定了解，但在某些情况下可能会感到迷茫。",
+                    high: "你有清晰的自我认知和健康的边界意识，能够理性面对职场挑战。"
+                },
+                "沟通表达与互动": {
+                    low: "你在沟通中可能存在困难，影响工作效率和人际关系。",
+                    medium: "你的沟通能力一般，在大多数情况下能够满足工作需求。",
+                    high: "你善于表达和倾听，能够建立良好的工作关系。"
+                },
+                "压力应对与情绪管理": {
+                    low: "你在压力下容易出现情绪波动，影响工作表现。",
+                    medium: "你能够应对一般压力，但在高压情况下可能会感到不适。",
+                    high: "你有强大的心理韧性，能够在压力下保持冷静和高效。"
+                },
+                "价值认同与动机": {
+                    low: "你可能对工作缺乏内在动力，难以找到持久的成就感。",
+                    medium: "你对工作有一定热情，但在某些时候可能会感到动力不足。",
+                    high: "你有明确的价值观和内在动机，能够在工作中找到意义和成就感。"
+                },
+                "决策与行动能力": {
+                    low: "你在决策和执行方面可能存在困难，影响工作效率。",
+                    medium: "你的决策和行动能力一般，能够完成基本工作任务。",
+                    high: "你善于分析判断并迅速行动，是团队中的可靠力量。"
+                },
+                "关系建立与团队协作": {
+                    low: "你在团队中可能感到孤立，难以建立有效的合作关系。",
+                    medium: "你能够与他人保持基本的工作关系，但可能缺乏深度连接。",
+                    high: "你善于建立信任和合作，能够在团队中发挥积极作用。"
+                }
+            },
+            suggestions: {
+                low: [
+                    "建议你关注自我成长，通过学习和反思提升自我认知",
+                    "可以尝试寻求专业心理咨询师的帮助，探索更深层次的成长需求",
+                    "在工作中寻找导师或信任的同事，建立支持系统",
+                    "学习情绪管理技巧，提高心理韧性",
+                    "明确自己的职业目标和价值观，找到工作的意义"
+                ],
+                medium: [
+                    "继续提升自我认知，明确自己的优势和发展方向",
+                    "加强沟通技巧的学习，提高表达和倾听能力",
+                    "培养更多有效的压力管理方法",
+                    "寻找工作中的兴趣点和成长机会",
+                    "主动参与团队活动，建立更广泛的工作关系"
+                ],
+                high: [
+                    "继续保持良好的职场状态，成为团队的榜样",
+                    "可以尝试指导和帮助其他同事，分享你的经验",
+                    "寻找更大的挑战和成长空间，实现职业突破",
+                    "定期反思和调整，保持持续成长的动力",
+                    "平衡工作与生活，维护身心健康"
+                ]
+            }
+        };
+
+        // DOM 元素
+        const startTestBtn = document.getElementById('startTest');
+        const testContainer = document.getElementById('testContainer');
+        const resultContainer = document.getElementById('resultContainer');
+        const questionNumber = document.getElementById('questionNumber');
+        const questionText = document.getElementById('questionText');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const restartBtn = document.getElementById('restartBtn');
+
+        // 测试状态
+        let currentQuestion = 0;
+        const answers = new Array(questions.length).fill(null);
+
+        // 初始化
+        lucide.createIcons();
+
+        // 开始测试
+        startTestBtn.addEventListener('click', () => {
+            startTestBtn.parentElement.parentElement.classList.add('hidden');
+            testContainer.classList.remove('hidden');
+            showQuestion(currentQuestion);
+        });
+
+        // 显示问题
+        function showQuestion(index) {
+            const question = questions[index];
+            questionNumber.textContent = `问题 ${index + 1}/${questions.length}`;
+            questionText.textContent = question.text;
+            
+            // 生成选项
+            optionsContainer.innerHTML = '';
+            question.options.forEach((option, i) => {
+                const optionBtn = document.createElement('button');
+                optionBtn.className = `option-btn w-full text-left p-4 rounded-lg border ${answers[index] === i ? 'selected' : 'border-gray-200 hover:border-purple-300'}`;
+                optionBtn.innerHTML = `
+                    <div class="flex items-center">
+                        <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center mr-3 ${answers[index] === i ? 'border-purple-600 bg-purple-600 text-white' : ''}">
+                            ${answers[index] === i ? '<i data-lucide="check" class="w-4 h-4"></i>' : ''}
+                        </div>
+                        <span>${option}</span>
+                    </div>
+                `;
+                optionBtn.addEventListener('click', () => {
+                    answers[index] = i;
+                    showQuestion(index); // 重新渲染以显示选中状态
+                });
+                optionsContainer.appendChild(optionBtn);
+            });
+
+            // 更新进度
+            const progress = ((index + 1) / questions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+            progressText.textContent = `${index + 1}/${questions.length}`;
+
+            // 更新导航按钮
+            prevBtn.classList.toggle('hidden', index === 0);
+            nextBtn.textContent = index === questions.length - 1 ? '查看结果' : '下一题';
+            nextBtn.innerHTML = index === questions.length - 1 ? '查看结果' : '下一题<i data-lucide="chevron-right" class="inline w-5 h-5 ml-2"></i>';
+
+            lucide.createIcons();
+        }
+
+        // 导航按钮事件
+        prevBtn.addEventListener('click', () => {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showQuestion(currentQuestion);
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (answers[currentQuestion] === null) {
+                alert('请选择一个选项');
+                return;
+            }
+
+            if (currentQuestion === questions.length - 1) {
+                showResults();
+            } else {
+                currentQuestion++;
+                showQuestion(currentQuestion);
+            }
+        });
+
+        // 显示结果
+        function showResults() {
+            testContainer.classList.add('hidden');
+            resultContainer.classList.remove('hidden');
+
+            // 计算得分
+            const dimensionScores = {};
+            scoring.dimensions.forEach(dim => {
+                dimensionScores[dim] = { total: 0, count: 0 };
+            });
+
+            questions.forEach((q, i) => {
+                if (answers[i] !== null) {
+                    dimensionScores[q.dimension].total += (4 - answers[i]); // 反向计分，0分最低，3分最高
+                    dimensionScores[q.dimension].count++;
+                }
+            });
+
+            // 计算平均分
+            const dimensionAverages = {};
+            scoring.dimensions.forEach(dim => {
+                dimensionAverages[dim] = dimensionScores[dim].count > 0 ? dimensionScores[dim].total / dimensionScores[dim].count : 0;
+            });
+
+            // 计算总分
+            const totalScore = Object.values(dimensionAverages).reduce((sum, score) => sum + score, 0) / scoring.dimensions.length;
+            const normalizedScore = Math.round((totalScore / 3) * 100);
+
+            // 显示总分
+            document.getElementById('totalScore').textContent = normalizedScore;
+
+            // 总体解释
+            let overallLevel = 'medium';
+            if (normalizedScore >= 80) overallLevel = 'high';
+            else if (normalizedScore <= 40) overallLevel = 'low';
+            document.getElementById('overallInterpretation').textContent = scoring.interpretation[overallLevel];
+
+            // 维度分析
+            const dimensionAnalysis = document.getElementById('dimensionAnalysis');
+            dimensionAnalysis.innerHTML = '';
+
+            scoring.dimensions.forEach(dim => {
+                const score = Math.round((dimensionAverages[dim] / 3) * 100);
+                let level = 'medium';
+                if (score >= 80) level = 'high';
+                else if (score <= 40) level = 'low';
+
+                const dimensionCard = document.createElement('div');
+                dimensionCard.className = 'bg-white p-5 rounded-xl shadow-sm border border-gray-100';
+                dimensionCard.innerHTML = `
+                    <div class="flex justify-between items-center mb-3">
+                        <h4 class="font-semibold">${dim}</h4>
+                        <span class="text-lg font-bold text-purple-600">${score}</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2 mb-3">
+                        <div class="bg-gradient-to-r from-purple-500 to-blue-500 h-2 rounded-full" style="width: ${score}%"></div>
+                    </div>
+                    <p class="text-sm text-gray-600">${scoring.dimensionInterpretation[dim][level]}</p>
+                `;
+                dimensionAnalysis.appendChild(dimensionCard);
+            });
+
+            // 建议
+            const suggestions = document.getElementById('suggestions');
+            suggestions.innerHTML = '';
+            scoring.suggestions[overallLevel].forEach(suggestion => {
+                const li = document.createElement('div');
+                li.className = 'flex items-start';
+                li.innerHTML = `
+                    <i data-lucide="lightbulb" class="w-5 h-5 text-yellow-500 mr-2 mt-0.5"></i>
+                    <span>${suggestion}</span>
+                `;
+                suggestions.appendChild(li);
+            });
+
+            lucide.createIcons();
+        }
+
+        // 重新测试
+        restartBtn.addEventListener('click', () => {
+            currentQuestion = 0;
+            answers.fill(null);
+            resultContainer.classList.add('hidden');
+            testContainer.classList.remove('hidden');
+            showQuestion(currentQuestion);
+        });
+    </script>
+</body>
+</html>
