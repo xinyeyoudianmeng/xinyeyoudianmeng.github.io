@@ -1,0 +1,2719 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>深度测评：你的亲密关系底层需求 = 原生客体关系复制品</title>
+    <style>
+        /* 基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        
+        /* 标题样式 */
+        .title-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .main-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+        
+        .subtitle {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .hook {
+            font-size: 20px;
+            font-weight: bold;
+            color: #e74c3c;
+            margin: 20px 0;
+        }
+        
+        /* 按钮样式 */
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 20px 0;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(231,76,60,0.3);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+        }
+        
+        .btn-secondary:hover {
+            box-shadow: 0 6px 20px rgba(149,165,166,0.3);
+        }
+        
+        /* 问题样式 */
+        .question-section {
+            margin: 30px 0;
+        }
+        
+        .dimension-tag {
+            display: inline-block;
+            background-color: #ffebee;
+            color: #e74c3c;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .need-tag {
+            display: inline-block;
+            background-color: #e8f5e9;
+            color: #27ae60;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            margin-left: 10px;
+        }
+        
+        .question-text {
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        .options-container {
+            margin: 20px 0;
+        }
+        
+        .option {
+            padding: 15px 20px;
+            border: 2px solid #ecf0f1;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .option:hover {
+            border-color: #e74c3c;
+            background-color: #fef5f5;
+        }
+        
+        .option.selected {
+            border-color: #e74c3c;
+            background-color: #ffebee;
+        }
+        
+        .option-letter {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background-color: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+        
+        .option-text {
+            display: inline-block;
+            vertical-align: middle;
+        }
+        
+        .option-type {
+            font-size: 12px;
+            color: #95a5a6;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        /* 进度条样式 */
+        .progress-container {
+            margin: 30px 0;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: #ecf0f1;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-text {
+            text-align: right;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        
+        /* 结果样式 */
+        .result-section {
+            margin: 30px 0;
+        }
+        
+        .result-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .result-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 10px;
+        }
+        
+        .result-summary {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .result-card {
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #e74c3c;
+            background-color: #fef5f5;
+        }
+        
+        .result-card h3 {
+            font-size: 18px;
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .result-card h3 i {
+            margin-right: 10px;
+        }
+        
+        .result-card p {
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        
+        .result-card ul {
+            padding-left: 20px;
+        }
+        
+        .result-card li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        /* 特殊样式 */
+        .pain-point {
+            background-color: #ffebee;
+            border-left-color: #c0392b;
+        }
+        
+        .advice-card {
+            background-color: #f4f6f7;
+            border-left-color: #3498db;
+        }
+        
+        .advice-card h3 {
+            color: #3498db;
+        }
+        
+        /* 结语样式 */
+        .conclusion {
+            background-color: #fdebd0;
+            border-left: 4px solid #f39c12;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+        
+        .conclusion h3 {
+            color: #d35400;
+            margin-bottom: 15px;
+        }
+        
+        .conclusion p {
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        
+        .conclusion strong {
+            color: #d35400;
+        }
+        
+        /* 互动区域 */
+        .interaction {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .interaction p {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #e74c3c;
+        }
+        
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .tag {
+            background-color: #ecf0f1;
+            color: #7f8c8d;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        
+        .follow {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .follow p {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        /* 隐藏类 */
+        .hidden {
+            display: none;
+        }
+        
+        /* 免责声明 */
+        .disclaimer {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .disclaimer h4 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        
+        .disclaimer p {
+            color: #856404;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        /* 图标 */
+        .icon {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+        
+        /* 理论框架说明 */
+        .theory-framework {
+            background-color: #e3f2fd;
+            border: 1px solid #bbdefb;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .theory-framework h4 {
+            color: #1565c0;
+            margin-bottom: 15px;
+        }
+        
+        .theory-framework .framework-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .theory-framework .framework-item {
+            background-color: white;
+            padding: 10px;
+            border-radius: 5px;
+            border-left: 3px solid #2196f3;
+        }
+        
+        .theory-framework .framework-item h5 {
+            color: #1976d2;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        
+        .theory-framework .framework-item p {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 开始页面 -->
+        <div id="start-page">
+            <div class="card">
+                <div class="title-section">
+                    <h1 class="main-title">深度测评：你的亲密关系底层需求</h1>
+                    <p class="subtitle">全是原生客体关系的复制品</p>
+                    <p class="hook">30题扒开你的爱情剧本，看看你到底在重复谁的人生</p>
+                </div>
+                
+                <div class="intro">
+                    <p>你以为你的爱情观是自己选的？别天真了。</p>
+                    <p>你的每一次心动、每一次争吵、每一次妥协，都是童年时期与父母互动模式的精确复制。</p>
+                    <p>这不是普通的心理测试，这是一场关于你亲密关系DNA的深度解剖。</p>
+                </div>
+                
+                <!-- 理论框架说明 -->
+                <div class="theory-framework">
+                    <h4>🔬 测评理论框架</h4>
+                    <div class="framework-grid">
+                        <div class="framework-item">
+                            <h5>🔗 原生客体关系维度</h5>
+                            <p>幼年匮乏应对方式<br>安全感获取路径<br>关系维系本能<br>恐惧防御机制<br>亲密边界感知</p>
+                        </div>
+                        <div class="framework-item">
+                            <h5>⭐ 需求层级理论</h5>
+                            <p>基础安全需求<br>情感链接需求<br>成长发展需求<br>价值实现需求<br>意义探索需求</p>
+                        </div>
+                    </div>
+                    <p style="font-size: 14px; color: #666; text-align: center;">每个选择都在暴露你的原生创伤模式</p>
+                </div>
+                
+                <div class="disclaimer">
+                    <h4>毒舌但科学的声明</h4>
+                    <p>• 本测评基于客体关系理论和需求层次理论，比你花2000块做的测评更有深度</p>
+                    <p>• 结果可能让你不适，但真正的成长始于直面真相</p>
+                    <p>• 玻璃心请绕道，心理承受能力差的建议先吃颗救心丸</p>
+                </div>
+                
+                <button id="start-btn" class="btn">开始解剖我的爱情模式</button>
+            </div>
+        </div>
+        
+        <!-- 测试页面 -->
+        <div id="test-page" class="hidden">
+            <div class="card">
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div id="progress-fill" class="progress-fill"></div>
+                    </div>
+                    <div class="progress-text" id="progress-text">1/30</div>
+                </div>
+                
+                <div class="question-section">
+                    <div>
+                        <span class="dimension-tag" id="dimension-tag">维度加载中</span>
+                        <span class="need-tag" id="need-tag">需求层级加载中</span>
+                    </div>
+                    <div class="question-text" id="question-text">题目加载中...</div>
+                    
+                    <div class="options-container" id="options-container">
+                        <!-- 选项将在这里动态生成 -->
+                    </div>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between;">
+                    <button id="prev-btn" class="btn btn-secondary" style="width: 48%; display: none;">
+                        <i class="icon">←</i>上一题
+                    </button>
+                    <button id="next-btn" class="btn" style="width: 48%;">
+                        下一题<i class="icon">→</i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 结果页面 -->
+        <div id="result-page" class="hidden">
+            <div class="card">
+                <div class="result-header">
+                    <h2 class="result-title" id="result-title">结果加载中...</h2>
+                    <p class="result-summary" id="result-summary">分析加载中...</p>
+                </div>
+                
+                <div class="result-section">
+                    <!-- 需求本质 -->
+                    <div class="result-card">
+                        <h3><i class="icon">🔍</i>需求本质</h3>
+                        <p id="need-nature">加载中...</p>
+                    </div>
+                    
+                    <!-- 原生根源 -->
+                    <div class="result-card">
+                        <h3><i class="icon">🌱</i>原生根源</h3>
+                        <p id="original-root">加载中...</p>
+                    </div>
+                    
+                    <!-- 典型表现 -->
+                    <div class="result-card">
+                        <h3><i class="icon">🔄</i>亲密关系典型表现</h3>
+                        <ul id="relationship-patterns">
+                            <li>加载中...</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- 戳心痛点 -->
+                    <div class="result-card pain-point">
+                        <h3><i class="icon">💔</i>戳心痛点</h3>
+                        <p id="pain-point" style="font-weight: bold;">加载中...</p>
+                    </div>
+                    
+                    <!-- 适配建议 -->
+                    <div class="result-card advice-card">
+                        <h3><i class="icon">💡</i>清醒适配建议</h3>
+                        <ul id="adaptation-advice">
+                            <li>加载中...</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- 毒舌主编结语 -->
+                <div class="conclusion">
+                    <h3>毒舌主编结语</h3>
+                    <p>看懂自己的需求模式，不是为了改变别人，而是为了不再重复童年的悲剧。你无法让一个回避型的人变成安全型，就像你无法让一个从小缺爱的人突然学会如何爱。</p>
+                    <p><strong>真正的成长，是承认：你值得被正确对待，而不是重复那些伤害你的模式。</strong></p>
+                </div>
+                
+                <!-- 互动区域 -->
+                <div class="interaction">
+                    <p>敢不敢把你的结果打在评论区？看看谁和你是同款恋爱囚徒</p>
+                    
+                    <div style="display: flex; justify-content: space-between; margin: 20px 0;">
+                        <button id="save-btn" class="btn btn-secondary" style="width: 48%;">
+                            <i class="icon">💾</i>保存结果
+                        </button>
+                        <button id="restart-btn" class="btn" style="width: 48%;">
+                            <i class="icon">🔄</i>重新测试
+                        </button>
+                    </div>
+                    
+                    <div class="tags">
+                        <span class="tag">#客体关系理论</span>
+                        <span class="tag">#需求层次理论</span>
+                        <span class="tag">#原生家庭</span>
+                        <span class="tag">#亲密关系模式</span>
+                        <span class="tag">#深度心理学</span>
+                    </div>
+                    
+                    <div class="follow">
+                        <p>关注我，下次扒光你潜意识里的爱情剧本</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量
+        let currentQuestion = 0;
+        let userAnswers = [];
+        let questions = [];
+        let resultData = {};
+
+        // 测评题目数据 - 30道题，5个维度 × 5个需求层级，交叉设计
+        const questionsData = [
+            // 维度1：幼年匮乏应对方式 × 需求1：基础安全需求
+            {
+                id: 1,
+                dimension: "幼年匮乏应对方式",
+                dimensionKey: "childhood_coping",
+                needLevel: "基础安全需求",
+                needLevelKey: "basic_safety",
+                text: "恋爱中，当伴侣态度突然变冷时，你第一反应是？",
+                options: [
+                    { value: "pleaser", text: "反思自己哪里做错了，立刻讨好示好", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "收起自己的感情，避免再次受伤", type: "回避型独立需求" },
+                    { value: "anxious", text: "不断追问原因，直到得到明确答案", type: "焦虑型确认需求" },
+                    { value: "secure", text: "平静沟通，表达感受并寻求理解", type: "安全型平等需求" }
+                ]
+            },
+            // 维度1：幼年匮乏应对方式 × 需求2：情感链接需求
+            {
+                id: 2,
+                dimension: "幼年匮乏应对方式",
+                dimensionKey: "childhood_coping",
+                needLevel: "情感链接需求",
+                needLevelKey: "emotional_connection",
+                text: "当你需要情感支持时，你会如何向伴侣表达？",
+                options: [
+                    { value: "pleaser", text: "先关心对方，再委婉表达自己的需求", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "很少主动寻求支持，习惯自己消化", type: "回避型独立需求" },
+                    { value: "anxious", text: "强烈表达需要，希望对方立刻回应", type: "焦虑型确认需求" },
+                    { value: "secure", text: "直接表达需求，相信对方会理解", type: "安全型平等需求" }
+                ]
+            },
+            // 维度1：幼年匮乏应对方式 × 需求3：成长发展需求
+            {
+                id: 3,
+                dimension: "幼年匮乏应对方式",
+                dimensionKey: "childhood_coping",
+                needLevel: "成长发展需求",
+                needLevelKey: "growth_development",
+                text: "伴侣建议你改变某些习惯时，你会？",
+                options: [
+                    { value: "pleaser", text: "立刻尝试改变，害怕不被接纳", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "抵触改变，坚持自己的方式", type: "回避型独立需求" },
+                    { value: "anxious", text: "担心对方嫌弃自己，反复确认意图", type: "焦虑型确认需求" },
+                    { value: "secure", text: "理性讨论，判断是否有成长空间", type: "安全型平等需求" }
+                ]
+            },
+            // 维度1：幼年匮乏应对方式 × 需求4：价值实现需求
+            {
+                id: 4,
+                dimension: "幼年匮乏应对方式",
+                dimensionKey: "childhood_coping",
+                needLevel: "价值实现需求",
+                needLevelKey: "value_realization",
+                text: "在亲密关系中，你最需要对方认可你的？",
+                options: [
+                    { value: "pleaser", text: "你的付出和牺牲", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "你的独立性和能力", type: "回避型独立需求" },
+                    { value: "anxious", text: "你对他的重要性", type: "焦虑型确认需求" },
+                    { value: "secure", text: "你的真实自我和价值", type: "安全型平等需求" }
+                ]
+            },
+            // 维度1：幼年匮乏应对方式 × 需求5：意义探索需求
+            {
+                id: 5,
+                dimension: "幼年匮乏应对方式",
+                dimensionKey: "childhood_coping",
+                needLevel: "意义探索需求",
+                needLevelKey: "meaning_exploration",
+                text: "你如何看待恋爱关系中的未来规划？",
+                options: [
+                    { value: "pleaser", text: "以对方的规划为主，配合他的节奏", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "避免长远规划，保持关系的灵活性", type: "回避型独立需求" },
+                    { value: "anxious", text: "希望尽快确定未来，获得安全感", type: "焦虑型确认需求" },
+                    { value: "secure", text: "共同探索，在互动中明确方向", type: "安全型平等需求" }
+                ]
+            },
+            // 维度1：幼年匮乏应对方式 × 综合需求
+            {
+                id: 6,
+                dimension: "幼年匮乏应对方式",
+                dimensionKey: "childhood_coping",
+                needLevel: "综合需求",
+                needLevelKey: "comprehensive",
+                text: "当亲密关系出现危机时，你的第一反应是？",
+                options: [
+                    { value: "pleaser", text: "不惜一切代价挽回，甚至放低底线", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "迅速抽离情感，保护自己不受伤害", type: "回避型独立需求" },
+                    { value: "anxious", text: "极度焦虑，无法接受关系可能结束", type: "焦虑型确认需求" },
+                    { value: "secure", text: "面对问题，理性评估关系价值", type: "安全型平等需求" }
+                ]
+            },
+            
+            // 维度2：安全感获取路径 × 需求1：基础安全需求
+            {
+                id: 7,
+                dimension: "安全感获取路径",
+                dimensionKey: "security_path",
+                needLevel: "基础安全需求",
+                needLevelKey: "basic_safety",
+                text: "你认为在亲密关系中，安全感主要来自？",
+                options: [
+                    { value: "pleaser", text: "自己的付出和妥协", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "自己的独立性和不依赖", type: "回避型独立需求" },
+                    { value: "anxious", text: "对方的承诺和关注", type: "焦虑型确认需求" },
+                    { value: "secure", text: "相互的信任和尊重", type: "安全型平等需求" }
+                ]
+            },
+            // 维度2：安全感获取路径 × 需求2：情感链接需求
+            {
+                id: 8,
+                dimension: "安全感获取路径",
+                dimensionKey: "security_path",
+                needLevel: "情感链接需求",
+                needLevelKey: "emotional_connection",
+                text: "当伴侣与异性互动时，你会感到？",
+                options: [
+                    { value: "pleaser", text: "担心自己不够好，更加努力表现", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "表面无所谓，内心保持警惕", type: "回避型独立需求" },
+                    { value: "anxious", text: "紧张不安，需要频繁确认对方的爱", type: "焦虑型确认需求" },
+                    { value: "secure", text: "相信对方，同时表达自己的感受", type: "安全型平等需求" }
+                ]
+            },
+            // 维度2：安全感获取路径 × 需求3：成长发展需求
+            {
+                id: 9,
+                dimension: "安全感获取路径",
+                dimensionKey: "security_path",
+                needLevel: "成长发展需求",
+                needLevelKey: "growth_development",
+                text: "在亲密关系中，你如何看待个人成长与关系的平衡？",
+                options: [
+                    { value: "pleaser", text: "优先考虑关系，个人成长可以妥协", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "个人成长最重要，关系不能阻碍", type: "回避型独立需求" },
+                    { value: "anxious", text: "希望两人同步成长，害怕差距拉大", type: "焦虑型确认需求" },
+                    { value: "secure", text: "相互支持成长，尊重各自节奏", type: "安全型平等需求" }
+                ]
+            },
+            // 维度2：安全感获取路径 × 需求4：价值实现需求
+            {
+                id: 10,
+                dimension: "安全感获取路径",
+                dimensionKey: "security_path",
+                needLevel: "价值实现需求",
+                needLevelKey: "value_realization",
+                text: "当你在关系中感到不被重视时，你会？",
+                options: [
+                    { value: "pleaser", text: "更加努力证明自己的价值", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "减少投入，保护自己的价值感", type: "回避型独立需求" },
+                    { value: "anxious", text: "直接表达不满，寻求关注", type: "焦虑型确认需求" },
+                    { value: "secure", text: "沟通感受，探讨彼此的需求", type: "安全型平等需求" }
+                ]
+            },
+            // 维度2：安全感获取路径 × 需求5：意义探索需求
+            {
+                id: 11,
+                dimension: "安全感获取路径",
+                dimensionKey: "security_path",
+                needLevel: "意义探索需求",
+                needLevelKey: "meaning_exploration",
+                text: "你如何看待亲密关系中的仪式感和纪念日？",
+                options: [
+                    { value: "pleaser", text: "精心准备，希望对方满意", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "觉得没必要，过于形式化", type: "回避型独立需求" },
+                    { value: "anxious", text: "非常在意，视为爱的证明", type: "焦虑型确认需求" },
+                    { value: "secure", text: "适度重视，更注重日常的爱", type: "安全型平等需求" }
+                ]
+            },
+            // 维度2：安全感获取路径 × 综合需求
+            {
+                id: 12,
+                dimension: "安全感获取路径",
+                dimensionKey: "security_path",
+                needLevel: "综合需求",
+                needLevelKey: "comprehensive",
+                text: "当亲密关系面临外部压力时，你会？",
+                options: [
+                    { value: "pleaser", text: "承担更多责任，保护关系稳定", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "保持距离，减少情感投入", type: "回避型独立需求" },
+                    { value: "anxious", text: "更加依赖对方，寻求安慰", type: "焦虑型确认需求" },
+                    { value: "secure", text: "共同面对，增强关系韧性", type: "安全型平等需求" }
+                ]
+            },
+            
+            // 维度3：关系维系本能 × 需求1：基础安全需求
+            {
+                id: 13,
+                dimension: "关系维系本能",
+                dimensionKey: "relationship_maintenance",
+                needLevel: "基础安全需求",
+                needLevelKey: "basic_safety",
+                text: "吵架后，你通常会采取什么方式修复关系？",
+                options: [
+                    { value: "pleaser", text: "主动让步，先道歉缓和气氛", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "冷静一段时间，等情绪平复", type: "回避型独立需求" },
+                    { value: "anxious", text: "希望立即和解，难以忍受冷战", type: "焦虑型确认需求" },
+                    { value: "secure", text: "等双方冷静后，真诚沟通解决", type: "安全型平等需求" }
+                ]
+            },
+            // 维度3：关系维系本能 × 需求2：情感链接需求
+            {
+                id: 14,
+                dimension: "关系维系本能",
+                dimensionKey: "relationship_maintenance",
+                needLevel: "情感链接需求",
+                needLevelKey: "emotional_connection",
+                text: "你如何表达对伴侣的爱和关心？",
+                options: [
+                    { value: "pleaser", text: "无微不至的照顾，满足各种需求", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "默默付出，不擅长表达情感", type: "回避型独立需求" },
+                    { value: "anxious", text: "频繁表达爱意，需要对方回应", type: "焦虑型确认需求" },
+                    { value: "secure", text: "用对方需要的方式表达爱", type: "安全型平等需求" }
+                ]
+            },
+            // 维度3：关系维系本能 × 需求3：成长发展需求
+            {
+                id: 15,
+                dimension: "关系维系本能",
+                dimensionKey: "relationship_maintenance",
+                needLevel: "成长发展需求",
+                needLevelKey: "growth_development",
+                text: "当你发现伴侣的缺点时，你会？",
+                options: [
+                    { value: "pleaser", text: "包容忍耐，很少直接指出", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "接受不了就疏远，不试图改变", type: "回避型独立需求" },
+                    { value: "anxious", text: "希望对方改变，经常提醒", type: "焦虑型确认需求" },
+                    { value: "secure", text: "坦诚沟通，共同成长", type: "安全型平等需求" }
+                ]
+            },
+            // 维度3：关系维系本能 × 需求4：价值实现需求
+            {
+                id: 16,
+                dimension: "关系维系本能",
+                dimensionKey: "relationship_maintenance",
+                needLevel: "价值实现需求",
+                needLevelKey: "value_realization",
+                text: "在亲密关系中，你最不能接受的是？",
+                options: [
+                    { value: "pleaser", text: "不被需要，没有存在感", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "失去自我，过度依赖", type: "回避型独立需求" },
+                    { value: "anxious", text: "被忽视，得不到关注", type: "焦虑型确认需求" },
+                    { value: "secure", text: "不被尊重，失去平等", type: "安全型平等需求" }
+                ]
+            },
+            // 维度3：关系维系本能 × 需求5：意义探索需求
+            {
+                id: 17,
+                dimension: "关系维系本能",
+                dimensionKey: "relationship_maintenance",
+                needLevel: "意义探索需求",
+                needLevelKey: "meaning_exploration",
+                text: "你如何看待亲密关系中的独处时间？",
+                options: [
+                    { value: "pleaser", text: "优先陪伴对方，牺牲独处时间", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "需要大量独处，保持独立性", type: "回避型独立需求" },
+                    { value: "anxious", text: "希望时刻在一起，独处会不安", type: "焦虑型确认需求" },
+                    { value: "secure", text: "平衡独处与陪伴，尊重彼此空间", type: "安全型平等需求" }
+                ]
+            },
+            // 维度3：关系维系本能 × 综合需求
+            {
+                id: 18,
+                dimension: "关系维系本能",
+                dimensionKey: "relationship_maintenance",
+                needLevel: "综合需求",
+                needLevelKey: "comprehensive",
+                text: "当关系遇到重大分歧时，你会？",
+                options: [
+                    { value: "pleaser", text: "妥协自己的立场，维持关系和谐", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "坚持自己的观点，不愿让步", type: "回避型独立需求" },
+                    { value: "anxious", text: "担心关系破裂，急于解决问题", type: "焦虑型确认需求" },
+                    { value: "secure", text: "寻求共识，尊重彼此差异", type: "安全型平等需求" }
+                ]
+            },
+            
+            // 维度4：恐惧防御机制 × 需求1：基础安全需求
+            {
+                id: 19,
+                dimension: "恐惧防御机制",
+                dimensionKey: "fear_defense",
+                needLevel: "基础安全需求",
+                needLevelKey: "basic_safety",
+                text: "当伴侣提出分手时，你的第一反应是？",
+                options: [
+                    { value: "pleaser", text: "苦苦挽留，承诺改变自己", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "表面平静接受，内心封闭情感", type: "回避型独立需求" },
+                    { value: "anxious", text: "情绪崩溃，无法接受现实", type: "焦虑型确认需求" },
+                    { value: "secure", text: "认真沟通，尊重最终决定", type: "安全型平等需求" }
+                ]
+            },
+            // 维度4：恐惧防御机制 × 需求2：情感链接需求
+            {
+                id: 20,
+                dimension: "恐惧防御机制",
+                dimensionKey: "fear_defense",
+                needLevel: "情感链接需求",
+                needLevelKey: "emotional_connection",
+                text: "你害怕在亲密关系中展现脆弱的一面，因为？",
+                options: [
+                    { value: "pleaser", text: "担心不被接纳，失去价值", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "认为脆弱是弱点，不愿暴露", type: "回避型独立需求" },
+                    { value: "anxious", text: "害怕被利用，受到伤害", type: "焦虑型确认需求" },
+                    { value: "secure", text: "愿意适度展现，建立深度连接", type: "安全型平等需求" }
+                ]
+            },
+            // 维度4：恐惧防御机制 × 需求3：成长发展需求
+            {
+                id: 21,
+                dimension: "恐惧防御机制",
+                dimensionKey: "fear_defense",
+                needLevel: "成长发展需求",
+                needLevelKey: "growth_development",
+                text: "当亲密关系进入平淡期，你会感到？",
+                options: [
+                    { value: "pleaser", text: "担心关系出问题，更加努力经营", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "觉得这是自然规律，保持距离", type: "回避型独立需求" },
+                    { value: "anxious", text: "害怕感情变淡，寻求刺激", type: "焦虑型确认需求" },
+                    { value: "secure", text: "接受平淡，在日常中发现美好", type: "安全型平等需求" }
+                ]
+            },
+            // 维度4：恐惧防御机制 × 需求4：价值实现需求
+            {
+                id: 22,
+                dimension: "恐惧防御机制",
+                dimensionKey: "fear_defense",
+                needLevel: "价值实现需求",
+                needLevelKey: "value_realization",
+                text: "当伴侣比你优秀时，你会产生什么感受？",
+                options: [
+                    { value: "pleaser", text: "感到压力，努力追赶对方", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "产生距离，避免比较", type: "回避型独立需求" },
+                    { value: "anxious", text: "担心配不上，需要频繁确认", type: "焦虑型确认需求" },
+                    { value: "secure", text: "为对方骄傲，共同成长", type: "安全型平等需求" }
+                ]
+            },
+            // 维度4：恐惧防御机制 × 需求5：意义探索需求
+            {
+                id: 23,
+                dimension: "恐惧防御机制",
+                dimensionKey: "fear_defense",
+                needLevel: "意义探索需求",
+                needLevelKey: "meaning_exploration",
+                text: "你如何看待亲密关系中的承诺？",
+                options: [
+                    { value: "pleaser", text: "重视承诺，努力维持，害怕违背", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "谨慎承诺，避免束缚", type: "回避型独立需求" },
+                    { value: "anxious", text: "渴望承诺，视为安全感来源", type: "焦虑型确认需求" },
+                    { value: "secure", text: "认真承诺，灵活调整", type: "安全型平等需求" }
+                ]
+            },
+            // 维度4：恐惧防御机制 × 综合需求
+            {
+                id: 24,
+                dimension: "恐惧防御机制",
+                dimensionKey: "fear_defense",
+                needLevel: "综合需求",
+                needLevelKey: "comprehensive",
+                text: "当你在亲密关系中感到受伤时，你会？",
+                options: [
+                    { value: "pleaser", text: "选择原谅，避免冲突升级", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "关闭心门，不再投入情感", type: "回避型独立需求" },
+                    { value: "anxious", text: "情绪爆发，需要立即处理", type: "焦虑型确认需求" },
+                    { value: "secure", text: "表达感受，寻求理解和修复", type: "安全型平等需求" }
+                ]
+            },
+            
+            // 维度5：亲密边界感知 × 需求1：基础安全需求
+            {
+                id: 25,
+                dimension: "亲密边界感知",
+                dimensionKey: "intimacy_boundary",
+                needLevel: "基础安全需求",
+                needLevelKey: "basic_safety",
+                text: "你如何看待亲密关系中的隐私问题？",
+                options: [
+                    { value: "pleaser", text: "几乎透明，很少保留隐私", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "严格保护隐私，不轻易分享", type: "回避型独立需求" },
+                    { value: "anxious", text: "希望彼此透明，减少猜疑", type: "焦虑型确认需求" },
+                    { value: "secure", text: "尊重隐私，保持适当透明度", type: "安全型平等需求" }
+                ]
+            },
+            // 维度5：亲密边界感知 × 需求2：情感链接需求
+            {
+                id: 26,
+                dimension: "亲密边界感知",
+                dimensionKey: "intimacy_boundary",
+                needLevel: "情感链接需求",
+                needLevelKey: "emotional_connection",
+                text: "当伴侣过度干涉你的社交圈时，你会？",
+                options: [
+                    { value: "pleaser", text: "调整社交，减少对方的不安", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "坚持社交自由，不妥协", type: "回避型独立需求" },
+                    { value: "anxious", text: "感到矛盾，既希望陪伴又需要空间", type: "焦虑型确认需求" },
+                    { value: "secure", text: "明确沟通边界，寻求平衡", type: "安全型平等需求" }
+                ]
+            },
+            // 维度5：亲密边界感知 × 需求3：成长发展需求
+            {
+                id: 27,
+                dimension: "亲密边界感知",
+                dimensionKey: "intimacy_boundary",
+                needLevel: "成长发展需求",
+                needLevelKey: "growth_development",
+                text: "在亲密关系中，你如何处理个人目标与关系目标的冲突？",
+                options: [
+                    { value: "pleaser", text: "优先考虑关系目标，个人目标让步", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "坚持个人目标，不愿妥协", type: "回避型独立需求" },
+                    { value: "anxious", text: "希望目标一致，减少分歧", type: "焦虑型确认需求" },
+                    { value: "secure", text: "相互理解，寻找共赢方案", type: "安全型平等需求" }
+                ]
+            },
+            // 维度5：亲密边界感知 × 需求4：价值实现需求
+            {
+                id: 28,
+                dimension: "亲密边界感知",
+                dimensionKey: "intimacy_boundary",
+                needLevel: "价值实现需求",
+                needLevelKey: "value_realization",
+                text: "当伴侣不认可你的某些价值观时，你会？",
+                options: [
+                    { value: "pleaser", text: "调整自己的价值观，避免冲突", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "保持距离，减少价值观交流", type: "回避型独立需求" },
+                    { value: "anxious", text: "努力说服对方，寻求认同", type: "焦虑型确认需求" },
+                    { value: "secure", text: "尊重差异，求同存异", type: "安全型平等需求" }
+                ]
+            },
+            // 维度5：亲密边界感知 × 需求5：意义探索需求
+            {
+                id: 29,
+                dimension: "亲密边界感知",
+                dimensionKey: "intimacy_boundary",
+                needLevel: "意义探索需求",
+                needLevelKey: "meaning_exploration",
+                text: "你如何看待亲密关系中的依赖与独立？",
+                options: [
+                    { value: "pleaser", text: "享受被依赖，觉得这是价值体现", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "强调独立，避免过度依赖", type: "回避型独立需求" },
+                    { value: "anxious", text: "希望深度依赖，证明关系紧密", type: "焦虑型确认需求" },
+                    { value: "secure", text: "健康依赖，保持独立人格", type: "安全型平等需求" }
+                ]
+            },
+            // 维度5：亲密边界感知 × 综合需求
+            {
+                id: 30,
+                dimension: "亲密边界感知",
+                dimensionKey: "intimacy_boundary",
+                needLevel: "综合需求",
+                needLevelKey: "comprehensive",
+                text: "在亲密关系中，你最重视的边界是？",
+                options: [
+                    { value: "pleaser", text: "情感支持的边界，希望被需要", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "个人空间的边界，需要独处", type: "回避型独立需求" },
+                    { value: "anxious", text: "情感表达的边界，需要被关注", type: "焦虑型确认需求" },
+                    { value: "secure", text: "相互尊重的边界，保持平等", type: "安全型平等需求" }
+                ]
+            }
+        ];
+
+        // 结果数据 - 4种类型，每种包含5部分，增强了理论深度
+        const resultsData = {
+            pleaser: {
+                title: "讨好型生存需求",
+                summary: "你的亲密关系模式是童年'只有表现好才被爱的'生存策略的精确复制。你通过讨好来获取安全感，本质上是原生客体关系中匮乏感的投射。",
+                needNature: "你将'被需要'等同于'被爱'，在亲密关系中扮演着照顾者和付出者的角色。这不是真正的爱，而是一种生存策略——你从小就学会了'只有有用，才有价值'。你害怕被抛弃，所以通过不断付出和妥协来维持关系，却在这个过程中逐渐失去了真实的自我。",
+                originalRoot: "在你的原生家庭中，父母可能只有在你表现符合他们期待时才给予关注和认可。你学会了压抑自己的真实感受和需求，通过讨好来换取爱和安全感。这种模式被你带入了亲密关系，你无意识地重复着童年的生存策略，却不知道真正的爱不需要通过讨好来获得。",
+                relationshipPatterns: [
+                    "总是过度付出，却很少表达自己的真实需求",
+                    "害怕冲突和拒绝，习惯委屈自己迎合对方",
+                    "对批评极其敏感，会过度自责和自我怀疑",
+                    "很难说'不'，即使心里不愿意也会答应",
+                    "在关系中经常感到疲惫，但又不敢停止付出",
+                    "需要通过被需要来确认自己的价值"
+                ],
+                painPoint: "你以为牺牲自己就能留住爱，却不知道这不过是在重复童年的悲剧。你拼命讨好的样子，像极了小时候那个努力想得到父母认可的孩子。你在亲密关系中活得像个乞丐，讨要着别人的认可，却忘了自己本来就值得被爱，仅仅因为你存在。",
+                adaptationAdvice: [
+                    "学会识别自己的真实感受和需求，它们同样重要",
+                    "练习说'不'，建立健康的个人边界",
+                    "停止过度付出，真正的爱不需要讨好来维持",
+                    "找回自己的价值感，不依赖他人的认可",
+                    "记住：你值得被爱，不是因为你做了什么，而是因为你是谁",
+                    "寻找一个能够欣赏真实的你的伴侣，而不是需要你讨好的人"
+                ]
+            },
+            avoidant: {
+                title: "回避型独立需求",
+                summary: "你的亲密关系模式是童年'情感需求被忽视'的防御机制的复制。你通过保持距离来保护自己，本质上是原生客体关系中情感隔离的延续。",
+                needNature: "你将'独立'等同于'安全'，害怕亲密会让你失去自我和控制权。你习惯用冷漠和距离来掩盖内心的脆弱，表面上无所谓，内心却渴望被理解。你对亲密有恐惧，觉得依赖别人是软弱的表现，但内心深处其实非常渴望被爱和被理解。",
+                originalRoot: "在你的原生家庭中，情感表达可能是不被鼓励或甚至是被否定的。当你还是个孩子时，你的情感需求经常被忽视或拒绝，你学会了'自己的感受不重要'，'依赖别人会失望'。为了保护自己免受伤害，你发展出了情感隔离的能力，把真实的感受藏在心底。",
+                relationshipPatterns: [
+                    "害怕承诺，回避深入的情感交流和规划",
+                    "遇到冲突习惯冷战，不喜欢正面沟通",
+                    "表面坚强独立，内心敏感脆弱，害怕被看穿",
+                    "需要大量个人空间，对亲密有本能的恐惧",
+                    "很难完全信任别人，总是有所保留和防御",
+                    "恋爱初期热情，关系深入后开始疏远和逃避"
+                ],
+                painPoint: "你用冷漠当盔甲，却忘了自己也需要温暖。你以为不投入就不会受伤，却在孤独中越活越封闭。你不是不需要爱，只是害怕承认自己需要。你像一只刺猬，用刺把所有人都推开，却在角落里偷偷渴望有人能抱抱你。这种防御机制保护了你，也囚禁了你。",
+                adaptationAdvice: [
+                    "承认自己的情感需求，这不是软弱，是人性的一部分",
+                    "在安全的范围内尝试打开自己，慢慢来，不要强迫",
+                    "学会区分健康的依赖和过度依赖，两者是不同的",
+                    "寻找一个耐心、理解你的伴侣，他会给你安全感去慢慢打开",
+                    "记住：真正的强大不是不需要别人，而是敢于脆弱和信任",
+                    "从小事开始练习分享自己的感受，逐步建立情感连接"
+                ]
+            },
+            anxious: {
+                title: "焦虑型确认需求",
+                summary: "你的亲密关系模式是童年'爱不稳定'恐惧的投射。你通过不断寻求确认来获取安全感，本质上是原生客体关系中不安全感的复制。",
+                needNature: "你将'被关注'等同于'被爱'，需要伴侣不断证明他的爱和关注。你对关系中的细微变化非常敏感，容易陷入过度思考和担忧。你害怕被抛弃，需要不断确认对方的爱，却永远觉得不够。这种焦虑不是你的错，而是童年不安全依恋模式的延续。",
+                originalRoot: "在你的原生家庭中，父母可能情绪不稳定，对你的关注时多时少，或者经常威胁要离开你。你学会了'爱需要不断争取'，'关系随时可能消失'。这种不安全感被你带入了亲密关系，你总是担心对方会离开，需要不断确认他的爱和关注，就像小时候需要不断确认父母是否还爱你一样。",
+                relationshipPatterns: [
+                    "经常需要伴侣的肯定和保证，难以满足",
+                    "对小细节过度敏感，容易误解和想太多",
+                    "害怕被抛弃，遇到问题时情绪波动大",
+                    "情绪起伏大，容易受对方态度和行为的影响",
+                    "有时会用极端方式测试对方的爱和忠诚度",
+                    "对分离反应强烈，难以忍受独处和不确定感"
+                ],
+                painPoint: "你像个情感乞丐，不断讨要爱的证明，却永远觉得不够。你不是真的贪心，只是小时候从来没有被稳定地爱过。你在关系中像个惊弓之鸟，稍有风吹草动就以为天要塌了。这种焦虑不是你的错，是童年留下的伤口在提醒你：你值得被稳定、持续地爱着。",
+                adaptationAdvice: [
+                    "学会自我安抚和情绪调节，减少对伴侣的情绪依赖",
+                    "培养自己的兴趣和社交圈，建立独立的价值感",
+                    "练习信任，给关系一些呼吸的空间和成长的时间",
+                    "寻找一个情绪稳定、愿意耐心回应你的伴侣",
+                    "记住：真正的爱不需要时刻证明，它是稳定而自然的存在",
+                    "尝试冥想、深呼吸等方法，帮助自己平静焦虑的情绪"
+                ]
+            },
+            secure: {
+                title: "安全型平等需求",
+                summary: "你的亲密关系模式是童年'被稳定爱过'的健康复制。你能够在保持自我的同时与伴侣建立亲密，本质上是原生客体关系中安全依恋的延续。",
+                needNature: "你将'互相尊重'等同于'爱'，能够在保持自我的同时与伴侣建立亲密连接。你相信自己值得被爱，也相信伴侣的爱。你能够直接表达自己的需求和感受，也能尊重对方的边界和需求。你对关系有信心，不会过度担忧或控制，因为你从小就建立了安全的依恋模式。",
+                originalRoot: "在你的原生家庭中，父母很可能给了你稳定的爱和关注，让你学会了'我是安全的'，'关系是可靠的'。这种安全感让你能够健康地进入亲密关系，不需要通过讨好、回避或焦虑来获取安全感。你相信爱，也相信自己值得被爱，这种信念是从小建立的，非常珍贵。",
+                relationshipPatterns: [
+                    "能够直接表达自己的需求和感受，不压抑也不过度",
+                    "尊重对方的边界，也清楚自己的底线和原则",
+                    "遇到问题愿意沟通和解决，不回避也不极端",
+                    "对关系有信心，不会因为小问题就怀疑整体",
+                    "能够接受伴侣的不完美，也允许自己不完美",
+                    "在亲密和独立之间找到健康的平衡，两者不冲突"
+                ],
+                painPoint: "你可能觉得自己很正常，但要知道，你的'正常'是很多人求而不得的幸运。这种安全感不是每个人都有的，它来自于你童年时期被稳定、无条件地爱过。珍惜你的安全感，同时也要理解伴侣可能有不同的情感模式和创伤，耐心地帮助他建立安全感。",
+                adaptationAdvice: [
+                    "保持你的健康模式，这是一种珍贵的情感能力",
+                    "对伴侣的情感模式多一些理解，少一些评判和说教",
+                    "在关系中继续保持自我成长，不要因为稳定而停滞",
+                    "帮助伴侣建立安全感，但不要承担他的成长责任",
+                    "记住：健康的关系是两个完整的人互相滋养，不是两个残缺的人互相填补",
+                    "继续培养自己的独立性和自我价值感，这是安全感的基础"
+                ]
+            }
+        };
+
+        // 初始化
+        function init() {
+            console.log('初始化应用');
+            questions = questionsData;
+            resultData = resultsData;
+            userAnswers = new Array(questions.length).fill(null);
+            
+            // 绑定按钮事件
+            document.getElementById('start-btn').onclick = startTest;
+            document.getElementById('prev-btn').onclick = previousQuestion;
+            document.getElementById('next-btn').onclick = nextQuestion;
+            document.getElementById('save-btn').onclick = saveResult;
+            document.getElementById('restart-btn').onclick = restartTest;
+            
+            console.log('初始化完成，问题数量：', questions.length);
+        }
+
+        // 开始测试
+        function startTest() {
+            console.log('开始测试');
+            document.getElementById('start-page').classList.add('hidden');
+            document.getElementById('test-page').classList.remove('hidden');
+            currentQuestion = 0;
+            userAnswers = new Array(questions.length).fill(null);
+            showQuestion(0);
+        }
+
+        // 显示问题
+        function showQuestion(index) {
+            console.log('显示问题:', index + 1);
+            const question = questions[index];
+            
+            // 更新维度标签
+            document.getElementById('dimension-tag').textContent = question.dimension;
+            
+            // 更新需求层级标签
+            document.getElementById('need-tag').textContent = question.needLevel;
+            
+            // 更新问题文本
+            document.getElementById('question-text').textContent = question.text;
+            
+            // 更新进度
+            const progress = ((index + 1) / questions.length) * 100;
+            document.getElementById('progress-fill').style.width = progress + '%';
+            document.getElementById('progress-text').textContent = (index + 1) + '/' + questions.length;
+            
+            // 生成选项
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, optionIndex) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+                if (userAnswers[index] === option.value) {
+                    optionDiv.classList.add('selected');
+                }
+                
+                optionDiv.innerHTML = `
+                    <div style="display: flex; align-items: flex-start;">
+                        <span class="option-letter">${String.fromCharCode(65 + optionIndex)}</span>
+                        <div>
+                            <div class="option-text">${option.text}</div>
+                            <div class="option-type">${option.type}</div>
+                        </div>
+                    </div>
+                `;
+                
+                optionDiv.onclick = function() {
+                    // 清除其他选项的选中状态
+                    const allOptions = optionsContainer.querySelectorAll('.option');
+                    allOptions.forEach(el => el.classList.remove('selected'));
+                    
+                    // 设置当前选项为选中状态
+                    this.classList.add('selected');
+                    userAnswers[index] = option.value;
+                    console.log('选择了选项:', option.value);
+                };
+                
+                optionsContainer.appendChild(optionDiv);
+            });
+            
+            // 更新按钮状态
+            document.getElementById('prev-btn').style.display = index === 0 ? 'none' : 'block';
+            
+            const nextBtn = document.getElementById('next-btn');
+            if (index === questions.length - 1) {
+                nextBtn.innerHTML = '查看结果';
+            } else {
+                nextBtn.innerHTML = '下一题<i class="icon">→</i>';
+            }
+        }
+
+        // 上一题
+        function previousQuestion() {
+            console.log('上一题');
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showQuestion(currentQuestion);
+            }
+        }
+
+        // 下一题
+        function nextQuestion() {
+            console.log('下一题');
+            // 检查是否选择了选项
+            if (userAnswers[currentQuestion] === null) {
+                alert('请选择一个选项');
+                return;
+            }
+            
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                showQuestion(currentQuestion);
+            } else {
+                calculateResults();
+            }
+        }
+
+        // 计算结果
+        function calculateResults() {
+            console.log('计算结果');
+            console.log('用户答案:', userAnswers);
+            
+            // 统计各类型得分
+            const typeCounts = {
+                pleaser: 0,
+                avoidant: 0,
+                anxious: 0,
+                secure: 0
+            };
+            
+            // 统计各维度得分
+            const dimensionCounts = {
+                childhood_coping: { pleaser: 0, avoidant: 0, anxious: 0, secure: 0 },
+                security_path: { pleaser: 0, avoidant: 0, anxious: 0, secure: 0 },
+                relationship_maintenance: { pleaser: 0, avoidant: 0, anxious: 0, secure: 0 },
+                fear_defense: { pleaser: 0, avoidant: 0, anxious: 0, secure: 0 },
+                intimacy_boundary: { pleaser: 0, avoidant: 0, anxious: 0, secure: 0 }
+            };
+            
+            // 统计各需求层级得分
+            const needLevelCounts = {
+                basic_safety: { pleaser: 0, avoidant: 0, anxious: 0, secure: 0 },
+                emotional_connection: { pleaser: 0, avoidant: 0, anxious: 0, secure: 0 },
+                growth_development: { pleaser: 0, avoidant: 0, anxious: 0, secure: 0 },
+                value_realization: { pleaser: 0, avoidant: 0, anxious: 0, secure: 0 },
+                meaning_exploration: { pleaser: 0, avoidant: 0, anxious: 0, secure: 0 },
+                comprehensive: { pleaser: 0, avoidant: 0, anxious: 0, secure: 0 }
+            };
+            
+            // 分析答案
+            userAnswers.forEach((answer, index) => {
+                if (answer && typeCounts.hasOwnProperty(answer)) {
+                    typeCounts[answer]++;
+                    
+                    // 统计维度得分
+                    const question = questions[index];
+                    if (dimensionCounts[question.dimensionKey]) {
+                        dimensionCounts[question.dimensionKey][answer]++;
+                    }
+                    
+                    // 统计需求层级得分
+                    if (needLevelCounts[question.needLevelKey]) {
+                        needLevelCounts[question.needLevelKey][answer]++;
+                    }
+                }
+            });
+            
+            console.log('各类型得分:', typeCounts);
+            console.log('各维度得分:', dimensionCounts);
+            console.log('各需求层级得分:', needLevelCounts);
+            
+            // 找出得分最高的类型
+            let maxType = 'secure';
+            let maxCount = typeCounts.secure;
+            
+            for (const [type, count] of Object.entries(typeCounts)) {
+                if (count > maxCount) {
+                    maxCount = count;
+                    maxType = type;
+                }
+            }
+            
+            console.log('结果类型:', maxType);
+            
+            // 显示结果
+            showResults(maxType, dimensionCounts, needLevelCounts);
+        }
+
+        // 显示结果
+        function showResults(resultType, dimensionCounts, needLevelCounts) {
+            console.log('显示结果:', resultType);
+            const result = resultData[resultType];
+            
+            // 隐藏测试页面，显示结果页面
+            document.getElementById('test-page').classList.add('hidden');
+            document.getElementById('result-page').classList.remove('hidden');
+            
+            // 更新结果信息
+            document.getElementById('result-title').textContent = result.title;
+            document.getElementById('result-summary').textContent = result.summary;
+            document.getElementById('need-nature').textContent = result.needNature;
+            document.getElementById('original-root').textContent = result.originalRoot;
+            document.getElementById('pain-point').textContent = result.painPoint;
+            
+            // 更新典型表现
+            const patternsList = document.getElementById('relationship-patterns');
+            patternsList.innerHTML = '';
+            result.relationshipPatterns.forEach(pattern => {
+                const li = document.createElement('li');
+                li.textContent = pattern;
+                patternsList.appendChild(li);
+            });
+            
+            // 更新建议
+            const adviceList = document.getElementById('adaptation-advice');
+            adviceList.innerHTML = '';
+            result.adaptationAdvice.forEach(advice => {
+                const li = document.createElement('li');
+                li.textContent = advice;
+                adviceList.appendChild(li);
+            });
+            
+            // 添加维度和需求层级分析（可选）
+            // 这里可以根据需要添加更详细的分析
+        }
+
+        // 保存结果
+        function saveResult() {
+            console.log('保存结果');
+            // 创建一个包含结果的新窗口
+            const resultWindow = window.open('', '_blank');
+            
+            // 获取结果内容
+            const resultContent = document.getElementById('result-page').innerHTML;
+            
+            // 设置新窗口的内容
+            resultWindow.document.write(`
+                <!DOCTYPE html>
+                <html lang="zh-CN">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>亲密关系底层需求深度分析结果</title>
+                    <style>
+                        body { 
+                            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+                            max-width: 600px;
+                            margin: 0 auto;
+                            padding: 20px;
+                            background-color: #f8f9fa;
+                        }
+                        .container {
+                            background-color: white;
+                            padding: 30px;
+                            border-radius: 12px;
+                            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                        }
+                        h1 {
+                            color: #e74c3c;
+                            text-align: center;
+                        }
+                        .btn {
+                            background-color: #e74c3c;
+                            color: white;
+                            border: none;
+                            padding: 12px 24px;
+                            border-radius: 5px;
+                            cursor: pointer;
+                            font-size: 16px;
+                            font-weight: bold;
+                            display: block;
+                            margin: 20px auto;
+                        }
+                        .no-print {
+                            display: none;
+                        }
+                        @media print {
+                            .no-print {
+                                display: block;
+                            }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <header>
+                            <h1>亲密关系底层需求深度分析结果</h1>
+                            <p style="text-align: center; color: #666;">生成时间：${new Date().toLocaleString()}</p>
+                        </header>
+                        
+                        <div class="no-print">
+                            <button onclick="window.print()" class="btn">打印结果</button>
+                            <button onclick="window.close()" class="btn" style="background-color: #95a5a6;">关闭窗口</button>
+                        </div>
+                        
+                        ${resultContent}
+                        
+                        <footer style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; color: #666;">
+                            <p>本结果基于客体关系理论和需求层次理论深度分析</p>
+                            <p>© 2025 深度心理学 | 毒舌但真诚的心理测评</p>
+                        </footer>
+                    </div>
+                </body>
+                </html>
+            `);
+            
+            resultWindow.document.close();
+        }
+
+        // 重新测试
+        function restartTest() {
+            console.log('重新测试');
+            document.getElementById('result-page').classList.add('hidden');
+            document.getElementById('start-page').classList.remove('hidden');
+        }
+
+        // 页面加载完成后初始化
+        window.onload = function() {
+            console.log('页面加载完成');
+            init();
+        };
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测一测：你的亲密关系底层需求，全是原生家庭的复刻</title>
+    <style>
+        /* 基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+        
+        /* 标题样式 */
+        .title-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .main-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+        
+        .subtitle {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .hook {
+            font-size: 20px;
+            font-weight: bold;
+            color: #e74c3c;
+            margin: 20px 0;
+        }
+        
+        /* 按钮样式 */
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 20px 0;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(231,76,60,0.3);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+        }
+        
+        .btn-secondary:hover {
+            box-shadow: 0 6px 20px rgba(149,165,166,0.3);
+        }
+        
+        /* 问题样式 */
+        .question-section {
+            margin: 30px 0;
+        }
+        
+        .dimension-tag {
+            display: inline-block;
+            background-color: #ffebee;
+            color: #e74c3c;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .question-text {
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        .options-container {
+            margin: 20px 0;
+        }
+        
+        .option {
+            padding: 15px 20px;
+            border: 2px solid #ecf0f1;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .option:hover {
+            border-color: #e74c3c;
+            background-color: #fef5f5;
+        }
+        
+        .option.selected {
+            border-color: #e74c3c;
+            background-color: #ffebee;
+        }
+        
+        .option-letter {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background-color: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+        
+        .option-text {
+            display: inline-block;
+            vertical-align: middle;
+        }
+        
+        .option-type {
+            font-size: 12px;
+            color: #95a5a6;
+            margin-top: 5px;
+            font-style: italic;
+        }
+        
+        /* 进度条样式 */
+        .progress-container {
+            margin: 30px 0;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: #ecf0f1;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-text {
+            text-align: right;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+        
+        /* 结果样式 */
+        .result-section {
+            margin: 30px 0;
+        }
+        
+        .result-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .result-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 10px;
+        }
+        
+        .result-summary {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .result-card {
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #e74c3c;
+            background-color: #fef5f5;
+        }
+        
+        .result-card h3 {
+            font-size: 18px;
+            font-weight: bold;
+            color: #e74c3c;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .result-card h3 i {
+            margin-right: 10px;
+        }
+        
+        .result-card p {
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        
+        .result-card ul {
+            padding-left: 20px;
+        }
+        
+        .result-card li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+        
+        /* 特殊样式 */
+        .pain-point {
+            background-color: #ffebee;
+            border-left-color: #c0392b;
+        }
+        
+        .advice-card {
+            background-color: #f4f6f7;
+            border-left-color: #3498db;
+        }
+        
+        .advice-card h3 {
+            color: #3498db;
+        }
+        
+        /* 结语样式 */
+        .conclusion {
+            background-color: #fdebd0;
+            border-left: 4px solid #f39c12;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+        
+        .conclusion h3 {
+            color: #d35400;
+            margin-bottom: 15px;
+        }
+        
+        .conclusion p {
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+        
+        .conclusion strong {
+            color: #d35400;
+        }
+        
+        /* 互动区域 */
+        .interaction {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .interaction p {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #e74c3c;
+        }
+        
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .tag {
+            background-color: #ecf0f1;
+            color: #7f8c8d;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        
+        .follow {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .follow p {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        /* 隐藏类 */
+        .hidden {
+            display: none;
+        }
+        
+        /* 免责声明 */
+        .disclaimer {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        
+        .disclaimer h4 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+        
+        .disclaimer p {
+            color: #856404;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        /* 图标 */
+        .icon {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 开始页面 -->
+        <div id="start-page">
+            <div class="card">
+                <div class="title-section">
+                    <h1 class="main-title">测一测：你的亲密关系底层需求</h1>
+                    <p class="subtitle">全是原生家庭的复刻</p>
+                    <p class="hook">敢不敢测？30题扒光你亲密关系的底层逻辑，看完别慌</p>
+                </div>
+                
+                <div class="intro">
+                    <p>你以为你的爱情观是自己选的？别天真了，不过是童年模式的复制粘贴。</p>
+                    <p>这30道题，会把你藏在亲密关系里的原生家庭创伤，扒得干干净净。</p>
+                    <p>准备好面对真实的自己了吗？</p>
+                </div>
+                
+                <div class="disclaimer">
+                    <h4>毒舌但真诚的声明</h4>
+                    <p>• 本测试<span style="font-weight: bold;">非专业心理测评</span>，但比你花2000块做的测评更扎心</p>
+                    <p>• 结果可能让你不适，但良药苦口，真话扎心</p>
+                    <p>• 玻璃心请绕道，心理承受能力差的建议先吃颗救心丸</p>
+                </div>
+                
+                <button id="start-btn" class="btn">开始扒皮</button>
+            </div>
+        </div>
+        
+        <!-- 测试页面 -->
+        <div id="test-page" class="hidden">
+            <div class="card">
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div id="progress-fill" class="progress-fill"></div>
+                    </div>
+                    <div class="progress-text" id="progress-text">1/30</div>
+                </div>
+                
+                <div class="question-section">
+                    <div class="dimension-tag" id="dimension-tag">维度加载中</div>
+                    <div class="question-text" id="question-text">题目加载中...</div>
+                    
+                    <div class="options-container" id="options-container">
+                        <!-- 选项将在这里动态生成 -->
+                    </div>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between;">
+                    <button id="prev-btn" class="btn btn-secondary" style="width: 48%; display: none;">
+                        <i class="icon">←</i>上一题
+                    </button>
+                    <button id="next-btn" class="btn" style="width: 48%;">
+                        下一题<i class="icon">→</i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 结果页面 -->
+        <div id="result-page" class="hidden">
+            <div class="card">
+                <div class="result-header">
+                    <h2 class="result-title" id="result-title">结果加载中...</h2>
+                    <p class="result-summary" id="result-summary">分析加载中...</p>
+                </div>
+                
+                <div class="result-section">
+                    <!-- 需求本质 -->
+                    <div class="result-card">
+                        <h3><i class="icon">🔍</i>需求本质</h3>
+                        <p id="need-nature">加载中...</p>
+                    </div>
+                    
+                    <!-- 原生根源 -->
+                    <div class="result-card">
+                        <h3><i class="icon">🌱</i>原生根源</h3>
+                        <p id="original-root">加载中...</p>
+                    </div>
+                    
+                    <!-- 典型表现 -->
+                    <div class="result-card">
+                        <h3><i class="icon">🔄</i>亲密关系典型表现</h3>
+                        <ul id="relationship-patterns">
+                            <li>加载中...</li>
+                        </ul>
+                    </div>
+                    
+                    <!-- 戳心痛点 -->
+                    <div class="result-card pain-point">
+                        <h3><i class="icon">💔</i>戳心痛点</h3>
+                        <p id="pain-point" style="font-weight: bold;">加载中...</p>
+                    </div>
+                    
+                    <!-- 适配建议 -->
+                    <div class="result-card advice-card">
+                        <h3><i class="icon">💡</i>清醒适配建议</h3>
+                        <ul id="adaptation-advice">
+                            <li>加载中...</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- 毒舌主编结语 -->
+                <div class="conclusion">
+                    <h3>毒舌主编结语</h3>
+                    <p>看懂自己的需求，不是为了改变别人，而是为了筛选适配的人。你无法让一个回避型的人变成安全型，就像你无法让一个不饿的人狼吞虎咽。</p>
+                    <p><strong>与其改造伴侣，不如先承认：你值得被正确对待。</strong></p>
+                </div>
+                
+                <!-- 互动区域 -->
+                <div class="interaction">
+                    <p>敢不敢把你的结果打在评论区？看看谁和你是同款恋爱囚徒</p>
+                    
+                    <div style="display: flex; justify-content: space-between; margin: 20px 0;">
+                        <button id="save-btn" class="btn btn-secondary" style="width: 48%;">
+                            <i class="icon">💾</i>保存结果
+                        </button>
+                        <button id="restart-btn" class="btn" style="width: 48%;">
+                            <i class="icon">🔄</i>重新测试
+                        </button>
+                    </div>
+                    
+                    <div class="tags">
+                        <span class="tag">#心理学测试</span>
+                        <span class="tag">#亲密关系</span>
+                        <span class="tag">#原生家庭</span>
+                        <span class="tag">#底层需求</span>
+                        <span class="tag">#恋爱攻略</span>
+                    </div>
+                    
+                    <div class="follow">
+                        <p>关注我，下次扒光你恋爱脑的根</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量
+        let currentQuestion = 0;
+        let userAnswers = [];
+        let questions = [];
+        let resultData = {};
+
+        // 测评题目数据 - 30道题，5个维度，每个维度6题
+        const questionsData = [
+            // 维度1：幼年匮乏应对方式
+            {
+                id: 1,
+                dimension: "幼年匮乏应对方式",
+                dimensionKey: "childhood_coping",
+                text: "暧昧对象突然几天不联系你，你会怎么做？",
+                options: [
+                    { value: "pleaser", text: "主动发消息关心，怕他遇到什么困难", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "也不联系，假装无所谓，其实偷偷翻他社交动态", type: "回避型独立需求" },
+                    { value: "anxious", text: "一直纠结要不要联系，最后忍不住发消息追问原因", type: "焦虑型确认需求" },
+                    { value: "secure", text: "等他联系，如果超过一周，直接问他最近的情况", type: "安全型平等需求" }
+                ]
+            },
+            {
+                id: 2,
+                dimension: "幼年匮乏应对方式",
+                dimensionKey: "childhood_coping",
+                text: "恋爱中发现对方不如刚开始那么热情，你会觉得？",
+                options: [
+                    { value: "pleaser", text: "是不是我哪里做得不够好，我要更努力对他好", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "早知道会这样，我就不应该投入太多", type: "回避型独立需求" },
+                    { value: "anxious", text: "他是不是不爱我了？必须问清楚", type: "焦虑型确认需求" },
+                    { value: "secure", text: "热情本来就会回归平淡，找机会沟通一下彼此的感受", type: "安全型平等需求" }
+                ]
+            },
+            {
+                id: 3,
+                dimension: "幼年匮乏应对方式",
+                dimensionKey: "childhood_coping",
+                text: "伴侣忘记了你们的纪念日，你会？",
+                options: [
+                    { value: "pleaser", text: "假装没关系，自己偷偷难过", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "无所谓，本来就不看重这些形式", type: "回避型独立需求" },
+                    { value: "anxious", text: "很受伤，觉得他不在乎你，需要他认真道歉", type: "焦虑型确认需求" },
+                    { value: "secure", text: "告诉他你有点失望，听听他的解释，然后一起补过", type: "安全型平等需求" }
+                ]
+            },
+            {
+                id: 4,
+                dimension: "幼年匮乏应对方式",
+                dimensionKey: "childhood_coping",
+                text: "你发现伴侣在和异性朋友聊天，你会？",
+                options: [
+                    { value: "pleaser", text: "不说什么，但是会更加讨好他，怕他被别人吸引", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "假装不在意，但心里已经开始疏远他", type: "回避型独立需求" },
+                    { value: "anxious", text: "紧张不安，想知道他们聊什么，甚至查看他的手机", type: "焦虑型确认需求" },
+                    { value: "secure", text: "直接问他那个朋友的情况，表达你的感受和界限", type: "安全型平等需求" }
+                ]
+            },
+            {
+                id: 5,
+                dimension: "幼年匮乏应对方式",
+                dimensionKey: "childhood_coping",
+                text: "恋爱中遇到矛盾，你通常会？",
+                options: [
+                    { value: "pleaser", text: "主动让步，怕冲突伤害感情", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "冷战，等对方来哄你", type: "回避型独立需求" },
+                    { value: "anxious", text: "必须当天解决，不然会一直想这件事睡不着", type: "焦虑型确认需求" },
+                    { value: "secure", text: "冷静后沟通，寻找双方都能接受的解决方案", type: "安全型平等需求" }
+                ]
+            },
+            {
+                id: 6,
+                dimension: "幼年匮乏应对方式",
+                dimensionKey: "childhood_coping",
+                text: "伴侣说你最近变胖了，你会怎么反应？",
+                options: [
+                    { value: "pleaser", text: "立刻开始节食减肥，怕他嫌弃你", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "无所谓，反正我也不是为他活的", type: "回避型独立需求" },
+                    { value: "anxious", text: "很受伤，觉得他是不是开始不喜欢你了", type: "焦虑型确认需求" },
+                    { value: "secure", text: "笑着问他是不是认真的，然后一起讨论健康饮食", type: "安全型平等需求" }
+                ]
+            },
+            
+            // 维度2：安全感获取路径
+            {
+                id: 7,
+                dimension: "安全感获取路径",
+                dimensionKey: "security_path",
+                text: "你觉得在恋爱中，怎样才能获得安全感？",
+                options: [
+                    { value: "pleaser", text: "对他好，满足他的所有需求，他就不会离开我", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "保持独立，不依赖他，就算分开也不会太受伤", type: "回避型独立需求" },
+                    { value: "anxious", text: "他必须每天联系我，告诉我他的行踪和想法", type: "焦虑型确认需求" },
+                    { value: "secure", text: "建立信任，互相尊重，有问题及时沟通", type: "安全型平等需求" }
+                ]
+            },
+            {
+                id: 8,
+                dimension: "安全感获取路径",
+                dimensionKey: "security_path",
+                text: "恋爱中你更倾向于？",
+                options: [
+                    { value: "pleaser", text: "为对方付出更多，证明自己的价值", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "保持一定距离，不让自己太投入", type: "回避型独立需求" },
+                    { value: "anxious", text: "希望对方时刻关注我，证明他的爱", type: "焦虑型确认需求" },
+                    { value: "secure", text: "平等付出，互相支持，共同成长", type: "安全型平等需求" }
+                ]
+            },
+            {
+                id: 9,
+                dimension: "安全感获取路径",
+                dimensionKey: "security_path",
+                text: "当伴侣夸奖别人时，你会？",
+                options: [
+                    { value: "pleaser", text: "也跟着夸奖，然后反思自己哪里不如别人", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "无所谓，每个人都有优点", type: "回避型独立需求" },
+                    { value: "anxious", text: "吃醋，觉得他是不是觉得我不够好", type: "焦虑型确认需求" },
+                    { value: "secure", text: "认同他的观点，同时也知道自己的价值", type: "安全型平等需求" }
+                ]
+            },
+            {
+                id: 10,
+                dimension: "安全感获取路径",
+                dimensionKey: "security_path",
+                text: "你会为了维持关系而妥协自己的原则吗？",
+                options: [
+                    { value: "pleaser", text: "会，只要不触及底线，能忍就忍", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "不会，原则比关系重要", type: "回避型独立需求" },
+                    { value: "anxious", text: "看情况，如果很爱他可能会妥协", type: "焦虑型确认需求" },
+                    { value: "secure", text: "不会，真正的关系应该互相尊重原则", type: "安全型平等需求" }
+                ]
+            },
+            {
+                id: 11,
+                dimension: "安全感获取路径",
+                dimensionKey: "security_path",
+                text: "你如何看待恋爱中的经济问题？",
+                options: [
+                    { value: "pleaser", text: "我可以多付出一些，只要他对我好", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "AA制最好，免得有经济纠纷", type: "回避型独立需求" },
+                    { value: "anxious", text: "他应该为我花钱，这是爱的表现", type: "焦虑型确认需求" },
+                    { value: "secure", text: "根据双方经济情况，合理分担，互相付出", type: "安全型平等需求" }
+                ]
+            },
+            {
+                id: 12,
+                dimension: "安全感获取路径",
+                dimensionKey: "security_path",
+                text: "你希望伴侣在你遇到困难时？",
+                options: [
+                    { value: "pleaser", text: "能陪在我身边，我就很满足了", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "给我空间，我自己能解决", type: "回避型独立需求" },
+                    { value: "anxious", text: "立刻放下一切来帮我，证明他在乎我", type: "焦虑型确认需求" },
+                    { value: "secure", text: "支持我，提供建议，但尊重我解决问题的方式", type: "安全型平等需求" }
+                ]
+            },
+            
+            // 维度3：关系维系本能
+            {
+                id: 13,
+                dimension: "关系维系本能",
+                dimensionKey: "relationship_maintenance",
+                text: "吵架后，你通常会？",
+                options: [
+                    { value: "pleaser", text: "先道歉，主动示好，怕关系变僵", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "等对方来哄我，或者慢慢淡忘这件事", type: "回避型独立需求" },
+                    { value: "anxious", text: "希望立刻和好，不然会一直焦虑不安", type: "焦虑型确认需求" },
+                    { value: "secure", text: "冷静后主动沟通，寻找解决办法", type: "安全型平等需求" }
+                ]
+            },
+            {
+                id: 14,
+                dimension: "关系维系本能",
+                dimensionKey: "relationship_maintenance",
+                text: "当你需要伴侣的帮助时，你会？",
+                options: [
+                    { value: "pleaser", text: "尽量自己解决，不想麻烦他", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "自己解决，很少开口求助", type: "回避型独立需求" },
+                    { value: "anxious", text: "希望他主动发现并帮助我，如果没有会很失望", type: "焦虑型确认需求" },
+                    { value: "secure", text: "直接告诉他我的需求，相信他会帮助我", type: "安全型平等需求" }
+                ]
+            },
+            {
+                id: 15,
+                dimension: "关系维系本能",
+                dimensionKey: "relationship_maintenance",
+                text: "你如何处理恋爱中的差异和分歧？",
+                options: [
+                    { value: "pleaser", text: "尽量迁就他的想法，避免冲突", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "各持己见，保持距离", type: "回避型独立需求" },
+                    { value: "anxious", text: "希望他能理解并接受我的观点", type: "焦虑型确认需求" },
+                    { value: "secure", text: "尊重差异，寻找共同点，求同存异", type: "安全型平等需求" }
+                ]
+            },
+            {
+                id: 16,
+                dimension: "关系维系本能",
+                dimensionKey: "relationship_maintenance",
+                text: "当伴侣情绪低落时，你会？",
+                options: [
+                    { value: "pleaser", text: "想尽办法逗他开心，为他做很多事", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "给他空间，等他自己调整好", type: "回避型独立需求" },
+                    { value: "anxious", text: "很担心，一直追问他怎么了，希望他能倾诉", type: "焦虑型确认需求" },
+                    { value: "secure", text: "表达关心，询问他是否需要帮助，尊重他的选择", type: "安全型平等需求" }
+                ]
+            },
+            {
+                id: 17,
+                dimension: "关系维系本能",
+                dimensionKey: "relationship_maintenance",
+                text: "你如何看待恋爱中的小惊喜和浪漫？",
+                options: [
+                    { value: "pleaser", text: "经常制造惊喜，希望他能感受到我的爱", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "觉得没必要，太刻意了", type: "回避型独立需求" },
+                    { value: "anxious", text: "期待他制造惊喜，如果没有会失望", type: "焦虑型确认需求" },
+                    { value: "secure", text: "偶尔制造惊喜，更注重日常的关心和陪伴", type: "安全型平等需求" }
+                ]
+            },
+            {
+                id: 18,
+                dimension: "关系维系本能",
+                dimensionKey: "relationship_maintenance",
+                text: "当你发现伴侣有缺点时，你会？",
+                options: [
+                    { value: "pleaser", text: "包容他的缺点，很少指出，怕他不开心", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "接受不了就分开，不会试图改变他", type: "回避型独立需求" },
+                    { value: "anxious", text: "希望他能为了你改变，经常提醒他", type: "焦虑型确认需求" },
+                    { value: "secure", text: "坦诚沟通，接受他的不完美，也愿意一起成长", type: "安全型平等需求" }
+                ]
+            },
+            
+            // 维度4：恐惧防御机制
+            {
+                id: 19,
+                dimension: "恐惧防御机制",
+                dimensionKey: "fear_defense",
+                text: "当伴侣提出分手时，你会？",
+                options: [
+                    { value: "pleaser", text: "挽留他，承诺会改变，甚至放低姿态", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "表面平静地接受，内心却很受伤", type: "回避型独立需求" },
+                    { value: "anxious", text: "崩溃，无法接受，不断追问原因", type: "焦虑型确认需求" },
+                    { value: "secure", text: "认真沟通，如果无法挽回，尊重他的决定", type: "安全型平等需求" }
+                ]
+            },
+            {
+                id: 20,
+                dimension: "恐惧防御机制",
+                dimensionKey: "fear_defense",
+                text: "你害怕在恋爱中？",
+                options: [
+                    { value: "pleaser", text: "被嫌弃，不被需要", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "失去自我，变得依赖", type: "回避型独立需求" },
+                    { value: "anxious", text: "被背叛，被抛弃", type: "焦虑型确认需求" },
+                    { value: "secure", text: "无法真正了解对方，或者对方不了解自己", type: "安全型平等需求" }
+                ]
+            },
+            {
+                id: 21,
+                dimension: "恐惧防御机制",
+                dimensionKey: "fear_defense",
+                text: "当伴侣对你的控制欲很强时，你会？",
+                options: [
+                    { value: "pleaser", text: "尽量满足他的要求，避免冲突", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "疏远他，减少联系，保持自己的空间", type: "回避型独立需求" },
+                    { value: "anxious", text: "感到窒息，但又害怕他离开，矛盾纠结", type: "焦虑型确认需求" },
+                    { value: "secure", text: "明确表达自己的感受和界限，寻求平衡", type: "安全型平等需求" }
+                ]
+            },
+            {
+                id: 22,
+                dimension: "恐惧防御机制",
+                dimensionKey: "fear_defense",
+                text: "你如何看待恋爱中的信任问题？",
+                options: [
+                    { value: "pleaser", text: "宁愿相信他，就算有怀疑也不敢深究", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "很难完全信任，总是有所保留", type: "回避型独立需求" },
+                    { value: "anxious", text: "需要不断确认他的爱，才能感到安心", type: "焦虑型确认需求" },
+                    { value: "secure", text: "信任是基础，但也会观察他的行为是否一致", type: "安全型平等需求" }
+                ]
+            },
+            {
+                id: 23,
+                dimension: "恐惧防御机制",
+                dimensionKey: "fear_defense",
+                text: "当你在恋爱中感到不被理解时，你会？",
+                options: [
+                    { value: "pleaser", text: "不再表达自己的想法，免得他觉得麻烦", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "封闭自己，不再期待被理解", type: "回避型独立需求" },
+                    { value: "anxious", text: "反复解释，直到他理解为止", type: "焦虑型确认需求" },
+                    { value: "secure", text: "换种方式表达，或者找合适的时机再沟通", type: "安全型平等需求" }
+                ]
+            },
+            {
+                id: 24,
+                dimension: "恐惧防御机制",
+                dimensionKey: "fear_defense",
+                text: "你如何面对恋爱中的冲突？",
+                options: [
+                    { value: "pleaser", text: "尽量避免冲突，就算自己委屈也忍了", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "回避冲突，要么冷战要么转移话题", type: "回避型独立需求" },
+                    { value: "anxious", text: "觉得冲突很可怕，必须立刻解决", type: "焦虑型确认需求" },
+                    { value: "secure", text: "把冲突看作沟通的机会，冷静处理", type: "安全型平等需求" }
+                ]
+            },
+            
+            // 维度5：亲密边界感知
+            {
+                id: 25,
+                dimension: "亲密边界感知",
+                dimensionKey: "intimacy_boundary",
+                text: "你如何看待恋爱中的个人空间？",
+                options: [
+                    { value: "pleaser", text: "只要他需要，我可以随时陪伴，牺牲自己的时间", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "需要很多个人空间，不喜欢太粘人", type: "回避型独立需求" },
+                    { value: "anxious", text: "希望时刻在一起，分开会想念", type: "焦虑型确认需求" },
+                    { value: "secure", text: "需要适当的个人空间，也享受亲密时光", type: "安全型平等需求" }
+                ]
+            },
+            {
+                id: 26,
+                dimension: "亲密边界感知",
+                dimensionKey: "intimacy_boundary",
+                text: "当伴侣干涉你的社交圈时，你会？",
+                options: [
+                    { value: "pleaser", text: "减少和朋友的联系，避免他不开心", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "反感，坚持自己的社交自由", type: "回避型独立需求" },
+                    { value: "anxious", text: "解释朋友的重要性，但会在意他的感受", type: "焦虑型确认需求" },
+                    { value: "secure", text: "沟通各自的界限，找到平衡点", type: "安全型平等需求" }
+                ]
+            },
+            {
+                id: 27,
+                dimension: "亲密边界感知",
+                dimensionKey: "intimacy_boundary",
+                text: "你如何处理恋爱中的隐私问题？",
+                options: [
+                    { value: "pleaser", text: "几乎没有秘密，他想看什么都可以", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "保留很多隐私，不喜欢被窥探", type: "回避型独立需求" },
+                    { value: "anxious", text: "希望彼此透明，但又害怕被发现自己的不足", type: "焦虑型确认需求" },
+                    { value: "secure", text: "尊重彼此的隐私，同时保持适当的透明度", type: "安全型平等需求" }
+                ]
+            },
+            {
+                id: 28,
+                dimension: "亲密边界感知",
+                dimensionKey: "intimacy_boundary",
+                text: "你如何看待恋爱中的依赖？",
+                options: [
+                    { value: "pleaser", text: "喜欢被依赖，觉得这是被需要的表现", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "不喜欢依赖别人，也不喜欢被依赖", type: "回避型独立需求" },
+                    { value: "anxious", text: "希望彼此依赖，证明关系的紧密", type: "焦虑型确认需求" },
+                    { value: "secure", text: "健康的依赖是好的，但也要保持独立", type: "安全型平等需求" }
+                ]
+            },
+            {
+                id: 29,
+                dimension: "亲密边界感知",
+                dimensionKey: "intimacy_boundary",
+                text: "当你需要独处时，伴侣坚持要陪你，你会？",
+                options: [
+                    { value: "pleaser", text: "接受他的陪伴，就算自己其实想一个人", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "直接拒绝，坚持自己的空间", type: "回避型独立需求" },
+                    { value: "anxious", text: "既希望他陪，又希望有空间，很矛盾", type: "焦虑型确认需求" },
+                    { value: "secure", text: "坦诚告诉他你需要独处的原因，他会理解的", type: "安全型平等需求" }
+                ]
+            },
+            {
+                id: 30,
+                dimension: "亲密边界感知",
+                dimensionKey: "intimacy_boundary",
+                text: "你如何处理恋爱中的未来规划？",
+                options: [
+                    { value: "pleaser", text: "以他的规划为主，配合他的节奏", type: "讨好型生存需求" },
+                    { value: "avoidant", text: "很少想长远，走一步看一步", type: "回避型独立需求" },
+                    { value: "anxious", text: "希望尽快确定未来，给关系一个明确的方向", type: "焦虑型确认需求" },
+                    { value: "secure", text: "一起讨论未来，但也尊重彼此的发展空间", type: "安全型平等需求" }
+                ]
+            }
+        ];
+
+        // 结果数据 - 4种类型，每种包含5部分
+        const resultsData = {
+            pleaser: {
+                title: "讨好型生存需求",
+                summary: "你在亲密关系中习惯通过讨好来获得安全感，本质上是童年时期'只有表现好才值得被爱'的复刻。",
+                needNature: "你把'被需要'等同于'被爱'，通过不断付出和妥协来维持关系。你害怕冲突，习惯压抑自己的真实感受，只为了换取对方的认可和留在关系中的资格。你以为只要自己足够好，对方就不会离开，但这种模式只会让你在关系中越来越失去自我。",
+                originalRoot: "小时候，你的父母可能只有在你表现好、听话、满足他们期待时才会给予关注和爱。你学会了'只有有用，才有价值'的生存策略，这种模式被你带入了亲密关系。你害怕如果不讨好，就会被抛弃或不被爱。",
+                relationshipPatterns: [
+                    "总是主动让步，就算自己委屈也不说",
+                    "过度付出，却很少表达自己的需求",
+                    "害怕拒绝别人，怕被嫌弃",
+                    "习惯察言观色，根据对方情绪调整自己",
+                    "很难接受批评，会过度自责",
+                    "在关系中经常感到疲惫，但又不敢停止付出"
+                ],
+                painPoint: "你拼命讨好换不来真心，不过是复刻小时候看父母脸色的日子。你以为牺牲自己就能留住爱，却不知道真正的爱从来不是靠讨好得来的。你在关系中活得像个乞丐，讨要着别人的认可，却忘了自己本来就值得被爱。",
+                adaptationAdvice: [
+                    "学会说'不'，你的感受和需求同样重要",
+                    "停止过度付出，真正爱你的人不需要你讨好",
+                    "找回自己的底线和原则，没有原则的爱很廉价",
+                    "练习表达真实感受，就算会冲突也没关系",
+                    "记住：你值得被爱，仅仅因为你存在，不是因为你做了什么",
+                    "找一个能欣赏真实的你的伴侣，而不是需要你讨好的人"
+                ]
+            },
+            avoidant: {
+                title: "回避型独立需求",
+                summary: "你在亲密关系中习惯通过保持距离来保护自己，本质上是童年时期'依赖别人会受伤'的防御机制。",
+                needNature: "你把'独立'等同于'安全'，害怕亲密会让你失去自我。你习惯用冷漠和距离来掩盖内心的脆弱，表面上无所谓，内心却渴望被理解。你对亲密有恐惧，觉得依赖别人是软弱的表现，但内心深处其实非常渴望被爱。",
+                originalRoot: "小时候，你的情感需求可能经常被忽视或拒绝，你学会了'自己的感受不重要'，'依赖别人会失望'。为了保护自己，你发展出了情感隔离的能力，把真实的感受藏在心底，久而久之，连你自己都忘了如何表达情感。",
+                relationshipPatterns: [
+                    "害怕承诺，回避深入的情感交流",
+                    "遇到问题习惯冷战，不喜欢正面沟通",
+                    "表面坚强，内心敏感，害怕被看穿",
+                    "对亲密有恐惧，需要很多个人空间",
+                    "很难完全信任别人，总是有所保留",
+                    "恋爱初期热情，关系深入后开始疏远"
+                ],
+                painPoint: "你用冷漠当盔甲，却忘了自己也需要温暖。你以为不投入就不会受伤，却在孤独中越活越封闭。你不是不需要爱，只是害怕承认自己需要。你像一只刺猬，用刺把所有人都推开，却在角落里偷偷渴望有人能抱抱你。",
+                adaptationAdvice: [
+                    "承认自己的情感需求，这不是软弱，是人性",
+                    "练习在安全的范围内打开自己，慢慢来",
+                    "学会区分健康的依赖和过度依赖",
+                    "找一个耐心、理解你的伴侣，他会给你安全感",
+                    "记住：真正的强大不是不需要别人，而是敢于脆弱",
+                    "尝试从小事开始分享自己的感受，逐步建立信任"
+                ]
+            },
+            anxious: {
+                title: "焦虑型确认需求",
+                summary: "你在亲密关系中习惯通过不断确认来获得安全感，本质上是童年时期'爱不稳定'的恐惧投射。",
+                needNature: "你把'被关注'等同于'被爱'，需要伴侣不断证明他的爱。你对关系中的细微变化非常敏感，容易陷入过度思考和担忧。你害怕被抛弃，需要不断确认对方的爱，却永远觉得不够。",
+                originalRoot: "小时候，你的父母可能情绪不稳定，对你的关注时多时少，你学会了'爱需要不断争取'，'关系随时可能消失'。这种不安全感被你带入了亲密关系，你总是担心对方会离开，需要不断确认他的爱。",
+                relationshipPatterns: [
+                    "经常需要伴侣的肯定和保证",
+                    "对小细节过度敏感，容易想太多",
+                    "害怕被抛弃，遇到问题容易焦虑",
+                    "情绪起伏大，容易受对方态度影响",
+                    "有时会用极端方式测试对方的爱",
+                    "对分离反应强烈，难以忍受独处"
+                ],
+                painPoint: "你像个情感乞丐，不断讨要爱的证明，却永远觉得不够。你不是真的贪心，只是小时候从来没有被稳定地爱过。你在关系中像个惊弓之鸟，稍有风吹草动就以为天要塌了，这种焦虑不是你的错，是童年留下的伤口。",
+                adaptationAdvice: [
+                    "学会自我安抚，你的价值不取决于别人的关注",
+                    "培养自己的兴趣和社交圈，减少对伴侣的依赖",
+                    "练习信任，给关系一些呼吸的空间",
+                    "找一个情绪稳定、愿意耐心回应你的伴侣",
+                    "记住：真正的爱不需要证明，它是稳定而自然的存在",
+                    "尝试冥想或深呼吸，帮助自己平静焦虑的情绪"
+                ]
+            },
+            secure: {
+                title: "安全型平等需求",
+                summary: "你在亲密关系中能够平衡自己和伴侣的需求，本质上是童年时期'被稳定爱过'的健康模式。",
+                needNature: "你把'互相尊重'等同于'爱'，能够在保持自我的同时与伴侣建立亲密。你相信自己值得被爱，也相信伴侣的爱。你能够直接表达自己的需求和感受，也能尊重对方的边界。你对关系有信心，不会过度担忧或控制。",
+                originalRoot: "小时候，你的父母可能给了你稳定的爱和关注，你学会了'我是安全的'，'关系是可靠的'。这种安全感让你能够健康地进入亲密关系，不需要通过讨好、回避或焦虑来获取安全感。你相信爱，也相信自己值得被爱。",
+                relationshipPatterns: [
+                    "能够直接表达自己的需求和感受",
+                    "尊重对方的边界，也知道自己的底线",
+                    "遇到问题愿意沟通，不回避也不极端",
+                    "对关系有信心，不会过度担忧",
+                    "能够接受伴侣的不完美，也允许自己不完美",
+                    "在亲密和独立之间找到平衡"
+                ],
+                painPoint: "你可能觉得自己很正常，但要知道，你的'正常'是很多人求而不得的幸运。珍惜你的安全感，同时也要理解伴侣可能有不同的情感模式。不要因为自己安全就忽视对方的不安，共情和理解是维持健康关系的关键。",
+                adaptationAdvice: [
+                    "保持你的健康模式，这是珍贵的能力",
+                    "对伴侣的情感模式多一些理解，少一些评判",
+                    "在关系中保持自我成长，不要因为稳定而停滞",
+                    "帮助伴侣建立安全感，但不要承担他的成长责任",
+                    "记住：健康的关系是两个完整的人互相滋养，不是两个残缺的人互相填补",
+                    "继续培养自己的独立性和自我价值感"
+                ]
+            }
+        };
+
+        // 初始化
+        function init() {
+            console.log('初始化应用');
+            questions = questionsData;
+            resultData = resultsData;
+            userAnswers = new Array(questions.length).fill(null);
+            
+            // 绑定按钮事件
+            document.getElementById('start-btn').onclick = startTest;
+            document.getElementById('prev-btn').onclick = previousQuestion;
+            document.getElementById('next-btn').onclick = nextQuestion;
+            document.getElementById('save-btn').onclick = saveResult;
+            document.getElementById('restart-btn').onclick = restartTest;
+            
+            console.log('初始化完成，问题数量：', questions.length);
+        }
+
+        // 开始测试
+        function startTest() {
+            console.log('开始测试');
+            document.getElementById('start-page').classList.add('hidden');
+            document.getElementById('test-page').classList.remove('hidden');
+            currentQuestion = 0;
+            userAnswers = new Array(questions.length).fill(null);
+            showQuestion(0);
+        }
+
+        // 显示问题
+        function showQuestion(index) {
+            console.log('显示问题:', index + 1);
+            const question = questions[index];
+            
+            // 更新维度标签
+            document.getElementById('dimension-tag').textContent = question.dimension;
+            
+            // 更新问题文本
+            document.getElementById('question-text').textContent = question.text;
+            
+            // 更新进度
+            const progress = ((index + 1) / questions.length) * 100;
+            document.getElementById('progress-fill').style.width = progress + '%';
+            document.getElementById('progress-text').textContent = (index + 1) + '/' + questions.length;
+            
+            // 生成选项
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, optionIndex) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+                if (userAnswers[index] === option.value) {
+                    optionDiv.classList.add('selected');
+                }
+                
+                optionDiv.innerHTML = `
+                    <div style="display: flex; align-items: flex-start;">
+                        <span class="option-letter">${String.fromCharCode(65 + optionIndex)}</span>
+                        <div>
+                            <div class="option-text">${option.text}</div>
+                            <div class="option-type">${option.type}</div>
+                        </div>
+                    </div>
+                `;
+                
+                optionDiv.onclick = function() {
+                    // 清除其他选项的选中状态
+                    const allOptions = optionsContainer.querySelectorAll('.option');
+                    allOptions.forEach(el => el.classList.remove('selected'));
+                    
+                    // 设置当前选项为选中状态
+                    this.classList.add('selected');
+                    userAnswers[index] = option.value;
+                    console.log('选择了选项:', option.value);
+                };
+                
+                optionsContainer.appendChild(optionDiv);
+            });
+            
+            // 更新按钮状态
+            document.getElementById('prev-btn').style.display = index === 0 ? 'none' : 'block';
+            
+            const nextBtn = document.getElementById('next-btn');
+            if (index === questions.length - 1) {
+                nextBtn.innerHTML = '查看结果';
+            } else {
+                nextBtn.innerHTML = '下一题<i class="icon">→</i>';
+            }
+        }
+
+        // 上一题
+        function previousQuestion() {
+            console.log('上一题');
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showQuestion(currentQuestion);
+            }
+        }
+
+        // 下一题
+        function nextQuestion() {
+            console.log('下一题');
+            // 检查是否选择了选项
+            if (userAnswers[currentQuestion] === null) {
+                alert('请选择一个选项');
+                return;
+            }
+            
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                showQuestion(currentQuestion);
+            } else {
+                calculateResults();
+            }
+        }
+
+        // 计算结果
+        function calculateResults() {
+            console.log('计算结果');
+            console.log('用户答案:', userAnswers);
+            
+            // 统计各类型得分
+            const typeCounts = {
+                pleaser: 0,
+                avoidant: 0,
+                anxious: 0,
+                secure: 0
+            };
+            
+            userAnswers.forEach(answer => {
+                if (answer && typeCounts.hasOwnProperty(answer)) {
+                    typeCounts[answer]++;
+                }
+            });
+            
+            console.log('各类型得分:', typeCounts);
+            
+            // 找出得分最高的类型
+            let maxType = 'secure';
+            let maxCount = typeCounts.secure;
+            
+            for (const [type, count] of Object.entries(typeCounts)) {
+                if (count > maxCount) {
+                    maxCount = count;
+                    maxType = type;
+                }
+            }
+            
+            console.log('结果类型:', maxType);
+            
+            // 显示结果
+            showResults(maxType);
+        }
+
+        // 显示结果
+        function showResults(resultType) {
+            console.log('显示结果:', resultType);
+            const result = resultData[resultType];
+            
+            // 隐藏测试页面，显示结果页面
+            document.getElementById('test-page').classList.add('hidden');
+            document.getElementById('result-page').classList.remove('hidden');
+            
+            // 更新结果信息
+            document.getElementById('result-title').textContent = result.title;
+            document.getElementById('result-summary').textContent = result.summary;
+            document.getElementById('need-nature').textContent = result.needNature;
+            document.getElementById('original-root').textContent = result.originalRoot;
+            document.getElementById('pain-point').textContent = result.painPoint;
+            
+            // 更新典型表现
+            const patternsList = document.getElementById('relationship-patterns');
+            patternsList.innerHTML = '';
+            result.relationshipPatterns.forEach(pattern => {
+                const li = document.createElement('li');
+                li.textContent = pattern;
+                patternsList.appendChild(li);
+            });
+            
+            // 更新建议
+            const adviceList = document.getElementById('adaptation-advice');
+            adviceList.innerHTML = '';
+            result.adaptationAdvice.forEach(advice => {
+                const li = document.createElement('li');
+                li.textContent = advice;
+                adviceList.appendChild(li);
+            });
+        }
+
+        // 保存结果
+        function saveResult() {
+            console.log('保存结果');
+            // 创建一个包含结果的新窗口
+            const resultWindow = window.open('', '_blank');
+            
+            // 获取结果内容
+            const resultContent = document.getElementById('result-page').innerHTML;
+            
+            // 设置新窗口的内容
+            resultWindow.document.write(`
+                <!DOCTYPE html>
+                <html lang="zh-CN">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>亲密关系底层需求分析结果</title>
+                    <style>
+                        body { 
+                            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+                            max-width: 600px;
+                            margin: 0 auto;
+                            padding: 20px;
+                            background-color: #f8f9fa;
+                        }
+                        .container {
+                            background-color: white;
+                            padding: 30px;
+                            border-radius: 12px;
+                            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                        }
+                        h1 {
+                            color: #e74c3c;
+                            text-align: center;
+                        }
+                        .btn {
+                            background-color: #e74c3c;
+                            color: white;
+                            border: none;
+                            padding: 12px 24px;
+                            border-radius: 5px;
+                            cursor: pointer;
+                            font-size: 16px;
+                            font-weight: bold;
+                            display: block;
+                            margin: 20px auto;
+                        }
+                        .no-print {
+                            display: none;
+                        }
+                        @media print {
+                            .no-print {
+                                display: block;
+                            }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="container">
+                        <header>
+                            <h1>亲密关系底层需求分析结果</h1>
+                            <p style="text-align: center; color: #666;">生成时间：${new Date().toLocaleString()}</p>
+                        </header>
+                        
+                        <div class="no-print">
+                            <button onclick="window.print()" class="btn">打印结果</button>
+                            <button onclick="window.close()" class="btn" style="background-color: #95a5a6;">关闭窗口</button>
+                        </div>
+                        
+                        ${resultContent}
+                        
+                        <footer style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; color: #666;">
+                            <p>本结果为个人参考，非专业诊断工具</p>
+                            <p>© 2025 毒舌心理学 | 原创内容，扎心但真诚</p>
+                        </footer>
+                    </div>
+                </body>
+                </html>
+            `);
+            
+            resultWindow.document.close();
+        }
+
+        // 重新测试
+        function restartTest() {
+            console.log('重新测试');
+            document.getElementById('result-page').classList.add('hidden');
+            document.getElementById('start-page').classList.remove('hidden');
+        }
+
+        // 页面加载完成后初始化
+        window.onload = function() {
+            console.log('页面加载完成');
+            init();
+        };
+    </script>
+</body>
+</html>
