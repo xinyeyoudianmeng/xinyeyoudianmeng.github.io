@@ -1,0 +1,3847 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一般能力倾向测试 - 发现你的潜力</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#f97316',
+                        neutral: '#f8fafc',
+                        dark: '#1e293b',
+                        light: '#f1f5f9'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-in': 'slideIn 0.5s ease-in-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideIn: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+            }
+            .card-hover {
+                @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+            }
+            .btn-primary {
+                @apply bg-primary text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:bg-blue-600 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50;
+            }
+            .btn-secondary {
+                @apply bg-secondary text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:bg-orange-600 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-opacity-50;
+            }
+            .btn-outline {
+                @apply border border-primary text-primary px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:bg-primary hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50;
+            }
+            .input-radio {
+                @apply w-5 h-5 text-primary focus:ring-primary border-gray-300 rounded;
+            }
+            .progress-bar {
+                @apply h-2 bg-gray-200 rounded-full overflow-hidden;
+            }
+            .progress-value {
+                @apply h-full bg-primary transition-all duration-500 ease-out;
+            }
+        }
+    </style>
+</head>
+<body class="bg-neutral min-h-screen font-sans text-dark">
+    <!-- 顶部导航 -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fa fa-line-chart text-primary text-2xl"></i>
+                <h1 class="text-xl font-bold text-primary">能力倾向测试</h1>
+            </div>
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="#" class="text-gray-600 hover:text-primary transition-colors" id="about-link">关于测试</a>
+                <a href="#" class="text-gray-600 hover:text-primary transition-colors" id="instructions-link">测试说明</a>
+                <a href="#" class="text-gray-600 hover:text-primary transition-colors" id="contact-link">联系我们</a>
+            </div>
+            <button class="md:hidden text-gray-600 focus:outline-none" id="mobile-menu-button">
+                <i class="fa fa-bars text-xl"></i>
+            </button>
+        </div>
+        <!-- 移动端菜单 -->
+        <div class="md:hidden hidden bg-white shadow-md" id="mobile-menu">
+            <div class="container mx-auto px-4 py-2 flex flex-col space-y-3">
+                <a href="#" class="text-gray-600 hover:text-primary transition-colors py-2 border-b border-gray-100">关于测试</a>
+                <a href="#" class="text-gray-600 hover:text-primary transition-colors py-2 border-b border-gray-100">测试说明</a>
+                <a href="#" class="text-gray-600 hover:text-primary transition-colors py-2">联系我们</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要内容区 -->
+    <main class="container mx-auto px-4 py-8">
+        <!-- 欢迎页面 -->
+        <section id="welcome-section" class="animate-fade-in">
+            <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-md overflow-hidden">
+                <div class="bg-gradient-to-r from-primary to-blue-700 text-white p-8">
+                    <h2 class="text-3xl font-bold mb-2">一般能力倾向测试</h2>
+                    <p class="text-blue-100">发现你的学习、语言、算数等方面的潜力，辅助职业选择</p>
+                </div>
+                <div class="p-8">
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fa fa-info-circle text-primary mr-2"></i>
+                            测试介绍
+                        </h3>
+                        <p class="text-gray-700 mb-4">
+                            本测试是一项原创的能力倾向评估工具，旨在帮助18岁以上成人了解自己在五个关键能力维度上的表现：逻辑推理、语言理解、数字运算、空间想象和记忆力。通过测试结果，你可以获得关于自身能力特点的客观认识，为职业选择和个人发展提供参考。
+                        </p>
+                        <div class="bg-blue-50 border-l-4 border-primary p-4 rounded">
+                            <p class="text-sm text-gray-700">
+                                <strong>重要提示：</strong> 本测试为原创内容服务，非专业医疗/心理测评。测试结果仅供参考，不构成职业选择或能力评估的唯一依据。
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fa fa-check-circle text-primary mr-2"></i>
+                            测试特点
+                        </h3>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="bg-light p-4 rounded-lg card-hover">
+                                <h4 class="font-medium text-primary mb-2">科学的评估体系</h4>
+                                <p class="text-sm text-gray-600">基于认知心理学理论设计，涵盖五大核心能力维度</p>
+                            </div>
+                            <div class="bg-light p-4 rounded-lg card-hover">
+                                <h4 class="font-medium text-primary mb-2">原创题目设计</h4>
+                                <p class="text-sm text-gray-600">50道精心设计的题目，全面评估你的能力倾向</p>
+                            </div>
+                            <div class="bg-light p-4 rounded-lg card-hover">
+                                <h4 class="font-medium text-primary mb-2">个性化结果解读</h4>
+                                <p class="text-sm text-gray-600">详细的能力分析报告和针对性的发展建议</p>
+                            </div>
+                            <div class="bg-light p-4 rounded-lg card-hover">
+                                <h4 class="font-medium text-primary mb-2">职业匹配推荐</h4>
+                                <p class="text-sm text-gray-600">根据你的能力特点，推荐适合的职业方向</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fa fa-exclamation-triangle text-secondary mr-2"></i>
+                            免责声明
+                        </h3>
+                        <div class="bg-orange-50 border-l-4 border-secondary p-4 rounded">
+                            <p class="text-sm text-gray-700 mb-2">
+                                1. <strong>非专业诊断工具：</strong>本测试不是由专业心理测评师设计或监督的专业心理测评工具，测试结果不能替代专业的心理评估或诊断。
+                            </p>
+                            <p class="text-sm text-gray-700 mb-2">
+                                2. <strong>结果仅供参考：</strong>测试结果仅作为个人了解自身能力倾向的参考，不应作为职业选择、教育决策或其他重要人生选择的唯一依据。
+                            </p>
+                            <p class="text-sm text-gray-700 mb-2">
+                                3. <strong>能力可塑性：</strong>人的能力是可塑的，测试结果不能代表你的全部潜力或未来发展。
+                            </p>
+                            <p class="text-sm text-gray-700">
+                                4. <strong>专业咨询建议：</strong>如有职业规划、教育选择等方面的困惑，建议寻求专业职业咨询师或教育顾问的帮助。
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center">
+                        <button id="start-test-btn" class="btn-primary flex items-center">
+                            <i class="fa fa-play-circle mr-2"></i>
+                            开始测试
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 测试页面 -->
+        <section id="test-section" class="hidden animate-fade-in">
+            <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-md overflow-hidden">
+                <!-- 测试进度 -->
+                <div class="bg-light p-4 border-b border-gray-200">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-sm font-medium text-gray-700">测试进度</span>
+                        <span class="text-sm font-medium text-primary" id="progress-text">1/50</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-value" id="progress-bar" style="width: 2%"></div>
+                    </div>
+                </div>
+
+                <!-- 题目区域 -->
+                <div class="p-6 md:p-8">
+                    <div class="mb-6">
+                        <div class="flex items-center mb-4">
+                            <span class="bg-primary text-white text-xs font-bold px-2.5 py-1 rounded mr-2" id="question-category">逻辑推理</span>
+                            <h3 class="text-xl font-semibold" id="question-text">如果"所有的鸟都会飞"和"企鹅是鸟"这两个陈述都是真的，那么下面哪个结论一定是正确的？</h3>
+                        </div>
+                        <div class="space-y-3" id="options-container">
+                            <div class="flex items-center">
+                                <input type="radio" id="option-1" name="answer" value="0" class="input-radio">
+                                <label for="option-1" class="ml-3 text-gray-700">企鹅会飞</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="radio" id="option-2" name="answer" value="1" class="input-radio">
+                                <label for="option-2" class="ml-3 text-gray-700">企鹅不会飞</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="radio" id="option-3" name="answer" value="2" class="input-radio">
+                                <label for="option-3" class="ml-3 text-gray-700">有些鸟不会飞</label>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="radio" id="option-4" name="answer" value="3" class="input-radio">
+                                <label for="option-4" class="ml-3 text-gray-700">以上结论都不一定正确</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 提示区域 -->
+                    <div class="bg-blue-50 p-4 rounded-lg mb-6 hidden" id="hint-container">
+                        <h4 class="font-medium text-primary mb-2 flex items-center">
+                            <i class="fa fa-lightbulb-o mr-2"></i>
+                            提示
+                        </h4>
+                        <p class="text-sm text-gray-700" id="hint-text">逻辑推理中，即使前提看起来与事实不符，也要根据给定的前提进行推理。</p>
+                    </div>
+
+                    <!-- 操作按钮 -->
+                    <div class="flex flex-wrap justify-between items-center">
+                        <div>
+                            <button id="hint-btn" class="text-primary hover:text-blue-700 text-sm font-medium flex items-center focus:outline-none">
+                                <i class="fa fa-lightbulb-o mr-1"></i>
+                                显示提示
+                            </button>
+                        </div>
+                        <div class="flex space-x-3 mt-4 sm:mt-0">
+                            <button id="prev-btn" class="btn-outline opacity-50 cursor-not-allowed" disabled>
+                                <i class="fa fa-arrow-left mr-2"></i>
+                                上一题
+                            </button>
+                            <button id="next-btn" class="btn-primary">
+                                下一题
+                                <i class="fa fa-arrow-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 结果页面 -->
+        <section id="result-section" class="hidden animate-fade-in">
+            <div class="max-w-5xl mx-auto bg-white rounded-xl shadow-md overflow-hidden">
+                <div class="bg-gradient-to-r from-primary to-blue-700 text-white p-8">
+                    <h2 class="text-3xl font-bold mb-2">测试结果</h2>
+                    <p class="text-blue-100">你的能力倾向分析报告</p>
+                </div>
+                <div class="p-6 md:p-8">
+                    <!-- 总体评分 -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fa fa-trophy text-secondary mr-2"></i>
+                            总体表现
+                        </h3>
+                        <div class="bg-light p-6 rounded-lg">
+                            <div class="flex flex-col md:flex-row items-center justify-between">
+                                <div class="mb-4 md:mb-0">
+                                    <p class="text-gray-600 mb-1">你的总得分</p>
+                                    <div class="flex items-end">
+                                        <span class="text-4xl font-bold text-primary" id="total-score">42</span>
+                                        <span class="text-gray-500 ml-1">/ 50</span>
+                                    </div>
+                                    <p class="text-sm text-gray-500 mt-1" id="total-percentile">超过了约85%的测试者</p>
+                                </div>
+                                <div class="w-full md:w-2/3">
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-xs text-gray-500">0</span>
+                                        <span class="text-xs text-gray-500">25</span>
+                                        <span class="text-xs text-gray-500">50</span>
+                                    </div>
+                                    <div class="progress-bar h-4">
+                                        <div class="progress-value bg-secondary" id="total-progress" style="width: 84%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 能力维度雷达图 -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fa fa-pie-chart text-primary mr-2"></i>
+                            能力维度分析
+                        </h3>
+                        <div class="bg-light p-4 rounded-lg">
+                            <div class="flex justify-center mb-4">
+                                <div class="inline-flex rounded-md shadow-sm" role="group">
+                                    <button type="button" class="px-4 py-2 text-sm font-medium text-white bg-primary rounded-l-lg hover:bg-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-300">
+                                        标准分视图
+                                    </button>
+                                    <button type="button" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border-t border-b border-r border-gray-200 rounded-r-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-300">
+                                        原始分视图
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="w-full h-80">
+                                <canvas id="radar-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 各维度详细分析 -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fa fa-bar-chart text-primary mr-2"></i>
+                            维度详细分析
+                        </h3>
+                        <div class="space-y-6" id="dimension-details">
+                            <!-- 逻辑推理 -->
+                            <div class="bg-light p-4 rounded-lg">
+                                <div class="flex justify-between items-center mb-3">
+                                    <div>
+                                        <h4 class="font-medium text-primary">逻辑推理能力</h4>
+                                        <p class="text-sm text-gray-500">评估你的抽象思维、分析问题和解决问题的能力</p>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <span class="text-lg font-bold text-primary mr-2">8</span>
+                                        <span class="text-sm text-gray-500">/ 10</span>
+                                        <span class="ml-3 px-2.5 py-0.5 bg-green-100 text-green-800 text-xs font-medium rounded">优秀</span>
+                                    </div>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-value bg-green-500" style="width: 80%"></div>
+                                </div>
+                                <div class="mt-3">
+                                    <p class="text-sm text-gray-700">
+                                        你在逻辑推理方面表现优秀，能够快速分析问题、识别模式并得出合理结论。这种能力在需要抽象思维和系统分析的领域非常有价值。
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- 语言理解 -->
+                            <div class="bg-light p-4 rounded-lg">
+                                <div class="flex justify-between items-center mb-3">
+                                    <div>
+                                        <h4 class="font-medium text-primary">语言理解能力</h4>
+                                        <p class="text-sm text-gray-500">评估你的阅读理解、词汇掌握和语言表达能力</p>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <span class="text-lg font-bold text-primary mr-2">9</span>
+                                        <span class="text-sm text-gray-500">/ 10</span>
+                                        <span class="ml-3 px-2.5 py-0.5 bg-green-100 text-green-800 text-xs font-medium rounded">卓越</span>
+                                    </div>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-value bg-green-500" style="width: 90%"></div>
+                                </div>
+                                <div class="mt-3">
+                                    <p class="text-sm text-gray-700">
+                                        你的语言理解能力非常出色，能够准确理解复杂文本，掌握丰富的词汇，并能清晰表达思想。这种能力在需要大量阅读、写作和沟通的领域特别有优势。
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- 数字运算 -->
+                            <div class="bg-light p-4 rounded-lg">
+                                <div class="flex justify-between items-center mb-3">
+                                    <div>
+                                        <h4 class="font-medium text-primary">数字运算能力</h4>
+                                        <p class="text-sm text-gray-500">评估你的基本数学运算和数字推理能力</p>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <span class="text-lg font-bold text-primary mr-2">7</span>
+                                        <span class="text-sm text-gray-500">/ 10</span>
+                                        <span class="ml-3 px-2.5 py-0.5 bg-blue-100 text-blue-800 text-xs font-medium rounded">良好</span>
+                                    </div>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-value bg-blue-500" style="width: 70%"></div>
+                                </div>
+                                <div class="mt-3">
+                                    <p class="text-sm text-gray-700">
+                                        你在数字运算方面表现良好，能够处理基本的数学问题和数字推理。这种能力在需要数据分析和计算的领域有一定优势，但可能不是你最突出的能力。
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- 空间想象 -->
+                            <div class="bg-light p-4 rounded-lg">
+                                <div class="flex justify-between items-center mb-3">
+                                    <div>
+                                        <h4 class="font-medium text-primary">空间想象能力</h4>
+                                        <p class="text-sm text-gray-500">评估你的视觉空间感知和 mental rotation 能力</p>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <span class="text-lg font-bold text-primary mr-2">6</span>
+                                        <span class="text-sm text-gray-500">/ 10</span>
+                                        <span class="ml-3 px-2.5 py-0.5 bg-blue-100 text-blue-800 text-xs font-medium rounded">良好</span>
+                                    </div>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-value bg-blue-500" style="width: 60%"></div>
+                                </div>
+                                <div class="mt-3">
+                                    <p class="text-sm text-gray-700">
+                                        你在空间想象方面表现处于平均水平，能够处理基本的空间关系和图形转换。这种能力在设计、工程和艺术等领域有一定重要性，但可以通过练习进一步提升。
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- 记忆力 -->
+                            <div class="bg-light p-4 rounded-lg">
+                                <div class="flex justify-between items-center mb-3">
+                                    <div>
+                                        <h4 class="font-medium text-primary">记忆力与专注力</h4>
+                                        <p class="text-sm text-gray-500">评估你的短期记忆和注意力集中程度</p>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <span class="text-lg font-bold text-primary mr-2">8</span>
+                                        <span class="text-sm text-gray-500">/ 10</span>
+                                        <span class="ml-3 px-2.5 py-0.5 bg-green-100 text-green-800 text-xs font-medium rounded">优秀</span>
+                                    </div>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-value bg-green-500" style="width: 80%"></div>
+                                </div>
+                                <div class="mt-3">
+                                    <p class="text-sm text-gray-700">
+                                        你在记忆力和专注力方面表现优秀，能够有效记住和处理信息。这种能力在需要大量信息处理和学习的领域非常有价值。
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 职业匹配建议 -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fa fa-briefcase text-primary mr-2"></i>
+                            职业匹配建议
+                        </h3>
+                        <div class="bg-light p-4 rounded-lg">
+                            <p class="text-gray-700 mb-4">
+                                根据你的能力倾向分析，以下职业领域可能与你的优势较为匹配：
+                            </p>
+                            <div class="grid md:grid-cols-2 gap-4" id="career-suggestions">
+                                <div class="bg-white p-4 rounded-lg shadow-sm">
+                                    <h4 class="font-medium text-primary mb-2">教育与培训</h4>
+                                    <p class="text-sm text-gray-600">你的语言理解和记忆力优势非常适合教育领域，尤其是需要良好沟通和知识传递的岗位。</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg shadow-sm">
+                                    <h4 class="font-medium text-primary mb-2">咨询与分析</h4>
+                                    <p class="text-sm text-gray-600">你的逻辑推理和分析能力适合咨询工作，能够帮助客户解决复杂问题并提供专业建议。</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg shadow-sm">
+                                    <h4 class="font-medium text-primary mb-2">媒体与传播</h4>
+                                    <p class="text-sm text-gray-600">你的语言能力和记忆力使你在媒体、出版或公共关系等领域有优势。</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg shadow-sm">
+                                    <h4 class="font-medium text-primary mb-2">管理与协调</h4>
+                                    <p class="text-sm text-gray-600">你的多方面能力均衡发展，适合需要协调各种资源和人员的管理岗位。</p>
+                                </div>
+                            </div>
+                            <div class="mt-4 text-sm text-gray-500">
+                                <p>
+                                    <strong>提示：</strong> 职业选择是一个复杂的决策过程，除了能力倾向外，还应考虑个人兴趣、价值观、性格特点等多方面因素。建议结合其他职业测评工具和专业咨询进行综合考虑。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 发展建议 -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fa fa-lightbulb-o text-secondary mr-2"></i>
+                            能力发展建议
+                        </h3>
+                        <div class="bg-light p-4 rounded-lg">
+                            <p class="text-gray-700 mb-4">
+                                基于你的测试结果，以下是一些针对性的能力发展建议：
+                            </p>
+                            <div class="space-y-4" id="development-suggestions">
+                                <div class="bg-white p-4 rounded-lg shadow-sm">
+                                    <h4 class="font-medium text-primary mb-2">空间想象能力提升</h4>
+                                    <p class="text-sm text-gray-600">可以通过解谜游戏、三维建模软件练习或绘画来提升空间想象能力。尝试在日常生活中进行 mental rotation 练习，如想象物体旋转后的样子。</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg shadow-sm">
+                                    <h4 class="font-medium text-primary mb-2">数字运算能力提升</h4>
+                                    <p class="text-sm text-gray-600">可以通过数学谜题、数据分析练习或学习编程来提升数字运算能力。日常中可以尝试心算练习，减少对计算器的依赖。</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-lg shadow-sm">
+                                    <h4 class="font-medium text-primary mb-2">综合能力应用</h4>
+                                    <p class="text-sm text-gray-600">寻找能够综合运用你各方面能力的活动或项目，如参与团队协作解决复杂问题、进行跨学科学习或参与创意项目。这有助于你全面发展并更好地整合各种能力。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 结果保存与分享 -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fa fa-share-alt text-primary mr-2"></i>
+                            结果保存与分享
+                        </h3>
+                        <div class="bg-light p-4 rounded-lg">
+                            <div class="flex flex-wrap gap-4">
+                                <button class="btn-primary flex items-center">
+                                    <i class="fa fa-download mr-2"></i>
+                                    下载完整报告
+                                </button>
+                                <button class="btn-outline flex items-center">
+                                    <i class="fa fa-print mr-2"></i>
+                                    打印结果
+                                </button>
+                                <button class="btn-secondary flex items-center">
+                                    <i class="fa fa-share-alt mr-2"></i>
+                                    分享结果
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 再次测试 -->
+                    <div class="text-center">
+                        <p class="text-gray-600 mb-4">
+                            如果你想重新测试或分享给朋友，可以使用以下按钮：
+                        </p>
+                        <button id="retake-test-btn" class="btn-outline">
+                            重新测试
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-white py-8 mt-12">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">关于我们</h3>
+                    <p class="text-gray-400 text-sm">
+                        我们致力于提供高质量的自我认知和职业发展工具，帮助每个人发现自己的潜力并实现职业目标。
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">联系我们</h3>
+                    <p class="text-gray-400 text-sm mb-2">
+                        <i class="fa fa-envelope mr-2"></i>
+                        contact@aptitudetest.com
+                    </p>
+                    <p class="text-gray-400 text-sm">
+                        <i class="fa fa-phone mr-2"></i>
+                        400-123-4567
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">关注我们</h3>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fa fa-weixin text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fa fa-weibo text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                            <i class="fa fa-qq text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-6 text-center text-gray-500 text-sm">
+                <p>© 2025 能力倾向测试. 保留所有权利.</p>
+                <p class="mt-2">
+                    <a href="#" class="hover:text-gray-300 transition-colors">隐私政策</a> |
+                    <a href="#" class="hover:text-gray-300 transition-colors">服务条款</a> |
+                    <a href="#" class="hover:text-gray-300 transition-colors">Cookie 政策</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 模态框 -->
+    <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg max-w-md w-full mx-4 animate-slide-in">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold" id="modal-title">提示</h3>
+                    <button id="close-modal" class="text-gray-400 hover:text-gray-600 focus:outline-none">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </div>
+                <div id="modal-content">
+                    <p class="text-gray-700">你确定要退出测试吗？当前进度将不会保存。</p>
+                </div>
+                <div class="flex justify-end mt-6 space-x-3">
+                    <button id="modal-cancel" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                        取消
+                    </button>
+                    <button id="modal-confirm" class="px-4 py-2 bg-primary text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary">
+                        确认
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 测试题目数据
+        const testData = [
+            // 逻辑推理能力题目 (1-10)
+            {
+                id: 1,
+                category: "逻辑推理",
+                question: "如果\"所有的鸟都会飞\"和\"企鹅是鸟\"这两个陈述都是真的，那么下面哪个结论一定是正确的？",
+                options: [
+                    "企鹅会飞",
+                    "企鹅不会飞",
+                    "有些鸟不会飞",
+                    "以上结论都不一定正确"
+                ],
+                answer: 0,
+                hint: "逻辑推理中，即使前提看起来与事实不符，也要根据给定的前提进行推理。"
+            },
+            {
+                id: 2,
+                category: "逻辑推理",
+                question: "在一个班级中，所有学生要么喜欢数学，要么喜欢语文，要么两者都喜欢。如果有20人喜欢数学，15人喜欢语文，5人两者都喜欢，那么这个班级共有多少学生？",
+                options: [
+                    "30人",
+                    "35人",
+                    "40人",
+                    "45人"
+                ],
+                answer: 0,
+                hint: "使用集合的容斥原理：总人数 = 喜欢数学的人数 + 喜欢语文的人数 - 两者都喜欢的人数。"
+            },
+            {
+                id: 3,
+                category: "逻辑推理",
+                question: "根据以下数列规律，下一个数字应该是什么？1, 3, 6, 10, 15, ?",
+                options: [
+                    "18",
+                    "20",
+                    "21",
+                    "25"
+                ],
+                answer: 2,
+                hint: "观察相邻数字之间的差值变化规律。"
+            },
+            {
+                id: 4,
+                category: "逻辑推理",
+                question: "如果A比B高，B比C高，而C比D矮，那么以下哪个陈述一定是正确的？",
+                options: [
+                    "A比D高",
+                    "A比C高",
+                    "B比D高",
+                    "D比A高"
+                ],
+                answer: 1,
+                hint: "根据给定的条件，可以确定A、B、C之间的相对高度，但D与A、B的关系不明确。"
+            },
+            {
+                id: 5,
+                category: "逻辑推理",
+                question: "在一项调查中，60%的人喜欢咖啡，70%的人喜欢茶，30%的人既喜欢咖啡又喜欢茶。那么不喜欢咖啡也不喜欢茶的人占多少比例？",
+                options: [
+                    "0%",
+                    "10%",
+                    "20%",
+                    "30%"
+                ],
+                answer: 1,
+                hint: "使用集合的容斥原理：至少喜欢一种的比例 = 喜欢咖啡的比例 + 喜欢茶的比例 - 两者都喜欢的比例。"
+            },
+            {
+                id: 6,
+                category: "逻辑推理",
+                question: "根据以下图形序列的规律，下一个图形应该是选项中的哪一个？（图形描述：圆形、三角形、正方形、圆形、三角形、？）",
+                options: [
+                    "圆形",
+                    "三角形",
+                    "正方形",
+                    "五角星"
+                ],
+                answer: 2,
+                hint: "观察图形序列的重复模式。"
+            },
+            {
+                id: 7,
+                category: "逻辑推理",
+                question: "如果所有的哺乳动物都有肺，而鲸鱼是哺乳动物，那么可以得出什么结论？",
+                options: [
+                    "鲸鱼有肺",
+                    "鲸鱼没有肺",
+                    "有些哺乳动物没有肺",
+                    "以上都不对"
+                ],
+                answer: 0,
+                hint: "这是一个典型的三段论推理：所有A都是B，C是A，因此C是B。"
+            },
+            {
+                id: 8,
+                category: "逻辑推理",
+                question: "在一个盒子里有红、蓝、绿三种颜色的球，数量分别为3个、4个、5个。如果随机取出一个球，那么取出红球的概率是多少？",
+                options: [
+                    "1/4",
+                    "1/3",
+                    "3/12",
+                    "3/7"
+                ],
+                answer: 0,
+                hint: "概率 = 目标事件的数量 / 总事件的数量。"
+            },
+            {
+                id: 9,
+                category: "逻辑推理",
+                question: "如果\"如果下雨，地面就会湿\"这个陈述是真的，那么以下哪个陈述也一定是真的？",
+                options: [
+                    "如果地面湿，那么一定下雨了",
+                    "如果地面不湿，那么一定没下雨",
+                    "如果没下雨，那么地面一定不湿",
+                    "以上都不对"
+                ],
+                answer: 1,
+                hint: "原命题为\"如果P，那么Q\"，其逆否命题\"如果非Q，那么非P\"一定为真。"
+            },
+            {
+                id: 10,
+                category: "逻辑推理",
+                question: "根据以下数列规律，下一个数字应该是什么？2, 4, 8, 16, 32, ?",
+                options: [
+                    "48",
+                    "56",
+                    "64",
+                    "128"
+                ],
+                answer: 2,
+                hint: "观察相邻数字之间的倍数关系。"
+            },
+            
+            // 语言理解能力题目 (11-20)
+            {
+                id: 11,
+                category: "语言理解",
+                question: "以下哪个成语的意思与\"画蛇添足\"最接近？",
+                options: [
+                    "多此一举",
+                    "一举两得",
+                    "事半功倍",
+                    "事倍功半"
+                ],
+                answer: 0,
+                hint: "画蛇添足比喻做了多余的事，反而不恰当。"
+            },
+            {
+                id: 12,
+                category: "语言理解",
+                question: "根据上下文，\"他的演讲充满了感染力，全场观众都被他的话语所打动\"中，\"感染力\"一词的意思最接近：",
+                options: [
+                    "传染疾病的能力",
+                    "影响和打动他人的能力",
+                    "让人感到疲惫的能力",
+                    "让人产生怀疑的能力"
+                ],
+                answer: 1,
+                hint: "根据句子的整体意思来推断词语的含义。"
+            },
+            {
+                id: 13,
+                category: "语言理解",
+                question: "以下哪个句子没有语法错误？",
+                options: [
+                    "他不仅学习好，而且体育也很棒。",
+                    "我昨天看了一部非常有趣的电影，让我笑得不停。",
+                    "通过努力，使他的成绩有了很大的提高。",
+                    "我们应该从小培养艰苦朴素的习惯。"
+                ],
+                answer: 3,
+                hint: "检查每个句子的语法结构是否正确，特别是主语、谓语的搭配和句子成分的完整性。"
+            },
+            {
+                id: 14,
+                category: "语言理解",
+                question: "\"首当其冲\"这个成语的正确含义是：",
+                options: [
+                    "首先受到攻击或遭遇灾难",
+                    "第一个冲向前方",
+                    "首先考虑到的事情",
+                    "最重要的位置"
+                ],
+                answer: 0,
+                hint: "首当其冲中的\"冲\"是指冲击、攻击。"
+            },
+            {
+                id: 15,
+                category: "语言理解",
+                question: "以下哪个词语是褒义词？",
+                options: [
+                    "固执",
+                    "坚持",
+                    "顽固",
+                    "执拗"
+                ],
+                answer: 1,
+                hint: "褒义词是指带有赞许、肯定感情色彩的词。"
+            },
+            {
+                id: 16,
+                category: "语言理解",
+                question: "根据上下文，\"这个计划的实施遇到了许多掣肘因素\"中，\"掣肘\"一词的意思最接近：",
+                options: [
+                    "推动",
+                    "支持",
+                    "阻碍",
+                    "加速"
+                ],
+                answer: 2,
+                hint: "根据句子的整体意思来推断词语的含义，特别是考虑\"遇到了许多...因素\"这个结构。"
+            },
+            {
+                id: 17,
+                category: "语言理解",
+                question: "以下哪个句子使用了比喻的修辞手法？",
+                options: [
+                    "他的声音像洪钟一样响亮。",
+                    "他跑得比兔子还快。",
+                    "树上的苹果红得像火一样。",
+                    "以上都是"
+                ],
+                answer: 3,
+                hint: "比喻是用跟甲事物有相似之点的乙事物来描写或说明甲事物。"
+            },
+            {
+                id: 18,
+                category: "语言理解",
+                question: "\"明日黄花\"这个成语的正确含义是：",
+                options: [
+                    "明天的黄花",
+                    "过时的事物",
+                    "即将到来的美好事物",
+                    "珍贵的花朵"
+                ],
+                answer: 1,
+                hint: "明日黄花比喻过时或无意义的事物。"
+            },
+            {
+                id: 19,
+                category: "语言理解",
+                question: "以下哪个词语的词性与其他三个不同？",
+                options: [
+                    "迅速",
+                    "敏捷",
+                    "快速",
+                    "速度"
+                ],
+                answer: 3,
+                hint: "词性包括名词、动词、形容词、副词等。"
+            },
+            {
+                id: 20,
+                category: "语言理解",
+                question: "根据上下文，\"他的话虽然不多，但每一句都很有分量\"中，\"分量\"一词的意思最接近：",
+                options: [
+                    "重量",
+                    "重要性和影响力",
+                    "数量",
+                    "体积"
+                ],
+                answer: 1,
+                hint: "根据句子的整体意思来推断词语的含义，特别是考虑\"每一句都很有...\"这个结构。"
+            },
+            
+            // 数字运算能力题目 (21-30)
+            {
+                id: 21,
+                category: "数字运算",
+                question: "如果一个数的25%是60，那么这个数是多少？",
+                options: [
+                    "150",
+                    "200",
+                    "240",
+                    "300"
+                ],
+                answer: 2,
+                hint: "设这个数为x，则25% × x = 60，即0.25x = 60，解这个方程。"
+            },
+            {
+                id: 22,
+                category: "数字运算",
+                question: "计算：(3.5 + 2.5) × (4 - 1.5) = ?",
+                options: [
+                    "12",
+                    "15",
+                    "18",
+                    "20"
+                ],
+                answer: 1,
+                hint: "先计算括号内的加法和减法，再进行乘法运算。"
+            },
+            {
+                id: 23,
+                category: "数字运算",
+                question: "如果一件商品的原价是200元，先打八折，再打九折，那么最终的售价是多少元？",
+                options: [
+                    "144元",
+                    "152元",
+                    "160元",
+                    "176元"
+                ],
+                answer: 0,
+                hint: "先计算八折后的价格：200 × 0.8 = 160元，再计算九折后的价格：160 × 0.9 = 144元。"
+            },
+            {
+                id: 24,
+                category: "数字运算",
+                question: "计算：1/4 + 1/6 = ?",
+                options: [
+                    "1/5",
+                    "5/12",
+                    "7/12",
+                    "1/2"
+                ],
+                answer: 1,
+                hint: "先通分，找到分母的最小公倍数，再进行加法运算。"
+            },
+            {
+                id: 25,
+                category: "数字运算",
+                question: "如果一个正方形的边长增加20%，那么它的面积增加了多少百分比？",
+                options: [
+                    "20%",
+                    "36%",
+                    "40%",
+                    "44%"
+                ],
+                answer: 3,
+                hint: "设原边长为a，则原面积为a²。新边长为1.2a，新面积为(1.2a)² = 1.44a²。面积增加了(1.44a² - a²) / a² × 100% = 44%。"
+            },
+            {
+                id: 26,
+                category: "数字运算",
+                question: "计算：2³ + 3² = ?",
+                options: [
+                    "17",
+                    "18",
+                    "19",
+                    "20"
+                ],
+                answer: 0,
+                hint: "2³ = 2 × 2 × 2 = 8，3² = 3 × 3 = 9，所以2³ + 3² = 8 + 9 = 17。"
+            },
+            {
+                id: 27,
+                category: "数字运算",
+                question: "如果一辆汽车以每小时60公里的速度行驶，那么它在3小时20分钟内行驶了多少公里？",
+                options: [
+                    "180公里",
+                    "190公里",
+                    "200公里",
+                    "210公里"
+                ],
+                answer: 2,
+                hint: "3小时20分钟 = 3 + 20/60 = 3 + 1/3 = 10/3小时。距离 = 速度 × 时间 = 60 × 10/3 = 200公里。"
+            },
+            {
+                id: 28,
+                category: "数字运算",
+                question: "计算：(2.5 × 10³) ÷ (5 × 10²) = ?",
+                options: [
+                    "0.5",
+                    "5",
+                    "50",
+                    "500"
+                ],
+                answer: 1,
+                hint: "科学记数法的运算：(a × 10^m) ÷ (b × 10^n) = (a ÷ b) × 10^(m-n)。"
+            },
+            {
+                id: 29,
+                category: "数字运算",
+                question: "如果一个三角形的三个内角分别是30°、60°和90°，那么这个三角形是什么类型的三角形？",
+                options: [
+                    "锐角三角形",
+                    "直角三角形",
+                    "钝角三角形",
+                    "等边三角形"
+                ],
+                answer: 1,
+                hint: "根据三角形内角的大小来判断三角形的类型。"
+            },
+            {
+                id: 30,
+                category: "数字运算",
+                question: "计算：√144 + √81 = ?",
+                options: [
+                    "15",
+                    "21",
+                    "25",
+                    "30"
+                ],
+                answer: 1,
+                hint: "√144 = 12，√81 = 9，所以√144 + √81 = 12 + 9 = 21。"
+            },
+            
+            // 空间想象能力题目 (31-40)
+            {
+                id: 31,
+                category: "空间想象",
+                question: "如果将一个正方形沿着对角线对折，得到的图形是什么形状？",
+                options: [
+                    "正方形",
+                    "长方形",
+                    "三角形",
+                    "菱形"
+                ],
+                answer: 2,
+                hint: "想象正方形沿着对角线对折后的形状变化。"
+            },
+            {
+                id: 32,
+                category: "空间想象",
+                question: "以下哪个图形可以通过旋转得到？（图形描述：选项中有四个图形，其中三个是不同的，一个是另一个的旋转版本）",
+                options: [
+                    "选项A",
+                    "选项B",
+                    "选项C",
+                    "选项D"
+                ],
+                answer: 1,
+                hint: "旋转不会改变图形的形状和大小，只会改变方向。"
+            },
+            {
+                id: 33,
+                category: "空间想象",
+                question: "如果将一个立方体的表面展开成一个平面图形，以下哪个选项是可能的展开图？",
+                options: [
+                    "选项A（描述：一个十字形，中心是一个正方形，上下左右各连接一个正方形）",
+                    "选项B（描述：三个正方形排成一行，中间正方形的上下各连接一个正方形）",
+                    "选项C（描述：四个正方形排成一行，第一个和最后一个正方形的外侧各连接一个正方形）",
+                    "选项D（描述：两个正方形排成一行，每个正方形的上下各连接一个正方形）"
+                ],
+                answer: 0,
+                hint: "立方体的展开图必须能够折叠成一个封闭的立方体，每个面都是正方形。"
+            },
+            {
+                id: 34,
+                category: "空间想象",
+                question: "如果从正上方观察一个圆柱体，看到的图形是什么形状？",
+                options: [
+                    "圆形",
+                    "长方形",
+                    "椭圆形",
+                    "正方形"
+                ],
+                answer: 0,
+                hint: "从正上方观察圆柱体，看到的是圆柱体的顶面。"
+            },
+            {
+                id: 35,
+                category: "空间想象",
+                question: "以下哪个图形是轴对称图形？",
+                options: [
+                    "字母A",
+                    "字母F",
+                    "字母G",
+                    "字母J"
+                ],
+                answer: 0,
+                hint: "轴对称图形是指沿着一条直线折叠后，直线两侧的部分能够完全重合的图形。"
+            },
+            {
+                id: 36,
+                category: "空间想象",
+                question: "如果将一个圆形纸片对折两次，得到的图形是什么形状？",
+                options: [
+                    "圆形",
+                    "半圆形",
+                    "扇形",
+                    "四分之一圆形"
+                ],
+                answer: 3,
+                hint: "想象圆形纸片对折一次得到半圆形，再对折一次得到四分之一圆形。"
+            },
+            {
+                id: 37,
+                category: "空间想象",
+                question: "以下哪个图形可以通过平移得到？（图形描述：选项中有四个图形，其中三个是不同的，一个是另一个的平移版本）",
+                options: [
+                    "选项A",
+                    "选项B",
+                    "选项C",
+                    "选项D"
+                ],
+                answer: 2,
+                hint: "平移不会改变图形的形状、大小和方向，只会改变位置。"
+            },
+            {
+                id: 38,
+                category: "空间想象",
+                question: "如果一个物体从正面看是一个正方形，从侧面看是一个长方形，那么这个物体可能是什么形状？",
+                options: [
+                    "立方体",
+                    "长方体",
+                    "圆柱体",
+                    "圆锥体"
+                ],
+                answer: 1,
+                hint: "想象不同立体图形从不同角度观察得到的平面图形。"
+            },
+            {
+                id: 39,
+                category: "空间想象",
+                question: "以下哪个图形是中心对称图形？",
+                options: [
+                    "字母H",
+                    "字母L",
+                    "字母P",
+                    "字母T"
+                ],
+                answer: 0,
+                hint: "中心对称图形是指绕着一个中心点旋转180度后，能够与原图形完全重合的图形。"
+            },
+            {
+                id: 40,
+                category: "空间想象",
+                question: "如果将一个三角形的三个顶点分别与对边的中点连接，形成的图形中有多少个小三角形？",
+                options: [
+                    "3个",
+                    "4个",
+                    "6个",
+                    "8个"
+                ],
+                answer: 3,
+                hint: "想象三角形的三条中线（从顶点到对边中点的线段）相交形成的图形。"
+            },
+            
+            // 记忆力与专注力题目 (41-50)
+            {
+                id: 41,
+                category: "记忆力",
+                question: "请仔细观察以下数字序列：3, 7, 2, 9, 4, 6, 1, 8, 5。现在请按从小到大的顺序排列这些数字。",
+                options: [
+                    "1, 2, 3, 4, 5, 6, 7, 8, 9",
+                    "1, 2, 3, 4, 6, 5, 7, 8, 9",
+                    "1, 2, 3, 5, 4, 6, 7, 8, 9",
+                    "1, 3, 2, 4, 5, 6, 7, 8, 9"
+                ],
+                answer: 0,
+                hint: "先回忆题目中给出的数字序列，然后将它们按从小到大的顺序排列。"
+            },
+            {
+                id: 42,
+                category: "记忆力",
+                question: "请仔细观察以下单词：苹果、香蕉、橙子、葡萄、草莓。现在请按字母顺序排列这些单词。",
+                options: [
+                    "苹果、草莓、橙子、葡萄、香蕉",
+                    "苹果、草莓、香蕉、橙子、葡萄",
+                    "苹果、草莓、香蕉、葡萄、橙子",
+                    "苹果、香蕉、橙子、葡萄、草莓"
+                ],
+                answer: 2,
+                hint: "先回忆题目中给出的单词，然后将它们按拼音字母顺序排列。"
+            },
+            {
+                id: 43,
+                category: "记忆力",
+                question: "请仔细观察以下图形：圆形、三角形、正方形、五角星、六边形。现在请按边数从少到多的顺序排列这些图形。",
+                options: [
+                    "圆形、三角形、正方形、五角星、六边形",
+                    "三角形、正方形、圆形、五角星、六边形",
+                    "圆形、三角形、正方形、六边形、五角星",
+                    "三角形、圆形、正方形、五角星、六边形"
+                ],
+                answer: 0,
+                hint: "先回忆题目中给出的图形，然后根据每个图形的边数进行排序。圆形可以视为有无限多条边。"
+            },
+            {
+                id: 44,
+                category: "记忆力",
+                question: "请仔细观察以下日期：2023年5月12日、2023年3月15日、2023年7月8日、2023年1月20日、2023年9月3日。现在请按时间先后顺序排列这些日期。",
+                options: [
+                    "2023年1月20日、2023年3月15日、2023年5月12日、2023年7月8日、2023年9月3日",
+                    "2023年1月20日、2023年3月15日、2023年5月12日、2023年9月3日、2023年7月8日",
+                    "2023年1月20日、2023年5月12日、2023年3月15日、2023年7月8日、2023年9月3日",
+                    "2023年3月15日、2023年1月20日、2023年5月12日、2023年7月8日、2023年9月3日"
+                ],
+                answer: 0,
+                hint: "先回忆题目中给出的日期，然后按月份和日期的先后顺序排列。"
+            },
+            {
+                id: 45,
+                category: "记忆力",
+                question: "请仔细观察以下颜色：红色、蓝色、绿色、黄色、紫色。现在请按彩虹的顺序排列这些颜色。",
+                options: [
+                    "红色、黄色、绿色、蓝色、紫色",
+                    "红色、橙色、黄色、绿色、蓝色",
+                    "红色、黄色、蓝色、绿色、紫色",
+                    "红色、绿色、黄色、蓝色、紫色"
+                ],
+                answer: 0,
+                hint: "先回忆题目中给出的颜色，然后按彩虹的顺序（红、橙、黄、绿、蓝、靛、紫）排列。"
+            },
+            {
+                id: 46,
+                category: "记忆力",
+                question: "请仔细观察以下国家：中国、美国、日本、德国、法国。现在请按国土面积从大到小的顺序排列这些国家。",
+                options: [
+                    "中国、美国、法国、德国、日本",
+                    "中国、美国、德国、法国、日本",
+                    "美国、中国、法国、德国、日本",
+                    "中国、美国、日本、德国、法国"
+                ],
+                answer: 0,
+                hint: "先回忆题目中给出的国家，然后按国土面积从大到小的顺序排列。"
+            },
+            {
+                id: 47,
+                category: "记忆力",
+                question: "请仔细观察以下动物：猫、狗、大象、长颈鹿、兔子。现在请按体型从大到小的顺序排列这些动物。",
+                options: [
+                    "大象、长颈鹿、狗、猫、兔子",
+                    "长颈鹿、大象、狗、猫、兔子",
+                    "大象、长颈鹿、兔子、狗、猫",
+                    "大象、长颈鹿、狗、兔子、猫"
+                ],
+                answer: 0,
+                hint: "先回忆题目中给出的动物，然后按体型从大到小的顺序排列。"
+            },
+            {
+                id: 48,
+                category: "记忆力",
+                question: "请仔细观察以下学科：数学、语文、英语、物理、化学。现在请按你学习这些学科的先后顺序排列。",
+                options: [
+                    "语文、数学、英语、物理、化学",
+                    "语文、数学、英语、化学、物理",
+                    "数学、语文、英语、物理、化学",
+                    "语文、英语、数学、物理、化学"
+                ],
+                answer: 0,
+                hint: "先回忆题目中给出的学科，然后按通常的学习顺序排列。"
+            },
+            {
+                id: 49,
+                category: "记忆力",
+                question: "请仔细观察以下工具：锤子、螺丝刀、扳手、钳子、锯子。现在请按字母顺序排列这些工具。",
+                options: [
+                    "锤子、锯子、钳子、螺丝刀、扳手",
+                    "锤子、锯子、螺丝刀、钳子、扳手",
+                    "锤子、锯子、扳手、钳子、螺丝刀",
+                    "锤子、钳子、锯子、螺丝刀、扳手"
+                ],
+                answer: 0,
+                hint: "先回忆题目中给出的工具，然后按拼音字母顺序排列。"
+            },
+            {
+                id: 50,
+                category: "记忆力",
+                question: "请仔细观察以下乐器：钢琴、小提琴、吉他、架子鼓、长笛。现在请按弦乐器、管乐器、打击乐器的顺序分类排列这些乐器。",
+                options: [
+                    "小提琴、吉他、钢琴、长笛、架子鼓",
+                    "小提琴、吉他、长笛、钢琴、架子鼓",
+                    "小提琴、吉他、长笛、架子鼓、钢琴",
+                    "钢琴、小提琴、吉他、长笛、架子鼓"
+                ],
+                answer: 0,
+                hint: "先回忆题目中给出的乐器，然后按弦乐器（小提琴、吉他）、管乐器（长笛）、打击乐器（架子鼓）的顺序分类排列。钢琴通常被归类为弦乐器。"
+            }
+        ];
+
+        // 页面元素
+        const welcomeSection = document.getElementById('welcome-section');
+        const testSection = document.getElementById('test-section');
+        const resultSection = document.getElementById('result-section');
+        const startTestBtn = document.getElementById('start-test-btn');
+        const retakeTestBtn = document.getElementById('retake-test-btn');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        const questionCategory = document.getElementById('question-category');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const hintBtn = document.getElementById('hint-btn');
+        const hintContainer = document.getElementById('hint-container');
+        const hintText = document.getElementById('hint-text');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const modal = document.getElementById('modal');
+        const closeModal = document.getElementById('close-modal');
+        const modalCancel = document.getElementById('modal-cancel');
+        const modalConfirm = document.getElementById('modal-confirm');
+
+        // 测试状态
+        let currentQuestionIndex = 0;
+        let userAnswers = new Array(testData.length).fill(null);
+        let showHintUsed = new Array(testData.length).fill(false);
+        let testCompleted = false;
+
+        // 初始化页面
+        function init() {
+            // 绑定事件
+            startTestBtn.addEventListener('click', startTest);
+            retakeTestBtn.addEventListener('click', retakeTest);
+            hintBtn.addEventListener('click', showHint);
+            prevBtn.addEventListener('click', goToPreviousQuestion);
+            nextBtn.addEventListener('click', goToNextQuestion);
+            mobileMenuButton.addEventListener('click', toggleMobileMenu);
+            closeModal.addEventListener('click', hideModal);
+            modalCancel.addEventListener('click', hideModal);
+            modalConfirm.addEventListener('click', confirmModal);
+
+            // 导航链接
+            document.getElementById('about-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                showModal('关于测试', '本测试是一项原创的能力倾向评估工具，旨在帮助18岁以上成人了解自己在五个关键能力维度上的表现：逻辑推理、语言理解、数字运算、空间想象和记忆力。通过测试结果，你可以获得关于自身能力特点的客观认识，为职业选择和个人发展提供参考。');
+            });
+
+            document.getElementById('instructions-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                showModal('测试说明', '1. 测试共有50道题目，分为五个能力维度：逻辑推理、语言理解、数字运算、空间想象和记忆力。<br>2. 每道题目有四个选项，请选择你认为正确的答案。<br>3. 可以使用"显示提示"按钮获取帮助，但这可能会影响你的最终得分。<br>4. 测试没有时间限制，但建议在45分钟内完成。<br>5. 完成所有题目后，你将获得详细的能力分析报告。');
+            });
+
+            document.getElementById('contact-link').addEventListener('click', function(e) {
+                e.preventDefault();
+                showModal('联系我们', '如有任何问题或建议，请通过以下方式联系我们：<br>邮箱：contact@aptitudetest.com<br>电话：400-123-4567');
+            });
+        }
+
+        // 开始测试
+        function startTest() {
+            welcomeSection.classList.add('hidden');
+            testSection.classList.remove('hidden');
+            resultSection.classList.add('hidden');
+            
+            currentQuestionIndex = 0;
+            userAnswers = new Array(testData.length).fill(null);
+            showHintUsed = new Array(testData.length).fill(false);
+            testCompleted = false;
+            
+            loadQuestion(0);
+            updateProgress();
+        }
+
+        // 重新测试
+        function retakeTest() {
+            showModal('重新测试', '你确定要重新开始测试吗？当前的测试结果将不会保存。', function() {
+                startTest();
+            });
+        }
+
+        // 加载题目
+        function loadQuestion(index) {
+            const question = testData[index];
+            
+            questionCategory.textContent = question.category;
+            questionText.textContent = question.question;
+            
+            // 清空选项容器
+            optionsContainer.innerHTML = '';
+            
+            // 添加选项
+            question.options.forEach((option, i) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'flex items-center';
+                
+                const input = document.createElement('input');
+                input.type = 'radio';
+                input.id = `option-${i}`;
+                input.name = 'answer';
+                input.value = i;
+                input.className = 'input-radio';
+                input.checked = userAnswers[index] === i;
+                
+                input.addEventListener('change', function() {
+                    userAnswers[currentQuestionIndex] = parseInt(this.value);
+                });
+                
+                const label = document.createElement('label');
+                label.htmlFor = `option-${i}`;
+                label.className = 'ml-3 text-gray-700';
+                label.textContent = option;
+                
+                optionDiv.appendChild(input);
+                optionDiv.appendChild(label);
+                optionsContainer.appendChild(optionDiv);
+            });
+            
+            // 更新提示状态
+            if (showHintUsed[index]) {
+                hintContainer.classList.remove('hidden');
+                hintText.textContent = question.hint;
+            } else {
+                hintContainer.classList.add('hidden');
+            }
+            
+            // 更新按钮状态
+            prevBtn.disabled = index === 0;
+            prevBtn.classList.toggle('opacity-50', index === 0);
+            prevBtn.classList.toggle('cursor-not-allowed', index === 0);
+            
+            if (index === testData.length - 1) {
+                nextBtn.textContent = '完成测试';
+                nextBtn.innerHTML = '完成测试 <i class="fa fa-check ml-2"></i>';
+            } else {
+                nextBtn.textContent = '下一题';
+                nextBtn.innerHTML = '下一题 <i class="fa fa-arrow-right ml-2"></i>';
+            }
+        }
+
+        // 显示提示
+        function showHint() {
+            hintContainer.classList.remove('hidden');
+            hintText.textContent = testData[currentQuestionIndex].hint;
+            showHintUsed[currentQuestionIndex] = true;
+        }
+
+        // 上一题
+        function goToPreviousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion(currentQuestionIndex);
+                updateProgress();
+            }
+        }
+
+        // 下一题
+        function goToNextQuestion() {
+            // 如果当前题目没有选择答案，提示用户
+            if (userAnswers[currentQuestionIndex] === null) {
+                showModal('提示', '你还没有选择答案，确定要跳过这道题目吗？');
+                return;
+            }
+            
+            if (currentQuestionIndex < testData.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion(currentQuestionIndex);
+                updateProgress();
+            } else {
+                completeTest();
+            }
+        }
+
+        // 完成测试
+        function completeTest() {
+            testCompleted = true;
+            
+            // 计算得分
+            const scores = calculateScores();
+            
+            // 显示结果
+            showResults(scores);
+            
+            // 切换到结果页面
+            welcomeSection.classList.add('hidden');
+            testSection.classList.add('hidden');
+            resultSection.classList.remove('hidden');
+        }
+
+        // 计算得分
+        function calculateScores() {
+            // 各维度的题目索引
+            const dimensions = {
+                '逻辑推理': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+                '语言理解': [10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
+                '数字运算': [20, 21, 22, 23, 24, 25, 26, 27, 28, 29],
+                '空间想象': [30, 31, 32, 33, 34, 35, 36, 37, 38, 39],
+                '记忆力': [40, 41, 42, 43, 44, 45, 46, 47, 48, 49]
+            };
+            
+            // 计算各维度得分
+            const rawScores = {};
+            let totalScore = 0;
+            
+            for (const [dimension, indices] of Object.entries(dimensions)) {
+                let score = 0;
+                indices.forEach(index => {
+                    // 如果答案正确，得1分；如果使用了提示，且答案正确，得0.5分
+                    if (userAnswers[index] === testData[index].answer) {
+                        score += showHintUsed[index] ? 0.5 : 1;
+                    }
+                });
+                rawScores[dimension] = score;
+                totalScore += score;
+            }
+            
+            // 计算标准分（T分数）
+            // 这里使用预设的常模数据（均值和标准差）
+            const norms = {
+                '逻辑推理': { mean: 5, sd: 2 },
+                '语言理解': { mean: 5, sd: 2 },
+                '数字运算': { mean: 5, sd: 2 },
+                '空间想象': { mean: 5, sd: 2 },
+                '记忆力': { mean: 5, sd: 2 }
+            };
+            
+            const standardScores = {};
+            for (const [dimension, rawScore] of Object.entries(rawScores)) {
+                const { mean, sd } = norms[dimension];
+                standardScores[dimension] = 50 + 10 * (rawScore - mean) / sd;
+            }
+            
+            // 计算总分百分位
+            // 这里使用预设的总分分布（均值和标准差）
+            const totalMean = 25;
+            const totalSd = 8;
+            const totalPercentile = calculatePercentile(totalScore, totalMean, totalSd);
+            
+            return {
+                rawScores,
+                standardScores,
+                totalScore,
+                totalPercentile
+            };
+        }
+
+        // 计算百分位
+        function calculatePercentile(score, mean, sd) {
+            // 使用正态分布近似计算百分位
+            // 简化版的Z分数到百分位的转换
+            const zScore = (score - mean) / sd;
+            
+            // 近似的Z分数到百分位的转换
+            if (zScore < -3) return 1;
+            if (zScore < -2.5) return 2;
+            if (zScore < -2) return 2;
+            if (zScore < -1.5) return 7;
+            if (zScore < -1) return 16;
+            if (zScore < -0.5) return 31;
+            if (zScore < 0) return 50;
+            if (zScore < 0.5) return 69;
+            if (zScore < 1) return 84;
+            if (zScore < 1.5) return 93;
+            if (zScore < 2) return 98;
+            if (zScore < 2.5) return 99;
+            return 99;
+        }
+
+        // 显示结果
+        function showResults(scores) {
+            // 更新总分
+            document.getElementById('total-score').textContent = Math.round(scores.totalScore);
+            document.getElementById('total-percentile').textContent = `超过了约${scores.totalPercentile}%的测试者`;
+            document.getElementById('total-progress').style.width = `${scores.totalPercentile}%`;
+            
+            // 更新雷达图
+            updateRadarChart(scores.standardScores);
+            
+            // 更新各维度详细分析
+            updateDimensionDetails(scores.rawScores, scores.standardScores);
+            
+            // 更新职业匹配建议
+            updateCareerSuggestions(scores.standardScores);
+            
+            // 更新发展建议
+            updateDevelopmentSuggestions(scores.standardScores);
+        }
+
+        // 更新雷达图
+        function updateRadarChart(standardScores) {
+            const ctx = document.getElementById('radar-chart').getContext('2d');
+            
+            // 销毁之前的图表（如果存在）
+            if (window.radarChart) {
+                window.radarChart.destroy();
+            }
+            
+            // 创建新的雷达图
+            window.radarChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: Object.keys(standardScores),
+                    datasets: [{
+                        label: '你的能力水平',
+                        data: Object.values(standardScores),
+                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(59, 130, 246, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(59, 130, 246, 1)'
+                    }, {
+                        label: '平均水平',
+                        data: [50, 50, 50, 50, 50],
+                        backgroundColor: 'rgba(156, 163, 175, 0.2)',
+                        borderColor: 'rgba(156, 163, 175, 1)',
+                        borderWidth: 1,
+                        pointBackgroundColor: 'rgba(156, 163, 175, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(156, 163, 175, 1)'
+                    }]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            angleLines: {
+                                display: true
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 100
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        // 更新各维度详细分析
+        function updateDimensionDetails(rawScores, standardScores) {
+            const dimensionDetails = document.getElementById('dimension-details');
+            dimensionDetails.innerHTML = '';
+            
+            for (const [dimension, rawScore] of Object.entries(rawScores)) {
+                const standardScore = standardScores[dimension];
+                
+                // 确定等级
+                let level, levelClass;
+                if (standardScore >= 65) {
+                    level = '卓越';
+                    levelClass = 'bg-green-100 text-green-800';
+                } else if (standardScore >= 55) {
+                    level = '优秀';
+                    levelClass = 'bg-green-100 text-green-800';
+                } else if (standardScore >= 45) {
+                    level = '良好';
+                    levelClass = 'bg-blue-100 text-blue-800';
+                } else if (standardScore >= 35) {
+                    level = '待提升';
+                    levelClass = 'bg-yellow-100 text-yellow-800';
+                } else {
+                    level = '需要关注';
+                    levelClass = 'bg-red-100 text-red-800';
+                }
+                
+                // 确定描述
+                let description;
+                switch (dimension) {
+                    case '逻辑推理':
+                        if (standardScore >= 65) {
+                            description = '你的逻辑推理能力极为出色，能够轻松分析复杂问题、识别模式并得出准确结论。这种能力在科学研究、法律、计算机编程等领域有显著优势。';
+                        } else if (standardScore >= 55) {
+                            description = '你在逻辑推理方面表现优秀，能够快速分析问题、识别模式并得出合理结论。这种能力在需要抽象思维和系统分析的领域非常有价值。';
+                        } else if (standardScore >= 45) {
+                            description = '你在逻辑推理方面表现处于平均水平，能够处理基本的逻辑问题和分析任务。这种能力在大多数职业中都有一定的重要性。';
+                        } else if (standardScore >= 35) {
+                            description = '你在逻辑推理方面的能力略低于平均水平，可能需要更多的练习和思考来解决复杂问题。';
+                        } else {
+                            description = '你在逻辑推理方面的能力明显低于平均水平，建议通过专门的训练和练习来提升这方面的能力。';
+                        }
+                        break;
+                    case '语言理解':
+                        if (standardScore >= 65) {
+                            description = '你的语言理解能力极为出色，能够轻松理解复杂文本，掌握丰富的词汇，并能清晰、准确地表达思想。这种能力在文学、教育、媒体等领域有显著优势。';
+                        } else if (standardScore >= 55) {
+                            description = '你的语言理解能力非常出色，能够准确理解复杂文本，掌握丰富的词汇，并能清晰表达思想。这种能力在需要大量阅读、写作和沟通的领域特别有优势。';
+                        } else if (standardScore >= 45) {
+                            description = '你在语言理解方面表现处于平均水平，能够理解基本的文本和表达，满足日常工作和生活的需要。';
+                        } else if (standardScore >= 35) {
+                            description = '你在语言理解方面的能力略低于平均水平，可能需要更多的阅读和练习来提升语言能力。';
+                        } else {
+                            description = '你在语言理解方面的能力明显低于平均水平，建议通过大量阅读和写作练习来提升这方面的能力。';
+                        }
+                        break;
+                    case '数字运算':
+                        if (standardScore >= 65) {
+                            description = '你的数字运算能力极为出色，能够轻松处理复杂的数学问题和数据分析。这种能力在科学、工程、金融等领域有显著优势。';
+                        } else if (standardScore >= 55) {
+                            description = '你在数字运算方面表现优秀，能够轻松处理基本的数学问题和数字推理。这种能力在需要数据分析和计算的领域有明显优势。';
+                        } else if (standardScore >= 45) {
+                            description = '你在数字运算方面表现处于平均水平，能够处理基本的数学问题和计算，满足日常工作和生活的需要。';
+                        } else if (standardScore >= 35) {
+                            description = '你在数字运算方面的能力略低于平均水平，可能需要更多的练习来提升计算和推理能力。';
+                        } else {
+                            description = '你在数字运算方面的能力明显低于平均水平，建议通过基础数学练习和实际应用来提升这方面的能力。';
+                        }
+                        break;
+                    case '空间想象':
+                        if (standardScore >= 65) {
+                            description = '你的空间想象能力极为出色，能够轻松处理复杂的空间关系和图形转换。这种能力在设计、建筑、工程等领域有显著优势。';
+                        } else if (standardScore >= 55) {
+                            description = '你在空间想象方面表现优秀，能够清晰地想象和处理空间关系。这种能力在设计、艺术、工程等领域有明显优势。';
+                        } else if (standardScore >= 45) {
+                            description = '你在空间想象方面表现处于平均水平，能够处理基本的空间关系和图形转换，满足日常工作和生活的需要。';
+                        } else if (standardScore >= 35) {
+                            description = '你在空间想象方面的能力略低于平均水平，可能需要更多的练习来提升空间感知能力。';
+                        } else {
+                            description = '你在空间想象方面的能力明显低于平均水平，建议通过视觉游戏、绘画和模型制作等活动来提升这方面的能力。';
+                        }
+                        break;
+                    case '记忆力':
+                        if (standardScore >= 65) {
+                            description = '你的记忆力和专注力极为出色，能够轻松记住和处理大量信息。这种能力在学术研究、医疗、法律等需要大量记忆的领域有显著优势。';
+                        } else if (standardScore >= 55) {
+                            description = '你在记忆力和专注力方面表现优秀，能够有效记住和处理信息。这种能力在需要大量信息处理和学习的领域非常有价值。';
+                        } else if (standardScore >= 45) {
+                            description = '你在记忆力和专注力方面表现处于平均水平，能够记住基本的信息和任务，满足日常工作和生活的需要。';
+                        } else if (standardScore >= 35) {
+                            description = '你在记忆力和专注力方面的能力略低于平均水平，可能需要更多的练习和技巧来提升记忆效率。';
+                        } else {
+                            description = '你在记忆力和专注力方面的能力明显低于平均水平，建议通过记忆训练、注意力练习和健康的生活方式来提升这方面的能力。';
+                        }
+                        break;
+                }
+                
+                // 创建维度分析元素
+                const dimensionDiv = document.createElement('div');
+                dimensionDiv.className = 'bg-light p-4 rounded-lg';
+                dimensionDiv.innerHTML = `
+                    <div class="flex justify-between items-center mb-3">
+                        <div>
+                            <h4 class="font-medium text-primary">${dimension}能力</h4>
+                            <p class="text-sm text-gray-500">${getDimensionDescription(dimension)}</p>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-lg font-bold text-primary mr-2">${Math.round(rawScore)}</span>
+                            <span class="text-sm text-gray-500">/ 10</span>
+                            <span class="ml-3 px-2.5 py-0.5 ${levelClass} text-xs font-medium rounded">${level}</span>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-value ${getProgressColor(standardScore)}" style="width: ${Math.round(rawScore * 10)}%"></div>
+                    </div>
+                    <div class="mt-3">
+                        <p class="text-sm text-gray-700">
+                            ${description}
+                        </p>
+                    </div>
+                `;
+                
+                dimensionDetails.appendChild(dimensionDiv);
+            }
+        }
+
+        // 获取维度描述
+        function getDimensionDescription(dimension) {
+            switch (dimension) {
+                case '逻辑推理':
+                    return '评估你的抽象思维、分析问题和解决问题的能力';
+                case '语言理解':
+                    return '评估你的阅读理解、词汇掌握和语言表达能力';
+                case '数字运算':
+                    return '评估你的基本数学运算和数字推理能力';
+                case '空间想象':
+                    return '评估你的视觉空间感知和 mental rotation 能力';
+                case '记忆力':
+                    return '评估你的短期记忆和注意力集中程度';
+                default:
+                    return '';
+            }
+        }
+
+        // 获取进度条颜色
+        function getProgressColor(standardScore) {
+            if (standardScore >= 65) return 'bg-green-500';
+            if (standardScore >= 55) return 'bg-green-500';
+            if (standardScore >= 45) return 'bg-blue-500';
+            if (standardScore >= 35) return 'bg-yellow-500';
+            return 'bg-red-500';
+        }
+
+        // 更新职业匹配建议
+        function updateCareerSuggestions(standardScores) {
+            const careerSuggestions = document.getElementById('career-suggestions');
+            careerSuggestions.innerHTML = '';
+            
+            // 找出最高的两个维度
+            const sortedDimensions = Object.entries(standardScores)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 2);
+            
+            // 根据最高的两个维度推荐职业
+            const suggestions = [];
+            
+            if (sortedDimensions.some(([dim]) => dim === '逻辑推理') && 
+                sortedDimensions.some(([dim]) => dim === '数字运算')) {
+                suggestions.push({
+                    title: '科学与技术',
+                    description: '你的逻辑推理和数字运算能力都很强，非常适合从事科学研究、技术开发、数据分析等需要严密逻辑和数学能力的工作。'
+                });
+            }
+            
+            if (sortedDimensions.some(([dim]) => dim === '语言理解') && 
+                sortedDimensions.some(([dim]) => dim === '记忆力')) {
+                suggestions.push({
+                    title: '教育与培训',
+                    description: '你的语言理解和记忆力优势非常适合教育领域，尤其是需要良好沟通和知识传递的岗位。'
+                });
+            }
+            
+            if (sortedDimensions.some(([dim]) => dim === '逻辑推理') && 
+                sortedDimensions.some(([dim]) => dim === '空间想象')) {
+                suggestions.push({
+                    title: '设计与工程',
+                    description: '你的逻辑推理和空间想象能力都很强，非常适合从事工程设计、产品开发、建筑设计等需要逻辑思维和空间感知的工作。'
+                });
+            }
+            
+            if (sortedDimensions.some(([dim]) => dim === '语言理解') && 
+                sortedDimensions.some(([dim]) => dim === '逻辑推理')) {
+                suggestions.push({
+                    title: '咨询与分析',
+                    description: '你的语言能力和逻辑思维都很强，非常适合从事咨询、分析、市场研究等需要沟通和分析能力的工作。'
+                });
+            }
+            
+            // 如果没有匹配到特定组合，提供一般性建议
+            if (suggestions.length === 0) {
+                suggestions.push({
+                    title: '管理与协调',
+                    description: '根据你的能力分布，你可能在需要多方面能力协调的管理岗位上有良好表现。'
+                });
+                suggestions.push({
+                    title: '创业与创新',
+                    description: '你的能力结构可能适合创业或创新工作，能够灵活运用各种能力解决问题。'
+                });
+            }
+            
+            // 添加建议到页面
+            suggestions.forEach(suggestion => {
+                const suggestionDiv = document.createElement('div');
+                suggestionDiv.className = 'bg-white p-4 rounded-lg shadow-sm';
+                suggestionDiv.innerHTML = `
+                    <h4 class="font-medium text-primary mb-2">${suggestion.title}</h4>
+                    <p class="text-sm text-gray-600">${suggestion.description}</p>
+                `;
+                careerSuggestions.appendChild(suggestionDiv);
+            });
+        }
+
+        // 更新发展建议
+        function updateDevelopmentSuggestions(standardScores) {
+            const developmentSuggestions = document.getElementById('development-suggestions');
+            developmentSuggestions.innerHTML = '';
+            
+            // 找出最低的两个维度
+            const sortedDimensions = Object.entries(standardScores)
+                .sort((a, b) => a[1] - b[1])
+                .slice(0, 2);
+            
+            // 根据最低的两个维度提供发展建议
+            sortedDimensions.forEach(([dimension, score]) => {
+                let title, description;
+                
+                switch (dimension) {
+                    case '逻辑推理':
+                        title = '逻辑推理能力提升';
+                        description = '可以通过解谜游戏、逻辑题练习、批判性阅读和辩论等活动来提升逻辑推理能力。尝试在日常生活中多问"为什么"，分析问题的因果关系，培养系统思考的习惯。';
+                        break;
+                    case '语言理解':
+                        title = '语言理解能力提升';
+                        description = '可以通过广泛阅读、写作练习、词汇学习和参与讨论等活动来提升语言理解能力。尝试阅读不同类型的书籍和文章，学习新词汇，并练习清晰表达自己的想法。';
+                        break;
+                    case '数字运算':
+                        title = '数字运算能力提升';
+                        description = '可以通过数学谜题、数据分析练习或学习编程来提升数字运算能力。日常中可以尝试心算练习，减少对计算器的依赖，关注生活中的数字关系。';
+                        break;
+                    case '空间想象':
+                        title = '空间想象能力提升';
+                        description = '可以通过解谜游戏、三维建模软件练习或绘画来提升空间想象能力。尝试在日常生活中进行 mental rotation 练习，如想象物体旋转后的样子，或组装立体模型。';
+                        break;
+                    case '记忆力':
+                        title = '记忆力与专注力提升';
+                        description = '可以通过记忆游戏、冥想练习、番茄工作法等活动来提升记忆力和专注力。保持充足的睡眠和健康的生活方式也有助于提高记忆效率。学习记忆技巧，如联想记忆法和思维导图。';
+                        break;
+                }
+                
+                const suggestionDiv = document.createElement('div');
+                suggestionDiv.className = 'bg-white p-4 rounded-lg shadow-sm';
+                suggestionDiv.innerHTML = `
+                    <h4 class="font-medium text-primary mb-2">${title}</h4>
+                    <p class="text-sm text-gray-600">${description}</p>
+                `;
+                developmentSuggestions.appendChild(suggestionDiv);
+            });
+            
+            // 添加综合能力应用建议
+            const综合SuggestionDiv = document.createElement('div');
+            综合SuggestionDiv.className = 'bg-white p-4 rounded-lg shadow-sm';
+            综合SuggestionDiv.innerHTML = `
+                <h4 class="font-medium text-primary mb-2">综合能力应用</h4>
+                <p class="text-sm text-gray-600">寻找能够综合运用你各方面能力的活动或项目，如参与团队协作解决复杂问题、进行跨学科学习或参与创意项目。这有助于你全面发展并更好地整合各种能力。</p>
+            `;
+            developmentSuggestions.appendChild(综合SuggestionDiv);
+        }
+
+        // 更新进度
+        function updateProgress() {
+            const progress = ((currentQuestionIndex + 1) / testData.length) * 100;
+            progressBar.style.width = `${progress}%`;
+            progressText.textContent = `${currentQuestionIndex + 1}/${testData.length}`;
+        }
+
+        // 切换移动端菜单
+        function toggleMobileMenu() {
+            mobileMenu.classList.toggle('hidden');
+        }
+
+        // 显示模态框
+        function showModal(title, content, confirmCallback = null) {
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-content').innerHTML = content;
+            modal.classList.remove('hidden');
+            
+            // 保存确认回调
+            modalConfirm.onclick = function() {
+                hideModal();
+                if (confirmCallback) {
+                    confirmCallback();
+                }
+            };
+        }
+
+        // 隐藏模态框
+        function hideModal() {
+            modal.classList.add('hidden');
+        }
+
+        // 确认模态框
+        function confirmModal() {
+            hideModal();
+        }
+
+        // 初始化页面
+        init();
+    </script>
+</body>
+</html>
+# 一般能力倾向测试题目与分析
+
+## 测试说明
+
+本测试是一项原创的能力倾向评估工具，旨在帮助18岁以上成人了解自己在五个关键能力维度上的表现：逻辑推理、语言理解、数字运算、空间想象和记忆力。通过测试结果，你可以获得关于自身能力特点的客观认识，为职业选择和个人发展提供参考。
+
+**重要提示：** 本测试为原创内容服务，非专业医疗/心理测评。测试结果仅供参考，不构成职业选择或能力评估的唯一依据。
+
+## 测试题目
+
+### 一、逻辑推理能力（1-10题）
+
+1. 如果"所有的鸟都会飞"和"企鹅是鸟"这两个陈述都是真的，那么下面哪个结论一定是正确的？
+   - A. 企鹅会飞
+   - B. 企鹅不会飞
+   - C. 有些鸟不会飞
+   - D. 以上结论都不一定正确
+   - **答案：A**
+   - **解析：** 逻辑推理中，即使前提看起来与事实不符，也要根据给定的前提进行推理。根据"所有的鸟都会飞"和"企鹅是鸟"这两个前提，可以得出"企鹅会飞"的结论。
+
+2. 在一个班级中，所有学生要么喜欢数学，要么喜欢语文，要么两者都喜欢。如果有20人喜欢数学，15人喜欢语文，5人两者都喜欢，那么这个班级共有多少学生？
+   - A. 30人
+   - B. 35人
+   - C. 40人
+   - D. 45人
+   - **答案：A**
+   - **解析：** 使用集合的容斥原理：总人数 = 喜欢数学的人数 + 喜欢语文的人数 - 两者都喜欢的人数 = 20 + 15 - 5 = 30人。
+
+3. 根据以下数列规律，下一个数字应该是什么？1, 3, 6, 10, 15, ?
+   - A. 18
+   - B. 20
+   - C. 21
+   - D. 25
+   - **答案：C**
+   - **解析：** 观察相邻数字之间的差值：3-1=2, 6-3=3, 10-6=4, 15-10=5，差值依次增加1，因此下一个差值应为6，下一个数字为15+6=21。
+
+4. 如果A比B高，B比C高，而C比D矮，那么以下哪个陈述一定是正确的？
+   - A. A比D高
+   - B. A比C高
+   - C. B比D高
+   - D. D比A高
+   - **答案：B**
+   - **解析：** 根据给定的条件，可以确定A > B > C，但D与A、B的关系不明确，只能确定A > C。
+
+5. 在一项调查中，60%的人喜欢咖啡，70%的人喜欢茶，30%的人既喜欢咖啡又喜欢茶。那么不喜欢咖啡也不喜欢茶的人占多少比例？
+   - A. 0%
+   - B. 10%
+   - C. 20%
+   - D. 30%
+   - **答案：B**
+   - **解析：** 使用集合的容斥原理：至少喜欢一种的比例 = 喜欢咖啡的比例 + 喜欢茶的比例 - 两者都喜欢的比例 = 60% + 70% - 30% = 100%。因此，不喜欢咖啡也不喜欢茶的人占100% - 100% = 0%。
+
+6. 根据以下图形序列的规律，下一个图形应该是选项中的哪一个？（图形描述：圆形、三角形、正方形、圆形、三角形、？）
+   - A. 圆形
+   - B. 三角形
+   - C. 正方形
+   - D. 五角星
+   - **答案：C**
+   - **解析：** 观察图形序列的重复模式：圆形、三角形、正方形，然后再次从圆形开始，因此下一个图形应该是正方形。
+
+7. 如果所有的哺乳动物都有肺，而鲸鱼是哺乳动物，那么可以得出什么结论？
+   - A. 鲸鱼有肺
+   - B. 鲸鱼没有肺
+   - C. 有些哺乳动物没有肺
+   - D. 以上都不对
+   - **答案：A**
+   - **解析：** 这是一个典型的三段论推理：所有A都是B，C是A，因此C是B。即所有哺乳动物都有肺，鲸鱼是哺乳动物，因此鲸鱼有肺。
+
+8. 在一个盒子里有红、蓝、绿三种颜色的球，数量分别为3个、4个、5个。如果随机取出一个球，那么取出红球的概率是多少？
+   - A. 1/4
+   - B. 1/3
+   - C. 3/12
+   - D. 3/7
+   - **答案：A**
+   - **解析：** 概率 = 目标事件的数量 / 总事件的数量 = 3 / (3+4+5) = 3/12 = 1/4。
+
+9. 如果"如果下雨，地面就会湿"这个陈述是真的，那么以下哪个陈述也一定是真的？
+   - A. 如果地面湿，那么一定下雨了
+   - B. 如果地面不湿，那么一定没下雨
+   - C. 如果没下雨，那么地面一定不湿
+   - D. 以上都不对
+   - **答案：B**
+   - **解析：** 原命题为"如果P，那么Q"，其逆否命题"如果非Q，那么非P"一定为真。即"如果地面不湿，那么一定没下雨"。
+
+10. 根据以下数列规律，下一个数字应该是什么？2, 4, 8, 16, 32, ?
+    - A. 48
+    - B. 56
+    - C. 64
+    - D. 128
+    - **答案：C**
+    - **解析：** 观察相邻数字之间的倍数关系：4/2=2, 8/4=2, 16/8=2, 32/16=2，每个数字都是前一个数字的2倍，因此下一个数字为32×2=64。
+
+### 二、语言理解能力（11-20题）
+
+11. 以下哪个成语的意思与"画蛇添足"最接近？
+    - A. 多此一举
+    - B. 一举两得
+    - C. 事半功倍
+    - D. 事倍功半
+    - **答案：A**
+    - **解析：** 画蛇添足比喻做了多余的事，反而不恰当。多此一举指做了不必要的、多余的事情。两者意思最接近。
+
+12. 根据上下文，"他的演讲充满了感染力，全场观众都被他的话语所打动"中，"感染力"一词的意思最接近：
+    - A. 传染疾病的能力
+    - B. 影响和打动他人的能力
+    - C. 让人感到疲惫的能力
+    - D. 让人产生怀疑的能力
+    - **答案：B**
+    - **解析：** 根据句子的整体意思，"感染力"指的是演讲者的话语能够影响和打动观众的能力。
+
+13. 以下哪个句子没有语法错误？
+    - A. 他不仅学习好，而且体育也很棒。
+    - B. 我昨天看了一部非常有趣的电影，让我笑得不停。
+    - C. 通过努力，使他的成绩有了很大的提高。
+    - D. 我们应该从小培养艰苦朴素的习惯。
+    - **答案：D**
+    - **解析：** A句"不仅...而且..."连接的成分不对称；B句缺少主语；C句"通过...使..."同时使用，导致句子缺少主语；D句语法正确。
+
+14. "首当其冲"这个成语的正确含义是：
+    - A. 首先受到攻击或遭遇灾难
+    - B. 第一个冲向前方
+    - C. 首先考虑到的事情
+    - D. 最重要的位置
+    - **答案：A**
+    - **解析：** 首当其冲中的"冲"是指冲击、攻击，整个成语比喻最先受到攻击或遭遇灾难。
+
+15. 以下哪个词语是褒义词？
+    - A. 固执
+    - B. 坚持
+    - C. 顽固
+    - D. 执拗
+    - **答案：B**
+    - **解析：** 褒义词是指带有赞许、肯定感情色彩的词。"坚持"是褒义词，表示持之以恒的积极品质；其他三个词都是贬义词。
+
+16. 根据上下文，"这个计划的实施遇到了许多掣肘因素"中，"掣肘"一词的意思最接近：
+    - A. 推动
+    - B. 支持
+    - C. 阻碍
+    - D. 加速
+    - **答案：C**
+    - **解析：** 根据句子的整体意思，"掣肘"指的是阻碍计划实施的因素。
+
+17. 以下哪个句子使用了比喻的修辞手法？
+    - A. 他的声音像洪钟一样响亮。
+    - B. 他跑得比兔子还快。
+    - C. 树上的苹果红得像火一样。
+    - D. 以上都是
+    - **答案：D**
+    - **解析：** 比喻是用跟甲事物有相似之点的乙事物来描写或说明甲事物。A句将声音比作洪钟，B句将跑步速度比作兔子，C句将苹果的红色比作火，都是比喻。
+
+18. "明日黄花"这个成语的正确含义是：
+    - A. 明天的黄花
+    - B. 过时的事物
+    - C. 即将到来的美好事物
+    - D. 珍贵的花朵
+    - **答案：B**
+    - **解析：** 明日黄花比喻过时或无意义的事物，出自苏轼的诗句"明日黄花蝶也愁"。
+
+19. 以下哪个词语的词性与其他三个不同？
+    - A. 迅速
+    - B. 敏捷
+    - C. 快速
+    - D. 速度
+    - **答案：D**
+    - **解析：** "迅速"、"敏捷"、"快速"都是形容词，而"速度"是名词。
+
+20. 根据上下文，"他的话虽然不多，但每一句都很有分量"中，"分量"一词的意思最接近：
+    - A. 重量
+    - B. 重要性和影响力
+    - C. 数量
+    - D. 体积
+    - **答案：B**
+    - **解析：** 根据句子的整体意思，"分量"指的是话语的重要性和影响力。
+
+### 三、数字运算能力（21-30题）
+
+21. 如果一个数的25%是60，那么这个数是多少？
+    - A. 150
+    - B. 200
+    - C. 240
+    - D. 300
+    - **答案：C**
+    - **解析：** 设这个数为x，则25% × x = 60，即0.25x = 60，解得x = 60 ÷ 0.25 = 240。
+
+22. 计算：(3.5 + 2.5) × (4 - 1.5) = ?
+    - A. 12
+    - B. 15
+    - C. 18
+    - D. 20
+    - **答案：B**
+    - **解析：** 先计算括号内的加法和减法：3.5 + 2.5 = 6，4 - 1.5 = 2.5，然后进行乘法运算：6 × 2.5 = 15。
+
+23. 如果一件商品的原价是200元，先打八折，再打九折，那么最终的售价是多少元？
+    - A. 144元
+    - B. 152元
+    - C. 160元
+    - D. 176元
+    - **答案：A**
+    - **解析：** 先计算八折后的价格：200 × 0.8 = 160元，再计算九折后的价格：160 × 0.9 = 144元。
+
+24. 计算：1/4 + 1/6 = ?
+    - A. 1/5
+    - B. 5/12
+    - C. 7/12
+    - D. 1/2
+    - **答案：B**
+    - **解析：** 先通分，找到分母的最小公倍数12，然后进行加法运算：1/4 = 3/12，1/6 = 2/12，因此1/4 + 1/6 = 3/12 + 2/12 = 5/12。
+
+25. 如果一个正方形的边长增加20%，那么它的面积增加了多少百分比？
+    - A. 20%
+    - B. 36%
+    - C. 40%
+    - D. 44%
+    - **答案：D**
+    - **解析：** 设原边长为a，则原面积为a²。新边长为1.2a，新面积为(1.2a)² = 1.44a²。面积增加了(1.44a² - a²) / a² × 100% = 44%。
+
+26. 计算：2³ + 3² = ?
+    - A. 17
+    - B. 18
+    - C. 19
+    - D. 20
+    - **答案：A**
+    - **解析：** 2³ = 2 × 2 × 2 = 8，3² = 3 × 3 = 9，所以2³ + 3² = 8 + 9 = 17。
+
+27. 如果一辆汽车以每小时60公里的速度行驶，那么它在3小时20分钟内行驶了多少公里？
+    - A. 180公里
+    - B. 190公里
+    - C. 200公里
+    - D. 210公里
+    - **答案：C**
+    - **解析：** 3小时20分钟 = 3 + 20/60 = 3 + 1/3 = 10/3小时。距离 = 速度 × 时间 = 60 × 10/3 = 200公里。
+
+28. 计算：(2.5 × 10³) ÷ (5 × 10²) = ?
+    - A. 0.5
+    - B. 5
+    - C. 50
+    - D. 500
+    - **答案：B**
+    - **解析：** 科学记数法的运算：(a × 10^m) ÷ (b × 10^n) = (a ÷ b) × 10^(m-n)。因此，(2.5 × 10³) ÷ (5 × 10²) = (2.5 ÷ 5) × 10^(3-2) = 0.5 × 10^1 = 5。
+
+29. 如果一个三角形的三个内角分别是30°、60°和90°，那么这个三角形是什么类型的三角形？
+    - A. 锐角三角形
+    - B. 直角三角形
+    - C. 钝角三角形
+    - D. 等边三角形
+    - **答案：B**
+    - **解析：** 有一个角是90°的三角形是直角三角形。
+
+30. 计算：√144 + √81 = ?
+    - A. 15
+    - B. 21
+    - C. 25
+    - D. 30
+    - **答案：B**
+    - **解析：** √144 = 12，√81 = 9，所以√144 + √81 = 12 + 9 = 21。
+
+### 四、空间想象能力（31-40题）
+
+31. 如果将一个正方形沿着对角线对折，得到的图形是什么形状？
+    - A. 正方形
+    - B. 长方形
+    - C. 三角形
+    - D. 菱形
+    - **答案：C**
+    - **解析：** 正方形沿着对角线对折后，会得到两个全等的直角三角形。
+
+32. 以下哪个图形可以通过旋转得到？（图形描述：选项中有四个图形，其中三个是不同的，一个是另一个的旋转版本）
+    - A. 选项A
+    - B. 选项B
+    - C. 选项C
+    - D. 选项D
+    - **答案：B**
+    - **解析：** 旋转不会改变图形的形状和大小，只会改变方向。选项B是另一个图形的旋转版本。
+
+33. 如果将一个立方体的表面展开成一个平面图形，以下哪个选项是可能的展开图？
+    - A. 选项A（描述：一个十字形，中心是一个正方形，上下左右各连接一个正方形）
+    - B. 选项B（描述：三个正方形排成一行，中间正方形的上下各连接一个正方形）
+    - C. 选项C（描述：四个正方形排成一行，第一个和最后一个正方形的外侧各连接一个正方形）
+    - D. 选项D（描述：两个正方形排成一行，每个正方形的上下各连接一个正方形）
+    - **答案：A**
+    - **解析：** 立方体的展开图必须能够折叠成一个封闭的立方体。选项A是典型的立方体展开图（十字形）。
+
+34. 如果从正上方观察一个圆柱体，看到的图形是什么形状？
+    - A. 圆形
+    - B. 长方形
+    - C. 椭圆形
+    - D. 正方形
+    - **答案：A**
+    - **解析：** 从正上方观察圆柱体，看到的是圆柱体的顶面，即圆形。
+
+35. 以下哪个图形是轴对称图形？
+    - A. 字母A
+    - B. 字母F
+    - C. 字母G
+    - D. 字母J
+    - **答案：A**
+    - **解析：** 轴对称图形是指沿着一条直线折叠后，直线两侧的部分能够完全重合的图形。字母A是轴对称图形，有一条垂直对称轴。
+
+36. 如果将一个圆形纸片对折两次，得到的图形是什么形状？
+    - A. 圆形
+    - B. 半圆形
+    - C. 扇形
+    - D. 四分之一圆形
+    - **答案：D**
+    - **解析：** 圆形纸片对折一次得到半圆形，再对折一次得到四分之一圆形。
+
+37. 以下哪个图形可以通过平移得到？（图形描述：选项中有四个图形，其中三个是不同的，一个是另一个的平移版本）
+    - A. 选项A
+    - B. 选项B
+    - C. 选项C
+    - D. 选项D
+    - **答案：C**
+    - **解析：** 平移不会改变图形的形状、大小和方向，只会改变位置。选项C是另一个图形的平移版本。
+
+38. 如果一个物体从正面看是一个正方形，从侧面看是一个长方形，那么这个物体可能是什么形状？
+    - A. 立方体
+    - B. 长方体
+    - C. 圆柱体
+    - D. 圆锥体
+    - **答案：B**
+    - **解析：** 长方体从正面看可能是正方形（当正面是正方形时），从侧面看是长方形。
+
+39. 以下哪个图形是中心对称图形？
+    - A. 字母H
+    - B. 字母L
+    - C. 字母P
+    - D. 字母T
+    - **答案：A**
+    - **解析：** 中心对称图形是指绕着一个中心点旋转180度后，能够与原图形完全重合的图形。字母H是中心对称图形。
+
+40. 如果将一个三角形的三个顶点分别与对边的中点连接，形成的图形中有多少个小三角形？
+    - A. 3个
+    - B. 4个
+    - C. 6个
+    - D. 8个
+    - **答案：D**
+    - **解析：** 三角形的三条中线（从顶点到对边中点的线段）相交于重心，将原三角形分成6个面积相等的小三角形。此外，三条中线还形成了一个中央的小三角形，因此总共有8个小三角形。
+
+### 五、记忆力与专注力（41-50题）
+
+41. 请仔细观察以下数字序列：3, 7, 2, 9, 4, 6, 1, 8, 5。现在请按从小到大的顺序排列这些数字。
+    - A. 1, 2, 3, 4, 5, 6, 7, 8, 9
+    - B. 1, 2, 3, 4, 6, 5, 7, 8, 9
+    - C. 1, 2, 3, 5, 4, 6, 7, 8, 9
+    - D. 1, 3, 2, 4, 5, 6, 7, 8, 9
+    - **答案：A**
+    - **解析：** 正确的从小到大排列是：1, 2, 3, 4, 5, 6, 7, 8, 9。
+
+42. 请仔细观察以下单词：苹果、香蕉、橙子、葡萄、草莓。现在请按字母顺序排列这些单词。
+    - A. 苹果、草莓、橙子、葡萄、香蕉
+    - B. 苹果、草莓、香蕉、橙子、葡萄
+    - C. 苹果、草莓、香蕉、葡萄、橙子
+    - D. 苹果、香蕉、橙子、葡萄、草莓
+    - **答案：C**
+    - **解析：** 按拼音字母顺序排列：苹果(píng guǒ)、草莓(cǎo méi)、香蕉(xiāng jiāo)、葡萄(pú táo)、橙子(chéng zǐ)。
+
+43. 请仔细观察以下图形：圆形、三角形、正方形、五角星、六边形。现在请按边数从少到多的顺序排列这些图形。
+    - A. 圆形、三角形、正方形、五角星、六边形
+    - B. 三角形、正方形、圆形、五角星、六边形
+    - C. 圆形、三角形、正方形、六边形、五角星
+    - D. 三角形、圆形、正方形、五角星、六边形
+    - **答案：A**
+    - **解析：** 圆形可以视为有无限多条边，三角形有3条边，正方形有4条边，五角星有5条边，六边形有6条边。按边数从少到多的顺序排列为：圆形、三角形、正方形、五角星、六边形。
+
+44. 请仔细观察以下日期：2023年5月12日、2023年3月15日、2023年7月8日、2023年1月20日、2023年9月3日。现在请按时间先后顺序排列这些日期。
+    - A. 2023年1月20日、2023年3月15日、2023年5月12日、2023年7月8日、2023年9月3日
+    - B. 2023年1月20日、2023年3月15日、2023年5月12日、2023年9月3日、2023年7月8日
+    - C. 2023年1月20日、2023年5月12日、2023年3月15日、2023年7月8日、2023年9月3日
+    - D. 2023年3月15日、2023年1月20日、2023年5月12日、2023年7月8日、2023年9月3日
+    - **答案：A**
+    - **解析：** 按时间先后顺序排列为：2023年1月20日、2023年3月15日、2023年5月12日、2023年7月8日、2023年9月3日。
+
+45. 请仔细观察以下颜色：红色、蓝色、绿色、黄色、紫色。现在请按彩虹的顺序排列这些颜色。
+    - A. 红色、黄色、绿色、蓝色、紫色
+    - B. 红色、橙色、黄色、绿色、蓝色
+    - C. 红色、黄色、蓝色、绿色、紫色
+    - D. 红色、绿色、黄色、蓝色、紫色
+    - **答案：A**
+    - **解析：** 彩虹的顺序是：红、橙、黄、绿、蓝、靛、紫。题目中给出的颜色按彩虹顺序排列为：红色、黄色、绿色、蓝色、紫色。
+
+46. 请仔细观察以下国家：中国、美国、日本、德国、法国。现在请按国土面积从大到小的顺序排列这些国家。
+    - A. 中国、美国、法国、德国、日本
+    - B. 中国、美国、德国、法国、日本
+    - C. 美国、中国、法国、德国、日本
+    - D. 中国、美国、日本、德国、法国
+    - **答案：A**
+    - **解析：** 按国土面积从大到小的顺序排列为：中国、美国、法国、德国、日本。
+
+47. 请仔细观察以下动物：猫、狗、大象、长颈鹿、兔子。现在请按体型从大到小的顺序排列这些动物。
+    - A. 大象、长颈鹿、狗、猫、兔子
+    - B. 长颈鹿、大象、狗、猫、兔子
+    - C. 大象、长颈鹿、兔子、狗、猫
+    - D. 大象、长颈鹿、狗、兔子、猫
+    - **答案：A**
+    - **解析：** 按体型从大到小的顺序排列为：大象、长颈鹿、狗、猫、兔子。
+
+48. 请仔细观察以下学科：数学、语文、英语、物理、化学。现在请按你学习这些学科的先后顺序排列。
+    - A. 语文、数学、英语、物理、化学
+    - B. 语文、数学、英语、化学、物理
+    - C. 数学、语文、英语、物理、化学
+    - D. 语文、英语、数学、物理、化学
+    - **答案：A**
+    - **解析：** 通常的学习顺序是：语文、数学（小学低年级），然后是英语（小学中高年级），最后是物理、化学（初中）。
+
+49. 请仔细观察以下工具：锤子、螺丝刀、扳手、钳子、锯子。现在请按字母顺序排列这些工具。
+    - A. 锤子、锯子、钳子、螺丝刀、扳手
+    - B. 锤子、锯子、螺丝刀、钳子、扳手
+    - C. 锤子、锯子、扳手、钳子、螺丝刀
+    - D. 锤子、钳子、锯子、螺丝刀、扳手
+    - **答案：A**
+    - **解析：** 按拼音字母顺序排列为：锤子(chuí zi)、锯子(jù zi)、钳子(qián zi)、螺丝刀(luó sī dāo)、扳手(bān shǒu)。
+
+50. 请仔细观察以下乐器：钢琴、小提琴、吉他、架子鼓、长笛。现在请按弦乐器、管乐器、打击乐器的顺序分类排列这些乐器。
+    - A. 小提琴、吉他、钢琴、长笛、架子鼓
+    - B. 小提琴、吉他、长笛、钢琴、架子鼓
+    - C. 小提琴、吉他、长笛、架子鼓、钢琴
+    - D. 钢琴、小提琴、吉他、长笛、架子鼓
+    - **答案：A**
+    - **解析：** 弦乐器包括小提琴、吉他、钢琴（钢琴通常被归类为弦乐器）；管乐器包括长笛；打击乐器包括架子鼓。因此，按弦乐器、管乐器、打击乐器的顺序分类排列为：小提琴、吉他、钢琴、长笛、架子鼓。
+
+## 评分标准
+
+### 原始分计算
+- 每道题答对得1分，答错或不答得0分
+- 使用提示后答对得0.5分
+- 每个维度原始分范围：0-10分
+- 总分范围：0-50分
+
+### 标准分转换
+将原始分转换为标准分（T分数），均值50，标准差10。
+转换公式：T = 50 + 10 × (原始分 - 维度平均分) / 维度标准差
+
+### 能力等级评定
+- 卓越（T≥65）：该维度能力非常突出
+- 优秀（T=55-64）：该维度能力较好
+- 良好（T=45-54）：该维度能力处于平均水平
+- 待提升（T=35-44）：该维度能力略低于平均水平
+- 需要关注（T<35）：该维度能力明显低于平均水平
+
+## 结果分析
+
+### 逻辑推理能力
+**高分表现（T≥55）：** 你在逻辑推理方面表现优秀，能够快速分析问题、识别模式并得出合理结论。这种能力在需要抽象思维和系统分析的领域非常有价值，如科学研究、法律、计算机编程等。
+
+**中等表现（T=45-54）：** 你在逻辑推理方面表现处于平均水平，能够处理基本的逻辑问题和分析任务。这种能力在大多数职业中都有一定的重要性。
+
+**低分表现（T≤44）：** 你在逻辑推理方面的能力可能需要提升。建议通过解谜游戏、逻辑题练习、批判性阅读和辩论等活动来增强这方面的能力。
+
+### 语言理解能力
+**高分表现（T≥55）：** 你的语言理解能力非常出色，能够准确理解复杂文本，掌握丰富的词汇，并能清晰表达思想。这种能力在需要大量阅读、写作和沟通的领域特别有优势，如教育、媒体、公关等。
+
+**中等表现（T=45-54）：** 你在语言理解方面表现处于平均水平，能够理解基本的文本和表达，满足日常工作和生活的需要。
+
+**低分表现（T≤44）：** 你在语言理解方面的能力可能需要提升。建议通过广泛阅读、写作练习、词汇学习和参与讨论等活动来增强这方面的能力。
+
+### 数字运算能力
+**高分表现（T≥55）：** 你在数字运算方面表现优秀，能够轻松处理基本的数学问题和数字推理。这种能力在需要数据分析和计算的领域有明显优势，如金融、工程、科学等。
+
+**中等表现（T=45-54）：** 你在数字运算方面表现处于平均水平，能够处理基本的数学问题和计算，满足日常工作和生活的需要。
+
+**低分表现（T≤44）：** 你在数字运算方面的能力可能需要提升。建议通过数学谜题、数据分析练习或学习编程来增强这方面的能力。
+
+### 空间想象能力
+**高分表现（T≥55）：** 你在空间想象方面表现优秀，能够清晰地想象和处理空间关系。这种能力在设计、艺术、工程等领域有明显优势。
+
+**中等表现（T=45-54）：** 你在空间想象方面表现处于平均水平，能够处理基本的空间关系和图形转换，满足日常工作和生活的需要。
+
+**低分表现（T≤44）：** 你在空间想象方面的能力可能需要提升。建议通过解谜游戏、三维建模软件练习或绘画来增强这方面的能力。
+
+### 记忆力与专注力
+**高分表现（T≥55）：** 你在记忆力和专注力方面表现优秀，能够有效记住和处理信息。这种能力在需要大量信息处理和学习的领域非常有价值，如教育、医疗、法律等。
+
+**中等表现（T=45-54）：** 你在记忆力和专注力方面表现处于平均水平，能够记住基本的信息和任务，满足日常工作和生活的需要。
+
+**低分表现（T≤44）：** 你在记忆力和专注力方面的能力可能需要提升。建议通过记忆游戏、冥想练习、番茄工作法等活动来增强这方面的能力。
+
+## 职业匹配建议
+
+根据你的能力倾向分析，以下是一些可能适合你的职业方向：
+
+### 逻辑推理能力强
+- 科学家/研究员
+- 软件工程师/程序员
+- 数学家/统计学家
+- 律师/法律顾问
+- 系统分析师
+
+### 语言理解能力强
+- 教师/教育工作者
+- 作家/编辑
+- 记者/媒体工作者
+- 公关/市场营销
+- 语言治疗师
+
+### 数字运算能力强
+- 会计师/财务分析师
+- 工程师
+- 数据分析师
+- 精算师
+- 科学家/研究员
+
+### 空间想象能力强
+- 建筑师
+- 设计师（平面、室内、工业等）
+- 工程师
+- 艺术家
+- 飞行员
+
+### 记忆力与专注力强
+- 医生/医疗专业人员
+- 教师/教育工作者
+- 律师
+- 图书馆员/档案管理员
+- 研究人员
+
+### 综合能力强
+- 管理者/项目经理
+- 企业家/创业者
+- 咨询顾问
+- 人力资源专业人员
+- 培训师/教练
+
+## 能力发展建议
+
+### 逻辑推理能力提升
+- 多做逻辑题、谜题和智力游戏
+- 学习逻辑学基础知识
+- 练习批判性思维，多问"为什么"
+- 参与辩论或讨论活动
+- 学习编程或解决算法问题
+
+### 语言理解能力提升
+- 广泛阅读不同类型的书籍和文章
+- 学习新词汇并尝试在日常交流中使用
+- 练习写作，如日记、博客或文章
+- 参与讨论或演讲活动
+- 学习一门新语言
+
+### 数字运算能力提升
+- 练习基本的数学运算和心算
+- 学习统计学和数据分析基础知识
+- 解决数学问题和谜题
+- 学习编程或数据分析工具
+- 在日常生活中应用数学，如预算规划、投资理财等
+
+### 空间想象能力提升
+- 玩空间类游戏，如拼图、积木等
+- 学习绘画或素描
+- 练习mental rotation（心理旋转）
+- 使用三维建模软件
+- 参与手工制作或DIY项目
+
+### 记忆力与专注力提升
+- 练习记忆技巧，如联想记忆法、思维导图等
+- 学习冥想或正念练习
+- 使用番茄工作法等时间管理技巧
+- 保持充足的睡眠和健康的生活方式
+- 减少干扰，创造专注的环境
+
+## 免责声明
+
+1. **非专业诊断工具：** 本测试不是由专业心理测评师设计或监督的专业心理测评工具，测试结果不能替代专业的心理评估或诊断。
+
+2. **结果仅供参考：** 测试结果仅作为个人了解自身能力倾向的参考，不应作为职业选择、教育决策或其他重要人生选择的唯一依据。
+
+3. **能力可塑性：** 人的能力是可塑的，测试结果不能代表你的全部潜力或未来发展。通过适当的训练和实践，能力可以得到提升。
+
+4. **专业咨询建议：** 如有职业规划、教育选择等方面的困惑，建议寻求专业职业咨询师或教育顾问的帮助。
+
+5. **原创声明：** 本测试内容为原创设计，未经授权不得复制、修改或用于商业用途。如有侵权行为，将依法追究法律责任。
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一般能力倾向测试 - 简化版</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6',
+                        secondary: '#f97316',
+                        neutral: '#f8fafc',
+                        dark: '#1e293b',
+                        light: '#f1f5f9'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .btn-primary {
+                @apply bg-primary text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:bg-blue-600 hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50;
+            }
+            .btn-outline {
+                @apply border border-primary text-primary px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:bg-primary hover:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50;
+            }
+            .input-radio {
+                @apply w-5 h-5 text-primary focus:ring-primary border-gray-300 rounded;
+            }
+            .progress-bar {
+                @apply h-2 bg-gray-200 rounded-full overflow-hidden;
+            }
+            .progress-value {
+                @apply h-full bg-primary transition-all duration-500 ease-out;
+            }
+        }
+    </style>
+</head>
+<body class="bg-neutral min-h-screen font-sans text-dark">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <!-- 测试说明 -->
+        <div id="test-intro" class="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h1 class="text-2xl font-bold text-primary mb-4">一般能力倾向测试</h1>
+            <p class="text-gray-700 mb-4">
+                本测试包含50道题目，评估你在逻辑推理、语言理解、数字运算、空间想象和记忆力五个维度的能力倾向。完成测试后，你将获得详细的能力分析报告。
+            </p>
+            <div class="bg-blue-50 border-l-4 border-primary p-4 rounded mb-6">
+                <p class="text-sm text-gray-700">
+                    <strong>重要提示：</strong> 本测试为原创内容服务，非专业医疗/心理测评。测试结果仅供参考，不构成职业选择或能力评估的唯一依据。
+                </p>
+            </div>
+            <div class="flex justify-center">
+                <button id="start-test" class="btn-primary">开始测试</button>
+            </div>
+        </div>
+
+        <!-- 测试区域 -->
+        <div id="test-area" class="bg-white rounded-lg shadow-md p-6 mb-8 hidden">
+            <!-- 进度条 -->
+            <div class="mb-6">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-sm font-medium text-gray-700">测试进度</span>
+                    <span class="text-sm font-medium text-primary" id="progress-text">1/50</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-value" id="progress-bar" style="width: 2%"></div>
+                </div>
+            </div>
+
+            <!-- 题目 -->
+            <div class="mb-6">
+                <div class="mb-4">
+                    <span class="bg-primary text-white text-xs font-bold px-2.5 py-1 rounded mr-2" id="question-category">逻辑推理</span>
+                    <h3 class="text-xl font-semibold" id="question-text">题目加载中...</h3>
+                </div>
+                <div class="space-y-3" id="options-container">
+                    <!-- 选项将通过JavaScript动态生成 -->
+                </div>
+            </div>
+
+            <!-- 操作按钮 -->
+            <div class="flex justify-between">
+                <button id="prev-btn" class="btn-outline opacity-50 cursor-not-allowed" disabled>上一题</button>
+                <button id="next-btn" class="btn-primary">下一题</button>
+            </div>
+        </div>
+
+        <!-- 结果区域 -->
+        <div id="result-area" class="bg-white rounded-lg shadow-md p-6 mb-8 hidden">
+            <h2 class="text-2xl font-bold text-primary mb-6">测试结果</h2>
+            
+            <!-- 总体评分 -->
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold mb-4">总体表现</h3>
+                <div class="bg-light p-4 rounded-lg">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-600">你的总得分</p>
+                            <div class="flex items-end">
+                                <span class="text-3xl font-bold text-primary" id="total-score">0</span>
+                                <span class="text-gray-500 ml-1">/ 50</span>
+                            </div>
+                            <p class="text-sm text-gray-500" id="total-percentile">超过了约0%的测试者</p>
+                        </div>
+                        <div class="w-1/2">
+                            <div class="progress-bar h-4">
+                                <div class="progress-value bg-secondary" id="total-progress" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 能力维度雷达图 -->
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold mb-4">能力维度分析</h3>
+                <div class="bg-light p-4 rounded-lg">
+                    <div class="w-full h-64">
+                        <canvas id="radar-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 各维度详细分析 -->
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold mb-4">维度详细分析</h3>
+                <div class="space-y-4" id="dimension-details">
+                    <!-- 各维度分析将通过JavaScript动态生成 -->
+                </div>
+            </div>
+
+            <!-- 职业匹配建议 -->
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold mb-4">职业匹配建议</h3>
+                <div class="bg-light p-4 rounded-lg" id="career-suggestions">
+                    <!-- 职业建议将通过JavaScript动态生成 -->
+                </div>
+            </div>
+
+            <!-- 能力发展建议 -->
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold mb-4">能力发展建议</h3>
+                <div class="bg-light p-4 rounded-lg" id="development-suggestions">
+                    <!-- 发展建议将通过JavaScript动态生成 -->
+                </div>
+            </div>
+
+            <!-- 重新测试按钮 -->
+            <div class="flex justify-center">
+                <button id="retake-test" class="btn-outline">重新测试</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 测试题目数据
+        const testData = [
+            // 逻辑推理能力题目 (1-10)
+            {
+                id: 1,
+                category: "逻辑推理",
+                question: "如果\"所有的鸟都会飞\"和\"企鹅是鸟\"这两个陈述都是真的，那么下面哪个结论一定是正确的？",
+                options: [
+                    "企鹅会飞",
+                    "企鹅不会飞",
+                    "有些鸟不会飞",
+                    "以上结论都不一定正确"
+                ],
+                answer: 0
+            },
+            {
+                id: 2,
+                category: "逻辑推理",
+                question: "在一个班级中，所有学生要么喜欢数学，要么喜欢语文，要么两者都喜欢。如果有20人喜欢数学，15人喜欢语文，5人两者都喜欢，那么这个班级共有多少学生？",
+                options: [
+                    "30人",
+                    "35人",
+                    "40人",
+                    "45人"
+                ],
+                answer: 0
+            },
+            {
+                id: 3,
+                category: "逻辑推理",
+                question: "根据以下数列规律，下一个数字应该是什么？1, 3, 6, 10, 15, ?",
+                options: [
+                    "18",
+                    "20",
+                    "21",
+                    "25"
+                ],
+                answer: 2
+            },
+            {
+                id: 4,
+                category: "逻辑推理",
+                question: "如果A比B高，B比C高，而C比D矮，那么以下哪个陈述一定是正确的？",
+                options: [
+                    "A比D高",
+                    "A比C高",
+                    "B比D高",
+                    "D比A高"
+                ],
+                answer: 1
+            },
+            {
+                id: 5,
+                category: "逻辑推理",
+                question: "在一项调查中，60%的人喜欢咖啡，70%的人喜欢茶，30%的人既喜欢咖啡又喜欢茶。那么不喜欢咖啡也不喜欢茶的人占多少比例？",
+                options: [
+                    "0%",
+                    "10%",
+                    "20%",
+                    "30%"
+                ],
+                answer: 1
+            },
+            {
+                id: 6,
+                category: "逻辑推理",
+                question: "根据以下图形序列的规律，下一个图形应该是选项中的哪一个？（图形描述：圆形、三角形、正方形、圆形、三角形、？）",
+                options: [
+                    "圆形",
+                    "三角形",
+                    "正方形",
+                    "五角星"
+                ],
+                answer: 2
+            },
+            {
+                id: 7,
+                category: "逻辑推理",
+                question: "如果所有的哺乳动物都有肺，而鲸鱼是哺乳动物，那么可以得出什么结论？",
+                options: [
+                    "鲸鱼有肺",
+                    "鲸鱼没有肺",
+                    "有些哺乳动物没有肺",
+                    "以上都不对"
+                ],
+                answer: 0
+            },
+            {
+                id: 8,
+                category: "逻辑推理",
+                question: "在一个盒子里有红、蓝、绿三种颜色的球，数量分别为3个、4个、5个。如果随机取出一个球，那么取出红球的概率是多少？",
+                options: [
+                    "1/4",
+                    "1/3",
+                    "3/12",
+                    "3/7"
+                ],
+                answer: 0
+            },
+            {
+                id: 9,
+                category: "逻辑推理",
+                question: "如果\"如果下雨，地面就会湿\"这个陈述是真的，那么以下哪个陈述也一定是真的？",
+                options: [
+                    "如果地面湿，那么一定下雨了",
+                    "如果地面不湿，那么一定没下雨",
+                    "如果没下雨，那么地面一定不湿",
+                    "以上都不对"
+                ],
+                answer: 1
+            },
+            {
+                id: 10,
+                category: "逻辑推理",
+                question: "根据以下数列规律，下一个数字应该是什么？2, 4, 8, 16, 32, ?",
+                options: [
+                    "48",
+                    "56",
+                    "64",
+                    "128"
+                ],
+                answer: 2
+            },
+            
+            // 语言理解能力题目 (11-20)
+            {
+                id: 11,
+                category: "语言理解",
+                question: "以下哪个成语的意思与\"画蛇添足\"最接近？",
+                options: [
+                    "多此一举",
+                    "一举两得",
+                    "事半功倍",
+                    "事倍功半"
+                ],
+                answer: 0
+            },
+            {
+                id: 12,
+                category: "语言理解",
+                question: "根据上下文，\"他的演讲充满了感染力，全场观众都被他的话语所打动\"中，\"感染力\"一词的意思最接近：",
+                options: [
+                    "传染疾病的能力",
+                    "影响和打动他人的能力",
+                    "让人感到疲惫的能力",
+                    "让人产生怀疑的能力"
+                ],
+                answer: 1
+            },
+            {
+                id: 13,
+                category: "语言理解",
+                question: "以下哪个句子没有语法错误？",
+                options: [
+                    "他不仅学习好，而且体育也很棒。",
+                    "我昨天看了一部非常有趣的电影，让我笑得不停。",
+                    "通过努力，使他的成绩有了很大的提高。",
+                    "我们应该从小培养艰苦朴素的习惯。"
+                ],
+                answer: 3
+            },
+            {
+                id: 14,
+                category: "语言理解",
+                question: "\"首当其冲\"这个成语的正确含义是：",
+                options: [
+                    "首先受到攻击或遭遇灾难",
+                    "第一个冲向前方",
+                    "首先考虑到的事情",
+                    "最重要的位置"
+                ],
+                answer: 0
+            },
+            {
+                id: 15,
+                category: "语言理解",
+                question: "以下哪个词语是褒义词？",
+                options: [
+                    "固执",
+                    "坚持",
+                    "顽固",
+                    "执拗"
+                ],
+                answer: 1
+            },
+            {
+                id: 16,
+                category: "语言理解",
+                question: "根据上下文，\"这个计划的实施遇到了许多掣肘因素\"中，\"掣肘\"一词的意思最接近：",
+                options: [
+                    "推动",
+                    "支持",
+                    "阻碍",
+                    "加速"
+                ],
+                answer: 2
+            },
+            {
+                id: 17,
+                category: "语言理解",
+                question: "以下哪个句子使用了比喻的修辞手法？",
+                options: [
+                    "他的声音像洪钟一样响亮。",
+                    "他跑得比兔子还快。",
+                    "树上的苹果红得像火一样。",
+                    "以上都是"
+                ],
+                answer: 3
+            },
+            {
+                id: 18,
+                category: "语言理解",
+                question: "\"明日黄花\"这个成语的正确含义是：",
+                options: [
+                    "明天的黄花",
+                    "过时的事物",
+                    "即将到来的美好事物",
+                    "珍贵的花朵"
+                ],
+                answer: 1
+            },
+            {
+                id: 19,
+                category: "语言理解",
+                question: "以下哪个词语的词性与其他三个不同？",
+                options: [
+                    "迅速",
+                    "敏捷",
+                    "快速",
+                    "速度"
+                ],
+                answer: 3
+            },
+            {
+                id: 20,
+                category: "语言理解",
+                question: "根据上下文，\"他的话虽然不多，但每一句都很有分量\"中，\"分量\"一词的意思最接近：",
+                options: [
+                    "重量",
+                    "重要性和影响力",
+                    "数量",
+                    "体积"
+                ],
+                answer: 1
+            },
+            
+            // 数字运算能力题目 (21-30)
+            {
+                id: 21,
+                category: "数字运算",
+                question: "如果一个数的25%是60，那么这个数是多少？",
+                options: [
+                    "150",
+                    "200",
+                    "240",
+                    "300"
+                ],
+                answer: 2
+            },
+            {
+                id: 22,
+                category: "数字运算",
+                question: "计算：(3.5 + 2.5) × (4 - 1.5) = ?",
+                options: [
+                    "12",
+                    "15",
+                    "18",
+                    "20"
+                ],
+                answer: 1
+            },
+            {
+                id: 23,
+                category: "数字运算",
+                question: "如果一件商品的原价是200元，先打八折，再打九折，那么最终的售价是多少元？",
+                options: [
+                    "144元",
+                    "152元",
+                    "160元",
+                    "176元"
+                ],
+                answer: 0
+            },
+            {
+                id: 24,
+                category: "数字运算",
+                question: "计算：1/4 + 1/6 = ?",
+                options: [
+                    "1/5",
+                    "5/12",
+                    "7/12",
+                    "1/2"
+                ],
+                answer: 1
+            },
+            {
+                id: 25,
+                category: "数字运算",
+                question: "如果一个正方形的边长增加20%，那么它的面积增加了多少百分比？",
+                options: [
+                    "20%",
+                    "36%",
+                    "40%",
+                    "44%"
+                ],
+                answer: 3
+            },
+            {
+                id: 26,
+                category: "数字运算",
+                question: "计算：2³ + 3² = ?",
+                options: [
+                    "17",
+                    "18",
+                    "19",
+                    "20"
+                ],
+                answer: 0
+            },
+            {
+                id: 27,
+                category: "数字运算",
+                question: "如果一辆汽车以每小时60公里的速度行驶，那么它在3小时20分钟内行驶了多少公里？",
+                options: [
+                    "180公里",
+                    "190公里",
+                    "200公里",
+                    "210公里"
+                ],
+                answer: 2
+            },
+            {
+                id: 28,
+                category: "数字运算",
+                question: "计算：(2.5 × 10³) ÷ (5 × 10²) = ?",
+                options: [
+                    "0.5",
+                    "5",
+                    "50",
+                    "500"
+                ],
+                answer: 1
+            },
+            {
+                id: 29,
+                category: "数字运算",
+                question: "如果一个三角形的三个内角分别是30°、60°和90°，那么这个三角形是什么类型的三角形？",
+                options: [
+                    "锐角三角形",
+                    "直角三角形",
+                    "钝角三角形",
+                    "等边三角形"
+                ],
+                answer: 1
+            },
+            {
+                id: 30,
+                category: "数字运算",
+                question: "计算：√144 + √81 = ?",
+                options: [
+                    "15",
+                    "21",
+                    "25",
+                    "30"
+                ],
+                answer: 1
+            },
+            
+            // 空间想象能力题目 (31-40)
+            {
+                id: 31,
+                category: "空间想象",
+                question: "如果将一个正方形沿着对角线对折，得到的图形是什么形状？",
+                options: [
+                    "正方形",
+                    "长方形",
+                    "三角形",
+                    "菱形"
+                ],
+                answer: 2
+            },
+            {
+                id: 32,
+                category: "空间想象",
+                question: "以下哪个图形可以通过旋转得到？（图形描述：选项中有四个图形，其中三个是不同的，一个是另一个的旋转版本）",
+                options: [
+                    "选项A",
+                    "选项B",
+                    "选项C",
+                    "选项D"
+                ],
+                answer: 1
+            },
+            {
+                id: 33,
+                category: "空间想象",
+                question: "如果将一个立方体的表面展开成一个平面图形，以下哪个选项是可能的展开图？",
+                options: [
+                    "选项A（描述：一个十字形，中心是一个正方形，上下左右各连接一个正方形）",
+                    "选项B（描述：三个正方形排成一行，中间正方形的上下各连接一个正方形）",
+                    "选项C（描述：四个正方形排成一行，第一个和最后一个正方形的外侧各连接一个正方形）",
+                    "选项D（描述：两个正方形排成一行，每个正方形的上下各连接一个正方形）"
+                ],
+                answer: 0
+            },
+            {
+                id: 34,
+                category: "空间想象",
+                question: "如果从正上方观察一个圆柱体，看到的图形是什么形状？",
+                options: [
+                    "圆形",
+                    "长方形",
+                    "椭圆形",
+                    "正方形"
+                ],
+                answer: 0
+            },
+            {
+                id: 35,
+                category: "空间想象",
+                question: "以下哪个图形是轴对称图形？",
+                options: [
+                    "字母A",
+                    "字母F",
+                    "字母G",
+                    "字母J"
+                ],
+                answer: 0
+            },
+            {
+                id: 36,
+                category: "空间想象",
+                question: "如果将一个圆形纸片对折两次，得到的图形是什么形状？",
+                options: [
+                    "圆形",
+                    "半圆形",
+                    "扇形",
+                    "四分之一圆形"
+                ],
+                answer: 3
+            },
+            {
+                id: 37,
+                category: "空间想象",
+                question: "以下哪个图形可以通过平移得到？（图形描述：选项中有四个图形，其中三个是不同的，一个是另一个的平移版本）",
+                options: [
+                    "选项A",
+                    "选项B",
+                    "选项C",
+                    "选项D"
+                ],
+                answer: 2
+            },
+            {
+                id: 38,
+                category: "空间想象",
+                question: "如果一个物体从正面看是一个正方形，从侧面看是一个长方形，那么这个物体可能是什么形状？",
+                options: [
+                    "立方体",
+                    "长方体",
+                    "圆柱体",
+                    "圆锥体"
+                ],
+                answer: 1
+            },
+            {
+                id: 39,
+                category: "空间想象",
+                question: "以下哪个图形是中心对称图形？",
+                options: [
+                    "字母H",
+                    "字母L",
+                    "字母P",
+                    "字母T"
+                ],
+                answer: 0
+            },
+            {
+                id: 40,
+                category: "空间想象",
+                question: "如果将一个三角形的三个顶点分别与对边的中点连接，形成的图形中有多少个小三角形？",
+                options: [
+                    "3个",
+                    "4个",
+                    "6个",
+                    "8个"
+                ],
+                answer: 3
+            },
+            
+            // 记忆力与专注力题目 (41-50)
+            {
+                id: 41,
+                category: "记忆力",
+                question: "请仔细观察以下数字序列：3, 7, 2, 9, 4, 6, 1, 8, 5。现在请按从小到大的顺序排列这些数字。",
+                options: [
+                    "1, 2, 3, 4, 5, 6, 7, 8, 9",
+                    "1, 2, 3, 4, 6, 5, 7, 8, 9",
+                    "1, 2, 3, 5, 4, 6, 7, 8, 9",
+                    "1, 3, 2, 4, 5, 6, 7, 8, 9"
+                ],
+                answer: 0
+            },
+            {
+                id: 42,
+                category: "记忆力",
+                question: "请仔细观察以下单词：苹果、香蕉、橙子、葡萄、草莓。现在请按字母顺序排列这些单词。",
+                options: [
+                    "苹果、草莓、橙子、葡萄、香蕉",
+                    "苹果、草莓、香蕉、橙子、葡萄",
+                    "苹果、草莓、香蕉、葡萄、橙子",
+                    "苹果、香蕉、橙子、葡萄、草莓"
+                ],
+                answer: 2
+            },
+            {
+                id: 43,
+                category: "记忆力",
+                question: "请仔细观察以下图形：圆形、三角形、正方形、五角星、六边形。现在请按边数从少到多的顺序排列这些图形。",
+                options: [
+                    "圆形、三角形、正方形、五角星、六边形",
+                    "三角形、正方形、圆形、五角星、六边形",
+                    "圆形、三角形、正方形、六边形、五角星",
+                    "三角形、圆形、正方形、五角星、六边形"
+                ],
+                answer: 0
+            },
+            {
+                id: 44,
+                category: "记忆力",
+                question: "请仔细观察以下日期：2023年5月12日、2023年3月15日、2023年7月8日、2023年1月20日、2023年9月3日。现在请按时间先后顺序排列这些日期。",
+                options: [
+                    "2023年1月20日、2023年3月15日、2023年5月12日、2023年7月8日、2023年9月3日",
+                    "2023年1月20日、2023年3月15日、2023年5月12日、2023年9月3日、2023年7月8日",
+                    "2023年1月20日、2023年5月12日、2023年3月15日、2023年7月8日、2023年9月3日",
+                    "2023年3月15日、2023年1月20日、2023年5月12日、2023年7月8日、2023年9月3日"
+                ],
+                answer: 0
+            },
+            {
+                id: 45,
+                category: "记忆力",
+                question: "请仔细观察以下颜色：红色、蓝色、绿色、黄色、紫色。现在请按彩虹的顺序排列这些颜色。",
+                options: [
+                    "红色、黄色、绿色、蓝色、紫色",
+                    "红色、橙色、黄色、绿色、蓝色",
+                    "红色、黄色、蓝色、绿色、紫色",
+                    "红色、绿色、黄色、蓝色、紫色"
+                ],
+                answer: 0
+            },
+            {
+                id: 46,
+                category: "记忆力",
+                question: "请仔细观察以下国家：中国、美国、日本、德国、法国。现在请按国土面积从大到小的顺序排列这些国家。",
+                options: [
+                    "中国、美国、法国、德国、日本",
+                    "中国、美国、德国、法国、日本",
+                    "美国、中国、法国、德国、日本",
+                    "中国、美国、日本、德国、法国"
+                ],
+                answer: 0
+            },
+            {
+                id: 47,
+                category: "记忆力",
+                question: "请仔细观察以下动物：猫、狗、大象、长颈鹿、兔子。现在请按体型从大到小的顺序排列这些动物。",
+                options: [
+                    "大象、长颈鹿、狗、猫、兔子",
+                    "长颈鹿、大象、狗、猫、兔子",
+                    "大象、长颈鹿、兔子、狗、猫",
+                    "大象、长颈鹿、狗、兔子、猫"
+                ],
+                answer: 0
+            },
+            {
+                id: 48,
+                category: "记忆力",
+                question: "请仔细观察以下学科：数学、语文、英语、物理、化学。现在请按你学习这些学科的先后顺序排列。",
+                options: [
+                    "语文、数学、英语、物理、化学",
+                    "语文、数学、英语、化学、物理",
+                    "数学、语文、英语、物理、化学",
+                    "语文、英语、数学、物理、化学"
+                ],
+                answer: 0
+            },
+            {
+                id: 49,
+                category: "记忆力",
+                question: "请仔细观察以下工具：锤子、螺丝刀、扳手、钳子、锯子。现在请按字母顺序排列这些工具。",
+                options: [
+                    "锤子、锯子、钳子、螺丝刀、扳手",
+                    "锤子、锯子、螺丝刀、钳子、扳手",
+                    "锤子、锯子、扳手、钳子、螺丝刀",
+                    "锤子、钳子、锯子、螺丝刀、扳手"
+                ],
+                answer: 0
+            },
+            {
+                id: 50,
+                category: "记忆力",
+                question: "请仔细观察以下乐器：钢琴、小提琴、吉他、架子鼓、长笛。现在请按弦乐器、管乐器、打击乐器的顺序分类排列这些乐器。",
+                options: [
+                    "小提琴、吉他、钢琴、长笛、架子鼓",
+                    "小提琴、吉他、长笛、钢琴、架子鼓",
+                    "小提琴、吉他、长笛、架子鼓、钢琴",
+                    "钢琴、小提琴、吉他、长笛、架子鼓"
+                ],
+                answer: 0
+            }
+        ];
+
+        // 页面元素
+        const testIntro = document.getElementById('test-intro');
+        const testArea = document.getElementById('test-area');
+        const resultArea = document.getElementById('result-area');
+        const startTestBtn = document.getElementById('start-test');
+        const retakeTestBtn = document.getElementById('retake-test');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        const questionCategory = document.getElementById('question-category');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+
+        // 测试状态
+        let currentQuestionIndex = 0;
+        let userAnswers = new Array(testData.length).fill(null);
+        let testCompleted = false;
+
+        // 初始化页面
+        function init() {
+            // 绑定事件
+            startTestBtn.addEventListener('click', startTest);
+            retakeTestBtn.addEventListener('click', retakeTest);
+            prevBtn.addEventListener('click', goToPreviousQuestion);
+            nextBtn.addEventListener('click', goToNextQuestion);
+        }
+
+        // 开始测试
+        function startTest() {
+            testIntro.classList.add('hidden');
+            testArea.classList.remove('hidden');
+            resultArea.classList.add('hidden');
+            
+            currentQuestionIndex = 0;
+            userAnswers = new Array(testData.length).fill(null);
+            testCompleted = false;
+            
+            loadQuestion(0);
+            updateProgress();
+        }
+
+        // 重新测试
+        function retakeTest() {
+            startTest();
+        }
+
+        // 加载题目
+        function loadQuestion(index) {
+            const question = testData[index];
+            
+            questionCategory.textContent = question.category;
+            questionText.textContent = question.question;
+            
+            // 清空选项容器
+            optionsContainer.innerHTML = '';
+            
+            // 添加选项
+            question.options.forEach((option, i) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'flex items-center';
+                
+                const input = document.createElement('input');
+                input.type = 'radio';
+                input.id = `option-${i}`;
+                input.name = 'answer';
+                input.value = i;
+                input.className = 'input-radio';
+                input.checked = userAnswers[index] === i;
+                
+                input.addEventListener('change', function() {
+                    userAnswers[currentQuestionIndex] = parseInt(this.value);
+                });
+                
+                const label = document.createElement('label');
+                label.htmlFor = `option-${i}`;
+                label.className = 'ml-3 text-gray-700';
+                label.textContent = option;
+                
+                optionDiv.appendChild(input);
+                optionDiv.appendChild(label);
+                optionsContainer.appendChild(optionDiv);
+            });
+            
+            // 更新按钮状态
+            prevBtn.disabled = index === 0;
+            prevBtn.classList.toggle('opacity-50', index === 0);
+            prevBtn.classList.toggle('cursor-not-allowed', index === 0);
+            
+            if (index === testData.length - 1) {
+                nextBtn.textContent = '完成测试';
+            } else {
+                nextBtn.textContent = '下一题';
+            }
+        }
+
+        // 上一题
+        function goToPreviousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion(currentQuestionIndex);
+                updateProgress();
+            }
+        }
+
+        // 下一题
+        function goToNextQuestion() {
+            // 如果当前题目没有选择答案，提示用户
+            if (userAnswers[currentQuestionIndex] === null) {
+                alert('请选择一个答案');
+                return;
+            }
+            
+            if (currentQuestionIndex < testData.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion(currentQuestionIndex);
+                updateProgress();
+            } else {
+                completeTest();
+            }
+        }
+
+        // 更新进度
+        function updateProgress() {
+            const progress = ((currentQuestionIndex + 1) / testData.length) * 100;
+            progressBar.style.width = `${progress}%`;
+            progressText.textContent = `${currentQuestionIndex + 1}/${testData.length}`;
+        }
+
+        // 完成测试
+        function completeTest() {
+            testCompleted = true;
+            
+            // 计算得分
+            const scores = calculateScores();
+            
+            // 显示结果
+            showResults(scores);
+            
+            // 切换到结果页面
+            testIntro.classList.add('hidden');
+            testArea.classList.add('hidden');
+            resultArea.classList.remove('hidden');
+        }
+
+        // 计算得分
+        function calculateScores() {
+            // 各维度的题目索引
+            const dimensions = {
+                '逻辑推理': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+                '语言理解': [10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
+                '数字运算': [20, 21, 22, 23, 24, 25, 26, 27, 28, 29],
+                '空间想象': [30, 31, 32, 33, 34, 35, 36, 37, 38, 39],
+                '记忆力': [40, 41, 42, 43, 44, 45, 46, 47, 48, 49]
+            };
+            
+            // 计算各维度得分
+            const rawScores = {};
+            let totalScore = 0;
+            
+            for (const [dimension, indices] of Object.entries(dimensions)) {
+                let score = 0;
+                indices.forEach(index => {
+                    if (userAnswers[index] === testData[index].answer) {
+                        score += 1;
+                    }
+                });
+                rawScores[dimension] = score;
+                totalScore += score;
+            }
+            
+            // 计算标准分（T分数）
+            const norms = {
+                '逻辑推理': { mean: 5, sd: 2 },
+                '语言理解': { mean: 5, sd: 2 },
+                '数字运算': { mean: 5, sd: 2 },
+                '空间想象': { mean: 5, sd: 2 },
+                '记忆力': { mean: 5, sd: 2 }
+            };
+            
+            const standardScores = {};
+            for (const [dimension, rawScore] of Object.entries(rawScores)) {
+                const { mean, sd } = norms[dimension];
+                standardScores[dimension] = 50 + 10 * (rawScore - mean) / sd;
+            }
+            
+            // 计算总分百分位
+            const totalMean = 25;
+            const totalSd = 8;
+            const totalPercentile = calculatePercentile(totalScore, totalMean, totalSd);
+            
+            return {
+                rawScores,
+                standardScores,
+                totalScore,
+                totalPercentile
+            };
+        }
+
+        // 计算百分位
+        function calculatePercentile(score, mean, sd) {
+            const zScore = (score - mean) / sd;
+            
+            // 近似的Z分数到百分位的转换
+            if (zScore < -3) return 1;
+            if (zScore < -2.5) return 2;
+            if (zScore < -2) return 2;
+            if (zScore < -1.5) return 7;
+            if (zScore < -1) return 16;
+            if (zScore < -0.5) return 31;
+            if (zScore < 0) return 50;
+            if (zScore < 0.5) return 69;
+            if (zScore < 1) return 84;
+            if (zScore < 1.5) return 93;
+            if (zScore < 2) return 98;
+            if (zScore < 2.5) return 99;
+            return 99;
+        }
+
+        // 显示结果
+        function showResults(scores) {
+            // 更新总分
+            document.getElementById('total-score').textContent = scores.totalScore;
+            document.getElementById('total-percentile').textContent = `超过了约${scores.totalPercentile}%的测试者`;
+            document.getElementById('total-progress').style.width = `${scores.totalPercentile}%`;
+            
+            // 更新雷达图
+            updateRadarChart(scores.standardScores);
+            
+            // 更新各维度详细分析
+            updateDimensionDetails(scores.rawScores, scores.standardScores);
+            
+            // 更新职业匹配建议
+            updateCareerSuggestions(scores.standardScores);
+            
+            // 更新发展建议
+            updateDevelopmentSuggestions(scores.standardScores);
+        }
+
+        // 更新雷达图
+        function updateRadarChart(standardScores) {
+            const ctx = document.getElementById('radar-chart').getContext('2d');
+            
+            // 销毁之前的图表（如果存在）
+            if (window.radarChart) {
+                window.radarChart.destroy();
+            }
+            
+            // 创建新的雷达图
+            window.radarChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: Object.keys(standardScores),
+                    datasets: [{
+                        label: '你的能力水平',
+                        data: Object.values(standardScores),
+                        backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(59, 130, 246, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(59, 130, 246, 1)'
+                    }, {
+                        label: '平均水平',
+                        data: [50, 50, 50, 50, 50],
+                        backgroundColor: 'rgba(156, 163, 175, 0.2)',
+                        borderColor: 'rgba(156, 163, 175, 1)',
+                        borderWidth: 1,
+                        pointBackgroundColor: 'rgba(156, 163, 175, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(156, 163, 175, 1)'
+                    }]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            angleLines: {
+                                display: true
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 100
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        // 更新各维度详细分析
+        function updateDimensionDetails(rawScores, standardScores) {
+            const dimensionDetails = document.getElementById('dimension-details');
+            dimensionDetails.innerHTML = '';
+            
+            for (const [dimension, rawScore] of Object.entries(rawScores)) {
+                const standardScore = standardScores[dimension];
+                
+                // 确定等级
+                let level, levelClass;
+                if (standardScore >= 65) {
+                    level = '卓越';
+                    levelClass = 'bg-green-100 text-green-800';
+                } else if (standardScore >= 55) {
+                    level = '优秀';
+                    levelClass = 'bg-green-100 text-green-800';
+                } else if (standardScore >= 45) {
+                    level = '良好';
+                    levelClass = 'bg-blue-100 text-blue-800';
+                } else if (standardScore >= 35) {
+                    level = '待提升';
+                    levelClass = 'bg-yellow-100 text-yellow-800';
+                } else {
+                    level = '需要关注';
+                    levelClass = 'bg-red-100 text-red-800';
+                }
+                
+                // 确定描述
+                let description;
+                switch (dimension) {
+                    case '逻辑推理':
+                        if (standardScore >= 65) {
+                            description = '你的逻辑推理能力极为出色，能够轻松分析复杂问题、识别模式并得出准确结论。这种能力在科学研究、法律、计算机编程等领域有显著优势。';
+                        } else if (standardScore >= 55) {
+                            description = '你在逻辑推理方面表现优秀，能够快速分析问题、识别模式并得出合理结论。这种能力在需要抽象思维和系统分析的领域非常有价值。';
+                        } else if (standardScore >= 45) {
+                            description = '你在逻辑推理方面表现处于平均水平，能够处理基本的逻辑问题和分析任务。这种能力在大多数职业中都有一定的重要性。';
+                        } else if (standardScore >= 35) {
+                            description = '你在逻辑推理方面的能力略低于平均水平，可能需要更多的练习和思考来解决复杂问题。';
+                        } else {
+                            description = '你在逻辑推理方面的能力明显低于平均水平，建议通过专门的训练和练习来提升这方面的能力。';
+                        }
+                        break;
+                    case '语言理解':
+                        if (standardScore >= 65) {
+                            description = '你的语言理解能力极为出色，能够轻松理解复杂文本，掌握丰富的词汇，并能清晰、准确地表达思想。这种能力在文学、教育、媒体等领域有显著优势。';
+                        } else if (standardScore >= 55) {
+                            description = '你的语言理解能力非常出色，能够准确理解复杂文本，掌握丰富的词汇，并能清晰表达思想。这种能力在需要大量阅读、写作和沟通的领域特别有优势。';
+                        } else if (standardScore >= 45) {
+                            description = '你在语言理解方面表现处于平均水平，能够理解基本的文本和表达，满足日常工作和生活的需要。';
+                        } else if (standardScore >= 35) {
+                            description = '你在语言理解方面的能力略低于平均水平，可能需要更多的阅读和练习来提升语言能力。';
+                        } else {
+                            description = '你在语言理解方面的能力明显低于平均水平，建议通过大量阅读和写作练习来提升这方面的能力。';
+                        }
+                        break;
+                    case '数字运算':
+                        if (standardScore >= 65) {
+                            description = '你的数字运算能力极为出色，能够轻松处理复杂的数学问题和数据分析。这种能力在科学、工程、金融等领域有显著优势。';
+                        } else if (standardScore >= 55) {
+                            description = '你在数字运算方面表现优秀，能够轻松处理基本的数学问题和数字推理。这种能力在需要数据分析和计算的领域有明显优势。';
+                        } else if (standardScore >= 45) {
+                            description = '你在数字运算方面表现处于平均水平，能够处理基本的数学问题和计算，满足日常工作和生活的需要。';
+                        } else if (standardScore >= 35) {
+                            description = '你在数字运算方面的能力略低于平均水平，可能需要更多的练习来提升计算和推理能力。';
+                        } else {
+                            description = '你在数字运算方面的能力明显低于平均水平，建议通过基础数学练习和实际应用来提升这方面的能力。';
+                        }
+                        break;
+                    case '空间想象':
+                        if (standardScore >= 65) {
+                            description = '你的空间想象能力极为出色，能够轻松处理复杂的空间关系和图形转换。这种能力在设计、建筑、工程等领域有显著优势。';
+                        } else if (standardScore >= 55) {
+                            description = '你在空间想象方面表现优秀，能够清晰地想象和处理空间关系。这种能力在设计、艺术、工程等领域有明显优势。';
+                        } else if (standardScore >= 45) {
+                            description = '你在空间想象方面表现处于平均水平，能够处理基本的空间关系和图形转换，满足日常工作和生活的需要。';
+                        } else if (standardScore >= 35) {
+                            description = '你在空间想象方面的能力略低于平均水平，可能需要更多的练习来提升空间感知能力。';
+                        } else {
+                            description = '你在空间想象方面的能力明显低于平均水平，建议通过视觉游戏、绘画和模型制作等活动来提升这方面的能力。';
+                        }
+                        break;
+                    case '记忆力':
+                        if (standardScore >= 65) {
+                            description = '你的记忆力和专注力极为出色，能够轻松记住和处理大量信息。这种能力在学术研究、医疗、法律等需要大量记忆的领域有显著优势。';
+                        } else if (standardScore >= 55) {
+                            description = '你在记忆力和专注力方面表现优秀，能够有效记住和处理信息。这种能力在需要大量信息处理和学习的领域非常有价值。';
+                        } else if (standardScore >= 45) {
+                            description = '你在记忆力和专注力方面表现处于平均水平，能够记住基本的信息和任务，满足日常工作和生活的需要。';
+                        } else if (standardScore >= 35) {
+                            description = '你在记忆力和专注力方面的能力略低于平均水平，可能需要更多的练习和技巧来提升记忆效率。';
+                        } else {
+                            description = '你在记忆力和专注力方面的能力明显低于平均水平，建议通过记忆训练、注意力练习和健康的生活方式来提升这方面的能力。';
+                        }
+                        break;
+                }
+                
+                // 创建维度分析元素
+                const dimensionDiv = document.createElement('div');
+                dimensionDiv.className = 'bg-white p-4 rounded-lg shadow-sm';
+                dimensionDiv.innerHTML = `
+                    <div class="flex justify-between items-center mb-2">
+                        <div>
+                            <h4 class="font-medium text-primary">${dimension}能力</h4>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="text-lg font-bold text-primary mr-2">${rawScore}</span>
+                            <span class="text-sm text-gray-500">/ 10</span>
+                            <span class="ml-3 px-2.5 py-0.5 ${levelClass} text-xs font-medium rounded">${level}</span>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-value ${getProgressColor(standardScore)}" style="width: ${rawScore * 10}%"></div>
+                    </div>
+                    <div class="mt-3">
+                        <p class="text-sm text-gray-700">
+                            ${description}
+                        </p>
+                    </div>
+                `;
+                
+                dimensionDetails.appendChild(dimensionDiv);
+            }
+        }
+
+        // 获取进度条颜色
+        function getProgressColor(standardScore) {
+            if (standardScore >= 65) return 'bg-green-500';
+            if (standardScore >= 55) return 'bg-green-500';
+            if (standardScore >= 45) return 'bg-blue-500';
+            if (standardScore >= 35) return 'bg-yellow-500';
+            return 'bg-red-500';
+        }
+
+        // 更新职业匹配建议
+        function updateCareerSuggestions(standardScores) {
+            const careerSuggestions = document.getElementById('career-suggestions');
+            careerSuggestions.innerHTML = '';
+            
+            // 找出最高的两个维度
+            const sortedDimensions = Object.entries(standardScores)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 2);
+            
+            // 根据最高的两个维度推荐职业
+            const suggestions = [];
+            
+            if (sortedDimensions.some(([dim]) => dim === '逻辑推理') && 
+                sortedDimensions.some(([dim]) => dim === '数字运算')) {
+                suggestions.push({
+                    title: '科学与技术',
+                    description: '你的逻辑推理和数字运算能力都很强，非常适合从事科学研究、技术开发、数据分析等需要严密逻辑和数学能力的工作。'
+                });
+            }
+            
+            if (sortedDimensions.some(([dim]) => dim === '语言理解') && 
+                sortedDimensions.some(([dim]) => dim === '记忆力')) {
+                suggestions.push({
+                    title: '教育与培训',
+                    description: '你的语言理解和记忆力优势非常适合教育领域，尤其是需要良好沟通和知识传递的岗位。'
+                });
+            }
+            
+            if (sortedDimensions.some(([dim]) => dim === '逻辑推理') && 
+                sortedDimensions.some(([dim]) => dim === '空间想象')) {
+                suggestions.push({
+                    title: '设计与工程',
+                    description: '你的逻辑推理和空间想象能力都很强，非常适合从事工程设计、产品开发、建筑设计等需要逻辑思维和空间感知的工作。'
+                });
+            }
+            
+            if (sortedDimensions.some(([dim]) => dim === '语言理解') && 
+                sortedDimensions.some(([dim]) => dim === '逻辑推理')) {
+                suggestions.push({
+                    title: '咨询与分析',
+                    description: '你的语言能力和逻辑思维都很强，非常适合从事咨询、分析、市场研究等需要沟通和分析能力的工作。'
+                });
+            }
+            
+            // 如果没有匹配到特定组合，提供一般性建议
+            if (suggestions.length === 0) {
+                suggestions.push({
+                    title: '管理与协调',
+                    description: '根据你的能力分布，你可能在需要多方面能力协调的管理岗位上有良好表现。'
+                });
+                suggestions.push({
+                    title: '创业与创新',
+                    description: '你的能力结构可能适合创业或创新工作，能够灵活运用各种能力解决问题。'
+                });
+            }
+            
+            // 添加建议到页面
+            const suggestionsList = document.createElement('ul');
+            suggestionsList.className = 'list-disc pl-5 space-y-2';
+            
+            suggestions.forEach(suggestion => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `<strong>${suggestion.title}：</strong>${suggestion.description}`;
+                suggestionsList.appendChild(listItem);
+            });
+            
+            careerSuggestions.appendChild(suggestionsList);
+            
+            // 添加提示
+            const hint = document.createElement('p');
+            hint.className = 'text-sm text-gray-500 mt-4';
+            hint.innerHTML = '<strong>提示：</strong> 职业选择是一个复杂的决策过程，除了能力倾向外，还应考虑个人兴趣、价值观、性格特点等多方面因素。';
+            careerSuggestions.appendChild(hint);
+        }
+
+        // 更新发展建议
+        function updateDevelopmentSuggestions(standardScores) {
+            const developmentSuggestions = document.getElementById('development-suggestions');
+            developmentSuggestions.innerHTML = '';
+            
+            // 找出最低的两个维度
+            const sortedDimensions = Object.entries(standardScores)
+                .sort((a, b) => a[1] - b[1])
+                .slice(0, 2);
+            
+            // 根据最低的两个维度提供发展建议
+            const suggestions = [];
+            
+            sortedDimensions.forEach(([dimension, score]) => {
+                let title, description;
+                
+                switch (dimension) {
+                    case '逻辑推理':
+                        title = '逻辑推理能力提升';
+                        description = '可以通过解谜游戏、逻辑题练习、批判性阅读和辩论等活动来提升逻辑推理能力。尝试在日常生活中多问"为什么"，分析问题的因果关系，培养系统思考的习惯。';
+                        break;
+                    case '语言理解':
+                        title = '语言理解能力提升';
+                        description = '可以通过广泛阅读、写作练习、词汇学习和参与讨论等活动来提升语言理解能力。尝试阅读不同类型的书籍和文章，学习新词汇，并练习清晰表达自己的想法。';
+                        break;
+                    case '数字运算':
+                        title = '数字运算能力提升';
+                        description = '可以通过数学谜题、数据分析练习或学习编程来提升数字运算能力。日常中可以尝试心算练习，减少对计算器的依赖，关注生活中的数字关系。';
+                        break;
+                    case '空间想象':
+                        title = '空间想象能力提升';
+                        description = '可以通过解谜游戏、三维建模软件练习或绘画来提升空间想象能力。尝试在日常生活中进行 mental rotation 练习，如想象物体旋转后的样子，或组装立体模型。';
+                        break;
+                    case '记忆力':
+                        title = '记忆力与专注力提升';
+                        description = '可以通过记忆游戏、冥想练习、番茄工作法等活动来提升记忆力和专注力。保持充足的睡眠和健康的生活方式也有助于提高记忆效率。学习记忆技巧，如联想记忆法和思维导图。';
+                        break;
+                }
+                
+                suggestions.push({ title, description });
+            });
+            
+            // 添加建议到页面
+            const suggestionsList = document.createElement('ul');
+            suggestionsList.className = 'list-disc pl-5 space-y-4';
+            
+            suggestions.forEach(suggestion => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `<strong>${suggestion.title}：</strong>${suggestion.description}`;
+                suggestionsList.appendChild(listItem);
+            });
+            
+            developmentSuggestions.appendChild(suggestionsList);
+        }
+
+        // 初始化页面
+        init();
+    </script>
+</body>
+</html>
