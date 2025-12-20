@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>一般能力倾向自测 - 发现你的潜力与职业适配</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FF7D00',
+                        secondary: '#0066CC',
+                        neutral: '#F5F5F5',
+                        dark: '#333333',
+                        light: '#FFFFFF'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px rgba(0, 0, 0, 0.08)',
+                        'hover': '0 8px 30px rgba(0, 0, 0, 0.12)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            .transition-all-300 {
+                transition: all 0.3s ease;
+            }
+            .bg-gradient-primary {
+                background: linear-gradient(135deg, #FF7D00 0%, #FF9E00 100%);
+            }
+            .bg-gradient-secondary {
+                background: linear-gradient(135deg, #0066CC 0%, #0080FF 100%);
+            }
+        }
+    </style>
+</head>
+<body class="bg-neutral min-h-screen font-sans text-dark">
+    <!-- 顶部导航 -->
+    <nav class="bg-white shadow-soft sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fa fa-lightbulb-o text-primary text-2xl"></i>
+                <h1 class="text-xl font-bold text-dark">能力探索</h1>
+            </div>
+            <div class="text-sm text-gray-600">
+                <span id="current-question">第 1 题</span> / <span id="total-questions">共 50 题</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main class="container mx-auto px-4 py-8 max-w-4xl">
+        <!-- 开始页面 -->
+        <section id="start-section" class="bg-white rounded-xl shadow-soft p-8 mb-8">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-dark mb-4">一般能力倾向自测</h2>
+                <p class="text-gray-600 mb-6">发现你的学习、语言、逻辑等多方面潜力，探索适合的职业方向</p>
+                
+                <!-- 付费提示 -->
+                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6 text-left">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i class="fa fa-info-circle text-yellow-400"></i>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-yellow-700 font-medium">付费测试为原创内容服务，非专业医疗/心理测评</p>
+                            <p class="text-xs text-yellow-600 mt-1">本测试旨在帮助你了解自身能力倾向，不能替代专业评估</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 测试说明 -->
+                <div class="text-left bg-blue-50 p-4 rounded-lg mb-6">
+                    <h3 class="font-bold text-secondary mb-2">测试说明：</h3>
+                    <ul class="text-sm text-gray-700 space-y-2">
+                        <li><i class="fa fa-check-circle text-secondary mr-2"></i>测试包含5个维度，共50道题目</li>
+                        <li><i class="fa fa-check-circle text-secondary mr-2"></i>每道题请根据自身实际情况选择</li>
+                        <li><i class="fa fa-check-circle text-secondary mr-2"></i>建议在安静环境中完成，用时约20分钟</li>
+                        <li><i class="fa fa-check-circle text-secondary mr-2"></i>完成后将获得详细的能力分析报告</li>
+                    </ul>
+                </div>
+                
+                <!-- 免责声明 -->
+                <div class="text-xs text-gray-500 mb-6">
+                    <p class="font-bold mb-1">免责声明：</p>
+                    <p>本测试为原创内容，仅供自我探索和参考，不构成任何形式的专业诊断或建议。测试结果不能替代专业人士的评估和指导。如有需要，请寻求专业心理咨询师或职业顾问的帮助。</p>
+                </div>
+                
+                <button id="start-test-btn" class="bg-gradient-primary text-white font-bold py-3 px-8 rounded-full shadow-lg hover:shadow-xl transition-all-300 transform hover:-translate-y-1">
+                    开始测试
+                </button>
+            </div>
+        </section>
+
+        <!-- 测试页面 -->
+        <section id="test-section" class="hidden">
+            <!-- 进度条 -->
+            <div class="bg-white rounded-xl shadow-soft p-4 mb-6">
+                <div class="flex justify-between text-sm text-gray-600 mb-2">
+                    <span>测试进度</span>
+                    <span id="progress-text">2%</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                    <div id="progress-bar" class="bg-gradient-primary h-2.5 rounded-full" style="width: 2%"></div>
+                </div>
+            </div>
+            
+            <!-- 题目卡片 -->
+            <div id="question-card" class="bg-white rounded-xl shadow-soft p-6 mb-6">
+                <h3 id="question-category" class="text-sm font-medium text-secondary mb-2">语言理解能力</h3>
+                <h4 id="question-text" class="text-xl font-bold mb-6">请仔细阅读以下内容，选择最符合的选项。</h4>
+                
+                <div id="answer-options" class="space-y-4">
+                    <!-- 选项将通过JS动态生成 -->
+                </div>
+            </div>
+            
+            <!-- 操作按钮 -->
+            <div class="flex justify-between">
+                <button id="prev-btn" class="bg-gray-200 text-gray-700 font-medium py-2 px-6 rounded-lg hover:bg-gray-300 transition-all-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i class="fa fa-arrow-left mr-2"></i>上一题
+                </button>
+                <button id="next-btn" class="bg-gradient-secondary text-white font-medium py-2 px-6 rounded-lg hover:shadow-md transition-all-300">
+                    下一题<i class="fa fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- 结果页面 -->
+        <section id="result-section" class="hidden">
+            <div class="bg-white rounded-xl shadow-soft p-8 mb-8">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-dark mb-2">测试完成！</h2>
+                    <p class="text-gray-600 mb-6">以下是你的能力倾向分析报告</p>
+                </div>
+                
+                <!-- 总体评分 -->
+                <div class="bg-gradient-primary text-white p-6 rounded-xl mb-8">
+                    <h3 class="text-xl font-bold mb-4">总体能力倾向评分</h3>
+                    <div class="flex justify-between items-center">
+                        <div class="text-center">
+                            <div class="text-4xl font-bold" id="total-score">85</div>
+                            <div class="text-sm opacity-80">总分</div>
+                        </div>
+                        <div class="flex-1 mx-6">
+                            <div class="h-4 bg-white bg-opacity-30 rounded-full overflow-hidden">
+                                <div class="h-full bg-white rounded-full" id="total-score-bar" style="width: 85%"></div>
+                            </div>
+                            <div class="flex justify-between text-xs mt-1">
+                                <span>0</span>
+                                <span>中等</span>
+                                <span>优秀</span>
+                                <span>100</span>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-xl font-bold" id="percentile">85%</div>
+                            <div class="text-sm opacity-80">超过人群比例</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 维度雷达图 -->
+                <div class="mb-8">
+                    <h3 class="text-xl font-bold mb-4">能力维度分析</h3>
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <canvas id="radar-chart" width="400" height="300"></canvas>
+                    </div>
+                </div>
+                
+                <!-- 各维度详细分析 -->
+                <div id="dimension-details" class="space-y-6 mb-8">
+                    <!-- 语言理解能力 -->
+                    <div class="border-l-4 border-blue-500 pl-4 py-2">
+                        <h4 class="text-lg font-bold text-blue-700">语言理解能力</h4>
+                        <div class="flex items-center my-2">
+                            <div class="w-full bg-gray-200 rounded-full h-2.5 mr-4">
+                                <div class="bg-blue-500 h-2.5 rounded-full" id="language-bar" style="width: 80%"></div>
+                            </div>
+                            <span class="text-sm font-medium" id="language-score">80</span>
+                        </div>
+                        <p class="text-gray-700 text-sm" id="language-description">
+                            你在语言理解和表达方面表现出色，能够准确把握文字含义，擅长沟通和写作。适合需要较强语言能力的职业，如教育、媒体、公关等。
+                        </p>
+                    </div>
+                    
+                    <!-- 逻辑推理能力 -->
+                    <div class="border-l-4 border-green-500 pl-4 py-2">
+                        <h4 class="text-lg font-bold text-green-700">逻辑推理能力</h4>
+                        <div class="flex items-center my-2">
+                            <div class="w-full bg-gray-200 rounded-full h-2.5 mr-4">
+                                <div class="bg-green-500 h-2.5 rounded-full" id="logic-bar" style="width: 75%"></div>
+                            </div>
+                            <span class="text-sm font-medium" id="logic-score">75</span>
+                        </div>
+                        <p class="text-gray-700 text-sm" id="logic-description">
+                            你具备良好的逻辑思维能力，擅长分析问题和推理判断。适合需要逻辑分析的职业，如科学研究、技术开发、财务分析等。
+                        </p>
+                    </div>
+                    
+                    <!-- 空间思维能力 -->
+                    <div class="border-l-4 border-purple-500 pl-4 py-2">
+                        <h4 class="text-lg font-bold text-purple-700">空间思维能力</h4>
+                        <div class="flex items-center my-2">
+                            <div class="w-full bg-gray-200 rounded-full h-2.5 mr-4">
+                                <div class="bg-purple-500 h-2.5 rounded-full" id="spatial-bar" style="width: 70%"></div>
+                            </div>
+                            <span class="text-sm font-medium" id="spatial-score">70</span>
+                        </div>
+                        <p class="text-gray-700 text-sm" id="spatial-description">
+                            你在空间想象和视觉思维方面有一定优势，能够理解物体的空间关系。适合设计、建筑、工程等需要空间思维的职业。
+                        </p>
+                    </div>
+                    
+                    <!-- 数字能力 -->
+                    <div class="border-l-4 border-red-500 pl-4 py-2">
+                        <h4 class="text-lg font-bold text-red-700">数字能力</h4>
+                        <div class="flex items-center my-2">
+                            <div class="w-full bg-gray-200 rounded-full h-2.5 mr-4">
+                                <div class="bg-red-500 h-2.5 rounded-full" id="numeric-bar" style="width: 85%"></div>
+                            </div>
+                            <span class="text-sm font-medium" id="numeric-score">85</span>
+                        </div>
+                        <p class="text-gray-700 text-sm" id="numeric-description">
+                            你在数字计算和分析方面表现突出，擅长处理数据和解决数学问题。适合金融、会计、数据分析等与数字相关的职业。
+                        </p>
+                    </div>
+                    
+                    <!-- 学习适应能力 -->
+                    <div class="border-l-4 border-orange-500 pl-4 py-2">
+                        <h4 class="text-lg font-bold text-orange-700">学习适应能力</h4>
+                        <div class="flex items-center my-2">
+                            <div class="w-full bg-gray-200 rounded-full h-2.5 mr-4">
+                                <div class="bg-orange-500 h-2.5 rounded-full" id="learning-bar" style="width: 90%"></div>
+                            </div>
+                            <span class="text-sm font-medium" id="learning-score">90</span>
+                        </div>
+                        <p class="text-gray-700 text-sm" id="learning-description">
+                            你具备很强的学习能力和适应能力，能够快速掌握新知识和技能。适合需要持续学习和适应变化的职业，如咨询、培训、新兴技术领域等。
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- 职业匹配建议 -->
+                <div class="bg-gray-50 p-6 rounded-xl mb-8">
+                    <h3 class="text-xl font-bold mb-4">职业匹配建议</h3>
+                    <div id="career-suggestions" class="space-y-3">
+                        <div class="flex items-start">
+                            <div class="bg-blue-100 text-blue-700 rounded-full p-2 mr-3">
+                                <i class="fa fa-briefcase"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-dark">金融分析师</h4>
+                                <p class="text-sm text-gray-600">适合你的数字能力和逻辑思维，需要分析财务数据和市场趋势</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-green-100 text-green-700 rounded-full p-2 mr-3">
+                                <i class="fa fa-graduation-cap"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-dark">教育工作者</h4>
+                                <p class="text-sm text-gray-600">适合你的语言能力和学习适应能力，能够有效传递知识</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-purple-100 text-purple-700 rounded-full p-2 mr-3">
+                                <i class="fa fa-line-chart"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-dark">数据分析师</h4>
+                                <p class="text-sm text-gray-600">适合你的数字能力和逻辑推理，需要处理和分析大量数据</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 能力提升建议 -->
+                <div class="bg-gradient-secondary text-white p-6 rounded-xl mb-8">
+                    <h3 class="text-xl font-bold mb-4">能力提升建议</h3>
+                    <div id="improvement-tips" class="space-y-3 text-sm">
+                        <div class="flex items-start">
+                            <div class="bg-white bg-opacity-20 rounded-full p-1 mr-3">
+                                <i class="fa fa-lightbulb-o"></i>
+                            </div>
+                            <div>
+                                <p>多阅读不同类型的书籍和文章，提升语言理解和表达能力</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-white bg-opacity-20 rounded-full p-1 mr-3">
+                                <i class="fa fa-cogs"></i>
+                            </div>
+                            <div>
+                                <p>尝试解决逻辑 puzzles 和数学问题，锻炼逻辑思维能力</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-white bg-opacity-20 rounded-full p-1 mr-3">
+                                <i class="fa fa-paint-brush"></i>
+                            </div>
+                            <div>
+                                <p>参与绘画、设计等活动，提升空间思维能力</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="bg-white bg-opacity-20 rounded-full p-1 mr-3">
+                                <i class="fa fa-book"></i>
+                            </div>
+                            <div>
+                                <p>保持学习新知识和技能的习惯，增强学习适应能力</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 结尾提示 -->
+                <div class="text-center text-sm text-gray-600">
+                    <p class="mb-4">本报告仅供参考，希望能帮助你更好地了解自己的能力倾向</p>
+                    <p class="font-medium">如果需要更深入的职业规划指导，建议咨询专业的职业顾问</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- 底部信息 -->
+    <footer class="bg-dark text-white py-6">
+        <div class="container mx-auto px-4 max-w-4xl">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <div class="flex items-center space-x-2">
+                        <i class="fa fa-lightbulb-o text-primary text-xl"></i>
+                        <span class="font-bold">能力探索</span>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-1">发现你的潜力，探索职业可能</p>
+                </div>
+                <div class="text-center md:text-right">
+                    <p class="text-xs text-gray-400">© 2025 能力探索 - 原创内容</p>
+                    <p class="text-xs text-gray-500 mt-1">本测试非专业诊断工具，仅供自我探索参考</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    
+    <script>
+        // 测试题目数据
+        const testQuestions = [
+            // 语言理解能力
+            {
+                category: "语言理解能力",
+                question: "阅读一篇文章后，你能准确概括其主要内容吗？",
+                options: [
+                    { text: "完全能，我可以清晰地总结出核心观点", score: 5 },
+                    { text: "大部分时候可以，但偶尔需要再读一遍", score: 4 },
+                    { text: "一般，能抓住部分要点但不够全面", score: 3 },
+                    { text: "不太擅长，经常遗漏重要信息", score: 2 },
+                    { text: "很难，需要别人解释才能理解", score: 1 }
+                ]
+            },
+            {
+                category: "语言理解能力",
+                question: "你如何评价自己的写作能力？",
+                options: [
+                    { text: "非常好，我能写出清晰、有条理的文章", score: 5 },
+                    { text: "不错，写作流畅但有时缺乏逻辑性", score: 4 },
+                    { text: "一般，能表达基本意思但不够精炼", score: 3 },
+                    { text: "较差，经常出现语法错误或表达不清", score: 2 },
+                    { text: "很差，写作对我来说很困难", score: 1 }
+                ]
+            },
+            {
+                category: "语言理解能力",
+                question: "学习新词汇时，你通常需要多长时间才能掌握并正确使用？",
+                options: [
+                    { text: "很快，只需看一遍就能记住并使用", score: 5 },
+                    { text: "较快，需要几次练习但掌握得不错", score: 4 },
+                    { text: "一般，需要反复记忆才能记住", score: 3 },
+                    { text: "较慢，记住后容易忘记或用错", score: 2 },
+                    { text: "很慢，记单词对我来说很困难", score: 1 }
+                ]
+            },
+            {
+                category: "语言理解能力",
+                question: "在日常交流中，你是否经常需要请对方重复或解释？",
+                options: [
+                    { text: "几乎从不，我能快速理解对方的意思", score: 5 },
+                    { text: "偶尔，主要是对方表达不清时", score: 4 },
+                    { text: "有时，特别是讨论复杂话题时", score: 3 },
+                    { text: "经常，需要对方放慢语速或解释", score: 2 },
+                    { text: "总是，理解别人的话对我来说很困难", score: 1 }
+                ]
+            },
+            {
+                category: "语言理解能力",
+                question: "阅读小说或文章时，你能想象出其中描述的场景和人物吗？",
+                options: [
+                    { text: "非常清晰，就像在脑海中看电影一样", score: 5 },
+                    { text: "比较清晰，能形成基本的画面", score: 4 },
+                    { text: "一般，有一些模糊的印象", score: 3 },
+                    { text: "不太能，主要关注文字本身", score: 2 },
+                    { text: "几乎不能，很难将文字转化为图像", score: 1 }
+                ]
+            },
+            {
+                category: "语言理解能力",
+                question: "你能轻松理解并解释成语、谚语或修辞手法吗？",
+                options: [
+                    { text: "是的，我很擅长理解和使用这些表达", score: 5 },
+                    { text: "大部分时候可以，但有些复杂的需要查资料", score: 4 },
+                    { text: "一般，能理解常见的但对生僻的不太熟悉", score: 3 },
+                    { text: "不太擅长，经常需要别人解释", score: 2 },
+                    { text: "很难，我更喜欢直接明了的表达", score: 1 }
+                ]
+            },
+            {
+                category: "语言理解能力",
+                question: "在讨论中，你能快速组织语言表达自己的观点吗？",
+                options: [
+                    { text: "非常快，我能即兴表达清晰的观点", score: 5 },
+                    { text: "比较快，稍加思考就能表达清楚", score: 4 },
+                    { text: "一般，需要一定时间组织语言", score: 3 },
+                    { text: "较慢，经常表达不够准确或完整", score: 2 },
+                    { text: "很慢，总是词不达意或需要事先准备", score: 1 }
+                ]
+            },
+            {
+                category: "语言理解能力",
+                question: "你是否喜欢阅读不同类型的书籍或文章？",
+                options: [
+                    { text: "是的，我广泛阅读各种类型的内容", score: 5 },
+                    { text: "比较喜欢，主要阅读自己感兴趣的类型", score: 4 },
+                    { text: "一般，偶尔阅读但没有固定习惯", score: 3 },
+                    { text: "不太喜欢，除非必要否则很少阅读", score: 2 },
+                    { text: "不喜欢，我更喜欢其他形式的信息获取", score: 1 }
+                ]
+            },
+            {
+                category: "语言理解能力",
+                question: "你能准确理解他人的肢体语言和隐含意思吗？",
+                options: [
+                    { text: "非常准确，我善于捕捉言外之意", score: 5 },
+                    { text: "比较准确，能理解大部分隐含信息", score: 4 },
+                    { text: "一般，有时能理解但经常需要明确表达", score: 3 },
+                    { text: "不太擅长，通常只理解表面意思", score: 2 },
+                    { text: "很困难，我更喜欢直接的沟通方式", score: 1 }
+                ]
+            },
+            {
+                category: "语言理解能力",
+                question: "学习新语言时，你觉得哪个方面最容易？",
+                options: [
+                    { text: "词汇记忆，我能快速记住大量单词", score: 5 },
+                    { text: "语法理解，我善于掌握语言规则", score: 4 },
+                    { text: "阅读理解，能理解大部分文本内容", score: 3 },
+                    { text: "听力理解，能听懂大部分对话", score: 2 },
+                    { text: "口语表达，能流利地进行日常交流", score: 1 }
+                ]
+            },
+            
+            // 逻辑推理能力
+            {
+                category: "逻辑推理能力",
+                question: "解决数学问题时，你通常如何思考？",
+                options: [
+                    { text: "直接找到解题方法，很少出错", score: 5 },
+                    { text: "需要一点时间但通常能找到正确方法", score: 4 },
+                    { text: "有时能解决但偶尔会出错", score: 3 },
+                    { text: "经常需要他人帮助或提示", score: 2 },
+                    { text: "数学对我来说很困难，很少能独立解决", score: 1 }
+                ]
+            },
+            {
+                category: "逻辑推理能力",
+                question: "面对复杂问题时，你能系统地分析并找出解决方案吗？",
+                options: [
+                    { text: "是的，我擅长分解问题并逐步解决", score: 5 },
+                    { text: "大部分时候可以，但有时需要调整方法", score: 4 },
+                    { text: "一般，能解决部分问题但不够全面", score: 3 },
+                    { text: "不太擅长，经常感到无从下手", score: 2 },
+                    { text: "很难，我更喜欢简单直接的问题", score: 1 }
+                ]
+            },
+            {
+                category: "逻辑推理能力",
+                question: "你能轻松识别出逻辑谬误或矛盾吗？",
+                options: [
+                    { text: "非常容易，我能快速发现逻辑问题", score: 5 },
+                    { text: "比较容易，大部分逻辑问题都能识别", score: 4 },
+                    { text: "一般，有时能发现但不够敏锐", score: 3 },
+                    { text: "不太擅长，经常需要他人指出", score: 2 },
+                    { text: "很难，我对逻辑分析不太敏感", score: 1 }
+                ]
+            },
+            {
+                category: "逻辑推理能力",
+                question: "玩解谜游戏或智力题时，你的表现如何？",
+                options: [
+                    { text: "非常好，我通常是第一个解开的人", score: 5 },
+                    { text: "不错，能解开大部分谜题", score: 4 },
+                    { text: "一般，需要一定时间但能完成", score: 3 },
+                    { text: "不太好，经常需要提示或帮助", score: 2 },
+                    { text: "很差，我不喜欢这类游戏", score: 1 }
+                ]
+            },
+            {
+                category: "逻辑推理能力",
+                question: "你能根据有限信息做出合理的推测或判断吗？",
+                options: [
+                    { text: "是的，我擅长从细节中推断出结论", score: 5 },
+                    { text: "比较擅长，大部分推测都比较准确", score: 4 },
+                    { text: "一般，有时能做出合理推测但不够自信", score: 3 },
+                    { text: "不太擅长，经常做出错误的判断", score: 2 },
+                    { text: "很难，我需要更多明确的信息", score: 1 }
+                ]
+            },
+            {
+                category: "逻辑推理能力",
+                question: "你如何评价自己的批判性思维能力？",
+                options: [
+                    { text: "非常强，我总是质疑并验证信息", score: 5 },
+                    { text: "比较强，经常会分析信息的可靠性", score: 4 },
+                    { text: "一般，有时会质疑但不够系统", score: 3 },
+                    { text: "不太强，通常直接接受信息", score: 2 },
+                    { text: "很弱，很少质疑或分析信息", score: 1 }
+                ]
+            },
+            {
+                category: "逻辑推理能力",
+                question: "你能轻松理解并应用抽象概念或理论吗？",
+                options: [
+                    { text: "非常轻松，我擅长理解抽象概念", score: 5 },
+                    { text: "比较轻松，大部分抽象概念都能理解", score: 4 },
+                    { text: "一般，需要一些时间和例子才能理解", score: 3 },
+                    { text: "不太轻松，经常需要具体实例才能理解", score: 2 },
+                    { text: "很难，抽象思维对我来说很困难", score: 1 }
+                ]
+            },
+            {
+                category: "逻辑推理能力",
+                question: "在做决策时，你更倾向于？",
+                options: [
+                    { text: "完全理性分析，基于事实和数据", score: 5 },
+                    { text: "主要理性分析，但也考虑直觉", score: 4 },
+                    { text: "理性和直觉各占一半", score: 3 },
+                    { text: "主要依靠直觉，但也会考虑事实", score: 2 },
+                    { text: "完全依靠直觉和感觉", score: 1 }
+                ]
+            },
+            {
+                category: "逻辑推理能力",
+                question: "你能轻松识别出模式或规律吗？",
+                options: [
+                    { text: "非常轻松，我善于发现各种模式", score: 5 },
+                    { text: "比较轻松，大部分模式都能识别", score: 4 },
+                    { text: "一般，有时能发现但不够敏锐", score: 3 },
+                    { text: "不太轻松，经常需要他人指出", score: 2 },
+                    { text: "很难，我对模式识别不太敏感", score: 1 }
+                ]
+            },
+            {
+                category: "逻辑推理能力",
+                question: "学习新技能时，你是否喜欢了解其背后的原理？",
+                options: [
+                    { text: "是的，我必须了解原理才能真正掌握", score: 5 },
+                    { text: "比较喜欢，了解原理有助于我的学习", score: 4 },
+                    { text: "一般，有时会好奇但不是必须的", score: 3 },
+                    { text: "不太关心，只要知道怎么做就行", score: 2 },
+                    { text: "完全不关心，我只需要知道结果", score: 1 }
+                ]
+            },
+            
+            // 空间思维能力
+            {
+                category: "空间思维能力",
+                question: "你能轻松想象出物体旋转后的样子吗？",
+                options: [
+                    { text: "非常轻松，我能清晰地想象出旋转后的形状", score: 5 },
+                    { text: "比较轻松，大部分情况下都能想象", score: 4 },
+                    { text: "一般，需要一点时间但能完成", score: 3 },
+                    { text: "不太轻松，经常需要实际操作才能理解", score: 2 },
+                    { text: "很难，我对空间想象不太擅长", score: 1 }
+                ]
+            },
+            {
+                category: "空间思维能力",
+                question: "使用地图或导航软件时，你能轻松确定方向吗？",
+                options: [
+                    { text: "是的，我很少迷路，方向感很强", score: 5 },
+                    { text: "大部分时候可以，但偶尔需要确认", score: 4 },
+                    { text: "一般，基本能找到方向但不够自信", score: 3 },
+                    { text: "不太擅长，经常需要他人帮助或多次确认", score: 2 },
+                    { text: "很差，我很容易迷路", score: 1 }
+                ]
+            },
+            {
+                category: "空间思维能力",
+                question: "你擅长拼图、积木或其他需要空间思维的游戏吗？",
+                options: [
+                    { text: "非常擅长，我能快速完成复杂的拼图或模型", score: 5 },
+                    { text: "比较擅长，大部分游戏都能轻松完成", score: 4 },
+                    { text: "一般，能完成但需要一定时间", score: 3 },
+                    { text: "不太擅长，经常需要帮助或提示", score: 2 },
+                    { text: "很差，我不喜欢这类游戏", score: 1 }
+                ]
+            },
+            {
+                category: "空间思维能力",
+                question: "你能轻松理解二维图纸或平面图所代表的三维物体吗？",
+                options: [
+                    { text: "是的，我能立即想象出三维形状", score: 5 },
+                    { text: "比较轻松，大部分图纸都能理解", score: 4 },
+                    { text: "一般，需要一些时间和思考", score: 3 },
+                    { text: "不太轻松，经常需要实物参考", score: 2 },
+                    { text: "很难，我对图纸理解有困难", score: 1 }
+                ]
+            },
+            {
+                category: "空间思维能力",
+                question: "在日常生活中，你是否经常进行空间规划？",
+                options: [
+                    { text: "是的，我经常规划家具摆放、空间利用等", score: 5 },
+                    { text: "比较经常，会考虑空间的合理利用", score: 4 },
+                    { text: "一般，偶尔会规划但不够系统", score: 3 },
+                    { text: "不太经常，主要按现有方式使用空间", score: 2 },
+                    { text: "很少，我对空间规划不太感兴趣", score: 1 }
+                ]
+            },
+            {
+                category: "空间思维能力",
+                question: "你能轻松判断物体之间的距离和比例关系吗？",
+                options: [
+                    { text: "是的，我对距离和比例有很好的直觉", score: 5 },
+                    { text: "比较准确，大部分判断都比较合理", score: 4 },
+                    { text: "一般，有时准确但不够自信", score: 3 },
+                    { text: "不太准确，经常需要测量工具辅助", score: 2 },
+                    { text: "很不准确，我对距离判断很差", score: 1 }
+                ]
+            },
+            {
+                category: "空间思维能力",
+                question: "你是否擅长绘画、设计或其他视觉艺术？",
+                options: [
+                    { text: "是的，我在视觉艺术方面很有天赋", score: 5 },
+                    { text: "比较擅长，能创作出不错的作品", score: 4 },
+                    { text: "一般，有一定基础但不够专业", score: 3 },
+                    { text: "不太擅长，只能做简单的创作", score: 2 },
+                    { text: "很差，我在艺术方面没有天赋", score: 1 }
+                ]
+            },
+            {
+                category: "空间思维能力",
+                question: "学习新技能时，你是否更喜欢视觉演示而非文字说明？",
+                options: [
+                    { text: "是的，我通过看演示学得更快", score: 5 },
+                    { text: "比较喜欢，视觉信息对我帮助很大", score: 4 },
+                    { text: "一般，两种方式都可以接受", score: 3 },
+                    { text: "不太喜欢，我更喜欢详细的文字说明", score: 2 },
+                    { text: "完全不喜欢，我只相信文字说明", score: 1 }
+                ]
+            },
+            {
+                category: "空间思维能力",
+                question: "你能轻松在脑海中构建路线图或空间布局吗？",
+                options: [
+                    { text: "是的，我能清晰地记住和想象空间布局", score: 5 },
+                    { text: "比较轻松，大部分路线都能记住", score: 4 },
+                    { text: "一般，基本能记住但不够详细", score: 3 },
+                    { text: "不太轻松，经常需要地图或导航", score: 2 },
+                    { text: "很难，我对空间记忆很差", score: 1 }
+                ]
+            },
+            {
+                category: "空间思维能力",
+                question: "你是否喜欢玩需要空间操作的电子游戏？",
+                options: [
+                    { text: "是的，我特别喜欢3D或空间类游戏", score: 5 },
+                    { text: "比较喜欢，这类游戏对我很有吸引力", score: 4 },
+                    { text: "一般，偶尔会玩但不是特别偏好", score: 3 },
+                    { text: "不太喜欢，我更喜欢其他类型的游戏", score: 2 },
+                    { text: "完全不喜欢，空间类游戏对我来说很难", score: 1 }
+                ]
+            },
+            
+            // 数字能力
+            {
+                category: "数字能力",
+                question: "进行心算时，你的表现如何？",
+                options: [
+                    { text: "非常好，我能快速准确地进行复杂心算", score: 5 },
+                    { text: "不错，大部分心算都能轻松完成", score: 4 },
+                    { text: "一般，简单计算没问题但复杂的需要辅助", score: 3 },
+                    { text: "不太好，经常需要纸笔或计算器", score: 2 },
+                    { text: "很差，心算对我来说很困难", score: 1 }
+                ]
+            },
+            {
+                category: "数字能力",
+                question: "你能轻松理解和分析数据图表吗？",
+                options: [
+                    { text: "是的，我能快速从图表中提取关键信息", score: 5 },
+                    { text: "比较轻松，大部分图表都能理解", score: 4 },
+                    { text: "一般，需要一些时间但能理解", score: 3 },
+                    { text: "不太轻松，经常需要他人解释", score: 2 },
+                    { text: "很难，我对数据图表理解有困难", score: 1 }
+                ]
+            },
+            {
+                category: "数字能力",
+                question: "你如何评价自己的财务规划能力？",
+                options: [
+                    { text: "非常好，我能有效管理预算和投资", score: 5 },
+                    { text: "不错，基本能保持财务状况健康", score: 4 },
+                    { text: "一般，能维持基本收支平衡", score: 3 },
+                    { text: "不太好，经常出现财务问题", score: 2 },
+                    { text: "很差，我对财务管理完全不在行", score: 1 }
+                ]
+            },
+            {
+                category: "数字能力",
+                question: "学习数学或与数字相关的学科时，你通常表现如何？",
+                options: [
+                    { text: "非常出色，这些科目对我来说很容易", score: 5 },
+                    { text: "很好，大部分内容都能轻松掌握", score: 4 },
+                    { text: "一般，需要一定努力但能跟上", score: 3 },
+                    { text: "比较困难，需要额外帮助才能理解", score: 2 },
+                    { text: "非常困难，我在这些科目上总是落后", score: 1 }
+                ]
+            },
+            {
+                category: "数字能力",
+                question: "你能轻松识别出数字模式或规律吗？",
+                options: [
+                    { text: "是的，我对数字模式非常敏感", score: 5 },
+                    { text: "比较容易，大部分数字规律都能发现", score: 4 },
+                    { text: "一般，有时能发现但不够敏锐", score: 3 },
+                    { text: "不太容易，经常需要提示或时间", score: 2 },
+                    { text: "很难，我对数字模式不太敏感", score: 1 }
+                ]
+            },
+            {
+                category: "数字能力",
+                question: "在日常生活中，你是否经常进行数字估算？",
+                options: [
+                    { text: "是的，我经常估算时间、距离、成本等", score: 5 },
+                    { text: "比较经常，会做一些基本估算", score: 4 },
+                    { text: "一般，偶尔会估算但不够系统", score: 3 },
+                    { text: "不太经常，主要依赖精确数据", score: 2 },
+                    { text: "很少，我对估算不太感兴趣", score: 1 }
+                ]
+            },
+            {
+                category: "数字能力",
+                question: "你能轻松理解和应用百分比、比例等数学概念吗？",
+                options: [
+                    { text: "是的，这些概念对我来说很直观", score: 5 },
+                    { text: "比较轻松，大部分概念都能应用", score: 4 },
+                    { text: "一般，需要一些思考但能理解", score: 3 },
+                    { text: "不太轻松，经常需要复习或确认", score: 2 },
+                    { text: "很难，我对这些概念理解有困难", score: 1 }
+                ]
+            },
+            {
+                category: "数字能力",
+                question: "你是否喜欢解决数学问题或智力题？",
+                options: [
+                    { text: "是的，我特别喜欢挑战数学难题", score: 5 },
+                    { text: "比较喜欢，解决数学问题很有成就感", score: 4 },
+                    { text: "一般，偶尔会尝试但不是特别热衷", score: 3 },
+                    { text: "不太喜欢，除非必要否则不会主动解决", score: 2 },
+                    { text: "完全不喜欢，数学问题让我感到压力", score: 1 }
+                ]
+            },
+            {
+                category: "数字能力",
+                question: "你能轻松处理和分析大量数据吗？",
+                options: [
+                    { text: "是的，我擅长从大量数据中提取信息", score: 5 },
+                    { text: "比较轻松，大部分数据分析都能完成", score: 4 },
+                    { text: "一般，需要一些时间和方法但能处理", score: 3 },
+                    { text: "不太轻松，面对大量数据时会感到困难", score: 2 },
+                    { text: "很难，我对数据分析不在行", score: 1 }
+                ]
+            },
+            {
+                category: "数字能力",
+                question: "在工作或学习中，你是否经常需要使用数字技能？",
+                options: [
+                    { text: "是的，数字技能是我工作/学习的核心", score: 5 },
+                    { text: "比较经常，数字技能很重要但不是全部", score: 4 },
+                    { text: "一般，偶尔需要但不是主要部分", score: 3 },
+                    { text: "不太经常，数字技能只是辅助工具", score: 2 },
+                    { text: "很少，我的工作/学习几乎不需要数字技能", score: 1 }
+                ]
+            },
+            
+            // 学习适应能力
+            {
+                category: "学习适应能力",
+                question: "学习新技能时，你通常需要多长时间才能掌握？",
+                options: [
+                    { text: "非常快，我能快速掌握新技能", score: 5 },
+                    { text: "比较快，大部分技能都能迅速上手", score: 4 },
+                    { text: "一般，需要一定时间但能学会", score: 3 },
+                    { text: "比较慢，需要反复练习才能掌握", score: 2 },
+                    { text: "很慢，学习新技能对我来说很困难", score: 1 }
+                ]
+            },
+            {
+                category: "学习适应能力",
+                question: "面对新环境或新变化时，你能快速适应吗？",
+                options: [
+                    { text: "是的，我能迅速适应新环境和变化", score: 5 },
+                    { text: "比较快，大部分变化都能轻松应对", score: 4 },
+                    { text: "一般，需要一些时间但能适应", score: 3 },
+                    { text: "不太容易，适应新环境需要较长时间", score: 2 },
+                    { text: "很难，我不喜欢变化，适应能力差", score: 1 }
+                ]
+            },
+            {
+                category: "学习适应能力",
+                question: "你如何评价自己的自学能力？",
+                options: [
+                    { text: "非常强，我能独立学习几乎任何知识", score: 5 },
+                    { text: "比较强，大部分内容都能自学掌握", score: 4 },
+                    { text: "一般，能自学简单内容但复杂的需要指导", score: 3 },
+                    { text: "不太强，经常需要他人指导或培训", score: 2 },
+                    { text: "很差，我很难独立学习新内容", score: 1 }
+                ]
+            },
+            {
+                category: "学习适应能力",
+                question: "你是否喜欢尝试新事物或挑战自己？",
+                options: [
+                    { text: "是的，我总是寻求新的挑战和体验", score: 5 },
+                    { text: "比较喜欢，经常尝试新事物", score: 4 },
+                    { text: "一般，偶尔会尝试但不是特别主动", score: 3 },
+                    { text: "不太喜欢，我更喜欢熟悉的事物", score: 2 },
+                    { text: "完全不喜欢，我害怕尝试新事物", score: 1 }
+                ]
+            },
+            {
+                category: "学习适应能力",
+                question: "当遇到困难或挫折时，你的反应如何？",
+                options: [
+                    { text: "积极面对，将其视为学习机会", score: 5 },
+                    { text: "比较积极，会寻找解决方法", score: 4 },
+                    { text: "一般，会尝试解决但可能会感到沮丧", score: 3 },
+                    { text: "不太积极，经常需要他人鼓励", score: 2 },
+                    { text: "很消极，遇到困难时容易放弃", score: 1 }
+                ]
+            },
+            {
+                category: "学习适应能力",
+                question: "你能轻松从错误中学习并改进吗？",
+                options: [
+                    { text: "是的，我能迅速从错误中吸取教训", score: 5 },
+                    { text: "比较轻松，大部分错误都能转化为经验", score: 4 },
+                    { text: "一般，有时能学习但偶尔会重复同样的错误", score: 3 },
+                    { text: "不太容易，经常需要多次犯错才能改进", score: 2 },
+                    { text: "很难，我似乎总是在同一个地方跌倒", score: 1 }
+                ]
+            },
+            {
+                category: "学习适应能力",
+                question: "你是否经常主动学习新知识或技能？",
+                options: [
+                    { text: "是的，我有持续学习的习惯", score: 5 },
+                    { text: "比较经常，会定期学习新内容", score: 4 },
+                    { text: "一般，偶尔会学习但没有固定习惯", score: 3 },
+                    { text: "不太经常，主要在必要时才学习", score: 2 },
+                    { text: "很少，我对学习新内容不太感兴趣", score: 1 }
+                ]
+            },
+            {
+                category: "学习适应能力",
+                question: "你能轻松理解不同的观点或思维方式吗？",
+                options: [
+                    { text: "是的，我善于接受和理解不同视角", score: 5 },
+                    { text: "比较轻松，大部分观点都能理解", score: 4 },
+                    { text: "一般，有时能理解但有自己的偏好", score: 3 },
+                    { text: "不太轻松，经常难以理解不同观点", score: 2 },
+                    { text: "很难，我只接受自己认同的观点", score: 1 }
+                ]
+            },
+            {
+                category: "学习适应能力",
+                question: "你如何评价自己的记忆力？",
+                options: [
+                    { text: "非常好，我能轻松记住大量信息", score: 5 },
+                    { text: "不错，大部分重要信息都能记住", score: 4 },
+                    { text: "一般，需要一些方法来帮助记忆", score: 3 },
+                    { text: "不太好，经常忘记重要信息", score: 2 },
+                    { text: "很差，我的记忆力一直是个问题", score: 1 }
+                ]
+            },
+            {
+                category: "学习适应能力",
+                question: "你是否擅长将学到的知识应用到实际问题中？",
+                options: [
+                    { text: "是的，我能轻松将理论知识转化为实践", score: 5 },
+                    { text: "比较擅长，大部分知识都能应用", score: 4 },
+                    { text: "一般，有时能应用但不够灵活", score: 3 },
+                    { text: "不太擅长，经常不知道如何应用所学", score: 2 },
+                    { text: "很难，我学的知识似乎和实际脱节", score: 1 }
+                ]
+            }
+        ];
+
+        // 结果分析数据
+        const resultAnalysis = {
+            language: {
+                low: {
+                    range: [10, 20],
+                    description: "你在语言理解和表达方面可能需要更多练习。建议多阅读、写作和交流，逐步提升语言能力。适合需要动手操作而非大量语言沟通的职业。"
+                },
+                medium: {
+                    range: [21, 35],
+                    description: "你具备基本的语言能力，能够满足日常沟通和工作需求。可以通过有针对性的练习进一步提升，适合需要一定语言能力但非核心要求的职业。"
+                },
+                high: {
+                    range: [36, 50],
+                    description: "你在语言理解和表达方面表现出色，能够准确把握文字含义，擅长沟通和写作。适合需要较强语言能力的职业，如教育、媒体、公关、法律等。"
+                }
+            },
+            logic: {
+                low: {
+                    range: [10, 20],
+                    description: "你在逻辑推理方面可能不太擅长，更倾向于直觉和感性思维。建议通过一些逻辑训练游戏或活动来提升，适合创意、艺术或服务类职业。"
+                },
+                medium: {
+                    range: [21, 35],
+                    description: "你具备基本的逻辑思维能力，能够解决日常工作和生活中的一般问题。可以通过练习进一步提升，适合需要一定分析能力但非高度逻辑要求的职业。"
+                },
+                high: {
+                    range: [36, 50],
+                    description: "你具备良好的逻辑思维能力，擅长分析问题和推理判断。适合需要逻辑分析的职业，如科学研究、技术开发、财务分析、法律等。"
+                }
+            },
+            spatial: {
+                low: {
+                    range: [10, 20],
+                    description: "你在空间思维方面可能不太擅长，更倾向于文字或数字思维。建议通过一些空间游戏或活动来提升，适合不需要复杂空间想象的职业。"
+                },
+                medium: {
+                    range: [21, 35],
+                    description: "你具备基本的空间思维能力，能够理解简单的空间关系。可以通过练习进一步提升，适合需要一定空间能力但非核心要求的职业。"
+                },
+                high: {
+                    range: [36, 50],
+                    description: "你在空间想象和视觉思维方面有优势，能够理解物体的空间关系。适合设计、建筑、工程、艺术等需要空间思维的职业。"
+                }
+            },
+            numeric: {
+                low: {
+                    range: [10, 20],
+                    description: "你在数字处理方面可能需要更多支持，建议使用计算器或其他工具辅助。适合不需要大量数字分析的职业，如创意、服务或人文类工作。"
+                },
+                medium: {
+                    range: [21, 35],
+                    description: "你具备基本的数字能力，能够处理日常工作和生活中的简单计算和分析。可以通过练习进一步提升，适合需要一定数字能力但非核心要求的职业。"
+                },
+                high: {
+                    range: [36, 50],
+                    description: "你在数字计算和分析方面表现突出，擅长处理数据和解决数学问题。适合金融、会计、数据分析、工程等与数字相关的职业。"
+                }
+            },
+            learning: {
+                low: {
+                    range: [10, 20],
+                    description: "你可能在学习新事物方面需要更多时间和支持，建议找到适合自己的学习方式。适合稳定性高、变化较少的传统职业。"
+                },
+                medium: {
+                    range: [21, 35],
+                    description: "你具备基本的学习能力，能够适应一般的工作和学习要求。可以通过改进学习方法进一步提升，适合有一定学习要求但变化不太剧烈的职业。"
+                },
+                high: {
+                    range: [36, 50],
+                    description: "你具备很强的学习能力和适应能力，能够快速掌握新知识和技能。适合需要持续学习和适应变化的职业，如咨询、培训、新兴技术领域等。"
+                }
+            }
+        };
+
+        // 职业匹配建议
+        const careerSuggestions = {
+            language: [
+                { name: "教育工作者", description: "适合你的语言表达和理解能力，能够有效传递知识" },
+                { name: "媒体从业者", description: "适合你的文字处理和沟通能力，能够创作和传播内容" },
+                { name: "公关专家", description: "适合你的语言表达和人际交往能力，能够维护良好关系" },
+                { name: "法律顾问", description: "适合你的语言理解和逻辑分析能力，能够处理法律事务" },
+                { name: "作家/编辑", description: "适合你的文字表达和创作能力，能够生产优质内容" }
+            ],
+            logic: [
+                { name: "科学家", description: "适合你的逻辑思维和分析能力，能够进行科学研究" },
+                { name: "软件工程师", description: "适合你的逻辑思维和问题解决能力，能够开发软件" },
+                { name: "财务分析师", description: "适合你的逻辑分析和数字处理能力，能够分析财务数据" },
+                { name: "系统分析师", description: "适合你的逻辑思维和系统思考能力，能够优化系统" },
+                { name: "研究员", description: "适合你的逻辑推理和研究能力，能够探索未知领域" }
+            ],
+            spatial: [
+                { name: "建筑师", description: "适合你的空间想象和设计能力，能够设计建筑" },
+                { name: "设计师", description: "适合你的视觉思维和创意能力，能够创作设计作品" },
+                { name: "工程师", description: "适合你的空间思维和问题解决能力，能够进行工程设计" },
+                { name: "艺术家", description: "适合你的视觉思维和创造力，能够创作艺术作品" },
+                { name: "游戏开发者", description: "适合你的空间想象和编程能力，能够开发游戏" }
+            ],
+            numeric: [
+                { name: "会计师", description: "适合你的数字处理和分析能力，能够处理财务信息" },
+                { name: "数据分析师", description: "适合你的数字分析和处理能力，能够从数据中提取价值" },
+                { name: "金融顾问", description: "适合你的数字处理和风险评估能力，能够提供金融建议" },
+                { name: "统计学家", description: "适合你的数字分析和统计能力，能够处理和解读数据" },
+                { name: "精算师", description: "适合你的数学能力和风险评估能力，能够计算保险风险" }
+            ],
+            learning: [
+                { name: "培训师", description: "适合你的学习能力和传授能力，能够帮助他人学习" },
+                { name: "咨询顾问", description: "适合你的学习能力和问题解决能力，能够提供专业建议" },
+                { name: "创业者", description: "适合你的学习能力和适应能力，能够应对创业挑战" },
+                { name: "技术专家", description: "适合你的学习能力和技术理解，能够掌握前沿技术" },
+                { name: "项目经理", description: "适合你的学习能力和协调能力，能够管理复杂项目" }
+            ]
+        };
+
+        // 能力提升建议
+        const improvementTips = {
+            language: [
+                "每天阅读不同类型的文章，扩大词汇量和理解力",
+                "练习写作，如日记、博客或短文，提升表达能力",
+                "参加辩论或演讲活动，锻炼口头表达能力",
+                "学习新语言，提升语言思维能力",
+                "多与人交流，练习倾听和表达"
+            ],
+            logic: [
+                "解决逻辑谜题和智力题，锻炼思维能力",
+                "学习编程或数学，提升逻辑思维",
+                "练习批判性思考，质疑和分析信息",
+                "学习逻辑学基础知识，提升推理能力",
+                "参与策略游戏，锻炼决策和分析能力"
+            ],
+            spatial: [
+                "玩拼图、积木或空间类游戏，提升空间想象",
+                "学习绘画或设计，锻炼视觉思维",
+                "练习在脑海中旋转或变换物体，提升空间操作",
+                "学习地图阅读和导航，提升方向感",
+                "尝试3D建模或雕塑，提升空间创造能力"
+            ],
+            numeric: [
+                "练习心算，提升计算速度和准确性",
+                "学习数据分析工具，提升数据处理能力",
+                "关注财务和经济新闻，提升数字敏感度",
+                "解决数学问题或谜题，锻炼数学思维",
+                "学习统计或财务知识，提升数字应用能力"
+            ],
+            learning: [
+                "设定学习目标，培养持续学习习惯",
+                "尝试不同的学习方法，找到最适合自己的",
+                "定期复习所学知识，加强记忆",
+                "学习新知识后立即应用，加深理解",
+                "培养好奇心，主动探索未知领域"
+            ]
+        };
+
+        // DOM元素
+        const startSection = document.getElementById('start-section');
+        const testSection = document.getElementById('test-section');
+        const resultSection = document.getElementById('result-section');
+        const startTestBtn = document.getElementById('start-test-btn');
+        const questionCard = document.getElementById('question-card');
+        const questionCategory = document.getElementById('question-category');
+        const questionText = document.getElementById('question-text');
+        const answerOptions = document.getElementById('answer-options');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        const currentQuestionSpan = document.getElementById('current-question');
+
+        // 测试状态
+        let currentQuestionIndex = 0;
+        const userAnswers = [];
+
+        // 开始测试
+        startTestBtn.addEventListener('click', () => {
+            startSection.classList.add('hidden');
+            testSection.classList.remove('hidden');
+            showQuestion(currentQuestionIndex);
+        });
+
+        // 显示当前问题
+        function showQuestion(index) {
+            const question = testQuestions[index];
+            questionCategory.textContent = question.category;
+            questionText.textContent = question.text;
+            
+            // 清空选项
+            answerOptions.innerHTML = '';
+            
+            // 添加选项
+            question.options.forEach((option, optionIndex) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'flex items-center';
+                
+                const radioInput = document.createElement('input');
+                radioInput.type = 'radio';
+                radioInput.id = `option-${optionIndex}`;
+                radioInput.name = 'answer';
+                radioInput.value = option.score;
+                radioInput.className = 'w-4 h-4 text-secondary focus:ring-secondary';
+                
+                // 如果用户已经回答过这个问题，选中对应的选项
+                if (userAnswers[index] !== undefined && userAnswers[index] === option.score) {
+                    radioInput.checked = true;
+                }
+                
+                const label = document.createElement('label');
+                label.htmlFor = `option-${optionIndex}`;
+                label.className = 'ml-3 text-gray-700 cursor-pointer flex-1 p-3 rounded-lg hover:bg-gray-50 transition-all-300';
+                label.textContent = option.text;
+                
+                optionDiv.appendChild(radioInput);
+                optionDiv.appendChild(label);
+                answerOptions.appendChild(optionDiv);
+            });
+            
+            // 更新进度
+            updateProgress();
+            
+            // 更新按钮状态
+            prevBtn.disabled = index === 0;
+            nextBtn.textContent = index === testQuestions.length - 1 ? '完成测试' : '下一题';
+            nextBtn.innerHTML = index === testQuestions.length - 1 ? '完成测试<i class="fa fa-check ml-2"></i>' : '下一题<i class="fa fa-arrow-right ml-2"></i>';
+            
+            // 更新当前题目显示
+            currentQuestionSpan.textContent = `第 ${index + 1} 题`;
+        }
+
+        // 更新进度
+        function updateProgress() {
+            const progress = ((currentQuestionIndex + 1) / testQuestions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+            progressText.textContent = `${Math.round(progress)}%`;
+        }
+
+        // 下一题
+        nextBtn.addEventListener('click', () => {
+            // 检查是否选择了答案
+            const selectedOption = document.querySelector('input[name="answer"]:checked');
+            if (!selectedOption) {
+                alert('请选择一个选项');
+                return;
+            }
+            
+            // 保存答案
+            userAnswers[currentQuestionIndex] = parseInt(selectedOption.value);
+            
+            // 如果是最后一题，显示结果
+            if (currentQuestionIndex === testQuestions.length - 1) {
+                showResults();
+                return;
+            }
+            
+            // 否则显示下一题
+            currentQuestionIndex++;
+            showQuestion(currentQuestionIndex);
+        });
+
+        // 上一题
+        prevBtn.addEventListener('click', () => {
+            if (currentQuestionIndex > 0) {
+                // 保存当前答案
+                const selectedOption = document.querySelector('input[name="answer"]:checked');
+                if (selectedOption) {
+                    userAnswers[currentQuestionIndex] = parseInt(selectedOption.value);
+                }
+                
+                currentQuestionIndex--;
+                showQuestion(currentQuestionIndex);
+            }
+        });
+
+        // 显示结果
+        function showResults() {
+            // 计算各维度得分
+            const scores = {
+                language: 0,
+                logic: 0,
+                spatial: 0,
+                numeric: 0,
+                learning: 0
+            };
+            
+            const counts = {
+                language: 0,
+                logic: 0,
+                spatial: 0,
+                numeric: 0,
+                learning: 0
+            };
+            
+            // 统计得分
+            testQuestions.forEach((question, index) => {
+                const category = question.category;
+                let dimension;
+                
+                if (category.includes('语言')) dimension = 'language';
+                else if (category.includes('逻辑')) dimension = 'logic';
+                else if (category.includes('空间')) dimension = 'spatial';
+                else if (category.includes('数字')) dimension = 'numeric';
+                else if (category.includes('学习')) dimension = 'learning';
+                
+                scores[dimension] += userAnswers[index];
+                counts[dimension]++;
+            });
+            
+            // 计算平均分
+            const avgScores = {
+                language: Math.round(scores.language / counts.language * 10),
+                logic: Math.round(scores.logic / counts.logic * 10),
+                spatial: Math.round(scores.spatial / counts.spatial * 10),
+                numeric: Math.round(scores.numeric / counts.numeric * 10),
+                learning: Math.round(scores.learning / counts.learning * 10)
+            };
+            
+            // 计算总分和百分位
+            const totalScore = Math.round((avgScores.language + avgScores.logic + avgScores.spatial + avgScores.numeric + avgScores.learning) / 5);
+            const percentile = Math.min(99, Math.round(totalScore * 1.1)); // 简单估算百分位
+            
+            // 更新结果页面
+            document.getElementById('total-score').textContent = totalScore;
+            document.getElementById('total-score-bar').style.width = `${totalScore}%`;
+            document.getElementById('percentile').textContent = `${percentile}%`;
+            
+            // 更新各维度得分和描述
+            updateDimensionResult('language', avgScores.language);
+            updateDimensionResult('logic', avgScores.logic);
+            updateDimensionResult('spatial', avgScores.spatial);
+            updateDimensionResult('numeric', avgScores.numeric);
+            updateDimensionResult('learning', avgScores.learning);
+            
+            // 生成雷达图
+            generateRadarChart(avgScores);
+            
+            // 生成职业建议
+            generateCareerSuggestions(avgScores);
+            
+            // 生成能力提升建议
+            generateImprovementTips(avgScores);
+            
+            // 显示结果页面
+            testSection.classList.add('hidden');
+            resultSection.classList.remove('hidden');
+        }
+
+        // 更新维度结果
+        function updateDimensionResult(dimension, score) {
+            const dimensionData = resultAnalysis[dimension];
+            let level, description;
+            
+            // 根据0-10分的范围判断等级
+            if (score <= 4) {
+                level = 'low';
+            } else if (score <= 7) {
+                level = 'medium';
+            } else {
+                level = 'high';
+            }
+            
+            description = dimensionData[level].description;
+            
+            // 更新DOM
+            const scoreElement = document.getElementById(`${dimension}-score`);
+            const barElement = document.getElementById(`${dimension}-bar`);
+            const descElement = document.getElementById(`${dimension}-description`);
+            
+            scoreElement.textContent = score;
+            // 直接使用分数作为百分比宽度，0-10分对应0-100%
+            const percentageWidth = Math.min(100, Math.max(0, score * 10));
+            barElement.style.width = `${percentageWidth}%`;
+            // 添加过渡动画使变化更平滑
+            barElement.style.transition = 'width 0.5s ease-in-out';
+            // 确保条形容器有正确的样式
+            barElement.parentElement.style.position = 'relative';
+            barElement.parentElement.style.overflow = 'hidden';
+            descElement.textContent = description;
+        }
+
+        // 生成雷达图
+        function generateRadarChart(scores) {
+            const ctx = document.getElementById('radar-chart').getContext('2d');
+            
+            // 确保canvas元素有足够的高度
+            const canvas = document.getElementById('radar-chart');
+            canvas.style.height = '300px';
+            canvas.style.width = '100%';
+            
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['语言理解', '逻辑推理', '空间思维', '数字能力', '学习适应'],
+                    datasets: [{
+                        label: '能力得分',
+                        data: [
+                            scores.language,
+                            scores.logic,
+                            scores.spatial,
+                            scores.numeric,
+                            scores.learning
+                        ],
+                        backgroundColor: 'rgba(0, 102, 204, 0.2)',
+                        borderColor: 'rgba(0, 102, 204, 1)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(0, 102, 204, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(0, 102, 204, 1)',
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 10,
+                            min: 0,
+                            ticks: {
+                                stepSize: 2,
+                                display: true,
+                                color: '#666',
+                                font: {
+                                    size: 10
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.1)'
+                            },
+                            angleLines: {
+                                color: 'rgba(0, 0, 0, 0.1)'
+                            },
+                            pointLabels: {
+                                display: true,
+                                color: '#333',
+                                font: {
+                                    size: 12,
+                                    weight: 'bold'
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `得分: ${context.raw}/10`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 生成职业建议
+        function generateCareerSuggestions(scores) {
+            // 找出得分最高的两个维度
+            const sortedDimensions = Object.entries(scores)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 2)
+                .map(entry => entry[0]);
+            
+            // 获取职业建议
+            const suggestions = [];
+            sortedDimensions.forEach(dimension => {
+                const dimensionSuggestions = careerSuggestions[dimension];
+                // 随机选择2个建议
+                for (let i = 0; i < 2; i++) {
+                    const randomIndex = Math.floor(Math.random() * dimensionSuggestions.length);
+                    suggestions.push(dimensionSuggestions[randomIndex]);
+                    // 避免重复
+                    dimensionSuggestions.splice(randomIndex, 1);
+                }
+            });
+            
+            // 更新DOM
+            const careerContainer = document.getElementById('career-suggestions');
+            careerContainer.innerHTML = '';
+            
+            suggestions.forEach((suggestion, index) => {
+                const colors = ['blue', 'green', 'purple', 'red', 'orange'];
+                const color = colors[index % colors.length];
+                
+                const suggestionDiv = document.createElement('div');
+                suggestionDiv.className = 'flex items-start';
+                suggestionDiv.innerHTML = `
+                    <div class="bg-${color}-100 text-${color}-700 rounded-full p-2 mr-3">
+                        <i class="fa fa-briefcase"></i>
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-dark">${suggestion.name}</h4>
+                        <p class="text-sm text-gray-600">${suggestion.description}</p>
+                    </div>
+                `;
+                
+                careerContainer.appendChild(suggestionDiv);
+            });
+        }
+
+        // 生成能力提升建议
+        function generateImprovementTips(scores) {
+            // 找出得分最低的两个维度
+            const sortedDimensions = Object.entries(scores)
+                .sort((a, b) => a[1] - b[1])
+                .slice(0, 2)
+                .map(entry => entry[0]);
+            
+            // 获取提升建议
+            const tips = [];
+            sortedDimensions.forEach(dimension => {
+                const dimensionTips = improvementTips[dimension];
+                // 随机选择2个建议
+                for (let i = 0; i < 2; i++) {
+                    const randomIndex = Math.floor(Math.random() * dimensionTips.length);
+                    tips.push(dimensionTips[randomIndex]);
+                    // 避免重复
+                    dimensionTips.splice(randomIndex, 1);
+                }
+            });
+            
+            // 更新DOM
+            const tipsContainer = document.getElementById('improvement-tips');
+            tipsContainer.innerHTML = '';
+            
+            tips.forEach(tip => {
+                const tipDiv = document.createElement('div');
+                tipDiv.className = 'flex items-start';
+                tipDiv.innerHTML = `
+                    <div class="bg-white bg-opacity-20 rounded-full p-1 mr-3">
+                        <i class="fa fa-lightbulb-o"></i>
+                    </div>
+                    <div>
+                        <p>${tip}</p>
+                    </div>
+                `;
+                
+                tipsContainer.appendChild(tipDiv);
+            });
+        }
+    </script>
+</body>
+</html>
