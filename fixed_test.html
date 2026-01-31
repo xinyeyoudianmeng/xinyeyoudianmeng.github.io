@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人格障碍类型测试 - 专业诊断工具</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#a855f7',
+                        accent: '#ec4899',
+                        neutral: '#f3f4f6',
+                        'text-primary': '#1f2937',
+                        'text-secondary': '#4b5563',
+                        'cluster-a': '#9333ea',
+                        'cluster-b': '#ef4444',
+                        'cluster-c': '#2563eb'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-neutral min-h-screen font-sans text-text-primary">
+    <!-- 顶部导航 -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-primary">
+                <i class="fa fa-user-circle mr-2"></i>人格障碍类型测试
+            </h1>
+            <div class="text-sm text-text-secondary">
+                <span id="progress">0/90</span> | 
+                <span id="timer">00:00</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要内容区 -->
+    <main class="container mx-auto px-4 py-8 max-w-4xl">
+        <!-- 开始页面 -->
+        <section id="intro-section" class="bg-white rounded-xl shadow-md p-8 mb-8">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-blue-600 text-transparent bg-clip-text">欢迎来到人格障碍类型测试</h2>
+                <p class="text-lg text-text-secondary mb-6">这是一个专业的心理健康评估工具，帮助你了解自己的人格特征</p>
+            </div>
+            
+            <div class="space-y-6 mb-8">
+                <div class="bg-indigo-50 p-4 rounded-lg">
+                    <h3 class="font-semibold mb-2 flex items-center text-primary">
+                        <i class="fa fa-info-circle mr-2"></i>测试介绍
+                    </h3>
+                    <p class="text-text-secondary">本测试基于DSM-5人格障碍分类标准，包含90道题目，评估10种人格障碍类型。请根据你的真实情况选择最符合的选项。</p>
+                </div>
+            </div>
+            
+            <!-- 重要免责声明 -->
+            <div class="bg-red-50 border-l-4 border-red-400 p-5 mb-8">
+                <h3 class="font-semibold mb-3 text-red-800 flex items-center">
+                    <i class="fa fa-exclamation-triangle mr-2"></i>重要免责声明
+                </h3>
+                <ul class="text-sm text-red-700 space-y-2">
+                    <li>• 本测试<span class="font-bold">非专业诊断工具</span>，结果仅供参考</li>
+                    <li>• 测试结果不能替代专业心理评估或诊断</li>
+                    <li>• 如有心理健康困扰，请寻求专业心理咨询师帮助</li>
+                </ul>
+            </div>
+            
+            <div class="text-center">
+                <button id="start-test" class="bg-gradient-to-r from-purple-600 to-blue-600 text-white font-medium py-3 px-8 rounded-full shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1">
+                    开始测试
+                    <i class="fa fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- 测试页面 -->
+        <section id="test-section" class="hidden">
+            <!-- 进度条 -->
+            <div class="mb-6 bg-gray-200 rounded-full h-2.5">
+                <div id="progress-bar" class="bg-gradient-to-r from-purple-600 to-blue-600 h-2.5 rounded-full" style="width: 0%"></div>
+            </div>
+            
+            <!-- 题目卡片 -->
+            <div class="bg-white rounded-xl shadow-md p-6 mb-6">
+                <div class="flex justify-between items-center mb-4">
+                    <span id="question-number" class="text-sm font-medium text-primary">题目 1/90</span>
+                    <span id="dimension-tag" class="text-xs bg-primary/10 text-primary px-3 py-1 rounded-full">偏执型</span>
+                </div>
+                
+                <h3 id="question-text" class="text-xl font-medium mb-6">我常常怀疑他人在背后议论我或说我的坏话。</h3>
+                
+                <div id="options-container" class="space-y-3">
+                    <!-- 选项将通过JS动态生成 -->
+                </div>
+            </div>
+            
+            <!-- 导航按钮 -->
+            <div class="flex justify-between">
+                <button id="prev-btn" class="bg-gray-200 text-text-primary font-medium py-2 px-6 rounded-lg shadow-sm hover:bg-gray-300 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i class="fa fa-arrow-left mr-2"></i>上一题
+                </button>
+                
+                <button id="next-btn" class="bg-gradient-to-r from-purple-600 to-blue-600 text-white font-medium py-2 px-6 rounded-lg shadow-sm hover:opacity-90 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                    下一题<i class="fa fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- 结果页面 -->
+        <section id="result-section" class="hidden">
+            <div class="bg-white rounded-xl shadow-md p-8 mb-8">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-blue-600 text-transparent bg-clip-text">测试结果</h2>
+                    <p class="text-lg text-text-secondary">感谢完成测试！以下是你的评估结果</p>
+                </div>
+                
+                <!-- 结果显示区域 -->
+                <div id="primary-trait" class="mb-8">
+                    <div class="bg-blue-50 rounded-xl p-6 border border-blue-200">
+                        <h4 class="font-bold text-lg mb-4 text-center">测试分析中...</h4>
+                        <p class="text-text-secondary text-center">正在生成你的个性化评估报告...</p>
+                    </div>
+                </div>
+                
+                <!-- 人格障碍类型解释 -->
+                <div id="disorder-explanations" class="mb-8">
+                    <!-- 解释将通过JS动态生成 -->
+                </div>
+                
+                <!-- 详细分析 -->
+                <div id="detailed-analysis" class="mb-8">
+                    <!-- 详细分析将通过JS动态生成 -->
+                </div>
+                
+                <!-- 建议 -->
+                <div id="growth-suggestions" class="mb-8">
+                    <!-- 建议将通过JS动态生成 -->
+                </div>
+                
+                <div class="text-center space-x-4">
+                    <button id="restart-test" class="bg-gradient-to-r from-purple-600 to-blue-600 text-white font-medium py-2 px-6 rounded-lg shadow-sm hover:opacity-90 transition-all duration-300">
+                        <i class="fa fa-refresh mr-2"></i>重新测试
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // 测试题目数据
+        const questions = [
+            // 偏执型人格障碍
+            { id: 1, subtype: "偏执型人格障碍", question: "我常常怀疑他人在背后议论我或说我的坏话。", options: [0, 1, 2, 3, 4] },
+            { id: 2, subtype: "偏执型人格障碍", question: "我很难相信他人会真心对我好，总觉得他们有某种目的。", options: [0, 1, 2, 3, 4] },
+            { id: 3, subtype: "偏执型人格障碍", question: "我会过度解读他人的言行，认为他们在暗示或隐喻什么。", options: [0, 1, 2, 3, 4] },
+            { id: 4, subtype: "偏执型人格障碍", question: "我很难忘记别人对我的伤害或不公，会记仇很长时间。", options: [0, 1, 2, 3, 4] },
+            { id: 5, subtype: "偏执型人格障碍", question: "我对批评非常敏感，容易将其视为对我的攻击。", options: [0, 1, 2, 3, 4] },
+            { id: 6, subtype: "偏执型人格障碍", question: "我很少向他人倾诉我的想法和感受，担心被利用。", options: [0, 1, 2, 3, 4] },
+            
+            // 分裂样人格障碍
+            { id: 7, subtype: "分裂样人格障碍", question: "我更喜欢独处，很少感到孤独或需要他人陪伴。", options: [0, 1, 2, 3, 4] },
+            { id: 8, subtype: "分裂样人格障碍", question: "我对社交活动没有太大兴趣，宁愿一个人做自己的事情。", options: [0, 1, 2, 3, 4] },
+            { id: 9, subtype: "分裂样人格障碍", question: "我对他人的认可或拒绝都不太在意，很少受此影响。", options: [0, 1, 2, 3, 4] },
+            { id: 10, subtype: "分裂样人格障碍", question: "我很少有强烈的情感反应，对大多数事情都比较淡然。", options: [0, 1, 2, 3, 4] },
+            { id: 11, subtype: "分裂样人格障碍", question: "我更喜欢抽象思考或幻想，而不是与现实世界互动。", options: [0, 1, 2, 3, 4] },
+            { id: 12, subtype: "分裂样人格障碍", question: "我对亲密关系没有太多渴望，觉得一个人生活也挺好。", options: [0, 1, 2, 3, 4] },
+            
+            // 分裂型人格障碍
+            { id: 13, subtype: "分裂型人格障碍", question: "我有时会有一些奇特的信念，别人可能觉得不太正常。", options: [0, 1, 2, 3, 4] },
+            { id: 14, subtype: "分裂型人格障碍", question: "我偶尔会有一些奇怪的感知体验，比如模糊的声音或影像。", options: [0, 1, 2, 3, 4] },
+            { id: 15, subtype: "分裂型人格障碍", question: "我的言语表达有时会很含糊或不连贯，别人可能难以理解。", options: [0, 1, 2, 3, 4] },
+            { id: 16, subtype: "分裂型人格障碍", question: "我在社交场合中经常感到极度不适和焦虑。", options: [0, 1, 2, 3, 4] },
+            { id: 17, subtype: "分裂型人格障碍", question: "我相信自己有某种特殊的能力或洞察力。", options: [0, 1, 2, 3, 4] },
+            { id: 18, subtype: "分裂型人格障碍", question: "我的行为方式常常被他人视为古怪或与众不同。", options: [0, 1, 2, 3, 4] },
+            
+            // 反社会型人格障碍
+            { id: 19, subtype: "反社会型人格障碍", question: "我有时会为了自己的利益而说谎或欺骗他人。", options: [0, 1, 2, 3, 4] },
+            { id: 20, subtype: "反社会型人格障碍", question: "我不太在意社会规则和法律，觉得它们对我限制太多。", options: [0, 1, 2, 3, 4] },
+            { id: 21, subtype: "反社会型人格障碍", question: "我很难对他人的痛苦或不幸产生真正的同情。", options: [0, 1, 2, 3, 4] },
+            { id: 22, subtype: "反社会型人格障碍", question: "我经常做出冲动的决定，不考虑可能的后果。", options: [0, 1, 2, 3, 4] },
+            { id: 23, subtype: "反社会型人格障碍", question: "我对自己的行为很少感到真正的后悔或内疚。", options: [0, 1, 2, 3, 4] },
+            { id: 24, subtype: "反社会型人格障碍", question: "我在人际关系中常常表现出操纵性或利用性。", options: [0, 1, 2, 3, 4] },
+            
+            // 边缘型人格障碍
+            { id: 25, subtype: "边缘型人格障碍", question: "我的情绪波动很大，有时在很短时间内就从极度高兴变为极度悲伤。", options: [0, 1, 2, 3, 4] },
+            { id: 26, subtype: "边缘型人格障碍", question: "我非常害怕被抛弃或孤独一人。", options: [0, 1, 2, 3, 4] },
+            { id: 27, subtype: "边缘型人格障碍", question: "我的自我形象经常变化，有时觉得自己很优秀，有时又觉得自己一无是处。", options: [0, 1, 2, 3, 4] },
+            { id: 28, subtype: "边缘型人格障碍", question: "我有时会做出冲动或自毁性的行为，比如过度消费、暴饮暴食或危险驾驶。", options: [0, 1, 2, 3, 4] },
+            { id: 29, subtype: "边缘型人格障碍", question: "我的人际关系经常是极端的，要么认为对方完美无缺，要么认为对方一无是处。", options: [0, 1, 2, 3, 4] },
+            { id: 30, subtype: "边缘型人格障碍", question: "在压力很大时，我会感到极度空虚或绝望。", options: [0, 1, 2, 3, 4] },
+            
+            // 表演型人格障碍
+            { id: 31, subtype: "表演型人格障碍", question: "我喜欢成为关注的焦点，享受被他人注意的感觉。", options: [0, 1, 2, 3, 4] },
+            { id: 32, subtype: "表演型人格障碍", question: "我的情感表达通常比较夸张或戏剧化。", options: [0, 1, 2, 3, 4] },
+            { id: 33, subtype: "表演型人格障碍", question: "我经常寻求他人的认可和赞美。", options: [0, 1, 2, 3, 4] },
+            { id: 34, subtype: "表演型人格障碍", question: "我的言语表达往往比较生动但缺乏细节。", options: [0, 1, 2, 3, 4] },
+            { id: 35, subtype: "表演型人格障碍", question: "我在社交场合中通常表现得比较亲热或开放。", options: [0, 1, 2, 3, 4] },
+            { id: 36, subtype: "表演型人格障碍", question: "如果我不是关注的中心，我会感到失落或不开心。", options: [0, 1, 2, 3, 4] },
+            
+            // 自恋型人格障碍
+            { id: 37, subtype: "自恋型人格障碍", question: "我认为自己比大多数人都要特别或优秀。", options: [0, 1, 2, 3, 4] },
+            { id: 38, subtype: "自恋型人格障碍", question: "我期待他人对我特别关注和优待。", options: [0, 1, 2, 3, 4] },
+            { id: 39, subtype: "自恋型人格障碍", question: "我很难真正关心他人的感受或需求。", options: [0, 1, 2, 3, 4] },
+            { id: 40, subtype: "自恋型人格障碍", question: "我经常幻想自己的成功、权力或魅力。", options: [0, 1, 2, 3, 4] },
+            { id: 41, subtype: "自恋型人格障碍", question: "我对批评非常敏感，容易感到受伤或愤怒。", options: [0, 1, 2, 3, 4] },
+            { id: 42, subtype: "自恋型人格障碍", question: "我会嫉妒他人的成功或成就。", options: [0, 1, 2, 3, 4] },
+            
+            // 回避型人格障碍
+            { id: 43, subtype: "回避型人格障碍", question: "我避免参加社交活动，因为害怕被批评或拒绝。", options: [0, 1, 2, 3, 4] },
+            { id: 44, subtype: "回避型人格障碍", question: "我对自己的能力和价值缺乏信心。", options: [0, 1, 2, 3, 4] },
+            { id: 45, subtype: "回避型人格障碍", question: "我担心自己在社交场合中会表现得很尴尬或笨拙。", options: [0, 1, 2, 3, 4] },
+            { id: 46, subtype: "回避型人格障碍", question: "我很少主动与他人建立亲密关系，即使内心渴望。", options: [0, 1, 2, 3, 4] },
+            { id: 47, subtype: "回避型人格障碍", question: "我对他人的负面评价特别敏感。", options: [0, 1, 2, 3, 4] },
+            { id: 48, subtype: "回避型人格障碍", question: "我宁愿一个人工作或活动，也不愿冒险被他人评价。", options: [0, 1, 2, 3, 4] },
+            
+            // 依赖型人格障碍
+            { id: 49, subtype: "依赖型人格障碍", question: "我很难自己做决定，总是希望他人为我做决定。", options: [0, 1, 2, 3, 4] },
+            { id: 50, subtype: "依赖型人格障碍", question: "我害怕独处，总是希望有人陪伴。", options: [0, 1, 2, 3, 4] },
+            { id: 51, subtype: "依赖型人格障碍", question: "我会过度顺从他人的意愿，即使自己并不愿意。", options: [0, 1, 2, 3, 4] },
+            { id: 52, subtype: "依赖型人格障碍", question: "我担心自己无法照顾好自己。", options: [0, 1, 2, 3, 4] },
+            { id: 53, subtype: "依赖型人格障碍", question: "我会因为害怕失去支持而容忍他人的不公平对待。", options: [0, 1, 2, 3, 4] },
+            { id: 54, subtype: "依赖型人格障碍", question: "我在失去重要关系时会感到极度无助。", options: [0, 1, 2, 3, 4] },
+            
+            // 强迫型人格障碍
+            { id: 55, subtype: "强迫型人格障碍", question: "我对细节、规则和秩序有极高的要求。", options: [0, 1, 2, 3, 4] },
+            { id: 56, subtype: "强迫型人格障碍", question: "我很难授权他人做事，因为担心他们做不好。", options: [0, 1, 2, 3, 4] },
+            { id: 57, subtype: "强迫型人格障碍", question: "我经常因为追求完美而导致任务拖延。", options: [0, 1, 2, 3, 4] },
+            { id: 58, subtype: "强迫型人格障碍", question: "我过度关注工作和责任，忽视休闲和人际关系。", options: [0, 1, 2, 3, 4] },
+            { id: 59, subtype: "强迫型人格障碍", question: "我对自己和他人都有非常严格的标准。", options: [0, 1, 2, 3, 4] },
+            { id: 60, subtype: "强迫型人格障碍", question: "我很难接受变化或新的方法。", options: [0, 1, 2, 3, 4] }
+        ];
+
+        // 人格障碍类型详细描述
+        const personalityDisorderTypes = {
+            '偏执型人格障碍': {
+                core: '持续的多疑、偏执，不信任他人，总怀疑他人有恶意或利用自己的意图。',
+                diagnosis: '你可能符合偏执型人格障碍的特征，表现出明显的多疑和不信任。',
+                fullDescription: '偏执型人格障碍的核心特征是对他人普遍的不信任和猜疑，认为他人的动机都是恶意的。患者很难相信他人，害怕被利用或欺骗，对批评极度敏感，常常误解他人的言行。',
+                symptoms: [
+                    '无端怀疑他人会利用、欺骗或伤害自己',
+                    '对朋友或同伴的忠诚或信任存在无端怀疑',
+                    '不愿向他人透露个人信息，担心被利用',
+                    '将他人善意的言行误解为潜在的恶意或贬低',
+                    '对他人的侮辱或伤害长久记仇',
+                    '感到自己的名誉或人格受到攻击，但在他人看来并不明显'
+                ],
+                impact: '这种人格障碍会严重影响人际关系、工作和生活质量。患者常常处于警惕和防御状态，难以建立亲密关系，可能导致社交孤立。',
+                treatment: '认知行为疗法(CBT)是主要治疗方法，帮助患者识别和挑战扭曲的思维模式，学习更健康的人际关系技能。'
+            },
+            '分裂样人格障碍': {
+                core: '对社交关系极度冷漠，缺乏建立亲密关系的欲望，几乎没有情感体验。',
+                diagnosis: '你可能符合分裂样人格障碍的特征，表现出对社交关系的极端疏离。',
+                fullDescription: '分裂样人格障碍的特点是对社会关系的广泛脱离和情感表达的受限。患者通常选择孤独的生活方式，对他人的认可或拒绝漠不关心，很少有强烈的情感反应。',
+                symptoms: [
+                    '对亲密关系缺乏欲望，包括家庭关系',
+                    '几乎总是选择单独活动',
+                    '对性行为几乎没有兴趣',
+                    '很少有亲密朋友或知己',
+                    '对他人的表扬或批评漠不关心',
+                    '情绪表达受限，很少表现出快乐、愤怒或悲伤'
+                ],
+                impact: '患者通常能够正常工作，但在需要社交互动的场合可能会遇到困难。他们的情感疏离可能被他人误解为冷漠或高傲。',
+                treatment: '支持性心理治疗为主，帮助患者发展社交技能和情感表达能力，改善生活质量。'
+            },
+            '分裂型人格障碍': {
+                core: '兼具偏执和古怪的感知/思维，如奇特的信念、言语表达含糊不清。',
+                diagnosis: '你可能符合分裂型人格障碍的特征，表现出奇特的思维模式。',
+                fullDescription: '分裂型人格障碍表现为社交和人际关系的缺陷，伴随着认知或感知扭曲以及行为古怪。患者可能有奇特的信念、感知异常和古怪的行为。',
+                symptoms: [
+                    '牵连观念（不包括关系妄想）',
+                    '奇特的信念或魔幻思维，影响行为',
+                    '不寻常的感知体验，包括躯体错觉',
+                    '奇特的思维和言语',
+                    '猜疑或偏执观念',
+                    '不适当或受限的情感表达',
+                    '古怪、奇特或特别的行为或外表',
+                    '除一级亲属外，缺乏亲密朋友或知己',
+                    '过度的社交焦虑，与偏执有关'
+                ],
+                impact: '这种障碍会严重影响社交功能和日常生活。患者可能被视为"古怪"或"奇怪"，导致社交孤立和职业困难。',
+                treatment: '认知行为疗法结合低剂量抗精神病药物可能有效。社交技能训练和家庭治疗也有帮助。'
+            },
+            '反社会型人格障碍': {
+                core: '无视社会规则和他人权利，缺乏同理心、愧疚感和责任感。',
+                diagnosis: '你可能符合反社会型人格障碍的特征，表现出对社会规则的持续无视。',
+                fullDescription: '反社会型人格障碍的核心特征是对他人权利的普遍漠视和侵犯。患者经常违反社会规范，说谎、欺骗、操纵他人，缺乏同理心和愧疚感。',
+                symptoms: [
+                    '不能遵守社会规范，多次做出可遭逮捕的行为',
+                    '欺诈，反复说谎，使用假名或欺骗他人以谋取利益',
+                    '冲动性或不能事先计划',
+                    '易怒和攻击性，反复斗殴或攻击他人',
+                    '鲁莽地不顾及他人或自己的安全',
+                    '一贯不负责任，反复失业或不履行经济义务',
+                    '缺乏愧疚感，对伤害、虐待或偷窃他人显得漠不关心'
+                ],
+                impact: '这种障碍对社会和个人都有严重影响。患者可能涉及犯罪活动，人际关系混乱，工作不稳定，健康问题增多。',
+                treatment: '治疗挑战较大。认知行为疗法、辩证行为疗法和愤怒管理训练可能有帮助。结构化的治疗环境和长期心理治疗至关重要。'
+            },
+            '边缘型人格障碍': {
+                core: '极不稳定的情绪、自我形象和人际关系，害怕被抛弃，易出现极端情绪波动。',
+                diagnosis: '你可能符合边缘型人格障碍的特征，表现出情绪的极端不稳定性。',
+                fullDescription: '边缘型人格障碍的特点是情绪、自我形象和人际关系的极度不稳定性。患者害怕被抛弃，情绪波动剧烈，可能有自毁行为和冲动行为。',
+                symptoms: [
+                    '疯狂努力以避免真实或想象中的被抛弃',
+                    '人际关系强烈而不稳定，在极端理想化和极端贬低之间交替',
+                    '身份障碍：显著而持久的自我形象或自我感觉不稳定',
+                    '至少在两个方面有潜在的自我伤害的冲动行为',
+                    '反复发生的自杀行为、姿态或威胁，或自残行为',
+                    '由于显著的心境反应导致的情感不稳定',
+                    '长期感到空虚',
+                    '不适当的、强烈的愤怒或难以控制发怒',
+                    '短暂的、与压力有关的偏执观念或严重的分离症状'
+                ],
+                impact: '这种障碍严重影响生活的各个方面。患者可能经历频繁的人际关系冲突、工作不稳定、学业困难和心理健康问题。',
+                treatment: '辩证行为疗法(DBT)是首选治疗方法，结合认知行为疗法、药物治疗和住院治疗（在危机情况下）。'
+            },
+            '表演型人格障碍': {
+                core: '过度的戏剧化、夸张的情感表达和寻求关注，行为以"吸引他人注意"为核心。',
+                diagnosis: '你可能符合表演型人格障碍的特征，表现出过度的戏剧化行为。',
+                fullDescription: '表演型人格障碍的核心特征是过度情绪化和寻求关注。患者通常表现得戏剧化、夸张，过度关注外表，渴望成为注意的焦点。',
+                symptoms: [
+                    '在自己不能成为他人注意中心的场合感到不舒服',
+                    '与他人交往时带有不适当的性诱惑或挑逗行为',
+                    '情绪表达变换迅速而肤浅',
+                    '一贯用外表吸引他人注意',
+                    '言语风格过分印象化，缺乏细节',
+                    '表现出自我戏剧化、舞台化或夸张的情绪表达',
+                    '易受暗示，容易被他人或环境影响',
+                    '认为与他人的关系比实际上更亲密'
+                ],
+                impact: '这种障碍会影响人际关系和职业功能。患者可能在工作中过度情绪化，人际关系浅薄，难以维持长期的亲密关系。',
+                treatment: '认知行为疗法帮助患者识别和改变不适当的行为模式，发展更健康的情感表达和人际关系技能。'
+            },
+            '自恋型人格障碍': {
+                core: '极端的自我中心、自大，拥有夸大的自我价值感，渴望他人的崇拜和赞美。',
+                diagnosis: '你可能符合自恋型人格障碍的特征，表现出夸大的自我重要感。',
+                fullDescription: '自恋型人格障碍的特点是夸大的自我重要感、对赞美和关注的过度需求，以及缺乏同理心。患者通常认为自己特殊、优越，有权获得特殊待遇。',
+                symptoms: [
+                    '具有自我重要性的夸大感',
+                    '幻想无限成功、权力、才华、美丽或理想爱情',
+                    '认为自己特殊和独特的，只能被其他特殊或地位高的人理解',
+                    '需要过度的赞美',
+                    '有一种权利感，即不合理地期望特殊的优待或他人自动顺从他的期望',
+                    '在人际关系上剥削他人',
+                    '缺乏同理心，不愿识别或认同他人的感受和需求',
+                    '经常嫉妒他人或认为他人嫉妒自己',
+                    '表现出傲慢、自大的行为或态度'
+                ],
+                impact: '这种障碍会导致人际关系困难、职业问题和情感困扰。患者可能难以接受批评，人际关系冲突频繁，缺乏真正的亲密关系。',
+                treatment: '心理动力疗法和认知行为疗法帮助患者发展更现实的自我认知，增强同理心，改善人际关系。'
+            },
+            '回避型人格障碍': {
+                core: '极端的社交焦虑和自卑，害怕被他人拒绝、批评或否定，刻意回避社交场合。',
+                diagnosis: '你可能符合回避型人格障碍的特征，表现出极端的社交焦虑。',
+                fullDescription: '回避型人格障碍的核心特征是对社交情境的广泛回避，源于对拒绝、批评和否定的强烈恐惧。患者自我评价低，认为自己无能、不可爱。',
+                symptoms: [
+                    '因为害怕批评、否定或排斥而回避涉及人际接触较多的职业活动',
+                    '不愿与人打交道，除非确定能被喜欢',
+                    '因为害羞或害怕被嘲弄而在亲密关系中表现拘谨',
+                    '具有在社交场合被批评或拒绝的先占观念',
+                    '因为能力不足感而在新的人际关系情况下受抑制',
+                    '认为自己在社交方面笨拙、缺乏个人吸引力或低人一等',
+                    '因为可能令人困窘，非常不情愿冒个人风险或参加任何新的活动'
+                ],
+                impact: '这种障碍会严重限制个人和职业发展。患者可能错过教育和职业机会，社交生活受限，生活质量下降。',
+                treatment: '认知行为疗法结合暴露疗法帮助患者挑战负面的自我信念，逐步面对社交恐惧，发展社交技能。'
+            },
+            '依赖型人格障碍': {
+                core: '过度依赖他人的照顾和决策，缺乏独立能力，害怕独处或被抛弃。',
+                diagnosis: '你可能符合依赖型人格障碍的特征，表现出过度依赖他人。',
+                fullDescription: '依赖型人格障碍的特点是过度需要他人的照顾，导致顺从和依附行为。患者害怕分离和被抛弃，缺乏自信和独立能力。',
+                symptoms: [
+                    '如果没有他人的大量建议和保证，难以做出日常决定',
+                    '需要他人为自己承担责任',
+                    '害怕失去支持或赞同，难以表示不同意',
+                    '难以开始项目或做事情，因为缺乏判断力或自信',
+                    '过度需要培养和支持，当亲密关系结束时感到无助或崩溃',
+                    '不现实地沉湎于害怕被抛弃以致不得不自己照顾自己',
+                    '在亲密关系中过度迁就他人的愿望',
+                    '一个亲密关系结束后，迫切寻求另一个关系作为支持和照顾的来源'
+                ],
+                impact: '这种障碍会限制个人自主性和发展。患者可能在人际关系中处于从属地位，职业发展受限，容易受到虐待或操纵。',
+                treatment: '认知行为疗法帮助患者发展自信和独立能力，学习做决定和解决问题的技能，建立健康的人际关系边界。'
+            },
+            '强迫型人格障碍': {
+                core: '过度追求完美、秩序和控制，对细节、规则、条理有极致的要求。',
+                diagnosis: '你可能符合强迫型人格障碍的特征，表现出过度追求完美。',
+                fullDescription: '强迫型人格障碍的核心特征是过度关注秩序、完美主义和控制。患者对规则、细节和计划过分关注，忽视灵活性和效率。',
+                symptoms: [
+                    '沉湎于细节、规则、条目、秩序、组织或日程，以致忽略了活动的主要方面',
+                    '表现出妨碍任务完成的完美主义',
+                    '过度投入工作和生产，排除娱乐活动和友谊',
+                    '对道德、伦理或价值观过分认真、小心谨慎和缺乏弹性',
+                    '不愿丢弃用坏的或无价值的物品，即使这些物品毫无情感纪念价值',
+                    '不愿将任务委托给他人或与他人共同工作',
+                    '对自己和他人都采取吝啬的消费方式',
+                    '表现出僵化和固执'
+                ],
+                impact: '这种障碍会影响工作效率、人际关系和生活质量。患者可能因为过度追求完美而拖延，难以与他人合作，生活缺乏乐趣。',
+                treatment: '认知行为疗法帮助患者挑战完美主义思维，学习接受不完美，提高灵活性和效率。接纳与承诺疗法(ACT)也有帮助。'
+            }
+        };
+
+        // 全局变量
+        let currentQuestionIndex = 0;
+        let userAnswers = {};
+        let startTime = null;
+        let timerInterval = null;
+
+        // DOM元素
+        const introSection = document.getElementById('intro-section');
+        const testSection = document.getElementById('test-section');
+        const resultSection = document.getElementById('result-section');
+        const startTestBtn = document.getElementById('start-test');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const restartTestBtn = document.getElementById('restart-test');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress');
+        const timerText = document.getElementById('timer');
+        const questionNumber = document.getElementById('question-number');
+        const dimensionTag = document.getElementById('dimension-tag');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+
+        // 事件监听器
+        startTestBtn.addEventListener('click', startTest);
+        prevBtn.addEventListener('click', goToPreviousQuestion);
+        nextBtn.addEventListener('click', goToNextQuestion);
+        restartTestBtn.addEventListener('click', restartTest);
+
+        // 开始测试
+        function startTest() {
+            introSection.classList.add('hidden');
+            testSection.classList.remove('hidden');
+            startTime = new Date();
+            startTimer();
+            showQuestion(currentQuestionIndex);
+            updateProgress();
+        }
+
+        // 显示当前问题
+        function showQuestion(index) {
+            const question = questions[index];
+            questionNumber.textContent = `题目 ${index + 1}/${questions.length}`;
+            dimensionTag.textContent = question.subtype;
+            questionText.textContent = question.question;
+            
+            // 生成选项
+            optionsContainer.innerHTML = '';
+            const optionLabels = ['从不', '偶尔', '有时', '经常', '总是'];
+            
+            question.options.forEach((value, optionIndex) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50 transition-all duration-200';
+                
+                if (userAnswers[question.id] === value) {
+                    optionDiv.classList.add('bg-primary/10', 'border-primary');
+                }
+                
+                optionDiv.innerHTML = `
+                    <input type="radio" name="question-${question.id}" value="${value}" class="mr-3" ${userAnswers[question.id] === value ? 'checked' : ''}>
+                    <label class="flex-1 cursor-pointer">${optionLabels[optionIndex]}</label>
+                    <span class="text-sm text-gray-500">${optionIndex}</span>
+                `;
+                
+                // 为整个选项div添加点击事件
+                optionDiv.addEventListener('click', () => {
+                    selectOption(question.id, value, optionDiv);
+                });
+                
+                // 为radio按钮添加点击事件（确保点击radio也能触发选择）
+                const radioBtn = optionDiv.querySelector('input[type="radio"]');
+                if (radioBtn) {
+                    radioBtn.addEventListener('click', (e) => {
+                        e.stopPropagation(); // 防止事件冒泡
+                        selectOption(question.id, value, optionDiv);
+                    });
+                }
+                
+                // 为label添加点击事件
+                const label = optionDiv.querySelector('label');
+                if (label) {
+                    label.addEventListener('click', (e) => {
+                        e.stopPropagation(); // 防止事件冒泡
+                        selectOption(question.id, value, optionDiv);
+                    });
+                }
+                
+                optionsContainer.appendChild(optionDiv);
+            });
+        }
+
+        // 选择选项
+        function selectOption(questionId, value, selectedDiv) {
+            userAnswers[questionId] = value;
+            
+            // 更新UI
+            const allOptions = optionsContainer.querySelectorAll('div');
+            allOptions.forEach(option => {
+                option.classList.remove('bg-primary/10', 'border-primary');
+            });
+            
+            selectedDiv.classList.add('bg-primary/10', 'border-primary');
+            
+            // 启用下一题按钮
+            nextBtn.disabled = false;
+            
+            // 如果是最后一题，点击选项后自动显示结果
+            if (currentQuestionIndex === questions.length - 1) {
+                setTimeout(() => {
+                    showResults();
+                }, 500);
+            }
+        }
+
+        // 上一题
+        function goToPreviousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                showQuestion(currentQuestionIndex);
+                updateProgress();
+            }
+        }
+
+        // 下一题
+        function goToNextQuestion() {
+            // 检查是否已回答当前问题
+            if (userAnswers[questions[currentQuestionIndex].id] === undefined) {
+                alert('请选择一个选项');
+                return;
+            }
+            
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                showQuestion(currentQuestionIndex);
+                updateProgress();
+            } else {
+                showResults();
+            }
+        }
+
+        // 更新进度
+        function updateProgress() {
+            const answeredCount = Object.keys(userAnswers).length;
+            const progressPercentage = (answeredCount / questions.length) * 100;
+            progressBar.style.width = `${progressPercentage}%`;
+            progressText.textContent = `${answeredCount}/${questions.length}`;
+            
+            // 更新按钮状态
+            prevBtn.disabled = currentQuestionIndex === 0;
+            
+            // 检查当前问题是否已回答
+            const currentQuestionAnswered = userAnswers[questions[currentQuestionIndex].id] !== undefined;
+            nextBtn.disabled = !currentQuestionAnswered;
+            
+            console.log('更新进度:', {
+                currentQuestionIndex,
+                currentQuestionAnswered,
+                nextBtnDisabled: nextBtn.disabled
+            });
+        }
+
+        // 开始计时器
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                const elapsedTime = new Date() - startTime;
+                const minutes = Math.floor(elapsedTime / 60000);
+                const seconds = Math.floor((elapsedTime % 60000) / 1000);
+                timerText.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        // 停止计时器
+        function stopTimer() {
+            clearInterval(timerInterval);
+        }
+
+        // 计算结果
+        function calculateResults() {
+            const results = {
+                scores: {}
+            };
+            
+            // 初始化每种类型的得分
+            Object.keys(personalityDisorderTypes).forEach(type => {
+                results.scores[type] = 0;
+            });
+            
+            // 计算每种类型的得分
+            Object.keys(userAnswers).forEach(questionId => {
+                const question = questions.find(q => q.id == questionId);
+                if (question) {
+                    results.scores[question.subtype] += userAnswers[questionId];
+                }
+            });
+            
+            return results;
+        }
+
+        // 显示结果
+        function showResults() {
+            console.log('开始显示结果...');
+            stopTimer();
+            
+            try {
+                const results = calculateResults();
+                console.log('计算结果成功:', results);
+                
+                // 显示结果页面
+                testSection.classList.add('hidden');
+                resultSection.classList.remove('hidden');
+                
+                // 显示主要结果
+                const primaryTraitElement = document.getElementById('primary-trait');
+                const sortedTypes = Object.keys(results.scores).sort((a, b) => results.scores[b] - results.scores[a]);
+                const topType = sortedTypes[0];
+                const topScore = results.scores[topType];
+                const maxPossibleScore = 24; // 每种类型6题，每题最高4分
+                const percentage = (topScore / maxPossibleScore) * 100;
+                
+                let resultHTML = `
+                    <div class="bg-gradient-to-r from-blue-50 to-purple-50 rounded-xl p-6 border border-blue-200">
+                        <h4 class="font-bold text-xl mb-4 text-center text-blue-800">人格障碍类型评估结果</h4>
+                        
+                        <div class="bg-white p-5 rounded-lg shadow-sm mb-6">
+                            <h5 class="font-bold text-lg mb-3 text-center">测试得分情况</h5>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                <div class="text-center p-3 bg-blue-50 rounded-lg">
+                                    <div class="text-sm font-medium text-blue-800 mb-1">最高得分类型</div>
+                                    <div class="text-xl font-bold text-blue-600">${topType}</div>
+                                </div>
+                                <div class="text-center p-3 bg-purple-50 rounded-lg">
+                                    <div class="text-sm font-medium text-purple-800 mb-1">得分</div>
+                                    <div class="text-xl font-bold text-purple-600">${topScore}/${maxPossibleScore}</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white p-5 rounded-lg shadow-sm">
+                            <h5 class="font-bold text-lg mb-3 text-center">评估结果</h5>
+                            
+                            <div class="space-y-4">
+                                <div class="bg-gray-50 p-4 rounded-lg">
+                                    <h6 class="font-medium text-gray-800 mb-2">诊断评估</h6>
+                                    <p class="text-sm text-gray-600">
+                                        ${personalityDisorderTypes[topType].diagnosis}
+                                        你的得分表明你在这方面的特征表现${percentage >= 70 ? '较为明显' : percentage >= 50 ? '有一定程度的表现' : '相对较弱'}。
+                                    </p>
+                                </div>
+                                
+                                <div>
+                                    <h6 class="font-medium text-gray-800 mb-2">核心特征</h6>
+                                    <p class="text-sm text-gray-600">${personalityDisorderTypes[topType].core}</p>
+                                </div>
+                                
+                                <div class="bg-yellow-50 p-4 rounded-lg">
+                                    <h6 class="font-medium text-yellow-800 mb-2 flex items-center">
+                                        <i class="fa fa-info-circle mr-2"></i>重要提醒
+                                    </h6>
+                                    <p class="text-sm text-yellow-700">
+                                        此测试结果仅供参考，不能替代专业的医学诊断。人格障碍的诊断需要由合格的心理健康专业人员
+                                        通过全面的临床评估来确定。如果你对测试结果感到担忧，建议寻求专业帮助。
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                primaryTraitElement.innerHTML = resultHTML;
+                console.log('主要结果已显示');
+                
+                // 显示人格障碍类型解释
+                const disorderExplanationsElement = document.getElementById('disorder-explanations');
+                if (disorderExplanationsElement) {
+                    let explanationsHTML = `
+                        <div class="bg-white border rounded-lg p-5 shadow-sm">
+                            <h4 class="font-bold text-primary mb-4">人格障碍类型详细解释</h4>
+                            <p class="text-sm text-gray-600 mb-6">
+                                以下是《精神疾病诊断与统计手册》(DSM-5)中定义的十种人格障碍类型的详细解释。
+                                这些信息可以帮助你更好地理解测试结果和相关概念。
+                            </p>
+                            <div class="space-y-8">
+                    `;
+                    
+                    // 按类别分组显示
+                    const clusters = {
+                        'A簇（古怪/偏执型）': ['偏执型人格障碍', '分裂样人格障碍', '分裂型人格障碍'],
+                        'B簇（戏剧/冲动型）': ['反社会型人格障碍', '边缘型人格障碍', '表演型人格障碍', '自恋型人格障碍'],
+                        'C簇（焦虑/回避型）': ['回避型人格障碍', '依赖型人格障碍', '强迫型人格障碍']
+                    };
+                    
+                    Object.keys(clusters).forEach(clusterName => {
+                        explanationsHTML += `
+                            <div>
+                                <h5 class="font-bold text-lg mb-4 text-gray-800">${clusterName}</h5>
+                                <div class="space-y-6">
+                        `;
+                        
+                        clusters[clusterName].forEach(disorderType => {
+                            const disorder = personalityDisorderTypes[disorderType];
+                            if (disorder) {
+                                explanationsHTML += `
+                                    <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                                        <h6 class="font-bold text-lg mb-3 text-primary">${disorderType}</h6>
+                                        
+                                        <div class="space-y-4">
+                                            <div>
+                                                <h7 class="font-medium text-gray-800 mb-2 block">核心特征</h7>
+                                                <p class="text-sm text-gray-600">${disorder.core}</p>
+                                            </div>
+                                            
+                                            <div>
+                                                <h7 class="font-medium text-gray-800 mb-2 block">详细描述</h7>
+                                                <p class="text-sm text-gray-600">${disorder.fullDescription}</p>
+                                            </div>
+                                            
+                                            <div>
+                                                <h7 class="font-medium text-gray-800 mb-2 block">主要症状</h7>
+                                                <ul class="list-disc list-inside text-sm text-gray-600 space-y-1">
+                                                    ${disorder.symptoms.map(symptom => `<li>${symptom}</li>`).join('')}
+                                                </ul>
+                                            </div>
+                                            
+                                            <div>
+                                                <h7 class="font-medium text-gray-800 mb-2 block">对生活的影响</h7>
+                                                <p class="text-sm text-gray-600">${disorder.impact}</p>
+                                            </div>
+                                            
+                                            <div>
+                                                <h7 class="font-medium text-gray-800 mb-2 block">治疗方法</h7>
+                                                <p class="text-sm text-gray-600">${disorder.treatment}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                            }
+                        });
+                        
+                        explanationsHTML += `
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    explanationsHTML += `
+                            </div>
+                        </div>
+                    `;
+                    
+                    disorderExplanationsElement.innerHTML = explanationsHTML;
+                    console.log('人格障碍类型解释已显示');
+                }
+                
+                // 显示详细分析
+                const detailedAnalysisElement = document.getElementById('detailed-analysis');
+                let analysisHTML = `
+                    <div class="bg-white border rounded-lg p-5 shadow-sm">
+                        <h4 class="font-bold text-primary mb-4">各类型详细得分</h4>
+                        <div class="space-y-4">
+                `;
+                
+                sortedTypes.forEach((type, index) => {
+                    const score = results.scores[type];
+                    const percent = (score / maxPossibleScore) * 100;
+                    
+                    analysisHTML += `
+                        <div class="border-b pb-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <h5 class="font-medium text-gray-800">${type}</h5>
+                                <div class="text-right">
+                                    <span class="text-sm font-medium text-gray-600">${score}/${maxPossibleScore}</span>
+                                    <div class="text-xs text-gray-500">${Math.round(percent)}%</div>
+                                </div>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2 mb-2">
+                                <div class="bg-gradient-to-r from-purple-600 to-blue-600 h-2 rounded-full" style="width: ${percent}%"></div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                analysisHTML += `
+                        </div>
+                    </div>
+                `;
+                
+                detailedAnalysisElement.innerHTML = analysisHTML;
+                console.log('详细分析已显示');
+                
+                // 显示建议
+                const suggestionsElement = document.getElementById('growth-suggestions');
+                suggestionsElement.innerHTML = `
+                    <div class="bg-white rounded-lg p-5 shadow-sm">
+                        <h4 class="font-bold text-purple-800 mb-4">专业建议</h4>
+                        <div class="space-y-4">
+                            <div class="bg-blue-50 p-4 rounded-lg">
+                                <h6 class="font-medium text-blue-800 mb-2">测试结果解读</h6>
+                                <p class="text-sm text-blue-700">
+                                    人格障碍是复杂的心理健康问题，需要专业的诊断和治疗。本测试提供的只是一个初步的自我评估参考。
+                                </p>
+                            </div>
+                            
+                            <div class="bg-green-50 p-4 rounded-lg">
+                                <h6 class="font-medium text-green-800 mb-2">寻求专业帮助</h6>
+                                <p class="text-sm text-green-700">
+                                    如果你对测试结果感到担忧，或者你的症状严重影响了日常生活，建议寻求专业心理健康服务。
+                                    早期干预可以显著改善预后。
+                                </p>
+                            </div>
+                            
+                            <div class="bg-purple-50 p-4 rounded-lg">
+                                <h6 class="font-medium text-purple-800 mb-2">自我关爱</h6>
+                                <p class="text-sm text-purple-700">
+                                    无论测试结果如何，保持健康的生活方式、良好的社交支持和定期的自我反思都是维护心理健康的重要因素。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                console.log('建议已显示');
+                
+            } catch (error) {
+                console.error('显示结果时发生错误:', error);
+                const primaryTraitElement = document.getElementById('primary-trait');
+                primaryTraitElement.innerHTML = `
+                    <div class="bg-red-50 border border-red-200 rounded-xl p-6">
+                        <h4 class="font-bold text-red-800 mb-4 text-center">显示结果时发生错误</h4>
+                        <p class="text-red-700 text-center">
+                            很抱歉，在处理测试结果时发生了错误。请尝试刷新页面并重新完成测试。
+                        </p>
+                    </div>
+                `;
+            }
+        }
+
+        // 重新测试
+        function restartTest() {
+            currentQuestionIndex = 0;
+            userAnswers = {};
+            stopTimer();
+            
+            // 重置UI
+            resultSection.classList.add('hidden');
+            introSection.classList.remove('hidden');
+            progressBar.style.width = '0%';
+            progressText.textContent = '0/90';
+            timerText.textContent = '00:00';
+        }
+    </script>
+</body>
+</html>

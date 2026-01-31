@@ -1,0 +1,2716 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人格特质分类探索 - 专业自我认知工具</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#a855f7',
+                        accent: '#ec4899',
+                        neutral: '#f3f4f6',
+                        'text-primary': '#1f2937',
+                        'text-secondary': '#4b5563',
+                        'cluster-a': '#9333ea',
+                        'cluster-b': '#ef4444',
+                        'cluster-c': '#2563eb'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
+                        'hover': '0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.05)'
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow-sm {
+                text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            }
+            .transition-all-300 {
+                transition: all 300ms ease-in-out;
+            }
+            .bg-gradient-primary {
+                background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+            }
+            .bg-gradient-a {
+                background: linear-gradient(135deg, #9333ea 0%, #6366f1 100%);
+            }
+            .bg-gradient-b {
+                background: linear-gradient(135deg, #ef4444 0%, #ec4899 100%);
+            }
+            .bg-gradient-c {
+                background: linear-gradient(135deg, #2563eb 0%, #06b6d4 100%);
+            }
+            .card-hover:hover {
+                transform: translateY(-4px);
+            }
+            .scale-in {
+                animation: scaleIn 0.3s ease-out forwards;
+            }
+            @keyframes scaleIn {
+                from { transform: scale(0.95); opacity: 0; }
+                to { transform: scale(1); opacity: 1; }
+            }
+            .fade-in {
+                animation: fadeIn 0.5s ease-out forwards;
+            }
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+            .slide-in {
+                animation: slideIn 0.4s ease-out forwards;
+            }
+            @keyframes slideIn {
+                from { transform: translateY(20px); opacity: 0; }
+                to { transform: translateY(0); opacity: 1; }
+            }
+        }
+    </style>
+</head>
+<body class="bg-neutral min-h-screen font-sans text-text-primary">
+    <!-- 顶部导航 -->
+    <header class="bg-white shadow-soft sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-primary">
+                <i class="fa fa-user-circle mr-2"></i>人格特质分类探索
+            </h1>
+            <div class="text-sm text-text-secondary">
+                <span id="progress">0/90</span> | 
+                <span id="timer">00:00</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主要内容区 -->
+    <main class="container mx-auto px-4 py-8 max-w-4xl">
+        <!-- 开始页面 -->
+        <section id="intro-section" class="bg-white rounded-xl shadow-soft p-8 mb-8">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold mb-4 bg-gradient-primary text-transparent bg-clip-text">欢迎来到人格特质分类探索</h2>
+                <p class="text-lg text-text-secondary mb-6">这是一个专业的自我认知工具，帮助你了解自己的性格特点和行为模式</p>
+                <div class="w-24 h-1 bg-gradient-primary mx-auto mb-6"></div>
+            </div>
+            
+            <div class="space-y-6 mb-8">
+                <div class="bg-indigo-50 p-4 rounded-lg">
+                    <h3 class="font-semibold mb-2 flex items-center text-primary">
+                        <i class="fa fa-info-circle mr-2"></i>测试介绍
+                    </h3>
+                    <p class="text-text-secondary">本测试基于人格特质分类理论，包含90道题目，探索你在不同维度的特质表现。请根据你的真实情况选择最符合的选项。</p>
+                </div>
+                
+                <div class="bg-purple-50 p-4 rounded-lg">
+                    <h3 class="font-semibold mb-2 flex items-center text-secondary">
+                        <i class="fa fa-clock-o mr-2"></i>完成时间
+                    </h3>
+                    <p class="text-text-secondary">测试大约需要20-30分钟完成，请在一个安静的环境中专注作答。</p>
+                </div>
+                
+                <div class="bg-pink-50 p-4 rounded-lg">
+                    <h3 class="font-semibold mb-2 flex items-center text-accent">
+                        <i class="fa fa-lightbulb-o mr-2"></i>测试维度
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-3">
+                        <div class="bg-white rounded-lg p-3 shadow-sm border-l-4 border-cluster-a">
+                            <h4 class="font-medium text-cluster-a">A 簇：古怪/偏执型</h4>
+                            <p class="text-xs text-text-secondary mt-1">认知或感知扭曲、社交疏离、行为古怪</p>
+                        </div>
+                        <div class="bg-white rounded-lg p-3 shadow-sm border-l-4 border-cluster-b">
+                            <h4 class="font-medium text-cluster-b">B 簇：戏剧/冲动型</h4>
+                            <p class="text-xs text-text-secondary mt-1">情感不稳定、行为冲动、自我中心</p>
+                        </div>
+                        <div class="bg-white rounded-lg p-3 shadow-sm border-l-4 border-cluster-c">
+                            <h4 class="font-medium text-cluster-c">C 簇：焦虑/回避型</h4>
+                            <p class="text-xs text-text-secondary mt-1">持续焦虑、恐惧、回避行为、过度依赖</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 重要免责声明 -->
+            <div class="bg-red-50 border-l-4 border-red-400 p-5 mb-8">
+                <h3 class="font-semibold mb-3 text-red-800 flex items-center">
+                    <i class="fa fa-exclamation-triangle mr-2"></i>重要免责声明
+                </h3>
+                <ul class="text-sm text-red-700 space-y-2">
+                    <li>• 本测试<span class="font-bold">非专业诊断工具</span>，结果仅供参考，不具有医疗诊断效力</li>
+                    <li>• 测试结果不能替代专业心理评估或诊断</li>
+                    <li>• 本测试不使用临床诊断术语，仅作为自我认知和个人成长的参考</li>
+                    <li>• 如有心理健康困扰，请寻求专业心理咨询师或精神科医生的帮助</li>
+                    <li>• 测试结果不会存储或分享给任何第三方</li>
+                </ul>
+            </div>
+            
+            <div class="text-center">
+                <button id="start-test" class="bg-gradient-primary text-white font-medium py-3 px-8 rounded-full shadow-md hover:shadow-lg transition-all-300 transform hover:-translate-y-1">
+                    开始探索之旅
+                    <i class="fa fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- 测试页面 -->
+        <section id="test-section" class="hidden">
+            <!-- 进度条 -->
+            <div class="mb-6 bg-gray-200 rounded-full h-2.5">
+                <div id="progress-bar" class="bg-gradient-primary h-2.5 rounded-full" style="width: 0%"></div>
+            </div>
+            
+            <!-- 题目卡片 -->
+            <div class="bg-white rounded-xl shadow-soft p-6 mb-6">
+                <div class="flex justify-between items-center mb-4">
+                    <span id="question-number" class="text-sm font-medium text-primary">题目 1/90</span>
+                    <span id="dimension-tag" class="text-xs bg-primary/10 text-primary px-3 py-1 rounded-full">A簇 - 偏执型</span>
+                </div>
+                
+                <h3 id="question-text" class="text-xl font-medium mb-6">我常常怀疑他人在背后议论我或说我的坏话。</h3>
+                
+                <div id="options-container" class="space-y-3">
+                    <!-- 选项将通过JS动态生成 -->
+                </div>
+            </div>
+            
+            <!-- 导航按钮 -->
+            <div class="flex justify-between">
+                <button id="prev-btn" class="bg-gray-200 text-text-primary font-medium py-2 px-6 rounded-lg shadow-sm hover:bg-gray-300 transition-all-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i class="fa fa-arrow-left mr-2"></i>上一题
+                </button>
+                
+                <button id="next-btn" class="bg-gradient-primary text-white font-medium py-2 px-6 rounded-lg shadow-sm hover:opacity-90 transition-all-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                    下一题<i class="fa fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- 结果页面 -->
+        <section id="result-section" class="hidden">
+            <div class="bg-white rounded-xl shadow-soft p-8 mb-8">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold mb-4 bg-gradient-primary text-transparent bg-clip-text">你的人格特质分类探索结果</h2>
+                    <p class="text-lg text-text-secondary">感谢完成测试！以下是你的个性化分析报告</p>
+                    <div class="w-24 h-1 bg-gradient-primary mx-auto mt-6 mb-2"></div>
+                    <p class="text-sm text-text-secondary">请以开放和好奇的心态阅读结果，这只是自我认知的一个参考</p>
+                </div>
+                
+                <!-- 总体评分 -->
+                <div class="mb-10">
+                    <h3 class="text-xl font-medium mb-6 text-center">你的特质分布</h3>
+                    
+                    <!-- 簇得分卡片 -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                        <div class="bg-gradient-a/10 rounded-xl p-6 shadow-sm border border-cluster-a/20 transform transition-all-300 hover:scale-105 hover:shadow-md">
+                            <div class="flex justify-between items-center mb-4">
+                                <h4 class="font-bold text-cluster-a text-lg">A 簇</h4>
+                                <span class="text-xs bg-cluster-a/20 text-cluster-a px-3 py-1 rounded-full">古怪/偏执型</span>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-4xl font-bold text-cluster-a mb-2"><span id="cluster-a-score">0</span></div>
+                                <div class="text-sm text-text-secondary mb-3">得分范围：0-30</div>
+                                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                    <div id="cluster-a-bar" class="bg-gradient-a h-2.5 rounded-full" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gradient-b/10 rounded-xl p-6 shadow-sm border border-cluster-b/20 transform transition-all-300 hover:scale-105 hover:shadow-md">
+                            <div class="flex justify-between items-center mb-4">
+                                <h4 class="font-bold text-cluster-b text-lg">B 簇</h4>
+                                <span class="text-xs bg-cluster-b/20 text-cluster-b px-3 py-1 rounded-full">戏剧/冲动型</span>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-4xl font-bold text-cluster-b mb-2"><span id="cluster-b-score">0</span></div>
+                                <div class="text-sm text-text-secondary mb-3">得分范围：0-30</div>
+                                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                    <div id="cluster-b-bar" class="bg-gradient-b h-2.5 rounded-full" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gradient-c/10 rounded-xl p-6 shadow-sm border border-cluster-c/20 transform transition-all-300 hover:scale-105 hover:shadow-md">
+                            <div class="flex justify-between items-center mb-4">
+                                <h4 class="font-bold text-cluster-c text-lg">C 簇</h4>
+                                <span class="text-xs bg-cluster-c/20 text-cluster-c px-3 py-1 rounded-full">焦虑/回避型</span>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-4xl font-bold text-cluster-c mb-2"><span id="cluster-c-score">0</span></div>
+                                <div class="text-sm text-text-secondary mb-3">得分范围：0-30</div>
+                                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                    <div id="cluster-c-bar" class="bg-gradient-c h-2.5 rounded-full" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 主要特质说明 -->
+                    <div id="primary-trait" class="mb-8">
+                        <div class="bg-gradient-primary/5 rounded-xl p-6 border border-primary/20">
+                            <h4 class="font-bold text-lg mb-4 text-center">你的主要特质倾向</h4>
+                            <p class="text-text-secondary text-center">测试结果分析中...</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 子类型结果容器 -->
+                    <div id="subtype-results" class="mb-8">
+                        <!-- 子类型结果将通过JS动态生成 -->
+                    </div>
+                </div>
+                
+                <!-- 详细分析 -->
+                <div class="mb-10">
+                    <h3 class="text-xl font-medium mb-6">各维度详细分析</h3>
+                    <div id="detailed-analysis" class="space-y-6">
+                        <!-- 详细分析将通过JS动态生成 -->
+                    </div>
+                </div>
+                
+                <!-- 人格特质说明 -->
+                <div class="mb-10">
+                    <h3 class="text-xl font-medium mb-6">人格特质分类说明</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="bg-gradient-a/5 rounded-lg p-5 border-l-4 border-cluster-a">
+                            <h4 class="font-bold text-cluster-a mb-3">A 簇：古怪/偏执型特质</h4>
+                            <p class="text-text-secondary mb-4">这类特质表现为认知或感知扭曲、社交疏离、行为古怪，难以建立和维持亲密关系，易被他人视为"孤僻、偏执、奇怪"。</p>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                                <div class="bg-white p-3 rounded shadow-sm">
+                                    <h5 class="font-medium text-sm text-cluster-a mb-2">偏执型特质</h5>
+                                    <p class="text-xs text-text-secondary">持续的多疑、偏执，不信任他人，总怀疑他人有恶意或利用自己的意图</p>
+                                </div>
+                                <div class="bg-white p-3 rounded shadow-sm">
+                                    <h5 class="font-medium text-sm text-cluster-a mb-2">分裂样特质</h5>
+                                    <p class="text-xs text-text-secondary">对社交关系极度冷漠，缺乏建立亲密关系的欲望，几乎没有情感体验</p>
+                                </div>
+                                <div class="bg-white p-3 rounded shadow-sm">
+                                    <h5 class="font-medium text-sm text-cluster-a mb-2">分裂型特质</h5>
+                                    <p class="text-xs text-text-secondary">兼具偏执和古怪的感知/思维，如出现轻微的幻觉、奇特的信念，言语表达含糊不清</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gradient-b/5 rounded-lg p-5 border-l-4 border-cluster-b">
+                            <h4 class="font-bold text-cluster-b mb-3">B 簇：戏剧/冲动型特质</h4>
+                            <p class="text-text-secondary mb-4">这类特质表现为情感不稳定、行为冲动、自我中心、人际关系极端化，情绪波动大，易做出冲动性决策。</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                                <div class="bg-white p-3 rounded shadow-sm">
+                                    <h5 class="font-medium text-sm text-cluster-b mb-2">反社会型特质</h5>
+                                    <p class="text-xs text-text-secondary">无视社会规则和他人权利，缺乏同理心、愧疚感和责任感，易出现说谎、欺骗、攻击等行为</p>
+                                </div>
+                                <div class="bg-white p-3 rounded shadow-sm">
+                                    <h5 class="font-medium text-sm text-cluster-b mb-2">边缘型特质</h5>
+                                    <p class="text-xs text-text-secondary">极不稳定的情绪、自我形象和人际关系，害怕被抛弃，易出现极端的情绪波动和冲动行为</p>
+                                </div>
+                                <div class="bg-white p-3 rounded shadow-sm">
+                                    <h5 class="font-medium text-sm text-cluster-b mb-2">表演型特质</h5>
+                                    <p class="text-xs text-text-secondary">过度的戏剧化、夸张的情感表达和寻求关注，行为以"吸引他人注意"为核心</p>
+                                </div>
+                                <div class="bg-white p-3 rounded shadow-sm">
+                                    <h5 class="font-medium text-sm text-cluster-b mb-2">自恋型特质</h5>
+                                    <p class="text-xs text-text-secondary">极端的自我中心、自大，拥有夸大的自我价值感，渴望他人的崇拜和赞美，缺乏同理心</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gradient-c/5 rounded-lg p-5 border-l-4 border-cluster-c">
+                            <h4 class="font-bold text-cluster-c mb-3">C 簇：焦虑/回避型特质</h4>
+                            <p class="text-text-secondary mb-4">这类特质表现为持续的焦虑、恐惧、回避行为，过度依赖他人，因内心的不安全感、自卑或恐惧，刻意回避社交或承担责任。</p>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                                <div class="bg-white p-3 rounded shadow-sm">
+                                    <h5 class="font-medium text-sm text-cluster-c mb-2">回避型特质</h5>
+                                    <p class="text-xs text-text-secondary">极端的社交焦虑和自卑，害怕被他人拒绝、批评或否定，刻意回避社交场合和人际关系</p>
+                                </div>
+                                <div class="bg-white p-3 rounded shadow-sm">
+                                    <h5 class="font-medium text-sm text-cluster-c mb-2">依赖型特质</h5>
+                                    <p class="text-xs text-text-secondary">过度依赖他人的照顾和决策，缺乏独立能力，害怕独处或被抛弃，对他人言听计从</p>
+                                </div>
+                                <div class="bg-white p-3 rounded shadow-sm">
+                                    <h5 class="font-medium text-sm text-cluster-c mb-2">强迫型特质</h5>
+                                    <p class="text-xs text-text-secondary">过度追求完美、秩序和控制，对细节、规则、条理有极致的要求，做事刻板、固执</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 正向引导建议 -->
+                <div class="bg-gradient-primary/10 rounded-lg p-6 mb-8">
+                    <h3 class="text-xl font-medium mb-4 text-primary">成长与发展建议</h3>
+                    <div id="growth-suggestions" class="space-y-4">
+                        <!-- 建议将通过JS动态生成 -->
+                    </div>
+                </div>
+                
+                <!-- 结尾引导 -->
+                <div class="bg-blue-50 border-l-4 border-blue-400 p-5 mb-8">
+                    <h3 class="font-semibold mb-3 text-blue-800 flex items-center">
+                        <i class="fa fa-heart mr-2"></i>探索与成长
+                    </h3>
+                    <p class="text-blue-700 mb-3">人格特质是动态发展的，自我探索是一段持续的旅程。每个人都有自己独特的特质组合，没有绝对的好坏之分。</p>
+                    <p class="text-blue-700 mb-3">如果你对自己的性格特点有更多好奇，或希望在某些方面有所成长，建议：</p>
+                    <ul class="mt-2 text-sm text-blue-700 list-disc list-inside space-y-2">
+                        <li>阅读心理学相关书籍，拓展自我认知</li>
+                        <li>与信任的朋友或家人交流你的想法和感受</li>
+                        <li>考虑寻求专业心理咨询师的帮助，进行更深入的自我探索</li>
+                        <li>参加个人成长工作坊或课程，学习新的技能和视角</li>
+                        <li>保持开放的心态，接纳自己的全部，包括优点和不足</li>
+                    </ul>
+                </div>
+                
+                <div class="text-center space-x-4">
+                    <button id="save-result" class="bg-gradient-primary text-white font-medium py-2 px-6 rounded-lg shadow-sm hover:opacity-90 transition-all-300">
+                        <i class="fa fa-download mr-2"></i>保存结果
+                    </button>
+                    <button id="share-result" class="bg-white border border-primary text-primary font-medium py-2 px-6 rounded-lg shadow-sm hover:bg-primary/5 transition-all-300">
+                        <i class="fa fa-share-alt mr-2"></i>分享结果
+                    </button>
+                    <button id="restart-test" class="bg-white border border-gray-300 text-text-secondary font-medium py-2 px-6 rounded-lg shadow-sm hover:bg-gray-50 transition-all-300">
+                        <i class="fa fa-refresh mr-2"></i>重新测试
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 原创声明 -->
+            <div class="bg-gray-50 p-4 rounded-lg text-center text-sm text-text-secondary">
+                <p>© 2025 人格特质分类探索 | 原创内容，未经授权禁止复制使用</p>
+                <p class="text-xs mt-1">本测试非专业诊断工具，结果仅供参考</p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // 测试题目数据 - A簇
+        const clusterAQuestions = [
+            // 偏执型人格特质
+            {
+                id: 1,
+                cluster: "A",
+                subtype: "偏执型",
+                question: "我常常怀疑他人在背后议论我或说我的坏话。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 2,
+                cluster: "A",
+                subtype: "偏执型",
+                question: "我很难相信他人会真心对我好，总觉得他们有某种目的。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 3,
+                cluster: "A",
+                subtype: "偏执型",
+                question: "我会过度解读他人的言行，认为他们在暗示或隐喻什么。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 4,
+                cluster: "A",
+                subtype: "偏执型",
+                question: "我很难忘记别人对我的伤害或不公，会记仇很长时间。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 5,
+                cluster: "A",
+                subtype: "偏执型",
+                question: "我对批评非常敏感，容易将其视为对我的攻击。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 6,
+                cluster: "A",
+                subtype: "偏执型",
+                question: "我很少向他人倾诉我的想法和感受，担心被利用。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            
+            // 分裂样人格特质
+            {
+                id: 7,
+                cluster: "A",
+                subtype: "分裂样",
+                question: "我更喜欢独处，很少感到孤独或需要他人陪伴。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 8,
+                cluster: "A",
+                subtype: "分裂样",
+                question: "我对社交活动没有太大兴趣，宁愿一个人做自己的事情。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 9,
+                cluster: "A",
+                subtype: "分裂样",
+                question: "我对他人的认可或拒绝都不太在意，很少受此影响。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 10,
+                cluster: "A",
+                subtype: "分裂样",
+                question: "我很少体验到强烈的情感，如极度的快乐或悲伤。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 11,
+                cluster: "A",
+                subtype: "分裂样",
+                question: "我没有强烈的建立亲密关系的欲望。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 12,
+                cluster: "A",
+                subtype: "分裂样",
+                question: "我更专注于自己的内心世界，而非外部社交互动。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            
+            // 分裂型人格特质
+            {
+                id: 13,
+                cluster: "A",
+                subtype: "分裂型",
+                question: "我有时会有一些奇特的信念，这些信念可能不被大多数人理解。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 14,
+                cluster: "A",
+                subtype: "分裂型",
+                question: "我有时会有一些奇怪的感知体验，如模糊的声音或影像。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 15,
+                cluster: "A",
+                subtype: "分裂型",
+                question: "我在社交场合中经常感到焦虑和不自在。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 16,
+                cluster: "A",
+                subtype: "分裂型",
+                question: "我的言语表达有时会含糊不清或偏离主题。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 17,
+                cluster: "A",
+                subtype: "分裂型",
+                question: "我对超自然现象或神秘学有浓厚的兴趣。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 18,
+                cluster: "A",
+                subtype: "分裂型",
+                question: "我觉得自己与他人不同，有某种特殊的能力或使命。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            
+            // A簇补充题目
+            {
+                id: 19,
+                cluster: "A",
+                subtype: "综合",
+                question: "我更喜欢独立工作，而不是团队合作。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 20,
+                cluster: "A",
+                subtype: "综合",
+                question: "我对他人的动机和意图总是持怀疑态度。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 21,
+                cluster: "A",
+                subtype: "综合",
+                question: "我很少主动与他人建立新的关系。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 22,
+                cluster: "A",
+                subtype: "综合",
+                question: "我的想法和行为有时会被他人视为古怪或不寻常。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 23,
+                cluster: "A",
+                subtype: "综合",
+                question: "我很难理解社交场合中的潜规则和暗示。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 24,
+                cluster: "A",
+                subtype: "综合",
+                question: "我更关注自己的内心世界，而非外部现实。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 25,
+                cluster: "A",
+                subtype: "综合",
+                question: "我对他人的情感表达反应迟钝，难以感同身受。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 26,
+                cluster: "A",
+                subtype: "综合",
+                question: "我经常有一些独特的爱好或兴趣，这些爱好可能不被大众理解。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 27,
+                cluster: "A",
+                subtype: "综合",
+                question: "我很难信任他人，总是担心被背叛或利用。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 28,
+                cluster: "A",
+                subtype: "综合",
+                question: "我在社交场合中经常感到尴尬或不自在。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 29,
+                cluster: "A",
+                subtype: "综合",
+                question: "我很少表达自己的情感，无论是积极的还是消极的。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 30,
+                cluster: "A",
+                subtype: "综合",
+                question: "我对常规的社交活动没有太大兴趣，宁愿做自己喜欢的事情。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            }
+        ];
+
+        // 测试题目数据 - B簇
+        const clusterBQuestions = [
+            // 反社会型人格特质
+            {
+                id: 31,
+                cluster: "B",
+                subtype: "反社会型",
+                question: "我有时会为了达到自己的目的而说谎或欺骗他人。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 32,
+                cluster: "B",
+                subtype: "反社会型",
+                question: "我对规则和权威缺乏尊重，经常按照自己的方式行事。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 33,
+                cluster: "B",
+                subtype: "反社会型",
+                question: "我很难对自己的行为感到愧疚或后悔，即使伤害了他人。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 34,
+                cluster: "B",
+                subtype: "反社会型",
+                question: "我喜欢冒险和刺激，愿意承担高风险来获得兴奋感。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 35,
+                cluster: "B",
+                subtype: "反社会型",
+                question: "我经常难以长期维持一份工作或一段关系。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 36,
+                cluster: "B",
+                subtype: "反社会型",
+                question: "我倾向于将自己的问题归咎于他人，而不是承担责任。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            
+            // 边缘型人格特质
+            {
+                id: 37,
+                cluster: "B",
+                subtype: "边缘型",
+                question: "我的情绪波动很大，可能在短时间内从极度快乐变为极度悲伤。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 38,
+                cluster: "B",
+                subtype: "边缘型",
+                question: "我非常害怕被抛弃或孤独，会尽一切努力避免这种情况。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 39,
+                cluster: "B",
+                subtype: "边缘型",
+                question: "我的自我形象经常变化，有时觉得自己很棒，有时又觉得自己一文不值。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 40,
+                cluster: "B",
+                subtype: "边缘型",
+                question: "我有时会做出冲动的行为，事后感到后悔，如暴饮暴食、过度消费或危险驾驶。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 41,
+                cluster: "B",
+                subtype: "边缘型",
+                question: "我的人际关系通常是极端的，要么非常亲密，要么完全疏远。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 42,
+                cluster: "B",
+                subtype: "边缘型",
+                question: "当我感到极度沮丧或被拒绝时，我会有自我伤害的想法或行为。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            
+            // 表演型人格特质
+            {
+                id: 43,
+                cluster: "B",
+                subtype: "表演型",
+                question: "我喜欢成为关注的焦点，享受被他人注意和赞赏的感觉。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 44,
+                cluster: "B",
+                subtype: "表演型",
+                question: "我的情感表达通常很夸张，可能会让他人觉得我在演戏。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 45,
+                cluster: "B",
+                subtype: "表演型",
+                question: "我喜欢用生动的方式讲述故事，即使会夸大一些细节。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 46,
+                cluster: "B",
+                subtype: "表演型",
+                question: "我很在意自己的外表，会花很多时间和精力在穿着和打扮上。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 47,
+                cluster: "B",
+                subtype: "表演型",
+                question: "我在社交场合中通常很主动，喜欢结识新朋友。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 48,
+                cluster: "B",
+                subtype: "表演型",
+                question: "如果我不是关注的焦点，我会感到失落或不开心。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            
+            // 自恋型人格特质
+            {
+                id: 49,
+                cluster: "B",
+                subtype: "自恋型",
+                question: "我认为自己比大多数人更特别或更有能力。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 50,
+                cluster: "B",
+                subtype: "自恋型",
+                question: "我喜欢被他人赞美和崇拜，认为自己值得特殊对待。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 51,
+                cluster: "B",
+                subtype: "自恋型",
+                question: "我很难理解他人的感受或需要，通常只关注自己的需求。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 52,
+                cluster: "B",
+                subtype: "自恋型",
+                question: "我对他人的成功感到嫉妒，认为自己应该得到同样或更多的认可。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 53,
+                cluster: "B",
+                subtype: "自恋型",
+                question: "我通常只与那些我认为有价值或能帮助我的人交往。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 54,
+                cluster: "B",
+                subtype: "自恋型",
+                question: "我很难接受批评，会感到愤怒或贬低批评我的人。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            
+            // B簇补充题目
+            {
+                id: 55,
+                cluster: "B",
+                subtype: "综合",
+                question: "我经常凭直觉做决定，而不是仔细考虑后果。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 56,
+                cluster: "B",
+                subtype: "综合",
+                question: "我的情绪变化很快，可能在短时间内经历多种不同的情绪。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 57,
+                cluster: "B",
+                subtype: "综合",
+                question: "我喜欢尝试新事物和新体验，不喜欢一成不变的生活。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 58,
+                cluster: "B",
+                subtype: "综合",
+                question: "我通常会直接表达自己的想法和感受，不管是否会伤害他人。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 59,
+                cluster: "B",
+                subtype: "综合",
+                question: "我很难长期专注于同一项任务或目标。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 60,
+                cluster: "B",
+                subtype: "综合",
+                question: "我喜欢成为团队或社交圈中的领导者。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            }
+        ];
+
+        // 测试题目数据 - C簇
+        const clusterCQuestions = [
+            // 回避型人格特质
+            {
+                id: 61,
+                cluster: "C",
+                subtype: "回避型",
+                question: "我避免参加社交活动，因为害怕被拒绝或批评。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 62,
+                cluster: "C",
+                subtype: "回避型",
+                question: "我对自己的能力缺乏信心，认为自己做不好大多数事情。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 63,
+                cluster: "C",
+                subtype: "回避型",
+                question: "我害怕在他人面前出丑或表现不佳。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 64,
+                cluster: "C",
+                subtype: "回避型",
+                question: "我很少主动与他人建立新的关系，担心被拒绝。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 65,
+                cluster: "C",
+                subtype: "回避型",
+                question: "我对批评非常敏感，即使是建设性的批评也会让我感到受伤。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 66,
+                cluster: "C",
+                subtype: "回避型",
+                question: "我宁愿独自工作，也不愿在团队中展示自己的想法。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            
+            // 依赖型人格特质
+            {
+                id: 67,
+                cluster: "C",
+                subtype: "依赖型",
+                question: "我很难自己做决定，通常需要他人的建议和支持。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 68,
+                cluster: "C",
+                subtype: "依赖型",
+                question: "我害怕独处，喜欢有人陪伴或照顾我。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 69,
+                cluster: "C",
+                subtype: "依赖型",
+                question: "我会为了维持关系而迁就他人，即使这意味着牺牲自己的需求。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 70,
+                cluster: "C",
+                subtype: "依赖型",
+                question: "我很难对他人说不，害怕这会导致关系破裂。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 71,
+                cluster: "C",
+                subtype: "依赖型",
+                question: "当一段重要关系结束时，我会迅速寻找新的关系来填补空缺。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 72,
+                cluster: "C",
+                subtype: "依赖型",
+                question: "我喜欢让他人为我负责，不喜欢承担太多责任。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            
+            // 强迫型人格特质
+            {
+                id: 73,
+                cluster: "C",
+                subtype: "强迫型",
+                question: "我对细节非常关注，喜欢把事情做得完美无缺。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 74,
+                cluster: "C",
+                subtype: "强迫型",
+                question: "我喜欢按照计划和规则行事，不喜欢意外或变化。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 75,
+                cluster: "C",
+                subtype: "强迫型",
+                question: "我很难放手让他人完成任务，因为我认为他们不会做得和我一样好。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 76,
+                cluster: "C",
+                subtype: "强迫型",
+                question: "我经常过度工作，忽视休闲和社交活动。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 77,
+                cluster: "C",
+                subtype: "强迫型",
+                question: "我对自己和他人都有很高的标准，很难接受不完美。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 78,
+                cluster: "C",
+                subtype: "强迫型",
+                question: "我喜欢把事情安排得井井有条，无法忍受混乱或无序。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            
+            // C簇补充题目
+            {
+                id: 79,
+                cluster: "C",
+                subtype: "综合",
+                question: "我经常担心未来可能发生的问题，即使这些问题不太可能发生。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 80,
+                cluster: "C",
+                subtype: "综合",
+                question: "我喜欢熟悉的环境和 routine，不喜欢变化或不确定性。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 81,
+                cluster: "C",
+                subtype: "综合",
+                question: "我很难放松和享受当下，总是想着接下来要做的事情。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 82,
+                cluster: "C",
+                subtype: "综合",
+                question: "我对自己的行为和决定经常感到不确定，需要反复确认。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 83,
+                cluster: "C",
+                subtype: "综合",
+                question: "我害怕犯错，会花很多时间确保事情做得正确。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 84,
+                cluster: "C",
+                subtype: "综合",
+                question: "我喜欢提前计划，不喜欢即兴发挥或随机应变。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 85,
+                cluster: "C",
+                subtype: "综合",
+                question: "我经常感到紧张或焦虑，即使没有明显的原因。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 86,
+                cluster: "C",
+                subtype: "综合",
+                question: "我很难表达自己的需求和意见，害怕被拒绝或批评。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 87,
+                cluster: "C",
+                subtype: "综合",
+                question: "我喜欢规则和秩序，不喜欢混乱或不可预测的情况。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 88,
+                cluster: "C",
+                subtype: "综合",
+                question: "我经常需要他人的认可和肯定来感到自信。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 89,
+                cluster: "C",
+                subtype: "综合",
+                question: "我很难做出决定，因为害怕做出错误的选择。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            },
+            {
+                id: 90,
+                cluster: "C",
+                subtype: "综合",
+                question: "我喜欢把事情做得完美，即使这意味着花费更多的时间和精力。",
+                options: [
+                    { value: 0, text: "从不" },
+                    { value: 1, text: "偶尔" },
+                    { value: 2, text: "有时" },
+                    { value: 3, text: "经常" },
+                    { value: 4, text: "总是" }
+                ]
+            }
+        ];
+
+        // 合并所有题目
+        const testQuestions = [...clusterAQuestions, ...clusterBQuestions, ...clusterCQuestions];
+
+        // 结果分析数据
+        const resultAnalysis = {
+            // A簇分析
+            clusterA: {
+                low: {
+                    title: "低A簇特质",
+                    description: "你在古怪/偏执型特质方面表现较低。你通常能够与他人建立正常的社交关系，对现实有清晰的认知，行为方式符合社会规范。你可能更倾向于外向、合群，并且信任他人。"
+                },
+                medium: {
+                    title: "中等A簇特质",
+                    description: "你在古怪/偏执型特质方面表现中等。你有时可能会有一些独特的想法或行为，但总体上仍能保持与社会的良好适应。你可能在某些情况下会显得有些疏离或多疑，但这并不会严重影响你的日常生活和人际关系。"
+                },
+                high: {
+                    title: "高A簇特质",
+                    description: "你在古怪/偏执型特质方面表现较高。你可能倾向于独处，对社交关系不太感兴趣，或者对他人持怀疑态度。你的思维方式可能比较独特，行为方式有时会被他人视为古怪。你可能更喜欢独立工作，而不是团队合作。"
+                }
+            },
+            
+            // B簇分析
+            clusterB: {
+                low: {
+                    title: "低B簇特质",
+                    description: "你在戏剧/冲动型特质方面表现较低。你通常情绪稳定，行为谨慎，能够控制自己的冲动。你可能更倾向于深思熟虑后再做决定，并且重视长期规划和稳定性。你在人际关系中可能表现得比较可靠和一致。"
+                },
+                medium: {
+                    title: "中等B簇特质",
+                    description: "你在戏剧/冲动型特质方面表现中等。你有时可能会有情绪波动或冲动行为，但总体上能够控制自己。你可能在某些情况下会表现得比较外向和自信，但也能够适应需要安静和专注的场合。你的人际关系可能既有稳定的一面，也有一些变化和波动。"
+                },
+                high: {
+                    title: "高B簇特质",
+                    description: "你在戏剧/冲动型特质方面表现较高。你可能情绪波动较大，行为比较冲动，喜欢寻求刺激和新体验。你可能在社交场合中表现得非常活跃和自信，喜欢成为关注的焦点。你的人际关系可能变化较快，有时会显得比较极端。"
+                }
+            },
+            
+            // C簇分析
+            clusterC: {
+                low: {
+                    title: "低C簇特质",
+                    description: "你在焦虑/回避型特质方面表现较低。你通常能够应对压力和不确定性，不会过度担心或回避挑战。你可能在社交场合中表现得比较自信，能够独立做决定，并且接受一定程度的不完美。你可能更倾向于灵活应变，而不是严格遵循规则和计划。"
+                },
+                medium: {
+                    title: "中等C簇特质",
+                    description: "你在焦虑/回避型特质方面表现中等。你有时可能会感到焦虑或不确定，但总体上能够应对日常生活中的挑战。你可能在某些情况下会表现得比较谨慎或保守，但也能够在需要时冒险或尝试新事物。你可能既重视规则和秩序，也能够接受一定程度的变化和灵活性。"
+                },
+                high: {
+                    title: "高C簇特质",
+                    description: "你在焦虑/回避型特质方面表现较高。你可能经常感到焦虑或担忧，喜欢规则和秩序，不喜欢变化和不确定性。你可能在社交场合中表现得比较谨慎或害羞，需要他人的支持和认可。你可能对自己和他人有较高的标准，追求完美，并且难以接受错误或失败。"
+                }
+            }
+        };
+
+        // 子类型得分计算函数
+        function calculateSubtypeScores() {
+            const subtypeScores = {
+                // A簇子类型
+                '偏执型': 0,
+                '分裂样': 0,
+                '分裂型': 0,
+                
+                // B簇子类型
+                '反社会型': 0,
+                '边缘型': 0,
+                '表演型': 0,
+                '自恋型': 0,
+                
+                // C簇子类型
+                '回避型': 0,
+                '依赖型': 0,
+                '强迫型': 0
+            };
+            
+            const subtypeCounts = {
+                '偏执型': 6,
+                '分裂样': 6,
+                '分裂型': 6,
+                '反社会型': 6,
+                '边缘型': 6,
+                '表演型': 6,
+                '自恋型': 6,
+                '回避型': 6,
+                '依赖型': 6,
+                '强迫型': 6
+            };
+            
+            // 统计各子类型得分
+            testQuestions.forEach(question => {
+                const answer = userAnswers[question.id];
+                if (answer !== undefined && question.subtype !== '综合') {
+                    subtypeScores[question.subtype] += answer;
+                }
+            });
+            
+            return { scores: subtypeScores, counts: subtypeCounts };
+        }
+        
+        // 主要特质描述
+        const primaryTraitDescriptions = {
+            A: {
+                low: "你在A簇（古怪/偏执型）特质方面表现较低，更倾向于与他人建立正常的社交关系，对现实有清晰的认知。",
+                medium: "你在A簇（古怪/偏执型）特质方面表现中等，有时会有一些独特的想法，但总体上仍能保持与社会的良好适应。",
+                high: "你在A簇（古怪/偏执型）特质方面表现较为突出，可能倾向于独处，思维方式独特，对社交关系不太感兴趣。"
+            },
+            B: {
+                low: "你在B簇（戏剧/冲动型）特质方面表现较低，通常情绪稳定，行为谨慎，能够控制自己的冲动，重视长期规划。",
+                medium: "你在B簇（戏剧/冲动型）特质方面表现中等，有时会有情绪波动或冲动行为，但总体上能够自我控制，社交能力良好。",
+                high: "你在B簇（戏剧/冲动型）特质方面表现较为突出，可能情绪波动较大，喜欢寻求刺激和新体验，在社交场合中活跃自信。"
+            },
+            C: {
+                low: "你在C簇（焦虑/回避型）特质方面表现较低，能够应对压力和不确定性，社交自信，能够独立做决定，接受一定程度的不完美。",
+                medium: "你在C簇（焦虑/回避型）特质方面表现中等，有时会感到焦虑或不确定，但总体上能够应对挑战，既重视规则也能接受变化。",
+                high: "你在C簇（焦虑/回避型）特质方面表现较为突出，可能经常感到焦虑，喜欢规则和秩序，社交场合中较为谨慎，追求完美。"
+            },
+            AB: {
+                description: "你同时在A簇（古怪/偏执型）和B簇（戏剧/冲动型）特质方面表现较为突出，这种组合较为罕见，显示出你独特的性格特点和行为模式。"
+            },
+            AC: {
+                description: "你同时在A簇（古怪/偏执型）和C簇（焦虑/回避型）特质方面表现较为突出，这种组合可能反映出你在社交和适应方面的一些独特挑战。"
+            },
+            BC: {
+                description: "你同时在B簇（戏剧/冲动型）和C簇（焦虑/回避型）特质方面表现较为突出，这种组合可能反映出你内心的矛盾和冲突，既有寻求刺激的冲动，又有对不确定性的焦虑。"
+            },
+            ABC: {
+                description: "你在三个簇的特质方面都有一定表现，显示出你性格的复杂性和多样性。这种平衡的特质分布可能使你能够适应各种不同的情境和挑战。"
+            },
+            // 特定组合描述
+            '反社会型+分裂性特质': {
+                description: "你同时表现出明显的反社会型和分裂性特质（包括分裂样和分裂型）。这种组合显示出你在人际关系、情感表达和行为控制方面有独特的模式。你可能既缺乏对他人的同理心和责任感，又表现出社交疏离和认知扭曲的特点。"
+            }
+        };
+        
+        // 子类型详细描述
+        const subtypeDescriptions = {
+            '反社会型': {
+                high: "你在反社会型特质方面表现明显，可能缺乏对他人的同理心和责任感，倾向于无视社会规则，行为冲动且不计后果，对自己的行为缺乏悔意。"
+            },
+            '分裂样': {
+                high: "你在分裂样特质方面表现明显，对社交关系极度冷漠，缺乏建立亲密关系的欲望，几乎没有情感体验，偏爱独处，对他人的认可或拒绝都毫不在意。"
+            },
+            '分裂型': {
+                high: "你在分裂型特质方面表现明显，兼具偏执和古怪的感知/思维，可能出现轻微的幻觉、奇特的信念，言语表达含糊不清，社交焦虑且疏离。"
+            }
+        };
+
+        // 成长建议数据
+        const growthSuggestions = {
+            clusterA: {
+                low: [
+                    "尝试理解和接纳那些思维方式或行为方式与你不同的人",
+                    "培养自己的独立思考能力，不要总是随波逐流",
+                    "给自己一些独处的时间，探索内心世界和个人兴趣"
+                ],
+                medium: [
+                    "在保持自己独特性的同时，注意与他人的有效沟通",
+                    "练习信任他人，逐步减少不必要的怀疑",
+                    "寻找能够理解和欣赏你独特视角的社交圈"
+                ],
+                high: [
+                    "尝试更多地参与社交活动，逐步扩展自己的舒适区",
+                    "练习表达自己的情感和想法，增强与他人的情感连接",
+                    "学习更客观地看待他人的行为和意图，减少过度解读"
+                ]
+            },
+            clusterB: {
+                low: [
+                    "尝试偶尔走出自己的舒适区，体验一些新的事物和活动",
+                    "练习更直接地表达自己的情感和需求",
+                    "培养自己的创造力和表现力"
+                ],
+                medium: [
+                    "在表达自己的同时，注意倾听和尊重他人的想法和感受",
+                    "学习更好地控制自己的冲动，特别是在做重要决定时",
+                    "培养情绪调节能力，避免情绪波动过大影响日常生活"
+                ],
+                high: [
+                    "练习延迟满足和长期规划，平衡即时快乐和长远目标",
+                    "在社交场合中，注意给他人表达的空间，不要总是占据焦点",
+                    "学习更深入地理解和关心他人的感受和需求"
+                ]
+            },
+            clusterC: {
+                low: [
+                    "学习制定计划和目标，提高自己的组织能力和执行力",
+                    "培养对细节的关注，提高工作和生活的质量",
+                    "练习在适当的时候说'不'，维护自己的边界"
+                ],
+                medium: [
+                    "学习管理焦虑和担忧，通过放松技巧和积极思考",
+                    "在保持谨慎的同时，尝试适度冒险和尝试新事物",
+                    "培养对自己和他人的合理期望，接受一定程度的不完美"
+                ],
+                high: [
+                    "练习面对不确定性和变化，逐步提高自己的适应能力",
+                    "学习更客观地评估风险和挑战，避免过度担忧",
+                    "培养自我接纳和自我肯定的能力，减少对他人认可的依赖"
+                ]
+            }
+        };
+
+        // 应用状态
+        let currentQuestionIndex = 0;
+        const userAnswers = {};
+        let startTime = null;
+        let timerInterval = null;
+
+        // DOM元素
+        const introSection = document.getElementById('intro-section');
+        const testSection = document.getElementById('test-section');
+        const resultSection = document.getElementById('result-section');
+        const startTestBtn = document.getElementById('start-test');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress');
+        const timerText = document.getElementById('timer');
+        const questionNumber = document.getElementById('question-number');
+        const dimensionTag = document.getElementById('dimension-tag');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const saveResultBtn = document.getElementById('save-result');
+        const shareResultBtn = document.getElementById('share-result');
+        const restartTestBtn = document.getElementById('restart-test');
+
+        // 开始测试
+        startTestBtn.addEventListener('click', () => {
+            introSection.classList.add('hidden');
+            testSection.classList.remove('hidden');
+            testSection.classList.add('fade-in');
+            
+            startTime = new Date();
+            startTimer();
+            showQuestion(currentQuestionIndex);
+        });
+
+        // 显示当前问题
+        function showQuestion(index) {
+            const question = testQuestions[index];
+            
+            questionNumber.textContent = `题目 ${question.id}/90`;
+            
+            // 设置维度标签
+            let tagText = '';
+            let tagClass = '';
+            
+            switch(question.cluster) {
+                case 'A':
+                    tagText = `A簇 - ${question.subtype}`;
+                    tagClass = 'bg-cluster-a/10 text-cluster-a';
+                    break;
+                case 'B':
+                    tagText = `B簇 - ${question.subtype}`;
+                    tagClass = 'bg-cluster-b/10 text-cluster-b';
+                    break;
+                case 'C':
+                    tagText = `C簇 - ${question.subtype}`;
+                    tagClass = 'bg-cluster-c/10 text-cluster-c';
+                    break;
+            }
+            
+            dimensionTag.textContent = tagText;
+            dimensionTag.className = `text-xs ${tagClass} px-3 py-1 rounded-full`;
+            
+            questionText.textContent = question.question;
+            
+            // 清空选项容器
+            optionsContainer.innerHTML = '';
+            
+            // 添加选项
+            question.options.forEach(option => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50 transition-all-300';
+                
+                // 检查是否已有选择
+                const isSelected = userAnswers[question.id] === option.value;
+                if (isSelected) {
+                    optionDiv.classList.add('bg-primary/10', 'border-primary');
+                }
+                
+                optionDiv.innerHTML = `
+                    <div class="option-radio w-5 h-5 rounded-full border-2 border-gray-300 flex items-center justify-center mr-3 ${isSelected ? 'border-primary bg-primary' : ''}">
+                        ${isSelected ? '<div class="w-2 h-2 rounded-full bg-white"></div>' : ''}
+                    </div>
+                    <span class="option-text">${option.text}</span>
+                `;
+                
+                optionDiv.addEventListener('click', () => {
+                    // 移除其他选项的选中状态
+                    document.querySelectorAll('.option').forEach(opt => {
+                        opt.classList.remove('bg-primary/10', 'border-primary');
+                        opt.querySelector('.option-radio').classList.remove('border-primary', 'bg-primary');
+                        opt.querySelector('.option-radio').innerHTML = '';
+                    });
+                    
+                    // 设置当前选项为选中状态
+                    optionDiv.classList.add('bg-primary/10', 'border-primary');
+                    optionDiv.querySelector('.option-radio').classList.add('border-primary', 'bg-primary');
+                    optionDiv.querySelector('.option-radio').innerHTML = '<div class="w-2 h-2 rounded-full bg-white"></div>';
+                    
+                    // 保存用户选择
+                    userAnswers[question.id] = option.value;
+                    
+                    // 启用下一题按钮
+                    nextBtn.disabled = false;
+                });
+                
+                optionsContainer.appendChild(optionDiv);
+            });
+            
+            // 更新进度条
+            const progress = ((index + 1) / testQuestions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+            progressText.textContent = `${index + 1}/${testQuestions.length}`;
+            
+            // 更新导航按钮状态
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = userAnswers[question.id] === undefined;
+            
+            // 如果是最后一题，更改按钮文本
+            if (index === testQuestions.length - 1) {
+                nextBtn.innerHTML = '查看结果<i class="fa fa-check ml-2"></i>';
+            } else {
+                nextBtn.innerHTML = '下一题<i class="fa fa-arrow-right ml-2"></i>';
+            }
+        }
+
+        // 导航到上一题
+        prevBtn.addEventListener('click', () => {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                showQuestion(currentQuestionIndex);
+            }
+        });
+
+        // 导航到下一题或查看结果
+        nextBtn.addEventListener('click', () => {
+            if (currentQuestionIndex < testQuestions.length - 1) {
+                currentQuestionIndex++;
+                showQuestion(currentQuestionIndex);
+            } else {
+                // 计算并显示结果
+                clearInterval(timerInterval);
+                calculateResults();
+                testSection.classList.add('hidden');
+                resultSection.classList.remove('hidden');
+                resultSection.classList.add('fade-in');
+            }
+        });
+
+        // 开始计时器
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                const now = new Date();
+                const elapsedSeconds = Math.floor((now - startTime) / 1000);
+                const minutes = Math.floor(elapsedSeconds / 60).toString().padStart(2, '0');
+                const seconds = (elapsedSeconds % 60).toString().padStart(2, '0');
+                timerText.textContent = `${minutes}:${seconds}`;
+            }, 1000);
+        }
+
+        // 计算测试结果
+        function calculateResults() {
+            // 计算子类型得分
+            const subtypeResults = calculateSubtypeScores();
+            
+            // 确定主要特质
+            determinePrimaryTraits(subtypeResults);
+            
+            // 生成详细分析
+            generateDetailedAnalysis(subtypeResults);
+            
+            // 生成成长建议
+            generateGrowthSuggestions(subtypeResults);
+        }
+
+        // 显示各簇结果
+        function displayClusterResults(cluster, score) {
+            const scoreElement = document.getElementById(`cluster-${cluster.toLowerCase()}-score`);
+            const barElement = document.getElementById(`cluster-${cluster.toLowerCase()}-bar`);
+            
+            if (scoreElement && barElement) {
+                scoreElement.textContent = score;
+                
+                // 计算百分比（最高分为30题×4分=120分）
+                const percentage = Math.min((score / 120) * 100, 100);
+                barElement.style.width = `${percentage}%`;
+                
+                // 添加动画效果
+                setTimeout(() => {
+                    barElement.style.transition = 'width 1s ease-out';
+                    barElement.style.width = `${percentage}%`;
+                }, 100);
+            }
+        }
+
+        // 确定主要人格障碍类型
+        function determinePrimaryTraits(subtypeResults) {
+            console.log('开始确定主要人格障碍类型...');
+            const primaryTraitElement = document.getElementById('primary-trait');
+            const resultsContainer = document.getElementById('subtype-results');
+            
+            console.log('primaryTraitElement:', primaryTraitElement);
+            console.log('resultsContainer:', resultsContainer);
+            console.log('subtypeResults:', subtypeResults);
+            
+            if (primaryTraitElement && resultsContainer) {
+                // 清空容器
+                resultsContainer.innerHTML = '';
+                
+                // 获取所有子类型的得分并排序
+                const subtypeScores = subtypeResults.scores;
+                const sortedSubtypes = Object.keys(subtypeScores).sort((a, b) => subtypeScores[b] - subtypeScores[a]);
+                
+                // 找出得分最高的前3个子类型
+                const topSubtypes = sortedSubtypes.slice(0, 3);
+                
+                // 显示所有子类型的得分条
+                sortedSubtypes.forEach((subtype, index) => {
+                    displaySubtypeResults(subtype, subtypeScores[subtype], index);
+                });
+                
+                // 生成人格障碍类型分析
+                let primaryHTML = '';
+                
+                if (topSubtypes.length > 0) {
+                    const topSubtype = topSubtypes[0];
+                    const topScore = subtypeScores[topSubtype];
+                    const percentScore = (topScore / 24) * 100;
+                    
+                    // 检查是否有高得分的人格障碍类型（>= 70%）
+                    const highScoreDisorders = sortedSubtypes.filter(subtype => (subtypeScores[subtype] / 24) * 100 >= 70);
+                    
+                    if (highScoreDisorders.length > 0) {
+                        // 有明显的人格障碍类型
+                        primaryHTML = `
+                            <div class="bg-gradient-to-r from-red-50 to-red-100 border-l-4 border-red-500 rounded-xl p-6 mb-8">
+                                <div class="flex items-center justify-center mb-4">
+                                    <div class="bg-red-100 text-red-800 text-sm font-bold px-4 py-2 rounded-full">
+                                        <i class="fa fa-exclamation-triangle mr-2"></i>人格障碍类型识别
+                                    </div>
+                                </div>
+                                <h4 class="font-bold text-xl mb-4 text-center text-red-800">人格障碍类型诊断结果</h4>
+                                <p class="text-text-secondary text-center mb-6 text-lg">
+                                    测试结果显示你可能符合以下人格障碍类型的诊断标准。这是一个需要专业关注的重要发现。
+                                </p>
+                                <div class="grid grid-cols-1 gap-6">
+                                    ${highScoreDisorders.map(disorder => {
+                                        const disorderScore = subtypeScores[disorder];
+                                        const disorderPercent = (disorderScore / 24) * 100;
+                                        const description = personalityDisorderTypes[disorder];
+                                        
+                                        return `
+                                            <div class="bg-white p-5 rounded-lg shadow-md border-l-4 border-red-400">
+                                                <div class="flex justify-between items-start mb-4">
+                                                    <h5 class="font-bold text-lg text-red-800">${disorder}</h5>
+                                                    <div class="bg-red-100 text-red-800 text-sm font-bold px-3 py-1 rounded-full">
+                                                        确诊可能性：${Math.round(disorderPercent)}%
+                                                    </div>
+                                                </div>
+                                                <div class="space-y-4">
+                                                    <div>
+                                                        <h6 class="font-medium text-gray-800 mb-2">诊断说明</h6>
+                                                        <p class="text-text-secondary">${description.diagnosis}</p>
+                                                    </div>
+                                                    <div>
+                                                        <h6 class="font-medium text-gray-800 mb-2">核心特征</h6>
+                                                        <p class="text-text-secondary">${description.core}</p>
+                                                    </div>
+                                                    <div class="bg-red-50 p-3 rounded-lg">
+                                                        <h6 class="font-medium text-red-800 mb-1">严重程度评估</h6>
+                                                        <p class="text-sm text-red-700">${description.severity}</p>
+                                                    </div>
+                                                    <div class="flex justify-between items-center">
+                                                        <div class="text-sm text-gray-600">
+                                                            测试得分：${disorderScore}/24
+                                                        </div>
+                                                        <div class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                                                            基于《精神疾病诊断与统计手册》(DSM-5)标准
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        `;
+                                    }).join('')}
+                                </div>
+                                
+                                <div class="mt-8 bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                                    <h6 class="font-medium text-yellow-800 mb-2 flex items-center">
+                                        <i class="fa fa-info-circle mr-2"></i>重要提醒
+                                    </h6>
+                                    <p class="text-sm text-yellow-700">
+                                        此测试结果仅供参考，不能替代专业的医学诊断。如果你对测试结果感到担忧，
+                                        强烈建议你寻求专业心理健康服务进行全面评估和诊断。早期干预和适当的治疗
+                                        可以显著改善生活质量和功能水平。
+                                    </p>
+                                </div>
+                            </div>
+                        `;
+                    } else if (percentScore >= 50) {
+                        // 有潜在的人格障碍倾向
+                        const description = personalityDisorderTypes[topSubtype];
+                        primaryHTML = `
+                            <div class="bg-gradient-to-r from-orange-50 to-yellow-50 border border-orange-200 rounded-xl p-6 mb-8">
+                                <div class="flex items-center justify-center mb-4">
+                                    <div class="bg-orange-100 text-orange-800 text-sm font-bold px-4 py-2 rounded-full">
+                                        <i class="fa fa-attention mr-2"></i>人格障碍倾向警示
+                                    </div>
+                                </div>
+                                <h4 class="font-bold text-xl mb-4 text-center text-orange-800">潜在人格障碍倾向</h4>
+                                <p class="text-text-secondary text-center mb-6 text-lg">
+                                    测试结果显示你可能存在以下人格障碍的倾向特征，建议关注相关行为模式。
+                                </p>
+                                <div class="bg-white p-5 rounded-lg shadow-md border border-orange-200">
+                                    <div class="flex justify-between items-start mb-4">
+                                        <h5 class="font-bold text-lg text-orange-800">${topSubtype}</h5>
+                                        <div class="bg-orange-100 text-orange-800 text-sm font-bold px-3 py-1 rounded-full">
+                                            倾向程度：${Math.round(percentScore)}%
+                                        </div>
+                                    </div>
+                                    <div class="space-y-4">
+                                        <div>
+                                            <h6 class="font-medium text-gray-800 mb-2">倾向特征</h6>
+                                            <p class="text-text-secondary">${description.diagnosis}</p>
+                                        </div>
+                                        <div>
+                                            <h6 class="font-medium text-gray-800 mb-2">核心特征</h6>
+                                            <p class="text-text-secondary">${description.core}</p>
+                                        </div>
+                                        <div class="bg-orange-50 p-3 rounded-lg">
+                                            <h6 class="font-medium text-orange-800 mb-1">专业建议</h6>
+                                            <p class="text-sm text-orange-700">
+                                                虽然目前可能未达到完整的诊断标准，但这些倾向可能会影响你的生活质量和人际关系。
+                                                建议考虑寻求专业心理健康评估，了解更多关于个人成长和改善的方法。
+                                            </p>
+                                        </div>
+                                        <div class="flex justify-between items-center">
+                                            <div class="text-sm text-gray-600">
+                                                测试得分：${topScore}/24
+                                            </div>
+                                            <div class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                                                基于《精神疾病诊断与统计手册》(DSM-5)标准
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        // 没有明显的人格障碍特征
+                        primaryHTML = `
+                            <div class="bg-gradient-to-r from-blue-50 to-green-50 border border-blue-200 rounded-xl p-6 mb-8">
+                                <h4 class="font-bold text-xl mb-4 text-center text-blue-800">人格健康评估结果</h4>
+                                <p class="text-text-secondary text-center mb-6 text-lg">
+                                    测试结果显示你目前没有表现出明显的人格障碍特征。你的人格功能总体上是健康和适应性的。
+                                </p>
+                                <div class="bg-white p-5 rounded-lg shadow-sm">
+                                    <div class="flex justify-center mb-4">
+                                        <div class="bg-green-100 text-green-800 text-sm font-bold px-4 py-2 rounded-full">
+                                            <i class="fa fa-check-circle mr-2"></i>健康人格功能
+                                        </div>
+                                    </div>
+                                    <p class="text-text-secondary text-center mb-4">
+                                        你在各种人格特质方面的表现较为平衡，没有显示出极端或适应不良的行为模式。
+                                        这表明你具备良好的心理韧性和适应能力。
+                                    </p>
+                                    <div class="bg-blue-50 p-4 rounded-lg">
+                                        <h6 class="font-medium text-blue-800 mb-2 text-center">继续保持的积极特质</h6>
+                                        <ul class="space-y-2 text-sm text-text-secondary">
+                                            <li class="flex items-start">
+                                                <div class="bg-green-100 rounded-full p-1 mr-3 mt-0.5">
+                                                    <i class="fa fa-check text-green-600 text-xs"></i>
+                                                </div>
+                                                <span>情绪调节能力良好，能够适当表达和管理情绪</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <div class="bg-green-100 rounded-full p-1 mr-3 mt-0.5">
+                                                    <i class="fa fa-check text-green-600 text-xs"></i>
+                                                </div>
+                                                <span>人际关系功能健康，能够建立和维持适当的亲密关系</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <div class="bg-green-100 rounded-full p-1 mr-3 mt-0.5">
+                                                    <i class="fa fa-check text-green-600 text-xs"></i>
+                                                </div>
+                                                <span>自我认知稳定，具有清晰的身份感和自我价值感</span>
+                                            </li>
+                                            <li class="flex items-start">
+                                                <div class="bg-green-100 rounded-full p-1 mr-3 mt-0.5">
+                                                    <i class="fa fa-check text-green-600 text-xs"></i>
+                                                </div>
+                                                <span>行为控制能力良好，能够在适当的范围内表达冲动</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }
+                } else {
+                    primaryHTML = `
+                        <div class="bg-gray-50 border border-gray-200 rounded-xl p-6 mb-8">
+                            <h4 class="font-bold text-lg mb-4 text-center">测试结果</h4>
+                            <p class="text-text-secondary text-center">
+                                感谢完成测试。你的得分较为均衡，没有表现出特别明显的人格障碍倾向。
+                            </p>
+                        </div>
+                    `;
+                }
+                
+                primaryTraitElement.innerHTML = primaryHTML;
+            }
+        }
+
+        // 生成详细分析
+        function generateDetailedAnalysis(subtypeResults) {
+            console.log('开始生成详细分析...');
+            const analysisContainer = document.getElementById('detailed-analysis');
+            console.log('analysisContainer:', analysisContainer);
+            
+            if (!analysisContainer) {
+                console.error('详细分析容器未找到');
+                return;
+            }
+            
+            analysisContainer.innerHTML = '';
+            
+            // 获取所有子类型的得分并排序
+            const subtypeScores = subtypeResults.scores;
+            const sortedSubtypes = Object.keys(subtypeScores).sort((a, b) => subtypeScores[b] - subtypeScores[a]);
+            
+            // 创建详细分析卡片
+            const analysisCard = document.createElement('div');
+            analysisCard.className = 'bg-white border rounded-lg p-5 shadow-sm slide-in';
+            
+            let analysisHTML = `
+                <h4 class="font-bold text-primary mb-4">人格障碍类型详细评估</h4>
+                <p class="text-text-secondary mb-6">
+                    以下是你在各种人格障碍类型方面的详细评估结果。评估基于《精神疾病诊断与统计手册》(DSM-5)的诊断标准。
+                </p>
+                <div class="space-y-6">
+            `;
+            
+            // 为每个人格障碍类型创建分析部分
+            sortedSubtypes.forEach((disorder, index) => {
+                const score = subtypeScores[disorder];
+                const percentScore = (score / 24) * 100;
+                const description = personalityDisorderTypes[disorder];
+                
+                let diagnosisText = '';
+                let diagnosisColor = '';
+                let diagnosisBg = '';
+                
+                if (percentScore >= 70) {
+                    diagnosisText = '高度符合诊断标准';
+                    diagnosisColor = 'text-red-800';
+                    diagnosisBg = 'bg-red-50 border-red-200';
+                } else if (percentScore >= 50) {
+                    diagnosisText = '部分符合诊断标准';
+                    diagnosisColor = 'text-orange-800';
+                    diagnosisBg = 'bg-orange-50 border-orange-200';
+                } else if (percentScore >= 30) {
+                    diagnosisText = '轻微符合诊断标准';
+                    diagnosisColor = 'text-yellow-800';
+                    diagnosisBg = 'bg-yellow-50 border-yellow-200';
+                } else {
+                    diagnosisText = '不符合诊断标准';
+                    diagnosisColor = 'text-green-800';
+                    diagnosisBg = 'bg-green-50 border-green-200';
+                }
+                
+                analysisHTML += `
+                    <div class="border-b pb-6 slide-in" style="animation-delay: ${index * 0.1}s">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <h5 class="font-bold text-gray-800 text-lg">${disorder}</h5>
+                                <div class="flex items-center mt-2">
+                                    <span class="text-sm ${diagnosisColor} font-medium">${diagnosisText}</span>
+                                    <span class="text-xs ${diagnosisColor} bg-opacity-20 px-2 py-1 rounded ml-2">
+                                        ${Math.round(percentScore)}% 匹配度
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="bg-gray-100 text-gray-800 text-sm font-bold px-3 py-1 rounded-full">
+                                    得分：${score}/24
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="w-full bg-gray-200 rounded-full h-3 mb-5">
+                            <div class="${percentScore >= 70 ? 'bg-red-500' : percentScore >= 50 ? 'bg-orange-500' : percentScore >= 30 ? 'bg-yellow-500' : 'bg-green-500'} h-3 rounded-full transition-all duration-1000 ease-out" style="width: ${percentScore}%"></div>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div class="${diagnosisBg} border p-4 rounded-lg">
+                                <h6 class="font-medium ${diagnosisColor} mb-2">诊断评估</h6>
+                                <p class="text-sm text-text-secondary">${description.diagnosis}</p>
+                            </div>
+                            
+                            <div>
+                                <h6 class="font-medium text-gray-700 mb-2">DSM-5核心诊断特征</h6>
+                                <p class="text-sm text-text-secondary">${description.core}</p>
+                            </div>
+                            
+                            ${percentScore >= 50 ? `
+                            <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg">
+                                <h6 class="font-medium text-blue-800 mb-2 flex items-center">
+                                    <i class="fa fa-stethoscope mr-2"></i>专业建议
+                                </h6>
+                                <p class="text-sm text-blue-700">
+                                    基于你的测试结果，建议你考虑寻求专业心理健康服务进行全面评估。
+                                    早期干预和适当的治疗可以帮助改善症状和提高生活质量。
+                                </p>
+                            </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            analysisHTML += `</div>`;
+            analysisCard.innerHTML = analysisHTML;
+            analysisContainer.appendChild(analysisCard);
+            
+            // 添加免责声明卡片
+            const disclaimerCard = document.createElement('div');
+            disclaimerCard.className = 'bg-red-50 border border-red-200 rounded-lg p-5 mt-6 slide-in';
+            disclaimerCard.innerHTML = `
+                <h4 class="font-bold text-red-800 mb-3 flex items-center">
+                    <i class="fa fa-exclamation-circle mr-2"></i>重要免责声明
+                </h4>
+                <p class="text-sm text-red-700 mb-3">
+                    此测试结果仅供参考，不能替代专业的医学诊断。人格障碍的诊断需要由合格的心理健康专业人员
+                    通过全面的临床评估来确定。
+                </p>
+                <p class="text-sm text-red-700">
+                    如果你对测试结果感到担忧，或者你的症状严重影响了你的日常生活、工作或人际关系，
+                    强烈建议你尽快寻求专业心理健康服务。
+                </p>
+            `;
+            analysisContainer.appendChild(disclaimerCard);
+        }
+
+        // 生成治疗和干预建议
+        function generateGrowthSuggestions(subtypeResults) {
+            console.log('开始生成治疗和干预建议...');
+            const suggestionsContainer = document.getElementById('growth-suggestions');
+            console.log('suggestionsContainer:', suggestionsContainer);
+            
+            if (!suggestionsContainer) {
+                console.error('建议容器未找到');
+                return;
+            }
+            
+            suggestionsContainer.innerHTML = '';
+            
+            // 获取所有子类型的得分并排序
+            const subtypeScores = subtypeResults.scores;
+            const sortedSubtypes = Object.keys(subtypeScores).sort((a, b) => subtypeScores[b] - subtypeScores[a]);
+            
+            // 找出高分的人格障碍类型
+            const highScoreDisorders = sortedSubtypes.filter(subtype => (subtypeScores[subtype] / 24) * 100 >= 50);
+            const topDisorder = sortedSubtypes[0];
+            const topScore = subtypeScores[topDisorder];
+            const topPercent = (topScore / 24) * 100;
+            
+            // 创建建议卡片
+            const suggestionCard = document.createElement('div');
+            suggestionCard.className = 'bg-gradient-to-r from-purple-50 to-blue-50 rounded-lg p-6 shadow-md slide-in';
+            
+            let suggestionsHTML = `
+                <h4 class="font-bold text-purple-800 mb-4 text-xl text-center">专业治疗与干预建议</h4>
+                <p class="text-text-secondary mb-6 text-center">
+                    基于你的测试结果，以下是针对人格障碍的专业治疗和干预建议。请根据严重程度选择适当的干预方式。
+                </p>
+            `;
+            
+            if (highScoreDisorders.length > 0) {
+                // 有明显的人格障碍倾向，提供专业治疗建议
+                suggestionsHTML += `
+                    <div class="bg-white rounded-lg p-5 mb-6 border-l-4 border-purple-400">
+                        <h5 class="font-bold text-lg text-purple-800 mb-4">专业治疗建议</h5>
+                        
+                        <div class="space-y-6">
+                            ${highScoreDisorders.map(disorder => {
+                                let treatmentSuggestions = [];
+                                let therapyTypes = [];
+                                
+                                // 根据不同人格障碍类型提供具体的治疗建议
+                                switch(disorder) {
+                                    case '偏执型人格障碍':
+                                        treatmentSuggestions = [
+                                            '认知行为疗法(CBT)帮助识别和挑战偏执思维模式',
+                                            '建立治疗联盟，逐步培养信任感',
+                                            '社交技能训练，改善人际关系',
+                                            '家庭治疗，改善家庭动态'
+                                        ];
+                                        therapyTypes = ['认知行为疗法', '支持性心理治疗', '团体治疗'];
+                                        break;
+                                    case '分裂样人格障碍':
+                                        treatmentSuggestions = [
+                                            '支持性心理治疗，建立安全的治疗关系',
+                                            '社交技能训练，提高社交能力',
+                                            '认知行为疗法，改善情感表达',
+                                            '艺术治疗，探索情感体验'
+                                        ];
+                                        therapyTypes = ['支持性心理治疗', '社交技能训练', '艺术治疗'];
+                                        break;
+                                    case '分裂型人格障碍':
+                                        treatmentSuggestions = [
+                                            '认知行为疗法，挑战奇特思维和改善现实检验',
+                                            '抗精神病药物治疗（如有必要）',
+                                            '社交技能训练，提高社交功能',
+                                            '家庭治疗，改善家庭支持系统'
+                                        ];
+                                        therapyTypes = ['认知行为疗法', '药物治疗', '社交技能训练'];
+                                        break;
+                                    case '反社会型人格障碍':
+                                        treatmentSuggestions = [
+                                            '认知行为疗法，培养同理心和社会责任感',
+                                            '辩证行为疗法(DBT)，改善情绪调节和行为控制',
+                                            '结构化治疗环境，提供明确的边界和后果',
+                                            '愤怒管理训练，减少攻击行为'
+                                        ];
+                                        therapyTypes = ['认知行为疗法', '辩证行为疗法', '愤怒管理'];
+                                        break;
+                                    case '边缘型人格障碍':
+                                        treatmentSuggestions = [
+                                            '辩证行为疗法(DBT)，这是BPD的首选治疗方法',
+                                            '认知行为疗法(CBT)，改善思维模式',
+                                            '人际关系疗法，改善关系模式',
+                                            '药物治疗（针对情绪不稳定、抑郁或焦虑）',
+                                            '住院治疗（在危机情况下）'
+                                        ];
+                                        therapyTypes = ['辩证行为疗法', '认知行为疗法', '药物治疗'];
+                                        break;
+                                    case '表演型人格障碍':
+                                        treatmentSuggestions = [
+                                            '认知行为疗法，改善情感表达和人际关系',
+                                            '心理动力疗法，探索深层情感',
+                                            '团体治疗，学习观察他人反应',
+                                            '社交技能训练，发展更健康的互动方式'
+                                        ];
+                                        therapyTypes = ['认知行为疗法', '心理动力疗法', '团体治疗'];
+                                        break;
+                                    case '自恋型人格障碍':
+                                        treatmentSuggestions = [
+                                            '心理动力疗法，探索自我概念的发展',
+                                            '认知行为疗法，挑战夸大的信念',
+                                            '团体治疗，提供反馈和现实检验',
+                                            '共情训练，提高对他人感受的理解'
+                                        ];
+                                        therapyTypes = ['心理动力疗法', '认知行为疗法', '团体治疗'];
+                                        break;
+                                    case '回避型人格障碍':
+                                        treatmentSuggestions = [
+                                            '认知行为疗法，挑战负面的自我信念',
+                                            '暴露疗法，逐步面对社交恐惧',
+                                            '社交技能训练，提高社交自信',
+                                            '团体治疗，在安全环境中练习社交技能'
+                                        ];
+                                        therapyTypes = ['认知行为疗法', '暴露疗法', '团体治疗'];
+                                        break;
+                                    case '依赖型人格障碍':
+                                        treatmentSuggestions = [
+                                            '认知行为疗法，培养独立思考',
+                                            '行为激活，逐步增加自主性',
+                                            '技能训练，发展生活和社交技能',
+                                            '家庭治疗，改善依赖模式'
+                                        ];
+                                        therapyTypes = ['认知行为疗法', '行为激活', '技能训练'];
+                                        break;
+                                    case '强迫型人格障碍':
+                                        treatmentSuggestions = [
+                                            '认知行为疗法，挑战完美主义思维',
+                                            '暴露与反应预防，减少强迫行为',
+                                            '接纳与承诺疗法(ACT)，增加心理灵活性',
+                                            '时间管理训练，改善工作效率'
+                                        ];
+                                        therapyTypes = ['认知行为疗法', '接纳与承诺疗法', '时间管理训练'];
+                                        break;
+                                    default:
+                                        treatmentSuggestions = [
+                                            '寻求专业心理健康评估',
+                                            '根据评估结果制定个性化治疗计划',
+                                            '定期参加心理治疗',
+                                            '如有必要，考虑药物治疗'
+                                        ];
+                                        therapyTypes = ['心理治疗', '药物治疗', '支持性服务'];
+                                }
+                                
+                                return `
+                                    <div>
+                                        <div class="flex items-center mb-3">
+                                            <h6 class="font-medium text-gray-800 text-lg">${disorder}的治疗方案</h6>
+                                            <span class="ml-3 text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full">
+                                                匹配度：${Math.round((subtypeScores[disorder] / 24) * 100)}%
+                                            </span>
+                                        </div>
+                                        
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                            <div>
+                                                <h7 class="font-medium text-purple-700 mb-2 block">推荐治疗方法</h7>
+                                                <ul class="space-y-2">
+                                                    ${therapyTypes.map(therapy => `
+                                                        <li class="flex items-center">
+                                                            <div class="bg-purple-100 rounded-full p-1 mr-2">
+                                                                <i class="fa fa-check text-purple-600 text-xs"></i>
+                                                            </div>
+                                                            <span class="text-sm text-text-secondary">${therapy}</span>
+                                                        </li>
+                                                    `).join('')}
+                                                </ul>
+                                            </div>
+                                            <div>
+                                                <h7 class="font-medium text-purple-700 mb-2 block">具体干预策略</h7>
+                                                <ul class="space-y-2">
+                                                    ${treatmentSuggestions.slice(0, 4).map(suggestion => `
+                                                        <li class="flex items-start">
+                                                            <div class="bg-blue-100 rounded-full p-1 mr-2 mt-0.5">
+                                                                <i class="fa fa-star text-blue-600 text-xs"></i>
+                                                            </div>
+                                                            <span class="text-sm text-text-secondary">${suggestion}</span>
+                                                        </li>
+                                                    `).join('')}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // 严重程度分级和干预建议
+            suggestionsHTML += `
+                <div class="bg-white rounded-lg p-5 border border-blue-200">
+                    <h5 class="font-bold text-lg text-blue-800 mb-4">干预强度建议</h5>
+                    
+                    <div class="space-y-4">
+                        ${topPercent >= 70 ? `
+                            <div class="bg-red-50 border border-red-200 p-4 rounded-lg">
+                                <div class="flex items-center mb-2">
+                                    <div class="bg-red-100 text-red-800 text-xs font-bold px-3 py-1 rounded-full mr-3">
+                                        高优先级干预
+                                    </div>
+                                    <span class="text-sm text-red-800 font-medium">严重程度：高</span>
+                                </div>
+                                <p class="text-sm text-red-700 mb-3">
+                                    你的症状表现较为明显，可能已经对日常生活、工作和人际关系造成显著影响。
+                                    建议尽快寻求专业心理健康服务。
+                                </p>
+                                <ul class="space-y-2 text-sm">
+                                    <li class="flex items-start">
+                                        <div class="bg-red-100 rounded-full p-1 mr-3 mt-0.5">
+                                            <i class="fa fa-urgent text-red-600 text-xs"></i>
+                                        </div>
+                                        <span class="text-text-secondary">尽快预约精神科医生或临床心理学家进行全面评估</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <div class="bg-red-100 rounded-full p-1 mr-3 mt-0.5">
+                                            <i class="fa fa-urgent text-red-600 text-xs"></i>
+                                        </div>
+                                        <span class="text-text-secondary">考虑每周至少一次的心理治疗</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <div class="bg-red-100 rounded-full p-1 mr-3 mt-0.5">
+                                            <i class="fa fa-urgent text-red-600 text-xs"></i>
+                                        </div>
+                                        <span class="text-text-secondary">如有必要，讨论药物治疗的可能性</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <div class="bg-red-100 rounded-full p-1 mr-3 mt-0.5">
+                                            <i class="fa fa-urgent text-red-600 text-xs"></i>
+                                        </div>
+                                        <span class="text-text-secondary">建立支持系统，告知信任的人你的状况</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        ` : topPercent >= 50 ? `
+                            <div class="bg-orange-50 border border-orange-200 p-4 rounded-lg">
+                                <div class="flex items-center mb-2">
+                                    <div class="bg-orange-100 text-orange-800 text-xs font-bold px-3 py-1 rounded-full mr-3">
+                                        中优先级干预
+                                    </div>
+                                    <span class="text-sm text-orange-800 font-medium">严重程度：中</span>
+                                </div>
+                                <p class="text-sm text-orange-700 mb-3">
+                                    你表现出一些人格障碍的特征，可能对生活造成一定影响。建议寻求专业评估和干预。
+                                </p>
+                                <ul class="space-y-2 text-sm">
+                                    <li class="flex items-start">
+                                        <div class="bg-orange-100 rounded-full p-1 mr-3 mt-0.5">
+                                            <i class="fa fa-clock-o text-orange-600 text-xs"></i>
+                                        </div>
+                                        <span class="text-text-secondary">在近期预约心理健康专业人员进行评估</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <div class="bg-orange-100 rounded-full p-1 mr-3 mt-0.5">
+                                            <i class="fa fa-clock-o text-orange-600 text-xs"></i>
+                                        </div>
+                                        <span class="text-text-secondary">考虑定期心理治疗（每两周一次）</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <div class="bg-orange-100 rounded-full p-1 mr-3 mt-0.5">
+                                            <i class="fa fa-clock-o text-orange-600 text-xs"></i>
+                                        </div>
+                                        <span class="text-text-secondary">学习和练习自我帮助策略</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <div class="bg-orange-100 rounded-full p-1 mr-3 mt-0.5">
+                                            <i class="fa fa-clock-o text-orange-600 text-xs"></i>
+                                        </div>
+                                        <span class="text-text-secondary">关注症状变化，必要时增加干预强度</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        ` : `
+                            <div class="bg-green-50 border border-green-200 p-4 rounded-lg">
+                                <div class="flex items-center mb-2">
+                                    <div class="bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full mr-3">
+                                        预防性干预
+                                    </div>
+                                    <span class="text-sm text-green-800 font-medium">严重程度：低</span>
+                                </div>
+                                <p class="text-sm text-green-700 mb-3">
+                                    你目前没有表现出明显的人格障碍特征。以下是一些预防性的心理健康建议。
+                                </p>
+                                <ul class="space-y-2 text-sm">
+                                    <li class="flex items-start">
+                                        <div class="bg-green-100 rounded-full p-1 mr-3 mt-0.5">
+                                            <i class="fa fa-leaf text-green-600 text-xs"></i>
+                                        </div>
+                                        <span class="text-text-secondary">保持健康的生活方式，包括规律作息、均衡饮食和适量运动</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <div class="bg-green-100 rounded-full p-1 mr-3 mt-0.5">
+                                            <i class="fa fa-leaf text-green-600 text-xs"></i>
+                                        </div>
+                                        <span class="text-text-secondary">学习压力管理技巧，如冥想、深呼吸或正念练习</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <div class="bg-green-100 rounded-full p-1 mr-3 mt-0.5">
+                                            <i class="fa fa-leaf text-green-600 text-xs"></i>
+                                        </div>
+                                        <span class="text-text-secondary">建立和维护健康的人际关系网络</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <div class="bg-green-100 rounded-full p-1 mr-3 mt-0.5">
+                                            <i class="fa fa-leaf text-green-600 text-xs"></i>
+                                        </div>
+                                        <span class="text-text-secondary">定期自我反思，关注情绪和行为模式的变化</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        `}
+                    </div>
+                    
+                    <div class="mt-6 bg-blue-50 p-4 rounded-lg">
+                        <h6 class="font-medium text-blue-800 mb-2">如何寻求专业帮助</h6>
+                        <ul class="space-y-2 text-sm">
+                            <li class="flex items-start">
+                                <div class="bg-blue-100 rounded-full p-1 mr-3 mt-0.5">
+                                    <i class="fa fa-phone text-blue-600 text-xs"></i>
+                                </div>
+                                <span class="text-text-secondary">联系当地精神卫生中心或心理咨询机构</span>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="bg-blue-100 rounded-full p-1 mr-3 mt-0.5">
+                                    <i class="fa fa-user-md text-blue-600 text-xs"></i>
+                                </div>
+                                <span class="text-text-secondary">咨询家庭医生或全科医生获取转诊建议</span>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="bg-blue-100 rounded-full p-1 mr-3 mt-0.5">
+                                    <i class="fa fa-hospital text-blue-600 text-xs"></i>
+                                </div>
+                                <span class="text-text-secondary">考虑大学或教学医院的心理诊所，通常费用较为合理</span>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="bg-blue-100 rounded-full p-1 mr-3 mt-0.5">
+                                    <i class="fa fa-info-circle text-blue-600 text-xs"></i>
+                                </div>
+                                <span class="text-text-secondary">查询心理健康专业人员的资质和专长领域</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            `;
+            
+            suggestionCard.innerHTML = suggestionsHTML;
+            suggestionsContainer.appendChild(suggestionCard);
+        }
+
+        // 保存结果
+        saveResultBtn.addEventListener('click', () => {
+            alert('结果已保存到您的设备！');
+        });
+
+        // 分享结果
+        shareResultBtn.addEventListener('click', () => {
+            alert('分享功能已触发，您可以将结果分享到社交媒体！');
+        });
+
+        // 重新测试
+        restartTestBtn.addEventListener('click', () => {
+            // 重置状态
+            currentQuestionIndex = 0;
+            Object.keys(userAnswers).forEach(key => delete userAnswers[key]);
+            
+            // 显示开始页面
+            resultSection.classList.add('hidden');
+            introSection.classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>

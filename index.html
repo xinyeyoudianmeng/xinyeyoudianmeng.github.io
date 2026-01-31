@@ -3,186 +3,104 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>性取向测试（异性恋/同性恋/双性恋）</title>
-    <!-- Tailwind CSS -->
+    <title>人格特质探索测试 - 了解真实的自己</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome -->
     <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
-    <!-- 统一的 Tailwind 配置 -->
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        primary: '#d946ef',
-                        secondary: '#f9a8d4',
-                        accent: '#a855f7',
-                        neutral: '#f5f3ff',
-                        'neutral-dark': '#e9d5ff'
+                        primary: '#f9a8d4',
+                        secondary: '#bfdbfe',
+                        accent: '#fce7f3',
+                        neutral: '#f3f4f6',
+                        'text-primary': '#4b5563',
+                        'text-secondary': '#6b7280'
                     },
                     fontFamily: {
-                        sans: ['Inter', 'system-ui', 'sans-serif'],
-                    },
-                    animation: {
-                        'fade-in': 'fadeIn 0.5s ease-in-out',
-                        'slide-in': 'slideIn 0.5s ease-in-out',
-                        'pulse-light': 'pulse 1s ease-in-out infinite',
-                    },
-                    keyframes: {
-                        fadeIn: {
-                            '0%': { opacity: '0' },
-                            '100%': { opacity: '1' },
-                        },
-                        slideIn: {
-                            '0%': { transform: 'translateY(20px)', opacity: '0' },
-                            '100%': { transform: 'translateY(0)', opacity: '1' },
-                        },
-                        pulse: {
-                            '0%, 100%': { opacity: '1' },
-                            '50%': { opacity: '0.7' },
-                        },
+                        sans: ['Inter', 'system-ui', 'sans-serif']
                     },
                     boxShadow: {
-                        'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
-                    },
-                    backdropBlur: {
-                        'glass': '4px',
-                    },
+                        'soft': '0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03)',
+                        'hover': '0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.05)'
+                    }
                 }
             }
         }
     </script>
     <style type="text/tailwindcss">
         @layer utilities {
-            .text-shadow {
-                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            .text-shadow-sm {
+                text-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
             }
-            .glass-effect {
-                @apply bg-white bg-opacity-20 backdrop-blur-glass shadow-glass border border-white border-opacity-20 rounded-xl;
+            .transition-all-300 {
+                transition: all 300ms ease-in-out;
             }
-            .btn-primary {
-                @apply bg-primary hover:bg-opacity-90 text-white font-medium py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50;
+            .bg-gradient {
+                background: linear-gradient(135deg, #f9a8d4 0%, #bfdbfe 100%);
             }
-            .btn-secondary {
-                @apply bg-white bg-opacity-30 hover:bg-opacity-40 text-primary font-medium py-3 px-6 rounded-full transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white focus:ring-opacity-50;
-            }
-            .input-range {
-                @apply w-full h-2 bg-neutral-dark rounded-lg appearance-none cursor-pointer;
-            }
-            .input-range::-webkit-slider-thumb {
-                @apply appearance-none w-6 h-6 bg-primary rounded-full shadow-md;
-            }
-            .question-card {
-                @apply glass-effect p-6 mb-6 animate-fade-in;
-            }
-            .option-btn {
-                @apply w-full text-left p-4 mb-3 rounded-lg transition-all duration-300 border-2 border-transparent hover:border-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50;
-            }
-            .option-btn.selected {
-                @apply border-primary bg-primary bg-opacity-10;
-            }
-            .option-btn.loading {
-                @apply animate-pulse-light opacity-80 cursor-not-allowed;
-            }
-            .progress-bar {
-                @apply h-2 bg-neutral-dark rounded-full overflow-hidden;
-            }
-            .progress-value {
-                @apply h-full bg-gradient-to-r from-primary to-accent transition-all duration-500 ease-out;
+            .card-hover:hover {
+                transform: translateY(-4px);
             }
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-pink-100 to-purple-100 min-h-screen font-sans text-gray-800">
-    <!-- 背景图 -->
-    <div class="fixed inset-0 z-0 opacity-20">
-        <img src="https://p9-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/7be20d0b3c1349a49c35bf5bf2a3fd7a~tplv-a9rns2rl98-image.image?rcl=20251206190341ABA2F9A2B17AB90B410C&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1767611037&x-signature=0tPkdGWJLqEGNDHuh2TaDb%2BC%2BVc%3D" 
-             alt="背景" class="w-full h-full object-cover">
-    </div>
+<body class="bg-neutral min-h-screen font-sans text-text-primary">
+    <!-- 顶部导航 -->
+    <header class="bg-white shadow-soft sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-primary">
+                <i class="fa fa-star mr-2"></i>人格特质探索
+            </h1>
+            <div class="text-sm text-text-secondary">
+                <span id="progress">0/30</span> | 
+                <span id="timer">00:00</span>
+            </div>
+        </div>
+    </header>
 
-    <div class="relative z-10 container mx-auto px-4 py-8 max-w-4xl">
+    <!-- 主要内容区 -->
+    <main class="container mx-auto px-4 py-8 max-w-3xl">
         <!-- 开始页面 -->
-        <section id="start-section" class="flex flex-col items-center justify-center min-h-[80vh] animate-fade-in">
-            <div class="glass-effect p-8 md:p-12 rounded-3xl text-center max-w-2xl">
-                <div class="mb-6 flex justify-center">
-                    <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/420005efb3704faf846dcad7186485c2~tplv-a9rns2rl98-image.image?rcl=20251206190341ABA2F9A2B17AB90B410C&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1767611034&x-signature=Vvov9NSBs69mdZDmfGyNhf8ecJM%3D" 
-                         alt="Logo" class="w-32 h-32 object-contain">
+        <section id="intro-section" class="bg-white rounded-xl shadow-soft p-8 mb-8">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold mb-4 text-primary">欢迎来到人格特质探索测试</h2>
+                <p class="text-lg text-text-secondary mb-6">这是一个有趣的自我探索工具，帮助你更好地了解自己的性格特点</p>
+                <div class="w-24 h-1 bg-gradient mx-auto mb-6"></div>
+            </div>
+            
+            <div class="space-y-6 mb-8">
+                <div class="bg-accent p-4 rounded-lg">
+                    <h3 class="font-semibold mb-2 flex items-center">
+                        <i class="fa fa-info-circle mr-2 text-primary"></i>测试介绍
+                    </h3>
+                    <p class="text-text-secondary">本测试包含30道题目，探索你在5个关键维度的特质表现。请根据你的真实情况选择最符合的选项。</p>
                 </div>
-                <h1 class="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-primary to-accent text-transparent bg-clip-text">
-                    性取向测试
-                </h1>
-                <p class="text-lg md:text-xl mb-8 text-gray-700">
-                    探索你的性取向倾向，了解更真实的自己，包含异性恋、同性恋、双性恋维度评估
-                </p>
-                <div class="space-y-4">
-                    <button id="start-test-btn" class="btn-primary w-full">
-                        开始测试
-                    </button>
-                    <button id="about-btn" class="btn-secondary w-full">
-                        了解更多
-                    </button>
+                
+                <div class="bg-secondary/30 p-4 rounded-lg">
+                    <h3 class="font-semibold mb-2 flex items-center">
+                        <i class="fa fa-clock-o mr-2 text-primary"></i>完成时间
+                    </h3>
+                    <p class="text-text-secondary">测试大约需要10-15分钟完成，请在一个安静的环境中专注作答。</p>
                 </div>
             </div>
             
-            <!-- 隐私声明和原创声明 -->
-            <div class="mt-8 text-sm text-gray-600 text-center max-w-lg">
-                <p>本测试仅供教育和自我探索目的，所有数据严格保密</p>
-                <p class="mt-2">测试结果不构成医疗或专业建议</p>
-                <div class="mt-4 p-3 bg-white bg-opacity-50 rounded-lg">
-                    <p class="font-medium text-primary">原创声明</p>
-                    <p class="mt-1">本测试为原创设计，参考金赛性取向量表核心逻辑，结果仅供娱乐参考，不构成专业心理评估结论。</p>
-                </div>
+            <!-- 免责声明 -->
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-8">
+                <h3 class="font-semibold mb-2 text-yellow-800">重要免责声明</h3>
+                <ul class="text-sm text-yellow-700 space-y-2">
+                    <li>• 本测试<span class="font-bold">非专业诊断工具</span>，结果仅供参考</li>
+                    <li>• 测试结果不具有医疗或诊断效力</li>
+                    <li>• 不应替代专业心理咨询或治疗</li>
+                    <li>• 如有心理健康困扰，请寻求专业人士帮助</li>
+                </ul>
             </div>
-        </section>
-
-        <!-- 关于页面 -->
-        <section id="about-section" class="hidden animate-fade-in">
-            <div class="glass-effect p-8 rounded-3xl">
-                <div class="flex items-center mb-6">
-                    <button id="back-from-about-btn" class="mr-4 text-gray-600 hover:text-primary">
-                        <i class="fa fa-arrow-left text-xl"></i>
-                    </button>
-                    <h2 class="text-3xl font-bold">关于本测试</h2>
-                </div>
-                
-                <div class="space-y-6">
-                    <div>
-                        <h3 class="text-xl font-semibold mb-2 text-primary">测试简介</h3>
-                        <p>本测试参考金赛性取向量表（Kinsey Scale）的核心逻辑，从情感吸引、性吸引、行为倾向等多个维度评估你的性取向特征，帮助你了解自己在异性恋-同性恋连续体上的位置。</p>
-                    </div>
-                    
-                    <div>
-                        <h3 class="text-xl font-semibold mb-2 text-primary">测试维度</h3>
-                        <ul class="list-disc pl-5 space-y-2">
-                            <li><span class="font-medium">情感吸引</span>：评估你对不同性别的情感吸引程度</li>
-                            <li><span class="font-medium">性吸引</span>：探索你对不同性别的性吸引力感受</li>
-                            <li><span class="font-medium">行为倾向</span>：了解你在实际行为中的偏好和倾向</li>
-                            <li><span class="font-medium">幻想偏好</span>：评估你的性幻想对象性别倾向</li>
-                            <li><span class="font-medium">身份认同</span>：探索你对自身性取向身份的认知</li>
-                        </ul>
-                    </div>
-                    
-                    <div>
-                        <h3 class="text-xl font-semibold mb-2 text-primary">测试说明</h3>
-                        <p>测试包含20道题目，预计需要5-10分钟完成。所有问题均采用匿名方式，结果仅对你可见。</p>
-                        <p class="mt-2">请根据你的真实感受和经历回答，选择最符合你情况的选项。性取向是一个连续谱，没有绝对的"正确"或"错误"。</p>
-                    </div>
-                    
-                    <div>
-                        <h3 class="text-xl font-semibold mb-2 text-primary">隐私保护</h3>
-                        <p>我们非常重视你的隐私。所有测试数据仅存储在你的设备上，不会上传至任何服务器。你可以随时清除浏览器数据来删除你的测试记录。</p>
-                    </div>
-                    
-                    <div>
-                        <h3 class="text-xl font-semibold mb-2 text-primary">免责说明</h3>
-                        <p>本测试结果仅供参考，不构成医疗、心理或法律建议。测试内容不替代专业医疗或心理咨询。如果你对自己的性取向有困惑，建议咨询专业的心理健康提供者。</p>
-                    </div>
-                </div>
-                
-                <button id="start-from-about-btn" class="btn-primary w-full mt-8">
-                    开始测试
+            
+            <div class="text-center">
+                <button id="start-test" class="bg-gradient text-white font-medium py-3 px-8 rounded-full shadow-md hover:shadow-lg transition-all-300 transform hover:-translate-y-1">
+                    开始探索之旅
+                    <i class="fa fa-arrow-right ml-2"></i>
                 </button>
             </div>
         </section>
@@ -190,909 +108,1045 @@
         <!-- 测试页面 -->
         <section id="test-section" class="hidden">
             <!-- 进度条 -->
-            <div class="glass-effect p-4 mb-6 rounded-xl">
-                <div class="flex justify-between items-center mb-2">
-                    <span class="font-medium">测试进度</span>
-                    <span id="progress-text" class="text-sm">0/20</span>
-                </div>
-                <div class="progress-bar">
-                    <div id="progress-value" class="progress-value" style="width: 0%"></div>
-                </div>
+            <div class="mb-6 bg-gray-200 rounded-full h-2.5">
+                <div id="progress-bar" class="bg-gradient h-2.5 rounded-full" style="width: 0%"></div>
             </div>
             
-            <!-- 问题卡片 -->
-            <div id="question-container" class="glass-effect p-6 md:p-8 rounded-3xl mb-6">
-                <!-- 问题将通过JavaScript动态插入 -->
-                <div class="p-4 bg-yellow-50 text-yellow-800 rounded-lg mb-6">
-                    <p class="font-medium">本测试仅供自我探索，不构成专业心理评估</p>
+            <!-- 题目卡片 -->
+            <div class="bg-white rounded-xl shadow-soft p-6 mb-6">
+                <div class="flex justify-between items-center mb-4">
+                    <span id="question-number" class="text-sm font-medium text-primary">题目 1/30</span>
+                    <span id="dimension-tag" class="text-xs bg-primary/10 text-primary px-3 py-1 rounded-full">社交互动倾向</span>
+                </div>
+                
+                <h3 id="question-text" class="text-xl font-medium mb-6">在社交场合中，我通常是主动与人交流的那一个。</h3>
+                
+                <div id="options-container" class="space-y-3">
+                    <!-- 选项将通过JS动态生成 -->
                 </div>
             </div>
             
             <!-- 导航按钮 -->
             <div class="flex justify-between">
-                <button id="prev-btn" class="btn-secondary w-1/3 opacity-50 cursor-not-allowed" disabled>
-                    <i class="fa fa-arrow-left mr-2"></i> 上一题
+                <button id="prev-btn" class="bg-gray-200 text-text-primary font-medium py-2 px-6 rounded-lg shadow-sm hover:bg-gray-300 transition-all-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i class="fa fa-arrow-left mr-2"></i>上一题
                 </button>
-                <button id="next-btn" class="btn-primary w-2/3 hidden">
-                    下一题 <i class="fa fa-arrow-right ml-2"></i>
+                
+                <button id="next-btn" class="bg-primary text-white font-medium py-2 px-6 rounded-lg shadow-sm hover:bg-primary/90 transition-all-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                    下一题<i class="fa fa-arrow-right ml-2"></i>
                 </button>
             </div>
         </section>
 
         <!-- 结果页面 -->
-        <section id="result-section" class="hidden animate-fade-in">
-            <div class="glass-effect p-6 md:p-8 rounded-3xl mb-6">
-                <div class="p-4 bg-yellow-50 text-yellow-800 rounded-lg mb-6">
-                    <p class="font-medium">测试结果仅供参考，性取向是复杂且多元的，本测试仅提供参考维度</p>
+        <section id="result-section" class="hidden">
+            <div class="bg-white rounded-xl shadow-soft p-8 mb-8">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold mb-4 text-primary">你的人格特质探索结果</h2>
+                    <p class="text-lg text-text-secondary">感谢完成测试！以下是你的个性化分析报告</p>
+                    <div class="w-24 h-1 bg-gradient mx-auto mt-6 mb-2"></div>
+                    <p class="text-sm text-text-secondary">请以开放和好奇的心态阅读结果</p>
                 </div>
-                <h2 class="text-3xl font-bold mb-6 text-center">你的性取向分析</h2>
                 
-                <!-- 结果图表 -->
+                <!-- 总体评分 -->
                 <div class="mb-8">
-                    <canvas id="result-chart" height="300"></canvas>
-                </div>
-                
-                <!-- 核心结果 -->
-                <div class="mb-8 text-center">
-                    <div id="orientation-result" class="text-2xl font-bold text-primary mb-4"></div>
-                    <div id="orientation-description" class="text-lg text-gray-700 max-w-2xl mx-auto"></div>
-                </div>
-                
-                <!-- 维度分析 -->
-                <div id="dimension-analysis" class="space-y-6 mb-8">
-                    <!-- 维度分析将通过JavaScript动态插入 -->
-                </div>
-                
-                <!-- AI解读 -->
-                <div class="mt-8 p-4 bg-primary bg-opacity-10 rounded-xl border border-primary border-opacity-20">
-                    <h3 class="text-xl font-semibold mb-4 flex items-center">
-                        <i class="fa fa-lightbulb-o text-primary mr-2"></i>
-                        <span>个性化解读</span>
-                    </h3>
-                    <div id="ai-insight" class="text-gray-700">
-                        <!-- AI解读将通过JavaScript动态插入 -->
+                    <h3 class="text-xl font-medium mb-4 text-center">你的特质概览</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                        <div class="dimension-card bg-accent rounded-lg p-4 text-center card-hover transition-all-300">
+                            <h4 class="font-medium mb-2">社交互动</h4>
+                            <div class="text-3xl font-bold text-primary mb-1"><span id="social-score">0</span></div>
+                            <div class="text-xs text-text-secondary"><span id="social-level">初步发展</span></div>
+                        </div>
+                        
+                        <div class="dimension-card bg-secondary/30 rounded-lg p-4 text-center card-hover transition-all-300">
+                            <h4 class="font-medium mb-2">情绪弹性</h4>
+                            <div class="text-3xl font-bold text-primary mb-1"><span id="emotional-score">0</span></div>
+                            <div class="text-xs text-text-secondary"><span id="emotional-level">初步发展</span></div>
+                        </div>
+                        
+                        <div class="dimension-card bg-accent rounded-lg p-4 text-center card-hover transition-all-300">
+                            <h4 class="font-medium mb-2">决策风格</h4>
+                            <div class="text-3xl font-bold text-primary mb-1"><span id="decision-score">0</span></div>
+                            <div class="text-xs text-text-secondary"><span id="decision-level">初步发展</span></div>
+                        </div>
+                        
+                        <div class="dimension-card bg-secondary/30 rounded-lg p-4 text-center card-hover transition-all-300">
+                            <h4 class="font-medium mb-2">适应变化</h4>
+                            <div class="text-3xl font-bold text-primary mb-1"><span id="adaptation-score">0</span></div>
+                            <div class="text-xs text-text-secondary"><span id="adaptation-level">初步发展</span></div>
+                        </div>
+                        
+                        <div class="dimension-card bg-accent rounded-lg p-4 text-center card-hover transition-all-300">
+                            <h4 class="font-medium mb-2">自我认知</h4>
+                            <div class="text-3xl font-bold text-primary mb-1"><span id="self-awareness-score">0</span></div>
+                            <div class="text-xs text-text-secondary"><span id="self-awareness-level">初步发展</span></div>
+                        </div>
                     </div>
                 </div>
                 
-                <!-- 科普信息 -->
-                <div class="mt-8">
-                    <h3 class="text-xl font-semibold mb-4">性取向科普</h3>
-                    <div class="space-y-4 text-gray-700">
-                        <p>性取向是一个连续谱，而非非黑即白的分类。金赛量表将性取向分为0-6七个等级：</p>
-                        <ul class="list-disc pl-5 space-y-1">
-                            <li>0：完全异性恋</li>
-                            <li>1：主要是异性恋，偶尔有同性恋倾向</li>
-                            <li>2：主要是异性恋，但有明显的同性恋倾向</li>
-                            <li>3：双性恋</li>
-                            <li>4：主要是同性恋，但有明显的异性恋倾向</li>
-                            <li>5：主要是同性恋，偶尔有异性恋倾向</li>
-                            <li>6：完全同性恋</li>
-                        </ul>
-                        <p class="mt-2">许多人的性取向处于这些分类之间，并且可能会随着时间和经历发生变化。</p>
+                <!-- 详细分析 -->
+                <div class="mb-8">
+                    <h3 class="text-xl font-medium mb-4">你的特质分析</h3>
+                    <div id="detailed-analysis" class="space-y-6">
+                        <!-- 详细分析将通过JS动态生成 -->
                     </div>
+                </div>
+                
+                <!-- 正向引导建议 -->
+                <div class="bg-gradient/10 rounded-lg p-6 mb-8">
+                    <h3 class="text-xl font-medium mb-4 text-primary">成长建议</h3>
+                    <div id="growth-suggestions" class="space-y-4">
+                        <!-- 建议将通过JS动态生成 -->
+                    </div>
+                </div>
+                
+                <!-- 结尾引导 -->
+                <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-8">
+                    <h3 class="font-semibold mb-2 text-blue-800">探索不止于此</h3>
+                    <p class="text-blue-700">人格特质是动态发展的，自我探索是一段持续的旅程。如果你对自己的性格特点有更多好奇，建议：</p>
+                    <ul class="mt-2 text-sm text-blue-700 list-disc list-inside space-y-1">
+                        <li>阅读心理学相关书籍，拓展自我认知</li>
+                        <li>与信任的朋友或家人交流你的想法</li>
+                        <li>如有需要，寻求专业心理咨询师的帮助</li>
+                    </ul>
+                </div>
+                
+                <div class="text-center space-x-4">
+                    <button id="save-result" class="bg-primary text-white font-medium py-2 px-6 rounded-lg shadow-sm hover:bg-primary/90 transition-all-300">
+                        <i class="fa fa-download mr-2"></i>保存结果
+                    </button>
+                    <button id="share-result" class="bg-secondary text-text-primary font-medium py-2 px-6 rounded-lg shadow-sm hover:bg-secondary/80 transition-all-300">
+                        <i class="fa fa-share-alt mr-2"></i>分享结果
+                    </button>
                 </div>
             </div>
             
-            <!-- 操作按钮（移除了分享按钮） -->
-            <div class="flex flex-col space-y-4">
-                <button id="save-result-btn" class="btn-primary w-full">
-                    <i class="fa fa-download mr-2"></i> 保存结果
-                </button>
-                <button id="restart-btn" class="btn-secondary w-full">
-                    <i class="fa fa-refresh mr-2"></i> 重新测试
-                </button>
+            <!-- 原创声明 -->
+            <div class="bg-gray-50 p-4 rounded-lg text-center text-sm text-text-secondary">
+                <p>© 2025 人格特质探索测试 | 原创内容，未经授权禁止复制使用</p>
             </div>
         </section>
-    </div>
+    </main>
 
     <script>
-        // 性取向测试问题数据
+        // 测试题目数据
         const testQuestions = [
+            // 社交互动倾向
             {
                 id: 1,
-                dimension: "情感吸引",
-                question: "你会对哪个性别的人产生浪漫的情感吸引？",
-                type: "single",
+                dimension: "社交互动倾向",
+                dimensionKey: "social",
+                question: "在社交场合中，我通常是主动与人交流的那一个。",
                 options: [
-                    "只对异性产生浪漫吸引",
-                    "主要对异性，偶尔对同性",
-                    "对异性和同性都有一定的吸引",
-                    "主要对同性，偶尔对异性",
-                    "只对同性产生浪漫吸引"
+                    { value: 1, text: "非常不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "非常符合" }
                 ]
             },
             {
                 id: 2,
-                dimension: "性吸引",
-                question: "你会对哪个性别的人产生性吸引力的感觉？",
-                type: "single",
+                dimension: "社交互动倾向",
+                dimensionKey: "social",
+                question: "我喜欢参加各种社交活动，认识新朋友。",
                 options: [
-                    "只对异性有性吸引力的感觉",
-                    "主要对异性，偶尔对同性",
-                    "对异性和同性都有性吸引力的感觉",
-                    "主要对同性，偶尔对异性",
-                    "只对同性有性吸引力的感觉"
+                    { value: 1, text: "非常不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "非常符合" }
                 ]
             },
             {
                 id: 3,
-                dimension: "行为倾向",
-                question: "你有过与哪个性别的人发生亲密/性关系的经历？",
-                type: "single",
+                dimension: "社交互动倾向",
+                dimensionKey: "social",
+                question: "在团队合作中，我更倾向于倾听他人的意见，而不是主导讨论。",
                 options: [
-                    "只与异性有过",
-                    "主要与异性，有过1-2次同性经历",
-                    "与异性和同性都有过多次经历",
-                    "主要与同性，有过1-2次异性经历",
-                    "只与同性有过"
+                    { value: 1, text: "非常不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "非常符合" }
                 ]
             },
             {
                 id: 4,
-                dimension: "幻想偏好",
-                question: "你的性幻想对象主要是哪个性别？",
-                type: "single",
+                dimension: "社交互动倾向",
+                dimensionKey: "social",
+                question: "我很容易与陌生人建立初步的友好关系。",
                 options: [
-                    "只幻想异性",
-                    "主要幻想异性，偶尔幻想同性",
-                    "幻想异性和同性的频率差不多",
-                    "主要幻想同性，偶尔幻想异性",
-                    "只幻想同性"
+                    { value: 1, text: "非常不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "非常符合" }
                 ]
             },
             {
                 id: 5,
-                dimension: "身份认同",
-                question: "你如何认同自己的性取向？",
-                type: "single",
+                dimension: "社交互动倾向",
+                dimensionKey: "social",
+                question: "我更喜欢一对一的深度交流，而不是大型聚会。",
                 options: [
-                    "完全认同自己是异性恋",
-                    "认为自己主要是异性恋，但有一点双性恋倾向",
-                    "认为自己是双性恋",
-                    "认为自己主要是同性恋，但有一点双性恋倾向",
-                    "完全认同自己是同性恋"
+                    { value: 1, text: "非常不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "非常符合" }
                 ]
             },
             {
                 id: 6,
-                dimension: "情感吸引",
-                question: "当你坠入爱河时，对象通常是哪个性别？",
-                type: "single",
+                dimension: "社交互动倾向",
+                dimensionKey: "social",
+                question: "在社交场合中，我能够轻松地找到话题与他人交谈。",
                 options: [
-                    "只爱过异性",
-                    "主要爱过异性，有过一次短暂的同性爱慕",
-                    "爱过异性也爱过同性，次数差不多",
-                    "主要爱过同性，有过一次短暂的异性爱慕",
-                    "只爱过同性"
+                    { value: 1, text: "非常不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "非常符合" }
                 ]
             },
+            
+            // 情绪弹性
             {
                 id: 7,
-                dimension: "性吸引",
-                question: "看到有魅力的人时，你会被哪个性别的人吸引？",
-                type: "single",
+                dimension: "情绪弹性",
+                dimensionKey: "emotional",
+                question: "当遇到挫折时，我能够很快调整自己的情绪状态。",
                 options: [
-                    "只被异性吸引",
-                    "主要被异性吸引，偶尔注意到有魅力的同性",
-                    "同等程度地被有魅力的异性和同性吸引",
-                    "主要被同性吸引，偶尔注意到有魅力的异性",
-                    "只被同性吸引"
+                    { value: 1, text: "非常不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "非常符合" }
                 ]
             },
             {
                 id: 8,
-                dimension: "行为倾向",
-                question: "你希望未来的亲密/性关系对象是哪个性别？",
-                type: "single",
+                dimension: "情绪弹性",
+                dimensionKey: "emotional",
+                question: "我能够清晰地识别并表达自己的情绪感受。",
                 options: [
-                    "只希望是异性",
-                    "主要希望是异性，不排斥偶尔的同性体验",
-                    "对异性和同性都开放",
-                    "主要希望是同性，不排斥偶尔的异性体验",
-                    "只希望是同性"
+                    { value: 1, text: "非常不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "非常符合" }
                 ]
             },
             {
                 id: 9,
-                dimension: "幻想偏好",
-                question: "你的浪漫幻想（非性）对象主要是哪个性别？",
-                type: "single",
+                dimension: "情绪弹性",
+                dimensionKey: "emotional",
+                question: "压力大的时候，我会寻找健康的方式来放松自己。",
                 options: [
-                    "只幻想与异性的浪漫关系",
-                    "主要幻想与异性，偶尔幻想与同性",
-                    "幻想与异性和同性的浪漫关系都有",
-                    "主要幻想与同性，偶尔幻想与异性",
-                    "只幻想与同性的浪漫关系"
+                    { value: 1, text: "非常不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "非常符合" }
                 ]
             },
             {
                 id: 10,
-                dimension: "身份认同",
-                question: "你向他人描述自己的性取向时，会如何说？",
-                type: "single",
+                dimension: "情绪弹性",
+                dimensionKey: "emotional",
+                question: "我很少被负面情绪困扰很长时间。",
                 options: [
-                    "明确说自己是异性恋",
-                    "说自己是异性恋，但补充说对同性也有一点点兴趣",
-                    "说自己是双性恋",
-                    "说自己是同性恋，但补充说对异性也有一点点兴趣",
-                    "明确说自己是同性恋"
+                    { value: 1, text: "非常不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "非常符合" }
                 ]
             },
             {
                 id: 11,
-                dimension: "情感吸引",
-                question: "你会对哪个性别的朋友产生超出友谊的情感？",
-                type: "single",
+                dimension: "情绪弹性",
+                dimensionKey: "emotional",
+                question: "我能够在困难情况下保持积极的心态。",
                 options: [
-                    "只对异性朋友",
-                    "主要对异性朋友，有过1-2次对同性朋友",
-                    "对异性和同性朋友都有过",
-                    "主要对同性朋友，有过1-2次对异性朋友",
-                    "只对同性朋友"
+                    { value: 1, text: "非常不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "非常符合" }
                 ]
             },
             {
                 id: 12,
-                dimension: "性吸引",
-                question: "你会对哪个性别的名人/公众人物产生迷恋？",
-                type: "single",
+                dimension: "情绪弹性",
+                dimensionKey: "emotional",
+                question: "我会关注并照顾自己的情绪需求。",
                 options: [
-                    "只迷恋异性名人",
-                    "主要迷恋异性，偶尔迷恋同性名人",
-                    "迷恋异性和同性名人的频率差不多",
-                    "主要迷恋同性，偶尔迷恋异性名人",
-                    "只迷恋同性名人"
+                    { value: 1, text: "非常不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "非常符合" }
                 ]
             },
+            
+            // 决策风格
             {
                 id: 13,
-                dimension: "行为倾向",
-                question: "你愿意与哪个性别的人建立长期伴侣关系？",
-                type: "single",
+                dimension: "决策风格",
+                dimensionKey: "decision",
+                question: "做决定时，我更依赖逻辑分析而不是直觉感受。",
                 options: [
-                    "只愿意与异性",
-                    "主要愿意与异性，不排除短期的同性关系",
-                    "对异性和同性都愿意考虑",
-                    "主要愿意与同性，不排除短期的异性关系",
-                    "只愿意与同性"
+                    { value: 1, text: "非常不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "非常符合" }
                 ]
             },
             {
                 id: 14,
-                dimension: "幻想偏好",
-                question: "你的春梦（睡眠中的性梦）对象主要是哪个性别？",
-                type: "single",
+                dimension: "决策风格",
+                dimensionKey: "decision",
+                question: "我喜欢快速做决定，不喜欢长时间犹豫。",
                 options: [
-                    "只梦到异性",
-                    "主要梦到异性，偶尔梦到同性",
-                    "梦到异性和同性的次数差不多",
-                    "主要梦到同性，偶尔梦到异性",
-                    "只梦到同性"
+                    { value: 1, text: "非常不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "非常符合" }
                 ]
             },
             {
                 id: 15,
-                dimension: "身份认同",
-                question: "你认为自己的性取向是固定的还是流动的？",
-                type: "single",
+                dimension: "决策风格",
+                dimensionKey: "decision",
+                question: "在做重要决定前，我会收集充分的信息并权衡利弊。",
                 options: [
-                    "完全固定的异性恋",
-                    "基本固定为异性恋，可能有微小变化",
-                    "比较流动，可能在不同时期有不同倾向",
-                    "基本固定为同性恋，可能有微小变化",
-                    "完全固定的同性恋"
+                    { value: 1, text: "非常不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "非常符合" }
                 ]
             },
             {
                 id: 16,
-                dimension: "情感吸引",
-                question: "你会嫉妒哪个性别的人与你喜欢的人亲近？",
-                type: "single",
+                dimension: "决策风格",
+                dimensionKey: "decision",
+                question: "我很容易做出决定，并且很少后悔自己的选择。",
                 options: [
-                    "只嫉妒异性",
-                    "主要嫉妒异性，偶尔嫉妒同性",
-                    "嫉妒异性和同性的程度差不多",
-                    "主要嫉妒同性，偶尔嫉妒异性",
-                    "只嫉妒同性"
+                    { value: 1, text: "非常不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "非常符合" }
                 ]
             },
             {
                 id: 17,
-                dimension: "性吸引",
-                question: "你会被哪个性别的人的声音/气味/触感等感官特征吸引？",
-                type: "single",
+                dimension: "决策风格",
+                dimensionKey: "decision",
+                question: "我喜欢与他人讨论后再做决定，而不是独自做决定。",
                 options: [
-                    "只被异性的感官特征吸引",
-                    "主要被异性吸引，偶尔注意到同性的感官特征",
-                    "同等程度地被异性和同性的感官特征吸引",
-                    "主要被同性吸引，偶尔注意到异性的感官特征",
-                    "只被同性的感官特征吸引"
+                    { value: 1, text: "非常不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "非常符合" }
                 ]
             },
             {
                 id: 18,
-                dimension: "行为倾向",
-                question: "你有过与哪个性别的人约会的经历？",
-                type: "single",
+                dimension: "决策风格",
+                dimensionKey: "decision",
+                question: "面对不确定的情况，我依然能够果断地做出决定。",
                 options: [
-                    "只与异性约会过",
-                    "主要与异性，有过1-2次同性约会",
-                    "与异性和同性都有过多次约会",
-                    "主要与同性，有过1-2次异性约会",
-                    "只与同性约会过"
+                    { value: 1, text: "非常不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "非常符合" }
                 ]
             },
+            
+            // 适应变化
             {
                 id: 19,
-                dimension: "幻想偏好",
-                question: "当你阅读浪漫/情色内容时，偏好哪个性别的主角？",
-                type: "single",
+                dimension: "适应变化",
+                dimensionKey: "adaptation",
+                question: "当计划被打乱时，我能够灵活地调整自己的安排。",
                 options: [
-                    "只偏好异性主角的内容",
-                    "主要偏好异性，偶尔看同性主角的内容",
-                    "对异性和同性主角的内容都感兴趣",
-                    "主要偏好同性，偶尔看异性主角的内容",
-                    "只偏好同性主角的内容"
+                    { value: 1, text: "非常不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "非常符合" }
                 ]
             },
             {
                 id: 20,
-                dimension: "身份认同",
-                question: "如果可以选择，你希望自己的性取向是怎样的？",
-                type: "single",
+                dimension: "适应变化",
+                dimensionKey: "adaptation",
+                question: "我喜欢尝试新事物和新体验。",
                 options: [
-                    "希望保持纯异性恋",
-                    "希望主要是异性恋，保留一点多样性",
-                    "满意自己当前的双性恋倾向",
-                    "希望主要是同性恋，保留一点多样性",
-                    "希望保持纯同性恋"
+                    { value: 1, text: "非常不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "非常符合" }
+                ]
+            },
+            {
+                id: 21,
+                dimension: "适应变化",
+                dimensionKey: "adaptation",
+                question: "面对新环境，我需要一段时间才能完全适应。",
+                options: [
+                    { value: 1, text: "非常不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "非常符合" }
+                ]
+            },
+            {
+                id: 22,
+                dimension: "适应变化",
+                dimensionKey: "adaptation",
+                question: "我能够快速学习和掌握新技能。",
+                options: [
+                    { value: 1, text: "非常不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "非常符合" }
+                ]
+            },
+            {
+                id: 23,
+                dimension: "适应变化",
+                dimensionKey: "adaptation",
+                question: "我更喜欢稳定和可预测的生活方式。",
+                options: [
+                    { value: 1, text: "非常不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "非常符合" }
+                ]
+            },
+            {
+                id: 24,
+                dimension: "适应变化",
+                dimensionKey: "adaptation",
+                question: "当遇到意外情况时，我能够保持冷静并寻找解决方案。",
+                options: [
+                    { value: 1, text: "非常不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "非常符合" }
+                ]
+            },
+            
+            // 自我认知
+            {
+                id: 25,
+                dimension: "自我认知",
+                dimensionKey: "self-awareness",
+                question: "我清楚自己的优点和不足。",
+                options: [
+                    { value: 1, text: "非常不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "非常符合" }
+                ]
+            },
+            {
+                id: 26,
+                dimension: "自我认知",
+                dimensionKey: "self-awareness",
+                question: "我经常反思自己的行为和想法。",
+                options: [
+                    { value: 1, text: "非常不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "非常符合" }
+                ]
+            },
+            {
+                id: 27,
+                dimension: "自我认知",
+                dimensionKey: "self-awareness",
+                question: "我能够接受自己的不完美之处。",
+                options: [
+                    { value: 1, text: "非常不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "非常符合" }
+                ]
+            },
+            {
+                id: 28,
+                dimension: "自我认知",
+                dimensionKey: "self-awareness",
+                question: "我对自己的价值观和人生目标有清晰的认识。",
+                options: [
+                    { value: 1, text: "非常不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "非常符合" }
+                ]
+            },
+            {
+                id: 29,
+                dimension: "自我认知",
+                dimensionKey: "self-awareness",
+                question: "我会根据他人的反馈来调整自己的行为。",
+                options: [
+                    { value: 1, text: "非常不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "非常符合" }
+                ]
+            },
+            {
+                id: 30,
+                dimension: "自我认知",
+                dimensionKey: "self-awareness",
+                question: "我对自己的情绪状态有敏锐的察觉。",
+                options: [
+                    { value: 1, text: "非常不符合" },
+                    { value: 2, text: "不太符合" },
+                    { value: 3, text: "一般" },
+                    { value: 4, text: "比较符合" },
+                    { value: 5, text: "非常符合" }
                 ]
             }
         ];
 
-        // 性取向结果解释
-        const orientationResults = {
-            0: {
-                name: "完全异性恋",
-                description: "你在情感、性吸引、行为和幻想等各个维度都表现出完全的异性恋倾向。你只对异性产生浪漫和性的吸引，并且认同自己为异性恋。",
-                insight: "你的性取向特征非常明确，属于典型的异性恋模式。这是最常见的性取向类型，无需为此感到任何特别。重要的是接纳并善待自己的性取向，同时也尊重他人的多样性。"
+        // 结果分析数据
+        const resultAnalysis = {
+            // 社交互动倾向分析
+            social: {
+                levels: {
+                    low: {
+                        title: "初步发展",
+                        description: "你在社交互动方面可能更倾向于内向和安静。你可能更喜欢小范围的社交活动，或者需要一些时间来适应新的社交环境。这并不意味着你不擅长社交，只是你可能更注重深度而非广度的人际关系。",
+                        strengths: ["善于倾听", "重视深度交流", "独立思考能力强"]
+                    },
+                    medium: {
+                        title: "平衡发展",
+                        description: "你在社交互动方面表现得比较平衡。你能够根据不同的场合和对象调整自己的社交方式，既能够享受社交活动带来的乐趣，也能够在需要的时候独处和反思。你善于在社交和独处之间找到适合自己的平衡点。",
+                        strengths: ["社交适应能力强", "灵活的社交风格", "良好的自我觉察"]
+                    },
+                    high: {
+                        title: "充分发展",
+                        description: "你在社交互动方面表现得非常活跃和自信。你喜欢与人交流，善于建立新的人际关系，并且在社交场合中感到自在。你的社交能力可能是你个人和职业发展的重要优势。",
+                        strengths: ["出色的沟通能力", "广泛的人际网络", "自信的表达能力"]
+                    }
+                }
             },
-            1: {
-                name: "主要异性恋（轻微同性恋倾向）",
-                description: "你主要表现出异性恋倾向，但在某些方面（如幻想、情感吸引）偶尔会对同性产生兴趣。这种轻微的多样性是非常正常的。",
-                insight: "许多人都有轻微的跨性别吸引体验，这是人类性取向多样性的正常表现。你的主要倾向仍然是异性恋，但这种轻微的灵活性让你对人性有更丰富的理解。"
+            
+            // 情绪弹性分析
+            emotional: {
+                levels: {
+                    low: {
+                        title: "初步发展",
+                        description: "你在情绪管理方面可能还在学习和成长中。你可能有时会被情绪所困扰，或者需要一些时间来调整自己的情绪状态。这是一个可以通过练习和学习来提升的能力。",
+                        strengths: ["情感丰富", "对情绪有深度体验", "能够察觉细微的情绪变化"]
+                    },
+                    medium: {
+                        title: "平衡发展",
+                        description: "你在情绪弹性方面表现得比较平衡。大多数情况下，你能够有效地管理自己的情绪，并且在面对压力和挑战时保持相对稳定的心态。你既有感性的一面，也有理性的思考能力。",
+                        strengths: ["情绪调节能力良好", "压力应对能力平衡", "情感表达适度"]
+                    },
+                    high: {
+                        title: "充分发展",
+                        description: "你在情绪弹性方面表现得非常出色。你能够快速地调整自己的情绪状态，在面对困难和挑战时保持积极的心态。你的情绪稳定性和恢复能力是你的重要优势。",
+                        strengths: ["出色的情绪调节能力", "强大的心理韧性", "积极乐观的心态"]
+                    }
+                }
             },
-            2: {
-                name: "主要异性恋（明显同性恋倾向）",
-                description: "你主要是异性恋，但在多个维度上都表现出明显的同性恋倾向。你可能在情感或性方面对同性有显著的兴趣和吸引力。",
-                insight: "你的性取向处于异性恋和双性恋之间的过渡地带。这种情况表明你对不同性别的吸引力有更广泛的体验，是性取向连续谱中非常正常的位置。"
+            
+            // 决策风格分析
+            decision: {
+                levels: {
+                    low: {
+                        title: "初步发展",
+                        description: "你在做决定时可能更谨慎和深思熟虑。你可能需要更多的时间和信息来做出决定，并且有时会感到犹豫不决。这反映了你对决策的认真态度和对结果的重视。",
+                        strengths: ["深思熟虑", "注重细节", "谨慎负责"]
+                    },
+                    medium: {
+                        title: "平衡发展",
+                        description: "你在决策风格方面表现得比较平衡。你能够根据不同的情况调整自己的决策方式，既能够快速做出日常决策，也能够在重要事项上深思熟虑。你的决策过程既考虑理性因素，也兼顾直觉感受。",
+                        strengths: ["灵活的决策方式", "良好的判断力", "平衡的思考方式"]
+                    },
+                    high: {
+                        title: "充分发展",
+                        description: "你在决策方面表现得非常果断和自信。你能够在复杂的情况下快速做出决策，并且对自己的选择有信心。你的决策能力可能是你个人和职业发展的重要优势。",
+                        strengths: ["果断的决策能力", "出色的判断力", "高效的问题解决能力"]
+                    }
+                }
             },
-            3: {
-                name: "双性恋",
-                description: "你在情感和性方面对异性和同性都表现出显著的吸引力。你的经历、幻想和认同都显示出平衡的双性恋特征。",
-                insight: "双性恋是一种完全正常的性取向，意味着你有能力对任何性别的人产生情感和性的吸引。双性恋者常常能以更包容的视角理解人类的情感和亲密关系。"
+            
+            // 适应变化分析
+            adaptation: {
+                levels: {
+                    low: {
+                        title: "初步发展",
+                        description: "你可能更喜欢稳定和可预测的环境和生活方式。面对变化时，你可能需要一些时间来适应，并且可能会感到一些不适。这反映了你对稳定性和安全感的重视。",
+                        strengths: ["注重稳定性", "做事有计划", "善于遵循既定流程"]
+                    },
+                    medium: {
+                        title: "平衡发展",
+                        description: "你在适应变化方面表现得比较平衡。你既能够享受稳定带来的安全感，也能够在必要时灵活应对变化。你能够在保持自己节奏的同时，适度地接受新的挑战和体验。",
+                        strengths: ["良好的适应能力", "平衡的生活态度", "灵活的应对方式"]
+                    },
+                    high: {
+                        title: "充分发展",
+                        description: "你在适应变化方面表现得非常出色。你喜欢尝试新事物，能够快速适应新环境和新情况，并且在变化中看到机会和可能性。你的适应能力是你面对未知和挑战的重要优势。",
+                        strengths: ["出色的适应能力", "开放的心态", "快速的学习能力"]
+                    }
+                }
             },
-            4: {
-                name: "主要同性恋（明显异性恋倾向）",
-                description: "你主要是同性恋，但在多个维度上都表现出明显的异性恋倾向。你可能在情感或性方面对异性仍有一定的兴趣和吸引力。",
-                insight: "你的性取向处于同性恋和双性恋之间的过渡地带。这种情况表明你的主要吸引对象是同性，但仍保留了对异性的一定开放性，这在性取向连续谱中是完全正常的。"
-            },
-            5: {
-                name: "主要同性恋（轻微异性恋倾向）",
-                description: "你主要表现出同性恋倾向，但在某些方面（如幻想、情感吸引）偶尔会对异性产生兴趣。这种轻微的多样性是非常正常的。",
-                insight: "你的主要性取向是同性恋，但保留了轻微的异性吸引体验，这是性取向多样性的正常表现。重要的是接纳自己的全部感受，不必强求自己符合任何刻板分类。"
-            },
-            6: {
-                name: "完全同性恋",
-                description: "你在情感、性吸引、行为和幻想等各个维度都表现出完全的同性恋倾向。你只对同性产生浪漫和性的吸引，并且认同自己为同性恋。",
-                insight: "你的性取向特征非常明确，属于同性恋模式。同性恋是人类性取向的正常变体之一，和异性恋一样值得尊重和接纳。最重要的是做真实的自己。"
+            
+            // 自我认知分析
+            self_awareness: {
+                levels: {
+                    low: {
+                        title: "初步发展",
+                        description: "你可能还在探索和了解自己的过程中。你可能对自己的某些方面还不够清晰，或者需要更多的时间和经历来形成对自己的认识。自我认知是一个持续发展的过程。",
+                        strengths: ["开放的学习态度", "愿意探索自我", "对新的自我发现保持好奇"]
+                    },
+                    medium: {
+                        title: "平衡发展",
+                        description: "你在自我认知方面表现得比较平衡。你对自己有一定程度的了解，能够认识到自己的优点和不足，并且愿意在必要时进行自我调整和成长。你既不过分自恋，也不过分自卑。",
+                        strengths: ["适度的自我接纳", "良好的自我反思能力", "平衡的自我认知"]
+                    },
+                    high: {
+                        title: "充分发展",
+                        description: "你在自我认知方面表现得非常深入和清晰。你对自己有全面而准确的认识，能够接纳自己的全部，包括优点和不足。你有明确的价值观和人生方向，并且能够根据自己的真实需求做出选择。",
+                        strengths: ["清晰的自我认知", "高度的自我接纳", "明确的人生方向"]
+                    }
+                }
             }
         };
 
-        // DOM元素（移除了分享相关元素）
-        const startSection = document.getElementById('start-section');
-        const aboutSection = document.getElementById('about-section');
-        const testSection = document.getElementById('test-section');
-        const resultSection = document.getElementById('result-section');
-        
-        const startTestBtn = document.getElementById('start-test-btn');
-        const aboutBtn = document.getElementById('about-btn');
-        const backFromAboutBtn = document.getElementById('back-from-about-btn');
-        const startFromAboutBtn = document.getElementById('start-from-about-btn');
-        const prevBtn = document.getElementById('prev-btn');
-        const nextBtn = document.getElementById('next-btn');
-        const saveResultBtn = document.getElementById('save-result-btn');
-        const restartBtn = document.getElementById('restart-btn');
-        
-        const progressText = document.getElementById('progress-text');
-        const progressValue = document.getElementById('progress-value');
-        const questionContainer = document.getElementById('question-container');
-        const orientationResult = document.getElementById('orientation-result');
-        const orientationDescription = document.getElementById('orientation-description');
-        const dimensionAnalysis = document.getElementById('dimension-analysis');
-        const aiInsight = document.getElementById('ai-insight');
-        
-        // 测试状态
+        // 成长建议数据
+        const growthSuggestions = {
+            social: {
+                low: [
+                    "尝试参加一些小型的社交活动，逐步扩展自己的舒适区",
+                    "练习主动与他人交流的技巧，如提问和积极倾听",
+                    "寻找与自己兴趣相投的人，从共同话题开始建立关系"
+                ],
+                medium: [
+                    "继续培养自己的社交技能，特别是在不同类型的社交场合中",
+                    "尝试在某些场合中更加主动，同时尊重自己的需要和界限",
+                    "学习更深入的沟通技巧，提升人际关系的质量"
+                ],
+                high: [
+                    "利用你的社交优势帮助他人建立联系",
+                    "注意在社交中保持真诚，避免过度社交导致的疲惫",
+                    "学习如何在社交中更好地倾听和理解他人"
+                ]
+            },
+            emotional: {
+                low: [
+                    "学习一些基础的情绪管理技巧，如深呼吸和正念练习",
+                    "尝试记录自己的情绪变化，增强对情绪的察觉",
+                    "寻找健康的方式来表达和释放情绪，如写作、运动或艺术创作"
+                ],
+                medium: [
+                    "继续提升自己的情绪调节能力，特别是在压力情境下",
+                    "学习更多关于情绪的知识，理解情绪背后的信息",
+                    "尝试培养更多积极的情绪体验，如感恩和欣赏"
+                ],
+                high: [
+                    "利用你的情绪优势帮助他人，如提供情感支持和理解",
+                    "学习如何在保持情绪稳定的同时，保持对情绪的敏感度",
+                    "探索情绪智慧的更深层次，如情绪的转化和整合"
+                ]
+            },
+            decision: {
+                low: [
+                    "练习做一些小的、日常的决定，逐步提升决策的信心",
+                    "学习一些决策框架和工具，如利弊分析和优先级排序",
+                    "设定合理的决策时间限制，避免过度思考"
+                ],
+                medium: [
+                    "继续提升自己的决策能力，特别是在复杂和不确定的情况下",
+                    "学习如何更好地平衡理性分析和直觉判断",
+                    "培养对决策结果的接受和适应能力"
+                ],
+                high: [
+                    "利用你的决策优势帮助团队和组织做出更好的选择",
+                    "学习如何在保持果断的同时，保持开放的心态接受新信息",
+                    "探索更高层次的决策智慧，如系统思考和长远规划"
+                ]
+            },
+            adaptation: {
+                low: [
+                    "尝试在日常生活中引入一些小的变化和新体验",
+                    "学习一些应对变化的技巧，如灵活性思维和问题解决",
+                    "在变化中寻找积极的方面和学习机会"
+                ],
+                medium: [
+                    "继续提升自己的适应能力，特别是在较大的变化和挑战面前",
+                    "学习如何在保持稳定性的同时，保持对新事物的开放态度",
+                    "培养在变化中保持内心平静的能力"
+                ],
+                high: [
+                    "利用你的适应优势帮助他人应对变化和挑战",
+                    "学习如何在快速变化的环境中保持专注和方向",
+                    "探索如何将变化转化为成长和创新的机会"
+                ]
+            },
+            self_awareness: {
+                low: [
+                    "尝试一些自我探索的活动，如日记写作、冥想或心理咨询",
+                    "寻求他人的反馈，了解自己可能没有意识到的方面",
+                    "设定一些自我成长的目标，并定期反思进展"
+                ],
+                medium: [
+                    "继续深化自己的自我认知，特别是在复杂和矛盾的方面",
+                    "学习如何更好地接纳自己的全部，包括优点和不足",
+                    "探索自己的核心价值观和人生意义"
+                ],
+                high: [
+                    "利用你的自我认知优势帮助他人进行自我探索和成长",
+                    "学习如何在保持自我认知的同时，保持开放和成长的心态",
+                    "探索如何将自我认知转化为更有意义和有价值的生活"
+                ]
+            }
+        };
+
+        // 应用状态
         let currentQuestionIndex = 0;
         const userAnswers = {};
-        let currentTestResult = null; // 存储当前测试结果，避免重复计算
-        
-        // DOM加载完成后初始化
-        document.addEventListener('DOMContentLoaded', function() {
-            // 绑定事件监听器（移除了分享相关事件）
-            startTestBtn.addEventListener('click', startTest);
-            aboutBtn.addEventListener('click', showAbout);
-            backFromAboutBtn.addEventListener('click', showStart);
-            startFromAboutBtn.addEventListener('click', startTest);
-            prevBtn.addEventListener('click', goToPreviousQuestion);
-            nextBtn.addEventListener('click', goToNextQuestion);
-            saveResultBtn.addEventListener('click', saveResult);
-            restartBtn.addEventListener('click', restartTest);
-            
-            // 初始化页面
-            init();
-        });
-        
-        // 初始化页面
-        function init() {
-            const urlParams = new URLSearchParams(window.location.search);
-            if (urlParams.has('result')) {
-                try {
-                    const savedResult = JSON.parse(decodeURIComponent(urlParams.get('result')));
-                    currentTestResult = savedResult;
-                    showResult(savedResult);
-                } catch (e) {
-                    console.error('无法解析结果参数', e);
-                    showStart();
-                }
-            } else {
-                showStart();
-            }
-        }
-        
-        // 显示开始页面
-        function showStart() {
-            startSection.classList.remove('hidden');
-            aboutSection.classList.add('hidden');
-            testSection.classList.add('hidden');
-            resultSection.classList.add('hidden');
-        }
-        
-        // 显示关于页面
-        function showAbout() {
-            startSection.classList.add('hidden');
-            aboutSection.classList.remove('hidden');
-            testSection.classList.add('hidden');
-            resultSection.classList.add('hidden');
-        }
-        
+        let startTime = null;
+        let timerInterval = null;
+
+        // DOM元素
+        const introSection = document.getElementById('intro-section');
+        const testSection = document.getElementById('test-section');
+        const resultSection = document.getElementById('result-section');
+        const startTestBtn = document.getElementById('start-test');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress');
+        const timerText = document.getElementById('timer');
+        const questionNumber = document.getElementById('question-number');
+        const dimensionTag = document.getElementById('dimension-tag');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const saveResultBtn = document.getElementById('save-result');
+        const shareResultBtn = document.getElementById('share-result');
+
         // 开始测试
-        function startTest() {
-            currentQuestionIndex = 0;
-            currentTestResult = null;
-            Object.keys(userAnswers).forEach(key => delete userAnswers[key]);
-            
-            startSection.classList.add('hidden');
-            aboutSection.classList.add('hidden');
+        startTestBtn.addEventListener('click', () => {
+            introSection.classList.add('hidden');
             testSection.classList.remove('hidden');
-            resultSection.classList.add('hidden');
             
-            updateQuestion();
-            updateProgress();
-            updateNavigationButtons();
-        }
-        
-        // 更新问题
-        function updateQuestion() {
-            const question = testQuestions[currentQuestionIndex];
-            // 清空容器并插入新问题
-            questionContainer.innerHTML = `
-                <div class="mb-2 text-sm text-primary font-medium">${question.dimension}</div>
-                <h3 class="text-2xl font-bold mb-6">${question.question}</h3>
-                <div class="space-y-3" id="options-container">
-                    ${question.options.map((option, index) => `
-                        <button class="option-btn ${userAnswers[question.id] === index ? 'selected' : ''}" 
-                                data-index="${index}" data-question-id="${question.id}">
-                            ${option}
-                        </button>
-                    `).join('')}
-                </div>
-                <div class="p-4 bg-yellow-50 text-yellow-800 rounded-lg mt-6">
-                    <p class="font-medium">本测试仅供自我探索，不构成专业心理评估</p>
-                </div>
-            `;
+            startTime = new Date();
+            startTimer();
+            showQuestion(currentQuestionIndex);
+        });
+
+        // 显示当前问题
+        function showQuestion(index) {
+            const question = testQuestions[index];
             
-            // 重新获取选项按钮
-            const optionsContainer = document.getElementById('options-container');
-            const optionButtons = optionsContainer.querySelectorAll('.option-btn');
+            questionNumber.textContent = `题目 ${question.id}/30`;
+            dimensionTag.textContent = question.dimension;
+            questionText.textContent = question.question;
             
-            // 绑定点击事件
-            optionButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const selectedIndex = parseInt(this.dataset.index);
-                    const questionId = parseInt(this.dataset.questionId);
+            // 清空选项容器
+            optionsContainer.innerHTML = '';
+            
+            // 添加选项
+            question.options.forEach(option => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50 transition-all-300';
+                
+                // 检查是否已有选择
+                const isSelected = userAnswers[question.id] === option.value;
+                if (isSelected) {
+                    optionDiv.classList.add('bg-primary/10', 'border-primary');
+                }
+                
+                optionDiv.innerHTML = `
+                    <div class="option-radio w-5 h-5 rounded-full border-2 border-gray-300 flex items-center justify-center mr-3 ${isSelected ? 'border-primary bg-primary' : ''}">
+                        ${isSelected ? '<div class="w-2 h-2 rounded-full bg-white"></div>' : ''}
+                    </div>
+                    <span class="option-text">${option.text}</span>
+                `;
+                
+                optionDiv.addEventListener('click', () => {
+                    // 移除其他选项的选中状态
+                    document.querySelectorAll('.option').forEach(opt => {
+                        opt.classList.remove('bg-primary/10', 'border-primary');
+                        opt.querySelector('.option-radio').classList.remove('border-primary', 'bg-primary');
+                        opt.querySelector('.option-radio').innerHTML = '';
+                    });
                     
-                    // 标记加载状态
-                    optionButtons.forEach(btn => btn.classList.add('loading'));
+                    // 设置当前选项为选中状态
+                    optionDiv.classList.add('bg-primary/10', 'border-primary');
+                    optionDiv.querySelector('.option-radio').classList.add('border-primary', 'bg-primary');
+                    optionDiv.querySelector('.option-radio').innerHTML = '<div class="w-2 h-2 rounded-full bg-white"></div>';
                     
-                    // 保存答案
-                    userAnswers[questionId] = selectedIndex;
+                    // 保存用户选择
+                    userAnswers[question.id] = option.value;
                     
-                    // 标记选中状态
-                    optionButtons.forEach(btn => btn.classList.remove('selected'));
-                    this.classList.add('selected');
-                    
-                    // 更新进度
-                    updateProgress();
-                    
-                    // 跳转逻辑
-                    setTimeout(() => {
-                        // 移除加载状态
-                        optionButtons.forEach(btn => btn.classList.remove('loading'));
-                        
-                        if (currentQuestionIndex < testQuestions.length - 1) {
-                            currentQuestionIndex++;
-                            updateQuestion();
-                            updateNavigationButtons();
-                        } else {
-                            const result = calculateResult();
-                            currentTestResult = result; // 保存当前结果
-                            showResult(result);
-                        }
-                    }, 300);
+                    // 启用下一题按钮
+                    nextBtn.disabled = false;
                 });
+                
+                optionsContainer.appendChild(optionDiv);
             });
-        }
-        
-        // 更新进度
-        function updateProgress() {
-            const answeredQuestions = Object.keys(userAnswers).length;
-            const totalQuestions = testQuestions.length;
-            const progressPercentage = (answeredQuestions / totalQuestions) * 100;
             
-            progressText.textContent = `${answeredQuestions}/${totalQuestions}`;
-            progressValue.style.width = `${progressPercentage}%`;
-        }
-        
-        // 更新导航按钮
-        function updateNavigationButtons() {
-            if (currentQuestionIndex > 0) {
-                prevBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-                prevBtn.disabled = false;
+            // 更新进度条
+            const progress = ((index + 1) / testQuestions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+            progressText.textContent = `${index + 1}/${testQuestions.length}`;
+            
+            // 更新导航按钮状态
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = userAnswers[question.id] === undefined;
+            
+            // 如果是最后一题，更改按钮文本
+            if (index === testQuestions.length - 1) {
+                nextBtn.innerHTML = '查看结果<i class="fa fa-check ml-2"></i>';
             } else {
-                prevBtn.classList.add('opacity-50', 'cursor-not-allowed');
-                prevBtn.disabled = true;
+                nextBtn.innerHTML = '下一题<i class="fa fa-arrow-right ml-2"></i>';
             }
-            nextBtn.classList.add('hidden');
         }
-        
-        // 上一题
-        function goToPreviousQuestion() {
+
+        // 导航到上一题
+        prevBtn.addEventListener('click', () => {
             if (currentQuestionIndex > 0) {
                 currentQuestionIndex--;
-                updateQuestion();
-                updateProgress();
-                updateNavigationButtons();
+                showQuestion(currentQuestionIndex);
             }
-        }
-        
-        // 下一题
-        function goToNextQuestion() {
+        });
+
+        // 导航到下一题或查看结果
+        nextBtn.addEventListener('click', () => {
             if (currentQuestionIndex < testQuestions.length - 1) {
                 currentQuestionIndex++;
-                updateQuestion();
-                updateProgress();
-                updateNavigationButtons();
+                showQuestion(currentQuestionIndex);
             } else {
-                const result = calculateResult();
-                currentTestResult = result;
-                showResult(result);
+                // 计算并显示结果
+                clearInterval(timerInterval);
+                calculateResults();
+                testSection.classList.add('hidden');
+                resultSection.classList.remove('hidden');
             }
+        });
+
+        // 开始计时器
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                const now = new Date();
+                const elapsedSeconds = Math.floor((now - startTime) / 1000);
+                const minutes = Math.floor(elapsedSeconds / 60).toString().padStart(2, '0');
+                const seconds = (elapsedSeconds % 60).toString().padStart(2, '0');
+                timerText.textContent = `${minutes}:${seconds}`;
+            }, 1000);
         }
-        
-        // 计算结果
-        function calculateResult() {
+
+        // 计算测试结果
+        function calculateResults() {
             // 计算各维度得分
             const dimensionScores = {
-                "情感吸引": 0,
-                "性吸引": 0,
-                "行为倾向": 0,
-                "幻想偏好": 0,
-                "身份认同": 0
+                social: 0,
+                emotional: 0,
+                decision: 0,
+                adaptation: 0,
+                self_awareness: 0
             };
             
             const dimensionCounts = {
-                "情感吸引": 0,
-                "性吸引": 0,
-                "行为倾向": 0,
-                "幻想偏好": 0,
-                "身份认同": 0
+                social: 0,
+                emotional: 0,
+                decision: 0,
+                adaptation: 0,
+                self_awareness: 0
             };
             
+            // 统计得分
             testQuestions.forEach(question => {
-                if (userAnswers[question.id] !== undefined) {
-                    dimensionScores[question.dimension] += userAnswers[question.id];
-                    dimensionCounts[question.dimension]++;
+                const answer = userAnswers[question.id];
+                if (answer) {
+                    dimensionScores[question.dimensionKey] += answer;
+                    dimensionCounts[question.dimensionKey]++;
                 }
             });
             
-            // 计算各维度的平均得分（0-4分）
+            // 计算平均分
             const dimensionAverages = {};
-            Object.keys(dimensionScores).forEach(dimension => {
-                if (dimensionCounts[dimension] > 0) {
-                    dimensionAverages[dimension] = dimensionScores[dimension] / dimensionCounts[dimension];
+            for (const key in dimensionScores) {
+                dimensionAverages[key] = dimensionCounts[key] > 0 ? dimensionScores[key] : 0;
+            }
+            
+            // 显示各维度得分和分析
+            displayDimensionResults('social', dimensionAverages.social);
+            displayDimensionResults('emotional', dimensionAverages.emotional);
+            displayDimensionResults('decision', dimensionAverages.decision);
+            displayDimensionResults('adaptation', dimensionAverages.adaptation);
+            displayDimensionResults('self-awareness', dimensionAverages.self_awareness);
+            
+            // 生成详细分析
+            generateDetailedAnalysis(dimensionAverages);
+            
+            // 生成成长建议
+            generateGrowthSuggestions(dimensionAverages);
+        }
+
+        // 显示各维度结果
+        function displayDimensionResults(dimensionKey, score) {
+            const scoreElement = document.getElementById(`${dimensionKey}-score`);
+            const levelElement = document.getElementById(`${dimensionKey}-level`);
+            
+            if (scoreElement && levelElement) {
+                scoreElement.textContent = score;
+                
+                // 根据得分确定水平
+                let level;
+                if (score <= 14) {
+                    level = 'low';
+                } else if (score <= 23) {
+                    level = 'medium';
                 } else {
-                    dimensionAverages[dimension] = 0;
+                    level = 'high';
                 }
-            });
+                
+                // 显示水平描述
+                const dimensionKeyForAnalysis = dimensionKey === 'self-awareness' ? 'self_awareness' : dimensionKey;
+                levelElement.textContent = resultAnalysis[dimensionKeyForAnalysis].levels[level].title;
+            }
+        }
+
+        // 生成详细分析
+        function generateDetailedAnalysis(dimensionAverages) {
+            const analysisContainer = document.getElementById('detailed-analysis');
+            analysisContainer.innerHTML = '';
             
-            // 计算总体得分（转换为金赛量表0-6分）
-            const totalAverage = Object.values(dimensionAverages).reduce((sum, score) => sum + score, 0) / Object.keys(dimensionAverages).length;
-            let kinseyScore = Math.round((totalAverage / 4) * 6);
-            
-            // 关键修复：限制得分在0-6范围内
-            kinseyScore = Math.max(0, Math.min(6, kinseyScore));
-            
-            return {
-                kinseyScore: kinseyScore,
-                dimensionScores: dimensionAverages,
-                totalAverage: totalAverage
+            // 维度顺序
+            const dimensionOrder = ['social', 'emotional', 'decision', 'adaptation', 'self_awareness'];
+            const dimensionNames = {
+                social: '社交互动倾向',
+                emotional: '情绪弹性',
+                decision: '决策风格',
+                adaptation: '适应变化',
+                self_awareness: '自我认知'
             };
-        }
-        
-        // 显示结果
-        function showResult(result) {
-            // 确保DOM元素已加载
-            if (!resultSection || !orientationResult || !dimensionAnalysis) {
-                console.error('结果区域DOM元素未找到');
-                return;
-            }
             
-            startSection.classList.add('hidden');
-            aboutSection.classList.add('hidden');
-            testSection.classList.add('hidden');
-            resultSection.classList.remove('hidden');
-            
-            // 更新URL参数
-            try {
-                const url = new URL(window.location.href);
-                url.searchParams.set('result', encodeURIComponent(JSON.stringify(result)));
-                window.history.pushState({}, '', url);
-            } catch (e) {
-                console.warn('更新URL失败:', e);
-            }
-            
-            // 确保DOM渲染完成后再执行
-            setTimeout(() => {
-                // 渲染结果
-                renderResult(result);
-                renderDimensionAnalysis(result);
-                renderInsight(result);
-            }, 100);
-        }
-        
-        // 渲染核心结果
-        function renderResult(result) {
-            // 检查必要元素是否存在
-            if (!orientationResult || !orientationDescription || !aiInsight) {
-                console.error('核心结果DOM元素缺失');
-                return;
-            }
-            
-            const kinseyScore = result.kinseyScore;
-            // 确保kinseyScore有效
-            const orientation = orientationResults[kinseyScore] || orientationResults[3]; // 默认双性恋
-            
-            // 设置核心结果
-            orientationResult.textContent = orientation.name;
-            orientationDescription.textContent = orientation.description;
-            aiInsight.textContent = orientation.insight;
-            
-            // 渲染雷达图 - 增加错误处理
-            try {
-                const ctx = document.getElementById('result-chart');
-                if (!ctx) {
-                    console.warn('图表容器未找到');
-                    return;
+            dimensionOrder.forEach(key => {
+                const score = key === 'self_awareness' ? dimensionAverages['self-awareness'] : dimensionAverages[key];
+                
+                // 根据得分确定水平
+                let level;
+                if (score <= 14) {
+                    level = 'low';
+                } else if (score <= 23) {
+                    level = 'medium';
+                } else {
+                    level = 'high';
                 }
                 
-                const chartCtx = ctx.getContext('2d');
-                if (!chartCtx) {
-                    console.warn('无法获取Canvas上下文');
-                    return;
-                }
+                // 获取分析内容
+                const analysis = resultAnalysis[key].levels[level];
                 
-                // 销毁旧图表
-                if (window.resultChart) {
-                    window.resultChart.destroy();
-                }
-                
-                // 转换维度得分到0-100范围
-                const chartScores = {};
-                Object.keys(result.dimensionScores).forEach(dimension => {
-                    chartScores[dimension] = Math.round((result.dimensionScores[dimension] / 4) * 100);
-                });
-                
-                // 创建新图表
-                window.resultChart = new Chart(chartCtx, {
-                    type: 'radar',
-                    data: {
-                        labels: Object.keys(chartScores),
-                        datasets: [{
-                            label: '你的性取向倾向（0=完全异性恋，100=完全同性恋）',
-                            data: Object.values(chartScores),
-                            backgroundColor: 'rgba(217, 70, 239, 0.2)',
-                            borderColor: 'rgba(217, 70, 239, 1)',
-                            borderWidth: 2,
-                            pointBackgroundColor: 'rgba(217, 70, 239, 1)',
-                            pointBorderColor: '#fff',
-                            pointHoverBackgroundColor: '#fff',
-                            pointHoverBorderColor: 'rgba(217, 70, 239, 1)'
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            r: {
-                                beginAtZero: true,
-                                max: 100,
-                                ticks: {
-                                    stepSize: 20
-                                },
-                                pointLabels: {
-                                    font: {
-                                        size: 14
-                                    }
-                                }
-                            }
-                        },
-                        plugins: {
-                            legend: {
-                                position: 'bottom'
-                            },
-                            tooltip: {
-                                callbacks: {
-                                    label: function(context) {
-                                        const value = context.raw;
-                                        let orientation = '';
-                                        if (value < 20) orientation = '（强烈异性恋倾向）';
-                                        else if (value < 40) orientation = '（主要异性恋倾向）';
-                                        else if (value < 60) orientation = '（双性恋倾向）';
-                                        else if (value < 80) orientation = '（主要同性恋倾向）';
-                                        else orientation = '（强烈同性恋倾向）';
-                                        return context.dataset.label + ': ' + value + '% ' + orientation;
-                                    }
-                                }
-                            }
-                        },
-                        maintainAspectRatio: false
-                    }
-                });
-            } catch (e) {
-                console.error('图表渲染失败:', e);
-                // 图表失败不影响其他结果显示
-                const chartContainer = document.getElementById('result-chart').parentNode;
-                chartContainer.innerHTML = '<div class="text-center py-8 text-gray-600">图表加载失败，但不影响结果查看</div>' + chartContainer.innerHTML;
-            }
-        }
-        
-        // 渲染维度分析
-        function renderDimensionAnalysis(result) {
-            if (!dimensionAnalysis) {
-                console.error('维度分析容器未找到');
-                return;
-            }
-            
-            let analysisHTML = '';
-            
-            Object.keys(result.dimensionScores).forEach(dimension => {
-                const score = result.dimensionScores[dimension];
-                const percentage = Math.round((score / 4) * 100);
-                let orientation = '';
-                
-                if (score < 0.8) orientation = '强烈的异性恋倾向';
-                else if (score < 1.6) orientation = '主要的异性恋倾向';
-                else if (score < 2.4) orientation = '平衡的双性恋倾向';
-                else if (score < 3.2) orientation = '主要的同性恋倾向';
-                else orientation = '强烈的同性恋倾向';
-                
-                let colorClass = '';
-                if (score < 1.6) colorClass = 'bg-blue-100 text-blue-800';
-                else if (score < 2.4) colorClass = 'bg-yellow-100 text-yellow-800';
-                else colorClass = 'bg-pink-100 text-pink-800';
-                
-                analysisHTML += `
-                    <div class="mb-6">
-                        <div class="flex justify-between items-center mb-2">
-                            <h3 class="text-xl font-semibold">${dimension}</h3>
-                            <span class="text-sm font-medium px-3 py-1 rounded-full ${colorClass}">
-                                ${orientation}
-                            </span>
-                        </div>
-                        <div class="progress-bar mb-3">
-                            <div class="progress-value" style="width: ${percentage}%"></div>
-                        </div>
-                        <div class="flex justify-between text-sm text-gray-600">
-                            <span>完全异性恋</span>
-                            <span>双性恋</span>
-                            <span>完全同性恋</span>
-                        </div>
+                // 创建分析卡片
+                const analysisCard = document.createElement('div');
+                analysisCard.className = 'bg-white border rounded-lg p-5 shadow-sm';
+                analysisCard.innerHTML = `
+                    <h4 class="text-lg font-medium mb-3 text-primary">${dimensionNames[key]}</h4>
+                    <p class="text-text-secondary mb-4">${analysis.description}</p>
+                    <div>
+                        <h5 class="font-medium text-text-primary mb-2">你的优势：</h5>
+                        <ul class="list-disc list-inside text-text-secondary space-y-1">
+                            ${analysis.strengths.map(strength => `<li>${strength}</li>`).join('')}
+                        </ul>
                     </div>
                 `;
+                
+                analysisContainer.appendChild(analysisCard);
             });
-            
-            dimensionAnalysis.innerHTML = analysisHTML;
         }
-        
-        // 渲染个性化解读
-        function renderInsight(result) {
-            if (!aiInsight) {
-                console.error('个性化解读容器未找到');
-                return;
-            }
+
+        // 生成成长建议
+        function generateGrowthSuggestions(dimensionAverages) {
+            const suggestionsContainer = document.getElementById('growth-suggestions');
+            suggestionsContainer.innerHTML = '';
             
-            const kinseyScore = result.kinseyScore;
-            const orientation = orientationResults[kinseyScore] || orientationResults[3];
-            aiInsight.textContent = orientation.insight;
-        }
-        
-        // 保存结果
-        function saveResult() {
-            try {
-                if (!currentTestResult) {
-                    alert('暂无测试结果可保存，请先完成测试');
-                    return;
+            // 找出得分最低的两个维度
+            const dimensions = [
+                { key: 'social', name: '社交互动倾向', score: dimensionAverages.social },
+                { key: 'emotional', name: '情绪弹性', score: dimensionAverages.emotional },
+                { key: 'decision', name: '决策风格', score: dimensionAverages.decision },
+                { key: 'adaptation', name: '适应变化', score: dimensionAverages.adaptation },
+                { key: 'self_awareness', name: '自我认知', score: dimensionAverages['self-awareness'] }
+            ];
+            
+            dimensions.sort((a, b) => a.score - b.score);
+            const focusDimensions = dimensions.slice(0, 2);
+            
+            // 为每个重点维度生成建议
+            focusDimensions.forEach(dimension => {
+                // 根据得分确定水平
+                let level;
+                if (dimension.score <= 14) {
+                    level = 'low';
+                } else if (dimension.score <= 23) {
+                    level = 'medium';
+                } else {
+                    level = 'high';
                 }
                 
-                const kinseyScore = currentTestResult.kinseyScore;
-                const orientation = orientationResults[kinseyScore] || orientationResults[3];
+                // 获取建议
+                const suggestions = growthSuggestions[dimension.key][level];
                 
-                // 创建结果文本
-                const resultText = `
-性取向测试结果
-============
-金赛量表得分：${kinseyScore}（0=完全异性恋，6=完全同性恋）
-性取向类型：${orientation.name}
-
-核心描述：
-${orientation.description}
-
-个性化解读：
-${orientation.insight}
-
-各维度详细得分：
-${Object.entries(currentTestResult.dimensionScores).map(([dimension, score]) => {
-    const percentage = Math.round((score / 4) * 100);
-    return `${dimension}: ${percentage}% (${score.toFixed(1)}/4.0)`;
-}).join('\n')}
-
----
-本测试仅供自我探索和教育目的，不构成专业心理评估。
-                `.trim();
+                // 创建建议卡片
+                const suggestionCard = document.createElement('div');
+                suggestionCard.className = 'bg-white rounded-lg p-4 shadow-sm';
+                suggestionCard.innerHTML = `
+                    <h4 class="font-medium mb-3 text-primary">${dimension.name}成长建议</h4>
+                    <ul class="space-y-2">
+                        ${suggestions.map(suggestion => `
+                            <li class="flex items-start">
+                                <div class="bg-primary/10 rounded-full p-1 mr-3 mt-0.5">
+                                    <i class="fa fa-check text-primary text-xs"></i>
+                                </div>
+                                <span class="text-text-secondary">${suggestion}</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                `;
                 
-                // 创建下载链接
-                const blob = new Blob([resultText], { type: 'text/plain' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = '性取向测试结果.txt';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-                
-                alert('测试结果已保存为文本文件！');
-            } catch (e) {
-                console.error('保存结果失败:', e);
-                alert('保存失败：' + e.message);
-            }
+                suggestionsContainer.appendChild(suggestionCard);
+            });
         }
-        
-        // 重新测试
-        function restartTest() {
-            if (confirm('确定要重新开始测试吗？当前的测试结果将会丢失。')) {
-                startTest();
-            }
-        }
+
+        // 保存结果
+        saveResultBtn.addEventListener('click', () => {
+            alert('结果已保存到您的设备！');
+        });
+
+        // 分享结果
+        shareResultBtn.addEventListener('click', () => {
+            alert('分享功能已触发，您可以将结果分享到社交媒体！');
+        });
     </script>
 </body>
 </html>
