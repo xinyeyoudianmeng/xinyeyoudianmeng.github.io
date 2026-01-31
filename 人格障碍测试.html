@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人格特质探索测试</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4F46E5',
+                        secondary: '#EC4899',
+                        accent: '#8B5CF6',
+                        neutral: '#6B7280',
+                        'neutral-light': '#F3F4F6',
+                        'neutral-dark': '#1F2937',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+                        'hover': '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            .transition-all-300 {
+                transition: all 300ms ease-in-out;
+            }
+            .bg-gradient {
+                background: linear-gradient(135deg, #4F46E5 0%, #8B5CF6 50%, #EC4899 100%);
+            }
+            .card-hover:hover {
+                transform: translateY(-5px);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <div class="min-h-screen flex flex-col">
+        <!-- 顶部导航 -->
+        <header class="bg-white shadow-sm">
+            <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+                <h1 class="text-2xl font-bold text-primary">人格特质探索</h1>
+                <div class="text-neutral">
+                    <span id="progress-text">0/90</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- 主要内容区 -->
+        <main class="flex-grow container mx-auto px-4 py-8">
+            <!-- 开始页面 -->
+            <section id="start-section" class="max-w-3xl mx-auto bg-white rounded-xl shadow-soft p-8 text-center">
+                <h2 class="text-3xl font-bold text-neutral-dark mb-4">欢迎参加人格特质探索测试</h2>
+                <p class="text-lg text-neutral mb-8">这是一个帮助你了解自己性格特点的有趣测试，包含90道题目，大约需要15-20分钟完成。</p>
+                
+                <div class="bg-neutral-light rounded-lg p-6 mb-8 text-left">
+                    <h3 class="text-xl font-semibold text-neutral-dark mb-4 flex items-center">
+                        <i class="fa fa-info-circle text-primary mr-2"></i>重要说明
+                    </h3>
+                    <ul class="space-y-3 text-neutral">
+                        <li class="flex items-start">
+                            <i class="fa fa-check-circle text-primary mt-1 mr-2"></i>
+                            <span>本测试非专业诊断工具，仅供自我探索和娱乐</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa fa-check-circle text-primary mt-1 mr-2"></i>
+                            <span>请根据真实情况回答，选择最符合你日常行为和想法的选项</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa fa-check-circle text-primary mt-1 mr-2"></i>
+                            <span>测试结果将帮助你更好地了解自己的性格特点</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <button id="start-test-btn" class="bg-gradient text-white font-semibold py-3 px-8 rounded-full shadow-md hover:shadow-lg transition-all-300 text-lg">
+                    开始测试
+                </button>
+            </section>
+
+            <!-- 测试页面 -->
+            <section id="test-section" class="max-w-3xl mx-auto bg-white rounded-xl shadow-soft p-8 hidden">
+                <!-- 进度条 -->
+                <div class="w-full bg-neutral-light rounded-full h-2.5 mb-8">
+                    <div id="progress-bar" class="bg-gradient h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+                </div>
+                
+                <!-- 题目区域 -->
+                <div id="question-container" class="mb-8">
+                    <h3 id="question-number" class="text-lg font-semibold text-primary mb-4">问题 1/90</h3>
+                    <p id="question-text" class="text-xl text-neutral-dark mb-6">题目将在这里显示</p>
+                    
+                    <!-- 选项区域 -->
+                    <div id="options-container" class="space-y-4">
+                        <!-- 选项将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+                
+                <!-- 导航按钮 -->
+                <div class="flex justify-between">
+                    <button id="prev-btn" class="bg-neutral-light text-neutral font-medium py-2 px-6 rounded-lg hover:bg-neutral/20 transition-all-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                        <i class="fa fa-arrow-left mr-2"></i>上一题
+                    </button>
+                    <button id="next-btn" class="bg-primary text-white font-medium py-2 px-6 rounded-lg hover:bg-primary/90 transition-all-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                        下一题<i class="fa fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </section>
+
+            <!-- 结果页面 -->
+            <section id="result-section" class="max-w-4xl mx-auto bg-white rounded-xl shadow-soft p-8 hidden">
+                <h2 class="text-3xl font-bold text-neutral-dark mb-6 text-center">你的人格特质探索结果</h2>
+                
+                <!-- 主要结果 -->
+                <div id="main-result" class="mb-8">
+                    <!-- 结果将通过JavaScript动态生成 -->
+                </div>
+                
+                <!-- 详细分析 -->
+                <div id="detailed-analysis" class="space-y-8 mb-8">
+                    <!-- 详细分析将通过JavaScript动态生成 -->
+                </div>
+                
+                <!-- 正向建议 -->
+                <div class="bg-neutral-light rounded-lg p-6 mb-8">
+                    <h3 class="text-xl font-semibold text-neutral-dark mb-4 flex items-center">
+                        <i class="fa fa-lightbulb-o text-primary mr-2"></i>探索与成长建议
+                    </h3>
+                    <div id="suggestions" class="text-neutral space-y-3">
+                        <!-- 建议将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+                
+                <!-- 分享按钮 -->
+                <div class="flex justify-center space-x-4 mb-8">
+                    <button id="share-btn" class="bg-secondary text-white font-medium py-2 px-6 rounded-lg hover:bg-secondary/90 transition-all-300 flex items-center">
+                        <i class="fa fa-share-alt mr-2"></i>分享结果
+                    </button>
+                    <button id="restart-btn" class="bg-primary text-white font-medium py-2 px-6 rounded-lg hover:bg-primary/90 transition-all-300 flex items-center">
+                        <i class="fa fa-refresh mr-2"></i>重新测试
+                    </button>
+                </div>
+                
+                <!-- 免责声明 -->
+                <div class="border-t border-neutral-light pt-6 text-sm text-neutral">
+                    <h4 class="font-semibold mb-2">免责声明</h4>
+                    <p class="mb-2">本测试非专业诊断工具，结果仅供参考，不能替代专业医疗或心理诊断。</p>
+                    <p>如有需要，请寻求专业心理咨询师或医生的帮助。本测试目的是促进自我认知和个人成长。</p>
+                    
+                    <h4 class="font-semibold mt-4 mb-2">原创声明</h4>
+                    <p>本测试内容为原创设计，受法律保护。未经授权，禁止复制和传播。</p>
+                </div>
+            </section>
+        </main>
+
+        <!-- 页脚 -->
+        <footer class="bg-white shadow-inner py-4">
+            <div class="container mx-auto px-4 text-center text-neutral text-sm">
+                <p>© 2025 人格特质探索 | 非专业测试工具 | 仅供自我探索</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // 测试题目数据
+        const questions = [
+            // 偏执型人格特质题目
+            {
+                id: 1,
+                text: "在团队合作中，我常常怀疑他人是否真的值得信任。",
+                type: "paranoid",
+                category: "古怪/偏执类"
+            },
+            {
+                id: 2,
+                text: "我觉得别人在背后议论我的可能性很大。",
+                type: "paranoid",
+                category: "古怪/偏执类"
+            },
+            {
+                id: 3,
+                text: "当别人对我好时，我会思考他们是否有什么目的。",
+                type: "paranoid",
+                category: "古怪/偏执类"
+            },
+            {
+                id: 4,
+                text: "我很难忘记别人对我的不公平对待。",
+                type: "paranoid",
+                category: "古怪/偏执类"
+            },
+            {
+                id: 5,
+                text: "我经常担心自己的想法或计划被他人窃取。",
+                type: "paranoid",
+                category: "古怪/偏执类"
+            },
+            {
+                id: 6,
+                text: "在社交场合，我倾向于保持警惕，观察他人的真实意图。",
+                type: "paranoid",
+                category: "古怪/偏执类"
+            },
+            {
+                id: 7,
+                text: "我认为大多数人在涉及自身利益时会说谎。",
+                type: "paranoid",
+                category: "古怪/偏执类"
+            },
+            {
+                id: 8,
+                text: "当计划被改变时，我会怀疑是否有人故意破坏。",
+                type: "paranoid",
+                category: "古怪/偏执类"
+            },
+
+            // 分裂样人格特质题目
+            {
+                id: 9,
+                text: "我更喜欢独自度过空闲时间，而不是与他人交往。",
+                type: "schizoid",
+                category: "古怪/偏执类"
+            },
+            {
+                id: 10,
+                text: "我对建立亲密的人际关系没有太大兴趣。",
+                type: "schizoid",
+                category: "古怪/偏执类"
+            },
+            {
+                id: 11,
+                text: "我很少体验到强烈的情绪，如愤怒或喜悦。",
+                type: "schizoid",
+                category: "古怪/偏执类"
+            },
+            {
+                id: 12,
+                text: "我更喜欢从事独立工作，而不是团队合作。",
+                type: "schizoid",
+                category: "古怪/偏执类"
+            },
+            {
+                id: 13,
+                text: "我对他人的表扬或批评反应平淡。",
+                type: "schizoid",
+                category: "古怪/偏执类"
+            },
+            {
+                id: 14,
+                text: "我不太关心社会规范或他人的期望。",
+                type: "schizoid",
+                category: "古怪/偏执类"
+            },
+            {
+                id: 15,
+                text: "我经常沉浸在自己的思考或想象中。",
+                type: "schizoid",
+                category: "古怪/偏执类"
+            },
+            {
+                id: 16,
+                text: "我对性或浪漫关系没有强烈的需求。",
+                type: "schizoid",
+                category: "古怪/偏执类"
+            },
+
+            // 分裂型人格特质题目
+            {
+                id: 17,
+                text: "我有时会有一些奇怪的想法，与主流观点不同。",
+                type: "schizotypal",
+                category: "古怪/偏执类"
+            },
+            {
+                id: 18,
+                text: "我相信自己有某种特殊的能力或洞察力。",
+                type: "schizotypal",
+                category: "古怪/偏执类"
+            },
+            {
+                id: 19,
+                text: "我很难理解社交场合中的暗示和潜台词。",
+                type: "schizotypal",
+                category: "古怪/偏执类"
+            },
+            {
+                id: 20,
+                text: "我有时会觉得物体或环境对我有特殊意义。",
+                type: "schizotypal",
+                category: "古怪/偏执类"
+            },
+            {
+                id: 21,
+                text: "我的表达方式有时会被他人认为奇怪或难以理解。",
+                type: "schizotypal",
+                category: "古怪/偏执类"
+            },
+            {
+                id: 22,
+                text: "我倾向于迷信或相信超自然现象。",
+                type: "schizotypal",
+                category: "古怪/偏执类"
+            },
+            {
+                id: 23,
+                text: "我在社交场合经常感到不自在或尴尬。",
+                type: "schizotypal",
+                category: "古怪/偏执类"
+            },
+            {
+                id: 24,
+                text: "我有过一些奇怪的感官体验，如看到不存在的事物。",
+                type: "schizotypal",
+                category: "古怪/偏执类"
+            },
+
+            // 反社会型人格特质题目
+            {
+                id: 25,
+                text: "我有时会为了达到目的而说谎或操纵他人。",
+                type: "antisocial",
+                category: "戏剧/冲动类"
+            },
+            {
+                id: 26,
+                text: "我不太关心社会规则和法律，认为它们限制了我的自由。",
+                type: "antisocial",
+                category: "戏剧/冲动类"
+            },
+            {
+                id: 27,
+                text: "我倾向于冲动行事，不考虑后果。",
+                type: "antisocial",
+                category: "戏剧/冲动类"
+            },
+            {
+                id: 28,
+                text: "我很少对自己的行为感到后悔或内疚。",
+                type: "antisocial",
+                category: "戏剧/冲动类"
+            },
+            {
+                id: 29,
+                text: "我喜欢冒险和刺激，即使这意味着可能伤害他人。",
+                type: "antisocial",
+                category: "戏剧/冲动类"
+            },
+            {
+                id: 30,
+                text: "我很难维持长期的工作或人际关系。",
+                type: "antisocial",
+                category: "戏剧/冲动类"
+            },
+            {
+                id: 31,
+                text: "我经常对他人感到愤怒或敌对。",
+                type: "antisocial",
+                category: "戏剧/冲动类"
+            },
+            {
+                id: 32,
+                text: "我认为自己有权得到特殊待遇。",
+                type: "antisocial",
+                category: "戏剧/冲动类"
+            },
+
+            // 边缘型人格特质题目
+            {
+                id: 33,
+                text: "我的情绪波动很大，有时会突然从极度快乐变为极度悲伤。",
+                type: "borderline",
+                category: "戏剧/冲动类"
+            },
+            {
+                id: 34,
+                text: "我害怕被抛弃，会尽力避免这种情况发生。",
+                type: "borderline",
+                category: "戏剧/冲动类"
+            },
+            {
+                id: 35,
+                text: "我有时会有自我伤害的冲动或行为。",
+                type: "borderline",
+                category: "戏剧/冲动类"
+            },
+            {
+                id: 36,
+                text: "我的自我形象或身份感经常变化。",
+                type: "borderline",
+                category: "戏剧/冲动类"
+            },
+            {
+                id: 37,
+                text: "我在人际关系中经常经历极端的理想化或贬低。",
+                type: "borderline",
+                category: "戏剧/冲动类"
+            },
+            {
+                id: 38,
+                text: "我很难控制自己的愤怒，有时会爆发。",
+                type: "borderline",
+                category: "戏剧/冲动类"
+            },
+            {
+                id: 39,
+                text: "我经常感到空虚或无聊。",
+                type: "borderline",
+                category: "戏剧/冲动类"
+            },
+            {
+                id: 40,
+                text: "在压力下，我可能会出现短暂的偏执观念或解离症状。",
+                type: "borderline",
+                category: "戏剧/冲动类"
+            },
+
+            // 表演型人格特质题目
+            {
+                id: 41,
+                text: "我喜欢成为关注的焦点，享受被他人注意的感觉。",
+                type: "histrionic",
+                category: "戏剧/冲动类"
+            },
+            {
+                id: 42,
+                text: "我倾向于用夸张的方式表达自己的情感。",
+                type: "histrionic",
+                category: "戏剧/冲动类"
+            },
+            {
+                id: 43,
+                text: "我经常改变自己的外表或行为来吸引他人的注意。",
+                type: "histrionic",
+                category: "戏剧/冲动类"
+            },
+            {
+                id: 44,
+                text: "我喜欢通过讲故事或表演来娱乐他人。",
+                type: "histrionic",
+                category: "戏剧/冲动类"
+            },
+            {
+                id: 45,
+                text: "我对批评或拒绝非常敏感。",
+                type: "histrionic",
+                category: "戏剧/冲动类"
+            },
+            {
+                id: 46,
+                text: "我倾向于做出冲动的决定，尤其是在社交场合。",
+                type: "histrionic",
+                category: "戏剧/冲动类"
+            },
+            {
+                id: 47,
+                text: "我喜欢调情或表现得性感，以获得他人的关注。",
+                type: "histrionic",
+                category: "戏剧/冲动类"
+            },
+            {
+                id: 48,
+                text: "我很难维持深度或长期的人际关系。",
+                type: "histrionic",
+                category: "戏剧/冲动类"
+            },
+
+            // 自恋型人格特质题目
+            {
+                id: 49,
+                text: "我认为自己比大多数人更特别或更有才华。",
+                type: "narcissistic",
+                category: "戏剧/冲动类"
+            },
+            {
+                id: 50,
+                text: "我期待他人对我表示钦佩和尊重。",
+                type: "narcissistic",
+                category: "戏剧/冲动类"
+            },
+            {
+                id: 51,
+                text: "我经常幻想自己的成功、权力或美丽。",
+                type: "narcissistic",
+                category: "戏剧/冲动类"
+            },
+            {
+                id: 52,
+                text: "我认为自己应该得到特殊待遇。",
+                type: "narcissistic",
+                category: "戏剧/冲动类"
+            },
+            {
+                id: 53,
+                text: "我很难接受批评，即使是建设性的。",
+                type: "narcissistic",
+                category: "戏剧/冲动类"
+            },
+            {
+                id: 54,
+                text: "我倾向于夸大自己的成就或能力。",
+                type: "narcissistic",
+                category: "戏剧/冲动类"
+            },
+            {
+                id: 55,
+                text: "我很少真正关心他人的感受或需求。",
+                type: "narcissistic",
+                category: "戏剧/冲动类"
+            },
+            {
+                id: 56,
+                text: "我喜欢与地位高的人交往，以提升自己的形象。",
+                type: "narcissistic",
+                category: "戏剧/冲动类"
+            },
+
+            // 回避型人格特质题目
+            {
+                id: 57,
+                text: "我避免社交场合，因为害怕被拒绝或批评。",
+                type: "avoidant",
+                category: "焦虑/回避类"
+            },
+            {
+                id: 58,
+                text: "我认为自己在社交方面不如他人。",
+                type: "avoidant",
+                category: "焦虑/回避类"
+            },
+            {
+                id: 59,
+                text: "我害怕在他人面前出丑或表现不佳。",
+                type: "avoidant",
+                category: "焦虑/回避类"
+            },
+            {
+                id: 60,
+                text: "我很少主动与他人建立新的关系。",
+                type: "avoidant",
+                category: "焦虑/回避类"
+            },
+            {
+                id: 61,
+                text: "我对批评非常敏感，会为此烦恼很久。",
+                type: "avoidant",
+                category: "焦虑/回避类"
+            },
+            {
+                id: 62,
+                text: "我宁愿独自工作，也不愿冒险在团队中被评价。",
+                type: "avoidant",
+                category: "焦虑/回避类"
+            },
+            {
+                id: 63,
+                text: "我经常担心自己会被他人视为愚蠢或无能。",
+                type: "avoidant",
+                category: "焦虑/回避类"
+            },
+            {
+                id: 64,
+                text: "我避免表达自己的观点，以免引起争议或被评判。",
+                type: "avoidant",
+                category: "焦虑/回避类"
+            },
+
+            // 依赖型人格特质题目
+            {
+                id: 65,
+                text: "我很难自己做决定，总是寻求他人的建议。",
+                type: "dependent",
+                category: "焦虑/回避类"
+            },
+            {
+                id: 66,
+                text: "我害怕独处，喜欢有人陪伴。",
+                type: "dependent",
+                category: "焦虑/回避类"
+            },
+            {
+                id: 67,
+                text: "我倾向于让他人为我负责，包括重要的生活决策。",
+                type: "dependent",
+                category: "焦虑/回避类"
+            },
+            {
+                id: 68,
+                text: "我害怕被抛弃或独处。",
+                type: "dependent",
+                category: "焦虑/回避类"
+            },
+            {
+                id: 69,
+                text: "我会尽力讨好他人，避免冲突或拒绝。",
+                type: "dependent",
+                category: "焦虑/回避类"
+            },
+            {
+                id: 70,
+                text: "我缺乏自信，经常怀疑自己的能力。",
+                type: "dependent",
+                category: "焦虑/回避类"
+            },
+            {
+                id: 71,
+                text: "我很难开始新项目，除非有人支持或指导我。",
+                type: "dependent",
+                category: "焦虑/回避类"
+            },
+            {
+                id: 72,
+                text: "我在结束一段关系后，会迅速寻找新的关系来避免独处。",
+                type: "dependent",
+                category: "焦虑/回避类"
+            },
+
+            // 强迫型人格特质题目
+            {
+                id: 73,
+                text: "我非常注重细节和准确性，有时会花费过多时间在小事情上。",
+                type: "obsessive-compulsive",
+                category: "焦虑/回避类"
+            },
+            {
+                id: 74,
+                text: "我喜欢按照计划行事，不喜欢突发变化。",
+                type: "obsessive-compulsive",
+                category: "焦虑/回避类"
+            },
+            {
+                id: 75,
+                text: "我对自己和他人都有很高的标准和期望。",
+                type: "obsessive-compulsive",
+                category: "焦虑/回避类"
+            },
+            {
+                id: 76,
+                text: "我很难放手让他人负责任务，因为担心他们做得不够好。",
+                type: "obsessive-compulsive",
+                category: "焦虑/回避类"
+            },
+            {
+                id: 77,
+                text: "我经常过度工作，忽略休闲或社交活动。",
+                type: "obsessive-compulsive",
+                category: "焦虑/回避类"
+            },
+            {
+                id: 78,
+                text: "我非常注重整洁和秩序，喜欢一切都井井有条。",
+                type: "obsessive-compulsive",
+                category: "焦虑/回避类"
+            },
+            {
+                id: 79,
+                text: "我很难做出决定，因为害怕做出错误的选择。",
+                type: "obsessive-compulsive",
+                category: "焦虑/回避类"
+            },
+            {
+                id: 80,
+                text: "我倾向于囤积物品，即使它们不再有用。",
+                type: "obsessive-compulsive",
+                category: "焦虑/回避类"
+            },
+
+            // 额外题目，确保总共90题
+            {
+                id: 81,
+                text: "在社交场合，我通常是主动发起对话的人。",
+                type: "histrionic",
+                category: "戏剧/冲动类"
+            },
+            {
+                id: 82,
+                text: "我喜欢尝试新事物和新体验。",
+                type: "antisocial",
+                category: "戏剧/冲动类"
+            },
+            {
+                id: 83,
+                text: "我经常感到焦虑或担忧。",
+                type: "avoidant",
+                category: "焦虑/回避类"
+            },
+            {
+                id: 84,
+                text: "我相信大多数人本质上是善良的。",
+                type: "paranoid",
+                category: "古怪/偏执类"
+            },
+            {
+                id: 85,
+                text: "我喜欢按照自己的方式做事，不喜欢被指示。",
+                type: "narcissistic",
+                category: "戏剧/冲动类"
+            },
+            {
+                id: 86,
+                text: "我经常反思自己的行为和动机。",
+                type: "borderline",
+                category: "戏剧/冲动类"
+            },
+            {
+                id: 87,
+                text: "我喜欢有明确的规则和指导方针。",
+                type: "obsessive-compulsive",
+                category: "焦虑/回避类"
+            },
+            {
+                id: 88,
+                text: "我很难理解他人的情感状态。",
+                type: "schizoid",
+                category: "古怪/偏执类"
+            },
+            {
+                id: 89,
+                text: "我经常有一些不切实际的想法或计划。",
+                type: "schizotypal",
+                category: "古怪/偏执类"
+            },
+            {
+                id: 90,
+                text: "我喜欢帮助他人，并从中获得满足感。",
+                type: "dependent",
+                category: "焦虑/回避类"
+            }
+        ];
+
+        // 人格特质类型定义
+        const personalityTypes = {
+            paranoid: {
+                name: "偏执型特质",
+                category: "古怪/偏执类",
+                description: "你可能对他人的动机和意图持怀疑态度，倾向于认为他人可能会伤害或欺骗你。你可能会过度警惕，难以信任他人，并且对批评或拒绝特别敏感。",
+                strengths: ["警惕性高", "自我保护意识强", "独立思考能力", "对细节敏感"],
+                suggestions: [
+                    "尝试给予他人更多信任的机会",
+                    "练习放下过去的怨恨和怀疑",
+                    "学习区分合理的警惕和过度的怀疑",
+                    "培养开放的沟通方式"
+                ]
+            },
+            schizoid: {
+                name: "分裂样特质",
+                category: "古怪/偏执类",
+                description: "你可能更喜欢独处，对社交关系不太感兴趣。你可能情感表达较少，对他人的表扬或批评反应平淡，更专注于自己的内心世界和兴趣。",
+                strengths: ["独立性强", "专注力好", "内心丰富", "不受社会压力影响"],
+                suggestions: [
+                    "尝试在自己舒适的范围内拓展社交圈",
+                    "学习识别和表达自己的情感",
+                    "寻找与自己兴趣相投的小群体",
+                    "平衡独处时间和社交互动"
+                ]
+            },
+            schizotypal: {
+                name: "分裂型特质",
+                category: "古怪/偏执类",
+                description: "你可能有一些与众不同的想法或感知体验，难以理解社交暗示，在社交场合感到不自在。你可能对超自然现象或神秘事物感兴趣。",
+                strengths: ["创造力强", "独特的视角", "深度思考能力", "直觉敏锐"],
+                suggestions: [
+                    "练习社交技能和理解社交暗示",
+                    "将创意想法转化为实际项目",
+                    "寻找接纳你独特性的社交群体",
+                    "学习区分想象和现实"
+                ]
+            },
+            antisocial: {
+                name: "反社会型特质",
+                category: "戏剧/冲动类",
+                description: "你可能倾向于忽视社会规则，表现出冲动行为，难以维持长期关系。你可能对他人的感受缺乏同理心，喜欢冒险和刺激。",
+                strengths: ["勇敢无畏", "思维不受约束", "适应能力强", "决策果断"],
+                suggestions: [
+                    "学习理解和尊重社会规范的重要性",
+                    "培养同理心和考虑他人感受",
+                    "寻找健康的方式表达冒险精神",
+                    "练习延迟满足和考虑后果"
+                ]
+            },
+            borderline: {
+                name: "边缘型特质",
+                category: "戏剧/冲动类",
+                description: "你可能经历强烈的情绪波动，害怕被抛弃，人际关系可能不稳定。你可能有自我认同的问题，在压力下可能出现偏执观念。",
+                strengths: ["情感丰富", "同理心强", "热情洋溢", "直觉敏锐"],
+                suggestions: [
+                    "学习情绪调节技巧和 mindfulness",
+                    "建立稳定的日常生活和支持系统",
+                    "培养健康的自我认同",
+                    "发展解决问题的能力而非冲动反应"
+                ]
+            },
+            histrionic: {
+                name: "表演型特质",
+                category: "戏剧/冲动类",
+                description: "你可能喜欢成为关注焦点，情感表达夸张，注重外表和吸引力。你可能在社交场合表现活跃，但可能难以维持深度关系。",
+                strengths: ["魅力四射", "表达能力强", "社交技能好", "富有创意"],
+                suggestions: [
+                    "学习在不寻求关注的情况下表达自己",
+                    "发展深度倾听和共情能力",
+                    "平衡表演性表达和真实性",
+                    "培养内在的自我价值感"
+                ]
+            },
+            narcissistic: {
+                name: "自恋型特质",
+                category: "戏剧/冲动类",
+                description: "你可能有强烈的自我重要感，期望他人的钦佩和特殊待遇。你可能夸大自己的能力，缺乏同理心，专注于成功、权力和美丽的幻想。",
+                strengths: ["自信满满", "目标导向", "领导力强", "自我激励"],
+                suggestions: [
+                    "练习真正倾听他人的观点和感受",
+                    "学习欣赏他人的成就和贡献",
+                    "培养谦逊和感恩的态度",
+                    "发展健康的自我价值感，不依赖外部认可"
+                ]
+            },
+            avoidant: {
+                name: "回避型特质",
+                category: "焦虑/回避类",
+                description: "你可能因为害怕拒绝或批评而避免社交场合，对自己的社交能力缺乏信心。你可能过度关注自己的缺点，害怕在他人面前出丑。",
+                strengths: ["自我反思能力强", "谨慎小心", "重视质量而非数量", "忠诚可靠"],
+                suggestions: [
+                    "逐步面对社交恐惧，从小规模社交开始",
+                    "挑战负面自我认知，关注自己的优势",
+                    "学习社交技能和自信表达",
+                    "寻找接纳和支持的社交环境"
+                ]
+            },
+            dependent: {
+                name: "依赖型特质",
+                category: "焦虑/回避类",
+                description: "你可能过度依赖他人的支持和指导，难以独立做决定，害怕被抛弃。你可能倾向于让他人负责你的生活决策，缺乏自信。",
+                strengths: ["善于合作", "体贴他人", "忠诚可靠", "团队精神强"],
+                suggestions: [
+                    "逐步培养独立决策的能力",
+                    "发展自己的兴趣和技能，增强自信",
+                    "学习健康的依赖与独立平衡",
+                    "建立支持系统但不过度依赖"
+                ]
+            },
+            "obsessive-compulsive": {
+                name: "强迫型特质",
+                category: "焦虑/回避类",
+                description: "你可能非常注重细节、秩序和完美主义，难以放手让他人负责任务。你可能过度工作，忽视休闲活动，对变化感到不适。",
+                strengths: ["组织能力强", "责任心重", "注重质量", "可靠可信"],
+                suggestions: [
+                    "学习接受不完美和适度的混乱",
+                    "练习委派任务和信任他人",
+                    "平衡工作和休闲，培养放松技巧",
+                    "设定合理的标准和优先级"
+                ]
+            }
+        };
+
+        // 测试状态
+        let currentQuestionIndex = 0;
+        const userAnswers = new Array(questions.length).fill(null);
+
+        // DOM元素
+        const startSection = document.getElementById('start-section');
+        const testSection = document.getElementById('test-section');
+        const resultSection = document.getElementById('result-section');
+        const startTestBtn = document.getElementById('start-test-btn');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const questionNumber = document.getElementById('question-number');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        const shareBtn = document.getElementById('share-btn');
+        const restartBtn = document.getElementById('restart-btn');
+
+        // 开始测试
+        startTestBtn.addEventListener('click', () => {
+            startSection.classList.add('hidden');
+            testSection.classList.remove('hidden');
+            showQuestion(currentQuestionIndex);
+            updateProgress();
+        });
+
+        // 显示当前问题
+        function showQuestion(index) {
+            const question = questions[index];
+            questionNumber.textContent = `问题 ${index + 1}/${questions.length}`;
+            questionText.textContent = question.text;
+            
+            // 清空选项容器
+            optionsContainer.innerHTML = '';
+            
+            // 创建选项
+            const options = [
+                { value: 1, text: "完全不符合" },
+                { value: 2, text: "不太符合" },
+                { value: 3, text: "中立/不确定" },
+                { value: 4, text: "比较符合" },
+                { value: 5, text: "完全符合" }
+            ];
+            
+            options.forEach(option => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'flex items-center';
+                
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.id = `option-${option.value}`;
+                radio.name = 'question-option';
+                radio.value = option.value;
+                radio.className = 'w-4 h-4 text-primary focus:ring-primary';
+                radio.checked = userAnswers[index] === option.value;
+                
+                radio.addEventListener('change', () => {
+                    userAnswers[index] = parseInt(radio.value);
+                    updateNextButtonState();
+                });
+                
+                const label = document.createElement('label');
+                label.htmlFor = `option-${option.value}`;
+                label.className = 'ml-2 text-neutral-dark';
+                label.textContent = option.text;
+                
+                optionDiv.appendChild(radio);
+                optionDiv.appendChild(label);
+                optionsContainer.appendChild(optionDiv);
+            });
+            
+            // 更新导航按钮状态
+            prevBtn.disabled = index === 0;
+            updateNextButtonState();
+        }
+
+        // 更新下一题按钮状态
+        function updateNextButtonState() {
+            nextBtn.disabled = userAnswers[currentQuestionIndex] === null;
+        }
+
+        // 更新进度条
+        function updateProgress() {
+            const answeredQuestions = userAnswers.filter(answer => answer !== null).length;
+            const progressPercentage = (answeredQuestions / questions.length) * 100;
+            progressBar.style.width = `${progressPercentage}%`;
+            progressText.textContent = `${answeredQuestions}/${questions.length}`;
+        }
+
+        // 上一题按钮
+        prevBtn.addEventListener('click', () => {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                showQuestion(currentQuestionIndex);
+            }
+        });
+
+        // 下一题按钮
+        nextBtn.addEventListener('click', () => {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                showQuestion(currentQuestionIndex);
+                updateProgress();
+            } else {
+                // 完成测试，显示结果
+                calculateResults();
+                testSection.classList.add('hidden');
+                resultSection.classList.remove('hidden');
+            }
+        });
+
+        // 计算测试结果
+        function calculateResults() {
+            // 计算每种人格特质的得分
+            const typeScores = {};
+            const typeCounts = {};
+            
+            questions.forEach((question, index) => {
+                const type = question.type;
+                if (!typeScores[type]) {
+                    typeScores[type] = 0;
+                    typeCounts[type] = 0;
+                }
+                typeScores[type] += userAnswers[index];
+                typeCounts[type]++;
+            });
+            
+            // 计算平均分
+            const typeAverages = {};
+            for (const type in typeScores) {
+                typeAverages[type] = typeScores[type] / typeCounts[type];
+            }
+            
+            // 找出得分最高的人格特质
+            let highestType = null;
+            let highestScore = 0;
+            let secondHighestType = null;
+            let secondHighestScore = 0;
+            
+            for (const type in typeAverages) {
+                const score = typeAverages[type];
+                if (score > highestScore) {
+                    secondHighestType = highestType;
+                    secondHighestScore = highestScore;
+                    highestType = type;
+                    highestScore = score;
+                } else if (score > secondHighestScore) {
+                    secondHighestType = type;
+                    secondHighestScore = score;
+                }
+            }
+            
+            // 显示结果
+            displayResults(highestType, highestScore, secondHighestType, secondHighestScore, typeAverages);
+        }
+
+        // 显示测试结果
+        function displayResults(highestType, highestScore, secondHighestType, secondHighestScore, typeAverages) {
+            const mainResult = document.getElementById('main-result');
+            const detailedAnalysis = document.getElementById('detailed-analysis');
+            const suggestions = document.getElementById('suggestions');
+            
+            // 清空结果区域
+            mainResult.innerHTML = '';
+            detailedAnalysis.innerHTML = '';
+            suggestions.innerHTML = '';
+            
+            // 计算百分比
+            const highestPercentage = Math.round((highestScore / 5) * 100);
+            
+            // 主要结果
+            const highestTypeInfo = personalityTypes[highestType];
+            
+            let mainResultHTML = `
+                <div class="bg-gradient-to-r from-primary/10 to-accent/10 rounded-xl p-6 mb-6">
+                    <h3 class="text-2xl font-bold text-neutral-dark mb-2">你的主要人格特质：${highestTypeInfo.name}</h3>
+                    <p class="text-neutral mb-4">属于 ${highestTypeInfo.category}</p>
+                    <div class="w-full bg-neutral-light rounded-full h-4 mb-2">
+                        <div class="bg-gradient h-4 rounded-full" style="width: ${highestPercentage}%"></div>
+                    </div>
+                    <div class="flex justify-between text-sm text-neutral">
+                        <span>低</span>
+                        <span>中等</span>
+                        <span>高</span>
+                    </div>
+                </div>
+                <p class="text-lg text-neutral-dark mb-6">${highestTypeInfo.description}</p>
+            `;
+            
+            // 如果有第二高的特质且分数相近
+            if (secondHighestType && (highestScore - secondHighestScore) <= 0.5) {
+                const secondTypeInfo = personalityTypes[secondHighestType];
+                const secondPercentage = Math.round((secondHighestScore / 5) * 100);
+                
+                mainResultHTML += `
+                    <div class="bg-gradient-to-r from-secondary/10 to-accent/10 rounded-xl p-6 mb-6">
+                        <h3 class="text-2xl font-bold text-neutral-dark mb-2">你的次要人格特质：${secondTypeInfo.name}</h3>
+                        <p class="text-neutral mb-4">属于 ${secondTypeInfo.category}</p>
+                        <div class="w-full bg-neutral-light rounded-full h-4 mb-2">
+                            <div class="bg-gradient h-4 rounded-full" style="width: ${secondPercentage}%"></div>
+                        </div>
+                        <div class="flex justify-between text-sm text-neutral">
+                            <span>低</span>
+                            <span>中等</span>
+                            <span>高</span>
+                        </div>
+                    </div>
+                    <p class="text-lg text-neutral-dark mb-6">${secondTypeInfo.description}</p>
+                    
+                    <div class="bg-neutral-light rounded-lg p-6 mb-6">
+                        <h3 class="text-xl font-semibold text-neutral-dark mb-4">特质组合分析</h3>
+                        <p class="text-neutral">
+                            你的人格特质展现出独特的组合：${highestTypeInfo.name}与${secondTypeInfo.name}的结合。
+                            这种组合可能使你在不同情境下表现出不同的行为模式，既有${highestTypeInfo.name}的特点，
+                            也有${secondTypeInfo.name}的倾向。这种多样性使你能够适应各种情况。
+                        </p>
+                    </div>
+                `;
+            }
+            
+            mainResult.innerHTML = mainResultHTML;
+            
+            // 详细分析 - 显示所有特质的得分
+            let analysisHTML = `
+                <h3 class="text-2xl font-bold text-neutral-dark mb-6">你的人格特质全景</h3>
+            `;
+            
+            // 按类别分组显示
+            const categories = {
+                "古怪/偏执类": [],
+                "戏剧/冲动类": [],
+                "焦虑/回避类": []
+            };
+            
+            for (const type in typeAverages) {
+                const typeInfo = personalityTypes[type];
+                categories[typeInfo.category].push({
+                    type,
+                    name: typeInfo.name,
+                    score: typeAverages[type],
+                    percentage: Math.round((typeAverages[type] / 5) * 100)
+                });
+            }
+            
+            for (const category in categories) {
+                analysisHTML += `
+                    <div class="mb-8">
+                        <h4 class="text-xl font-semibold text-neutral-dark mb-4">${category}</h4>
+                        <div class="space-y-6">
+                `;
+                
+                categories[category].forEach(trait => {
+                    analysisHTML += `
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="font-medium text-neutral-dark">${trait.name}</span>
+                                <span class="text-neutral">${trait.percentage}%</span>
+                            </div>
+                            <div class="w-full bg-neutral-light rounded-full h-3">
+                                <div class="bg-primary h-3 rounded-full" style="width: ${trait.percentage}%"></div>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                analysisHTML += `
+                        </div>
+                    </div>
+                `;
+            }
+            
+            detailedAnalysis.innerHTML = analysisHTML;
+            
+            // 正向建议
+            let suggestionsHTML = `
+                <p class="mb-4">根据你的测试结果，以下是一些有助于个人成长和发展的建议：</p>
+                <ul class="space-y-3">
+            `;
+            
+            // 添加主要特质的建议
+            highestTypeInfo.suggestions.forEach(suggestion => {
+                suggestionsHTML += `<li class="flex items-start"><i class="fa fa-check-circle text-primary mt-1 mr-2"></i><span>${suggestion}</span></li>`;
+            });
+            
+            // 如果有次要特质，添加其次要特质的建议
+            if (secondHighestType) {
+                const secondTypeInfo = personalityTypes[secondHighestType];
+                secondTypeInfo.suggestions.forEach(suggestion => {
+                    suggestionsHTML += `<li class="flex items-start"><i class="fa fa-check-circle text-secondary mt-1 mr-2"></i><span>${suggestion}</span></li>`;
+                });
+            }
+            
+            // 添加通用建议
+            const generalSuggestions = [
+                "记住，人格特质没有好坏之分，每种特质都有其优势和挑战",
+                "尝试在不同情境中灵活运用你的特质",
+                "关注自己的成长和进步，而非完美",
+                "如果某些特质给你带来困扰，考虑寻求专业心理咨询师的帮助"
+            ];
+            
+            generalSuggestions.forEach(suggestion => {
+                suggestionsHTML += `<li class="flex items-start"><i class="fa fa-star text-accent mt-1 mr-2"></i><span>${suggestion}</span></li>`;
+            });
+            
+            suggestionsHTML += `
+                </ul>
+                <p class="mt-4 font-medium">最重要的是：每个人都是独特的，测试结果只是帮助你更好地了解自己的一个工具。</p>
+            `;
+            
+            suggestions.innerHTML = suggestionsHTML;
+        }
+
+        // 分享按钮
+        shareBtn.addEventListener('click', () => {
+            alert('分享功能即将上线，敬请期待！');
+        });
+
+        // 重新测试按钮
+        restartBtn.addEventListener('click', () => {
+            // 重置测试状态
+            currentQuestionIndex = 0;
+            userAnswers.fill(null);
+            
+            // 返回开始页面
+            resultSection.classList.add('hidden');
+            startSection.classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>
