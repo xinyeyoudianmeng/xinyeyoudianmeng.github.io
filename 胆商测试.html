@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>胆商(DQ)测试 - 评估你的勇气与决断力</title>
+    <!-- Tailwind CSS v3 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- 统一的 Tailwind 配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3b82f6', // 蓝色作为主色调
+                        secondary: '#f97316', // 橙色作为辅助色
+                        neutral: '#f8fafc',
+                        dark: '#1e293b'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-in': 'slideIn 0.5s ease-in-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideIn: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+            }
+            .card-hover {
+                @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- 页面容器 -->
+    <div class="min-h-screen flex flex-col">
+        <!-- 顶部导航 -->
+        <header class="bg-white shadow-sm">
+            <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+                <div class="flex items-center space-x-2">
+                    <i class="fa fa-bolt text-secondary text-2xl"></i>
+                    <h1 class="text-xl font-bold text-dark">胆商(DQ)测试</h1>
+                </div>
+                <div class="text-sm text-gray-500">
+                    <span id="current-step">步骤 1/3</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- 主要内容区域 -->
+        <main class="flex-grow container mx-auto px-4 py-8">
+            <!-- 步骤容器 -->
+            <div id="step-container" class="max-w-3xl mx-auto">
+                <!-- 步骤1: 介绍页面 -->
+                <section id="step-1" class="bg-white rounded-xl shadow-md p-6 animate-fade-in">
+                    <div class="text-center mb-8">
+                        <div class="inline-block p-4 bg-blue-100 rounded-full mb-4">
+                            <i class="fa fa-bolt text-primary text-4xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-dark mb-2">欢迎参加胆商(DQ)测试</h2>
+                        <p class="text-gray-600">评估你面对风险、压力和挑战时的勇气与决断力</p>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="bg-blue-50 border-l-4 border-primary p-4 rounded">
+                            <h3 class="font-semibold text-primary mb-2">什么是胆商(DQ)?</h3>
+                            <p class="text-gray-700">胆商(Daring Quotient)是衡量个人面对风险、压力、挑战时的勇气、决断力和抗挫能力的核心指标，核心聚焦"敢想敢做的魄力 + 理性抉择的智慧"，并非单纯的鲁莽冲动。</p>
+                        </div>
+
+                        <div>
+                            <h3 class="font-semibold text-dark mb-3">测试维度</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div class="bg-white border border-gray-200 rounded-lg p-4 card-hover">
+                                    <div class="flex items-center mb-2">
+                                        <div class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center mr-2">
+                                            <span class="font-bold text-red-600">1</span>
+                                        </div>
+                                        <h4 class="font-medium">勇气魄力</h4>
+                                    </div>
+                                    <p class="text-sm text-gray-600">面对未知、挑战和压力时的敢为之心，突破自我设限的基础能力。</p>
+                                </div>
+                                <div class="bg-white border border-gray-200 rounded-lg p-4 card-hover">
+                                    <div class="flex items-center mb-2">
+                                        <div class="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center mr-2">
+                                            <span class="font-bold text-orange-600">2</span>
+                                        </div>
+                                        <h4 class="font-medium">决断能力</h4>
+                                    </div>
+                                    <p class="text-sm text-gray-600">在信息不充分、选择多元时，快速分析、果断决策的能力。</p>
+                                </div>
+                                <div class="bg-white border border-gray-200 rounded-lg p-4 card-hover">
+                                    <div class="flex items-center mb-2">
+                                        <div class="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center mr-2">
+                                            <span class="font-bold text-yellow-600">3</span>
+                                        </div>
+                                        <h4 class="font-medium">风险把控</h4>
+                                    </div>
+                                    <p class="text-sm text-gray-600">对潜在风险的识别、评估和应对能力，做到"勇而有谋"。</p>
+                                </div>
+                                <div class="bg-white border border-gray-200 rounded-lg p-4 card-hover">
+                                    <div class="flex items-center mb-2">
+                                        <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-2">
+                                            <span class="font-bold text-green-600">4</span>
+                                        </div>
+                                        <h4 class="font-medium">抗压抗挫</h4>
+                                    </div>
+                                    <p class="text-sm text-gray-600">面对压力、失败、挫折时的心理承受能力和恢复能力。</p>
+                                </div>
+                                <div class="bg-white border border-gray-200 rounded-lg p-4 card-hover md:col-span-2">
+                                    <div class="flex items-center mb-2">
+                                        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-2">
+                                            <span class="font-bold text-blue-600">5</span>
+                                        </div>
+                                        <h4 class="font-medium">格局视野</h4>
+                                    </div>
+                                    <p class="text-sm text-gray-600">立足长远、放眼全局的认知格局和视野，决定胆商高度的关键。</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded">
+                            <h3 class="font-semibold text-yellow-800 mb-2">重要提示</h3>
+                            <ul class="text-sm text-yellow-700 space-y-2">
+                                <li><i class="fa fa-info-circle mr-2"></i>测试结果仅供参考，非专业诊断工具</li>
+                                <li><i class="fa fa-clock-o mr-2"></i>完成测试约需10-15分钟</li>
+                                <li><i class="fa fa-check-circle mr-2"></i>请根据真实情况作答，以获得准确结果</li>
+                            </ul>
+                        </div>
+
+                        <div class="pt-4">
+                            <button id="start-test" class="w-full bg-primary hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-300 flex items-center justify-center">
+                                <span>开始测试</span>
+                                <i class="fa fa-arrow-right ml-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 步骤2: 测试问卷 -->
+                <section id="step-2" class="hidden bg-white rounded-xl shadow-md p-6 animate-fade-in">
+                    <div class="mb-6">
+                        <h2 class="text-xl font-bold text-dark mb-2">胆商测试问卷</h2>
+                        <p class="text-gray-600">请根据你的真实情况和第一反应选择最符合的选项</p>
+                        
+                        <!-- 进度条 -->
+                        <div class="mt-4 bg-gray-200 rounded-full h-2.5">
+                            <div id="progress-bar" class="bg-primary h-2.5 rounded-full" style="width: 0%"></div>
+                        </div>
+                        <div class="flex justify-between text-xs text-gray-500 mt-1">
+                            <span>问题 <span id="current-question">1</span>/30</span>
+                            <span>完成度: <span id="progress-percentage">0%</span></span>
+                        </div>
+                    </div>
+
+                    <!-- 问题容器 -->
+                    <div id="question-container" class="mb-6">
+                        <!-- 问题将通过JavaScript动态加载 -->
+                    </div>
+
+                    <!-- 导航按钮 -->
+                    <div class="flex justify-between">
+                        <button id="prev-question" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-2 px-4 rounded-lg transition-colors duration-300 hidden">
+                            <i class="fa fa-arrow-left mr-2"></i>上一题
+                        </button>
+                        <button id="next-question" class="bg-primary hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors duration-300 ml-auto">
+                            下一题<i class="fa fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </section>
+
+                <!-- 步骤3: 结果分析 -->
+                <section id="step-3" class="hidden bg-white rounded-xl shadow-md p-6 animate-fade-in">
+                    <div class="text-center mb-8">
+                        <div class="inline-block p-4 bg-blue-100 rounded-full mb-4">
+                            <i class="fa fa-trophy text-primary text-4xl"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-dark mb-2">胆商测试结果</h2>
+                        <p class="text-gray-600">基于你的回答，我们为你生成了以下分析报告</p>
+                    </div>
+
+                    <!-- 总体得分 -->
+                    <div class="mb-8 text-center">
+                        <div class="inline-block relative">
+                            <svg class="w-48 h-48">
+                                <circle cx="96" cy="96" r="80" fill="none" stroke="#e6e6e6" stroke-width="16"></circle>
+                                <circle id="score-circle" cx="96" cy="96" r="80" fill="none" stroke="#3b82f6" stroke-width="16" stroke-dasharray="0 502" stroke-dashoffset="0" transform="rotate(-90 96 96)"></circle>
+                            </svg>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center">
+                                <span class="text-4xl font-bold text-primary" id="total-score">0</span>
+                                <span class="text-gray-500">总分</span>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <h3 class="text-xl font-semibold text-dark" id="score-level">待评估</h3>
+                            <p class="text-gray-600" id="score-description">请完成测试以获取结果</p>
+                        </div>
+                    </div>
+
+                    <!-- 维度得分 -->
+                    <div class="mb-8">
+                        <h3 class="text-lg font-semibold text-dark mb-4">各维度得分</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-4">
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-sm font-medium text-red-600">勇气魄力</span>
+                                        <span class="text-sm font-medium text-red-600" id="courage-score">0/20</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div id="courage-bar" class="bg-red-500 h-2.5 rounded-full" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-sm font-medium text-orange-600">决断能力</span>
+                                        <span class="text-sm font-medium text-orange-600" id="decision-score">0/20</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div id="decision-bar" class="bg-orange-500 h-2.5 rounded-full" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-sm font-medium text-yellow-600">风险把控</span>
+                                        <span class="text-sm font-medium text-yellow-600" id="risk-score">0/20</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div id="risk-bar" class="bg-yellow-500 h-2.5 rounded-full" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="space-y-4">
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-sm font-medium text-green-600">抗压抗挫</span>
+                                        <span class="text-sm font-medium text-green-600" id="resilience-score">0/20</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div id="resilience-bar" class="bg-green-500 h-2.5 rounded-full" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between mb-1">
+                                        <span class="text-sm font-medium text-blue-600">格局视野</span>
+                                        <span class="text-sm font-medium text-blue-600" id="vision-score">0/20</span>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                        <div id="vision-bar" class="bg-blue-500 h-2.5 rounded-full" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 详细解读 -->
+                    <div class="mb-8">
+                        <h3 class="text-lg font-semibold text-dark mb-4">详细解读</h3>
+                        <div id="detailed-analysis" class="prose max-w-none">
+                            <!-- 详细解读将通过JavaScript动态加载 -->
+                        </div>
+                    </div>
+
+                    <!-- 改进建议 -->
+                    <div class="mb-8">
+                        <h3 class="text-lg font-semibold text-dark mb-4">个性化提升建议</h3>
+                        <div id="improvement-tips" class="bg-blue-50 p-4 rounded-lg">
+                            <!-- 改进建议将通过JavaScript动态加载 -->
+                        </div>
+                    </div>
+
+                    <!-- 分享按钮 -->
+                    <div class="flex justify-center space-x-4">
+                        <button id="share-result" class="bg-secondary hover:bg-orange-600 text-white font-medium py-2 px-6 rounded-lg transition-colors duration-300 flex items-center">
+                            <i class="fa fa-share-alt mr-2"></i>分享结果
+                        </button>
+                        <button id="restart-test" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-2 px-6 rounded-lg transition-colors duration-300 flex items-center">
+                            <i class="fa fa-refresh mr-2"></i>重新测试
+                        </button>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- 底部信息 -->
+        <footer class="bg-white border-t border-gray-200 py-6">
+            <div class="container mx-auto px-4">
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold text-dark mb-2">免责声明</h3>
+                    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded text-sm text-yellow-800">
+                        <p class="mb-2"><strong>重要提示：</strong>本测试为原创非专业心理测评工具，仅供个人成长参考，不构成任何形式的诊断、治疗或专业建议。</p>
+                        <p class="mb-2">测试结果基于你提供的信息生成，可能受多种因素影响而存在偏差。如果你正面临严重的心理困扰或决策困难，我们强烈建议你寻求专业心理咨询师或相关领域专家的帮助。</p>
+                        <p>本测试的最终解释权归开发者所有，请勿将测试结果用于任何商业或非法用途。</p>
+                    </div>
+                </div>
+                <div class="text-center text-sm text-gray-500">
+                    <p class="mb-2">© 2025 胆商测试 - 原创声明</p>
+                    <p>本测试内容为原创设计，未经授权不得复制、修改或用于商业用途。</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // 测试题目数据
+        const questions = [
+            // 勇气魄力维度 (1-6题)
+            {
+                id: 1,
+                dimension: "courage",
+                question: "当公司有一个具有挑战性但晋升机会大的项目时，你会怎么做？",
+                options: [
+                    { value: 1, text: "选择观望，等待他人先尝试" },
+                    { value: 2, text: "考虑后决定参与，但有所保留" },
+                    { value: 3, text: "评估后认为自己有能力，主动争取" },
+                    { value: 4, text: "毫不犹豫，立即申请负责该项目" }
+                ]
+            },
+            {
+                id: 2,
+                dimension: "courage",
+                question: "面对一个你不熟悉但有发展前景的新领域，你会：",
+                options: [
+                    { value: 1, text: "避免接触，专注于现有领域" },
+                    { value: 2, text: "偶尔了解，但不会深入投入" },
+                    { value: 3, text: "学习基础知识，尝试小范围实践" },
+                    { value: 4, text: "全面学习并积极寻求实践机会" }
+                ]
+            },
+            {
+                id: 3,
+                dimension: "courage",
+                question: "在会议上，你发现领导的决策可能存在明显问题，你会：",
+                options: [
+                    { value: 1, text: "保持沉默，避免冲突" },
+                    { value: 2, text: "私下向同事表达担忧，但不直接提出" },
+                    { value: 3, text: "用委婉的方式提出自己的看法" },
+                    { value: 4, text: "直接指出问题并提供建设性建议" }
+                ]
+            },
+            {
+                id: 4,
+                dimension: "courage",
+                question: "当你有一个创新但可能被质疑的想法时，你会：",
+                options: [
+                    { value: 1, text: "放弃分享，担心被否定" },
+                    { value: 2, text: "只与亲密朋友分享" },
+                    { value: 3, text: "在小范围内测试后再推广" },
+                    { value: 4, text: "积极向相关人员推广并寻求支持" }
+                ]
+            },
+            {
+                id: 5,
+                dimension: "courage",
+                question: "面对一个需要公开演讲的重要机会，你会：",
+                options: [
+                    { value: 1, text: "找借口推脱，避免出丑" },
+                    { value: 2, text: "接受但非常紧张，准备不足" },
+                    { value: 3, text: "认真准备，尽力而为" },
+                    { value: 4, text: "视为展示机会，充分准备并享受过程" }
+                ]
+            },
+            {
+                id: 6,
+                dimension: "courage",
+                question: "当你的观点与大多数人相悖时，你会：",
+                options: [
+                    { value: 1, text: "放弃自己的观点，随大流" },
+                    { value: 2, text: "保留观点，但不公开表达" },
+                    { value: 3, text: "在有证据支持的情况下坚持己见" },
+                    { value: 4, text: "积极为自己的观点辩护，寻求理解" }
+                ]
+            },
+            
+            // 决断能力维度 (7-12题)
+            {
+                id: 7,
+                dimension: "decision",
+                question: "当你需要在两个各有优势的工作机会中选择时，你通常会：",
+                options: [
+                    { value: 1, text: "犹豫不决，需要很长时间才能决定" },
+                    { value: 2, text: "收集大量信息，但仍难以做决定" },
+                    { value: 3, text: "分析关键因素后做出选择" },
+                    { value: 4, text: "快速评估后做出决定，并很少后悔" }
+                ]
+            },
+            {
+                id: 8,
+                dimension: "decision",
+                question: "在紧急情况下需要立即做出决定时，你会：",
+                options: [
+                    { value: 1, text: "惊慌失措，无法做出有效决定" },
+                    { value: 2, text: "寻求他人帮助，依赖他人做决定" },
+                    { value: 3, text: "迅速分析主要因素，做出合理决定" },
+                    { value: 4, text: "保持冷静，快速评估并采取行动" }
+                ]
+            },
+            {
+                id: 9,
+                dimension: "decision",
+                question: "当你发现正在进行的项目明显不会成功时，你会：",
+                options: [
+                    { value: 1, text: "继续投入，不愿承认失败" },
+                    { value: 2, text: "犹豫不决，希望情况会好转" },
+                    { value: 3, text: "分析原因后调整策略" },
+                    { value: 4, text: "及时止损，转向更有希望的方向" }
+                ]
+            },
+            {
+                id: 10,
+                dimension: "decision",
+                question: "在日常生活中做决定时，你通常：",
+                options: [
+                    { value: 1, text: "经常改变主意，难以坚持决定" },
+                    { value: 2, text: "需要他人建议才能做决定" },
+                    { value: 3, text: "考虑后果后做决定，并基本坚持" },
+                    { value: 4, text: "迅速做决定并很少改变" }
+                ]
+            },
+            {
+                id: 11,
+                dimension: "decision",
+                question: "当你需要在有限信息下做决定时，你会：",
+                options: [
+                    { value: 1, text: "因信息不足而推迟决定" },
+                    { value: 2, text: "过度收集信息，导致决策延迟" },
+                    { value: 3, text: "基于现有信息做出最佳判断" },
+                    { value: 4, text: "识别关键信息，快速做出合理推测" }
+                ]
+            },
+            {
+                id: 12,
+                dimension: "decision",
+                question: "当你的决定被证明是错误时，你会：",
+                options: [
+                    { value: 1, text: "逃避责任，找借口推脱" },
+                    { value: 2, text: "感到沮丧，难以接受现实" },
+                    { value: 3, text: "承认错误，从中学习" },
+                    { value: 4, text: "迅速调整，将损失降到最低" }
+                ]
+            },
+            
+            // 风险把控维度 (13-18题)
+            {
+                id: 13,
+                dimension: "risk",
+                question: "在考虑一项投资或创业机会时，你首先关注的是：",
+                options: [
+                    { value: 1, text: "潜在收益，很少考虑风险" },
+                    { value: 2, text: "主要关注收益，风险考虑较少" },
+                    { value: 3, text: "平衡考虑收益和风险" },
+                    { value: 4, text: "充分评估风险，确保在可承受范围内" }
+                ]
+            },
+            {
+                id: 14,
+                dimension: "risk",
+                question: "当你计划一项重要活动时，你会：",
+                options: [
+                    { value: 1, text: "想到什么做什么，很少做计划" },
+                    { value: 2, text: "做简单计划，但不考虑意外情况" },
+                    { value: 3, text: "制定计划并考虑主要风险" },
+                    { value: 4, text: "详细规划并准备多种应对方案" }
+                ]
+            },
+            {
+                id: 15,
+                dimension: "risk",
+                question: "面对一个高风险高回报的机会，你会：",
+                options: [
+                    { value: 1, text: "毫不犹豫地接受，追求高回报" },
+                    { value: 2, text: "倾向于接受，但很少评估风险" },
+                    { value: 3, text: "仔细评估后决定是否接受" },
+                    { value: 4, text: "通常会拒绝，更偏好稳健的选择" }
+                ]
+            },
+            {
+                id: 16,
+                dimension: "risk",
+                question: "当你在执行计划过程中发现潜在风险时，你会：",
+                options: [
+                    { value: 1, text: "忽视风险，继续按原计划进行" },
+                    { value: 2, text: "感到担忧，但不知道如何应对" },
+                    { value: 3, text: "分析风险并调整计划" },
+                    { value: 4, text: "立即采取行动缓解风险，必要时改变路线" }
+                ]
+            },
+            {
+                id: 17,
+                dimension: "risk",
+                question: "你如何看待生活中的不确定性？",
+                options: [
+                    { value: 1, text: "非常害怕，尽量避免变化" },
+                    { value: 2, text: "感到不安，希望一切都可预测" },
+                    { value: 3, text: "接受一定程度的不确定性" },
+                    { value: 4, text: "将其视为机会，善于在变化中调整" }
+                ]
+            },
+            {
+                id: 18,
+                dimension: "risk",
+                question: "在做决策时，你通常会：",
+                options: [
+                    { value: 1, text: "凭直觉行事，很少考虑后果" },
+                    { value: 2, text: "主要考虑短期结果" },
+                    { value: 3, text: "兼顾短期和中期后果" },
+                    { value: 4, text: "全面考虑短期、中期和长期影响" }
+                ]
+            },
+            
+            // 抗压抗挫维度 (19-24题)
+            {
+                id: 19,
+                dimension: "resilience",
+                question: "当你在重要项目中失败时，你的第一反应是：",
+                options: [
+                    { value: 1, text: "极度沮丧，怀疑自己的能力" },
+                    { value: 2, text: "感到失望，需要很长时间恢复" },
+                    { value: 3, text: "分析失败原因，寻求改进" },
+                    { value: 4, text: "视为学习机会，迅速调整心态" }
+                ]
+            },
+            {
+                id: 20,
+                dimension: "resilience",
+                question: "在高压工作环境下，你通常会：",
+                options: [
+                    { value: 1, text: "感到压力过大，影响工作表现" },
+                    { value: 2, text: "能够完成工作，但感到疲惫不堪" },
+                    { value: 3, text: "调整心态，有效管理压力" },
+                    { value: 4, text: "将压力转化为动力，表现更佳" }
+                ]
+            },
+            {
+                id: 21,
+                dimension: "resilience",
+                question: "当你收到严厉批评时，你会：",
+                options: [
+                    { value: 1, text: "感到受伤，难以接受" },
+                    { value: 2, text: "表面接受，但内心抵触" },
+                    { value: 3, text: "认真考虑批评的合理性" },
+                    { value: 4, text: "感谢反馈，积极改进" }
+                ]
+            },
+            {
+                id: 22,
+                dimension: "resilience",
+                question: "面对连续的挫折和困难，你会：",
+                options: [
+                    { value: 1, text: "感到无助，容易放弃" },
+                    { value: 2, text: "继续努力，但信心受挫" },
+                    { value: 3, text: "调整策略，坚持目标" },
+                    { value: 4, text: "愈挫愈勇，寻找新的解决方案" }
+                ]
+            },
+            {
+                id: 23,
+                dimension: "resilience",
+                question: "当你需要同时处理多项紧急任务时，你会：",
+                options: [
+                    { value: 1, text: "感到不知所措，效率低下" },
+                    { value: 2, text: "完成任务，但质量可能受影响" },
+                    { value: 3, text: "有序规划，逐一完成" },
+                    { value: 4, text: "高效统筹，确保所有任务高质量完成" }
+                ]
+            },
+            {
+                id: 24,
+                dimension: "resilience",
+                question: "在长期目标实现过程中遇到阻碍时，你会：",
+                options: [
+                    { value: 1, text: "轻易调整目标，降低标准" },
+                    { value: 2, text: "坚持但缺乏灵活性" },
+                    { value: 3, text: "调整方法，保持目标不变" },
+                    { value: 4, text: "将阻碍视为成长机会，寻找突破" }
+                ]
+            },
+            
+            // 格局视野维度 (25-30题)
+            {
+                id: 25,
+                dimension: "vision",
+                question: "在做职业规划时，你主要考虑：",
+                options: [
+                    { value: 1, text: "短期收入和稳定性" },
+                    { value: 2, text: "中期发展和技能提升" },
+                    { value: 3, text: "行业趋势和长期发展" },
+                    { value: 4, text: "个人价值实现和行业影响力" }
+                ]
+            },
+            {
+                id: 26,
+                dimension: "vision",
+                question: "当评估一个项目时，你更关注：",
+                options: [
+                    { value: 1, text: "眼前的成本和收益" },
+                    { value: 2, text: "短期回报和可行性" },
+                    { value: 3, text: "中期战略价值" },
+                    { value: 4, text: "长期影响和潜在价值" }
+                ]
+            },
+            {
+                id: 27,
+                dimension: "vision",
+                question: "你如何看待学习新技能和知识？",
+                options: [
+                    { value: 1, text: "只学习工作中立即需要的技能" },
+                    { value: 2, text: "学习与当前职业相关的技能" },
+                    { value: 3, text: "广泛学习，拓展知识面" },
+                    { value: 4, text: "关注前沿趋势，提前布局未来技能" }
+                ]
+            },
+            {
+                id: 28,
+                dimension: "vision",
+                question: "在团队合作中，你更倾向于：",
+                options: [
+                    { value: 1, text: "关注自己的任务和责任" },
+                    { value: 2, text: "协调团队成员完成当前目标" },
+                    { value: 3, text: "考虑团队的整体发展" },
+                    { value: 4, text: "思考团队在更大系统中的角色和影响" }
+                ]
+            },
+            {
+                id: 29,
+                dimension: "vision",
+                question: "当面对短期利益与长期价值的冲突时，你会：",
+                options: [
+                    { value: 1, text: "优先选择短期利益" },
+                    { value: 2, text: "倾向于短期利益，但会考虑长期影响" },
+                    { value: 3, text: "平衡两者，寻求折中方案" },
+                    { value: 4, text: "通常优先考虑长期价值" }
+                ]
+            },
+            {
+                id: 30,
+                dimension: "vision",
+                question: "你如何看待行业变革和创新？",
+                options: [
+                    { value: 1, text: "倾向于抵制变化，喜欢稳定" },
+                    { value: 2, text: "接受必要的变化，但保持谨慎" },
+                    { value: 3, text: "积极适应变化，寻找机会" },
+                    { value: 4, text: "主动寻求和引领变革，创造新机会" }
+                ]
+            }
+        ];
+
+        // 结果分析数据
+        const resultAnalysis = {
+            // 总体评分等级
+            levels: [
+                { min: 0, max: 40, level: "胆商较低", description: "你在面对风险和挑战时可能较为谨慎，倾向于避免不确定性。这在某些情况下是优点，但可能会限制你的发展机会。" },
+                { min: 41, max: 60, level: "胆商一般", description: "你在胆商方面表现平平，有时能够应对挑战，但在压力下可能会犹豫。通过适当的锻炼和实践，你可以进一步提升自己的胆商。" },
+                { min: 61, max: 80, level: "胆商良好", description: "你具备不错的胆商水平，能够在大多数情况下保持勇气和决断力。你能够理性评估风险，并在必要时做出果断决策。" },
+                { min: 81, max: 100, level: "胆商优秀", description: "你拥有出色的胆商，在面对挑战和风险时表现从容。你具备清晰的判断力和果断的决策能力，能够在压力下保持冷静并抓住机会。" },
+                { min: 101, max: 120, level: "胆商卓越", description: "你的胆商水平极为出色，不仅能够勇敢面对挑战，还能理性分析风险，做出明智决策。你具备领袖气质，能够在复杂情况下引领他人。" }
+            ],
+            
+            // 各维度解读
+            dimensions: {
+                courage: {
+                    name: "勇气魄力",
+                    low: "你在面对挑战时可能较为谨慎，倾向于避免风险和不确定性。这可能会让你错过一些机会，但也能帮助你避免不必要的风险。",
+                    medium: "你具备一定的勇气，能够在熟悉的领域内应对挑战，但在面对重大变化或未知领域时可能会犹豫。",
+                    high: "你展现出较强的勇气和魄力，愿意接受挑战并尝试新事物。你能够在压力下保持冷静，并勇于表达自己的观点。"
+                },
+                decision: {
+                    name: "决断能力",
+                    low: "你在做决策时可能较为犹豫，需要较长时间考虑，甚至可能因过度分析而错过机会。在紧急情况下，你可能会感到不知所措。",
+                    medium: "你具备基本的决策能力，能够在有足够信息的情况下做出合理决定，但在压力下或信息不足时可能会犹豫。",
+                    high: "你展现出出色的决断能力，能够在复杂情况下快速分析并做出决策。你不惧怕做困难的决定，并且能够在必要时及时止损。"
+                },
+                risk: {
+                    name: "风险把控",
+                    low: "你可能对风险缺乏足够的认识，有时会盲目行动或过度谨慎。你可能需要更多的经验和知识来提高风险评估能力。",
+                    medium: "你具备基本的风险意识，能够在大多数情况下评估常见风险，但在复杂情况下可能需要更多支持。",
+                    high: "你展现出出色的风险把控能力，能够全面评估潜在风险并制定应对策略。你既不盲目冒险，也不会因过度谨慎而错失机会。"
+                },
+                resilience: {
+                    name: "抗压抗挫",
+                    low: "你在面对压力和挫折时可能较为脆弱，容易受到打击。你可能需要更多的支持和时间来恢复信心。",
+                    medium: "你具备一定的抗压能力，能够应对日常压力和小挫折，但在重大打击下可能需要较长时间恢复。",
+                    high: "你展现出强大的抗压抗挫能力，能够在压力下保持高效，并从失败中快速恢复。你将挫折视为学习机会，愈挫愈勇。"
+                },
+                vision: {
+                    name: "格局视野",
+                    low: "你可能更关注眼前的具体事务，对长远规划和整体格局考虑较少。这在某些情况下是优点，但可能会限制你的发展。",
+                    medium: "你具备一定的全局意识，能够在必要时考虑长远影响，但在日常决策中可能更关注短期结果。",
+                    high: "你展现出广阔的格局和长远的视野，能够从全局角度思考问题。你关注长期价值而非短期利益，具备战略思维。"
+                }
+            },
+            
+            // 改进建议
+            improvementTips: {
+                courage: [
+                    "从小事做起，逐步挑战自己的舒适区",
+                    "设定具体的勇气目标，如每月尝试一件新事物",
+                    "学习积极的自我对话，转变对风险的认知",
+                    "寻找榜样，观察他们如何面对挑战",
+                    "参加一些需要表达自己的活动，如演讲俱乐部"
+                ],
+                decision: [
+                    "练习在有限时间内做决定，如限时购物",
+                    "采用决策框架，如 pros/cons 列表或决策树",
+                    "接受不是所有决定都能完美，学会与不确定性共处",
+                    "回顾过去的决策，分析成功和失败的原因",
+                    "在小事上练习快速决策，逐步提升到更重要的决定"
+                ],
+                risk: [
+                    "学习基本的风险评估方法，如SWOT分析",
+                    "为每个重要决策制定B计划",
+                    "将大风险分解为小步骤，逐步评估",
+                    "寻求他人的意见，特别是经验丰富的人的建议",
+                    "记录和分析过去的风险决策，总结经验"
+                ],
+                resilience: [
+                    "练习正念和压力管理技巧，如深呼吸、冥想",
+                    "建立强大的支持网络，包括朋友、家人或导师",
+                    "培养成长型思维，将挑战视为学习机会",
+                    "保持健康的生活方式，包括充足的睡眠和适当的运动",
+                    "设定可实现的小目标，逐步建立信心"
+                ],
+                vision: [
+                    "定期阅读行业趋势和前沿研究",
+                    "参加跨领域的活动和讨论，拓展视野",
+                    "设定长期目标，并将其分解为短期步骤",
+                    "寻求导师指导，学习战略思维",
+                    "练习系统思考，关注事物之间的相互联系"
+                ]
+            }
+        };
+
+        // 全局变量
+        let currentQuestionIndex = 0;
+        const userAnswers = new Array(questions.length).fill(null);
+        let scores = {
+            courage: 0,
+            decision: 0,
+            risk: 0,
+            resilience: 0,
+            vision: 0
+        };
+
+        // DOM元素
+        const startTestBtn = document.getElementById('start-test');
+        const prevQuestionBtn = document.getElementById('prev-question');
+        const nextQuestionBtn = document.getElementById('next-question');
+        const questionContainer = document.getElementById('question-container');
+        const progressBar = document.getElementById('progress-bar');
+        const currentQuestionSpan = document.getElementById('current-question');
+        const progressPercentageSpan = document.getElementById('progress-percentage');
+        const shareResultBtn = document.getElementById('share-result');
+        const restartTestBtn = document.getElementById('restart-test');
+        const currentStepSpan = document.getElementById('current-step');
+
+        // 步骤元素
+        const step1 = document.getElementById('step-1');
+        const step2 = document.getElementById('step-2');
+        const step3 = document.getElementById('step-3');
+
+        // 初始化应用
+        function initApp() {
+            // 绑定事件监听器
+            startTestBtn.addEventListener('click', startTest);
+            prevQuestionBtn.addEventListener('click', showPreviousQuestion);
+            nextQuestionBtn.addEventListener('click', showNextQuestion);
+            shareResultBtn.addEventListener('click', shareResult);
+            restartTestBtn.addEventListener('click', restartTest);
+        }
+
+        // 开始测试
+        function startTest() {
+            step1.classList.add('hidden');
+            step2.classList.remove('hidden');
+            currentStepSpan.textContent = '步骤 2/3';
+            showQuestion(0);
+        }
+
+        // 显示问题
+        function showQuestion(index) {
+            const question = questions[index];
+            questionContainer.innerHTML = `
+                <div class="animate-slide-in">
+                    <h3 class="text-lg font-medium text-dark mb-4">${question.question}</h3>
+                    <div class="space-y-3">
+                        ${question.options.map((option, i) => `
+                            <div class="flex items-center">
+                                <input type="radio" id="option-${i}" name="question-${question.id}" value="${option.value}" 
+                                    class="w-4 h-4 text-primary focus:ring-primary" 
+                                    ${userAnswers[index] === option.value ? 'checked' : ''}>
+                                <label for="option-${i}" class="ml-2 text-gray-700">${option.text}</label>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            // 更新进度
+            currentQuestionSpan.textContent = index + 1;
+            const progressPercentage = Math.round((index / questions.length) * 100);
+            progressPercentageSpan.textContent = `${progressPercentage}%`;
+            progressBar.style.width = `${progressPercentage}%`;
+
+            // 更新导航按钮
+            prevQuestionBtn.classList.toggle('hidden', index === 0);
+            nextQuestionBtn.textContent = index === questions.length - 1 ? '提交测试' : '下一题';
+            nextQuestionBtn.innerHTML = index === questions.length - 1 ? 
+                '提交测试<i class="fa fa-check ml-2"></i>' : 
+                '下一题<i class="fa fa-arrow-right ml-2"></i>';
+
+            // 绑定选项点击事件
+            const radioButtons = questionContainer.querySelectorAll('input[type="radio"]');
+            radioButtons.forEach(radio => {
+                radio.addEventListener('change', () => {
+                    userAnswers[index] = parseInt(radio.value);
+                });
+            });
+        }
+
+        // 显示上一题
+        function showPreviousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                showQuestion(currentQuestionIndex);
+            }
+        }
+
+        // 显示下一题或提交测试
+        function showNextQuestion() {
+            // 检查是否已选择答案
+            if (userAnswers[currentQuestionIndex] === null) {
+                alert('请选择一个选项');
+                return;
+            }
+
+            // 如果是最后一题，计算结果
+            if (currentQuestionIndex === questions.length - 1) {
+                calculateResults();
+                showResults();
+                return;
+            }
+
+            // 否则显示下一题
+            currentQuestionIndex++;
+            showQuestion(currentQuestionIndex);
+        }
+
+        // 计算测试结果
+        function calculateResults() {
+            // 重置分数
+            scores = {
+                courage: 0,
+                decision: 0,
+                risk: 0,
+                resilience: 0,
+                vision: 0
+            };
+
+            // 计算各维度得分
+            questions.forEach((question, index) => {
+                scores[question.dimension] += userAnswers[index];
+            });
+
+            // 计算总分
+            const totalScore = Object.values(scores).reduce((sum, score) => sum + score, 0);
+            return totalScore;
+        }
+
+        // 显示测试结果
+        function showResults() {
+            const totalScore = calculateResults();
+            
+            // 隐藏测试步骤，显示结果步骤
+            step2.classList.add('hidden');
+            step3.classList.remove('hidden');
+            currentStepSpan.textContent = '步骤 3/3';
+
+            // 查找总体评分等级
+            const level = resultAnalysis.levels.find(l => totalScore >= l.min && totalScore <= l.max);
+            
+            // 更新总体得分
+            document.getElementById('total-score').textContent = totalScore;
+            document.getElementById('score-level').textContent = level.level;
+            document.getElementById('score-description').textContent = level.description;
+            
+            // 更新圆环进度
+            const scoreCircle = document.getElementById('score-circle');
+            const circumference = 2 * Math.PI * 80;
+            const progress = totalScore / 120;
+            const dashOffset = circumference * (1 - progress);
+            scoreCircle.style.strokeDasharray = `${circumference * progress} ${circumference}`;
+            
+            // 更新各维度得分
+            const dimensions = Object.keys(scores);
+            dimensions.forEach(dim => {
+                const maxScore = 6 * 4; // 每个维度6题，每题最高4分
+                const percentage = Math.round((scores[dim] / maxScore) * 100);
+                
+                // 更新分数文本
+                document.getElementById(`${dim}-score`).textContent = `${scores[dim]}/${maxScore}`;
+                
+                // 更新进度条
+                document.getElementById(`${dim}-bar`).style.width = `${percentage}%`;
+            });
+            
+            // 生成详细解读
+            generateDetailedAnalysis();
+            
+            // 生成改进建议
+            generateImprovementTips();
+        }
+
+        // 生成详细解读
+        function generateDetailedAnalysis() {
+            const analysisContainer = document.getElementById('detailed-analysis');
+            let analysisHTML = '';
+            
+            // 总体分析
+            const totalScore = Object.values(scores).reduce((sum, score) => sum + score, 0);
+            const level = resultAnalysis.levels.find(l => totalScore >= l.min && totalScore <= l.max);
+            
+            analysisHTML += `
+                <div class="mb-6">
+                    <h4 class="text-lg font-semibold text-primary mb-2">总体分析</h4>
+                    <p class="mb-4">你的总分为 <strong>${totalScore}</strong> 分，属于 <strong>${level.level}</strong>。${level.description}</p>
+                    <p>胆商并非单纯的"胆子大小"，而是"勇气 + 理性"的结合。高胆商意味着你能够在面对挑战时保持勇气，同时理性评估风险，做出明智决策。</p>
+                </div>
+            `;
+            
+            // 各维度分析
+            analysisHTML += '<div class="space-y-6">';
+            analysisHTML += '<h4 class="text-lg font-semibold text-primary mb-2">各维度分析</h4>';
+            
+            const dimensions = [
+                { key: 'courage', name: '勇气魄力', color: 'red' },
+                { key: 'decision', name: '决断能力', color: 'orange' },
+                { key: 'risk', name: '风险把控', color: 'yellow' },
+                { key: 'resilience', name: '抗压抗挫', color: 'green' },
+                { key: 'vision', name: '格局视野', color: 'blue' }
+            ];
+            
+            dimensions.forEach(dim => {
+                const maxScore = 6 * 4; // 每个维度6题，每题最高4分
+                const percentage = (scores[dim.key] / maxScore) * 100;
+                let level;
+                
+                if (percentage < 40) level = 'low';
+                else if (percentage < 70) level = 'medium';
+                else level = 'high';
+                
+                analysisHTML += `
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <h5 class="font-medium text-${dim.color}-600 mb-2">${dim.name}</h5>
+                        <p class="text-gray-700">${resultAnalysis.dimensions[dim.key][level]}</p>
+                    </div>
+                `;
+            });
+            
+            analysisHTML += '</div>';
+            analysisContainer.innerHTML = analysisHTML;
+        }
+
+        // 生成改进建议
+        function generateImprovementTips() {
+            const tipsContainer = document.getElementById('improvement-tips');
+            let tipsHTML = '<ul class="space-y-3">';
+            
+            // 找出得分最低的两个维度
+            const dimensions = Object.entries(scores)
+                .sort((a, b) => a[1] - b[1])
+                .slice(0, 2);
+            
+            // 为每个维度生成建议
+            dimensions.forEach(([dim, score]) => {
+                const dimName = resultAnalysis.dimensions[dim].name;
+                const tips = resultAnalysis.improvementTips[dim];
+                
+                tipsHTML += `
+                    <li>
+                        <div class="font-medium text-primary mb-1">${dimName}提升建议:</div>
+                        <ul class="list-disc list-inside text-sm text-gray-700 space-y-1 pl-4">
+                            ${tips.slice(0, 3).map(tip => `<li>${tip}</li>`).join('')}
+                        </ul>
+                    </li>
+                `;
+            });
+            
+            // 添加通用建议
+            tipsHTML += `
+                <li>
+                    <div class="font-medium text-primary mb-1">通用建议:</div>
+                    <ul class="list-disc list-inside text-sm text-gray-700 space-y-1 pl-4">
+                        <li>定期反思自己的决策过程和结果</li>
+                        <li>寻求反馈，了解他人对你胆商表现的看法</li>
+                        <li>设定具体的提升目标，并制定行动计划</li>
+                        <li>保持学习心态，不断拓展自己的知识和技能</li>
+                    </ul>
+                </li>
+            `;
+            
+            tipsHTML += '</ul>';
+            tipsContainer.innerHTML = tipsHTML;
+        }
+
+        // 分享结果
+        function shareResult() {
+            const totalScore = Object.values(scores).reduce((sum, score) => sum + score, 0);
+            const level = resultAnalysis.levels.find(l => totalScore >= l.min && totalScore <= l.max);
+            
+            const shareText = `我刚刚完成了胆商(DQ)测试，获得了${totalScore}分，属于"${level.level}"水平！来测试一下你的胆商水平吧！`;
+            
+            // 检查是否支持Web Share API
+            if (navigator.share) {
+                navigator.share({
+                    title: '胆商(DQ)测试结果',
+                    text: shareText,
+                    url: window.location.href
+                }).catch(err => {
+                    console.error('分享失败:', err);
+                    alert('分享功能暂不可用，请手动分享。');
+                });
+            } else {
+                // 复制到剪贴板
+                navigator.clipboard.writeText(shareText).then(() => {
+                    alert('结果已复制到剪贴板，你可以粘贴分享给朋友了！');
+                }).catch(err => {
+                    console.error('复制失败:', err);
+                    alert('复制失败，请手动分享。');
+                });
+            }
+        }
+
+        // 重新测试
+        function restartTest() {
+            // 重置全局变量
+            currentQuestionIndex = 0;
+            userAnswers.fill(null);
+            scores = {
+                courage: 0,
+                decision: 0,
+                risk: 0,
+                resilience: 0,
+                vision: 0
+            };
+            
+            // 重置UI
+            step3.classList.add('hidden');
+            step1.classList.remove('hidden');
+            currentStepSpan.textContent = '步骤 1/3';
+            progressBar.style.width = '0%';
+            currentQuestionSpan.textContent = '1';
+            progressPercentageSpan.textContent = '0%';
+        }
+
+        // 初始化应用
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
