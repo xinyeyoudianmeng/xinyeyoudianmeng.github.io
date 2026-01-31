@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>财商自测表 - 年轻人理财能力评估</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FF6B35',
+                        secondary: '#4CB9E7',
+                        accent: '#FFD166',
+                        neutral: '#F4F4F9',
+                        dark: '#2C3E50'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px rgba(0, 0, 0, 0.05)',
+                        'hover': '0 10px 30px rgba(0, 0, 0, 0.1)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            .transition-all-300 {
+                transition: all 0.3s ease;
+            }
+            .bg-gradient-primary {
+                background: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+            }
+            .bg-gradient-secondary {
+                background: linear-gradient(135deg, #4CB9E7 0%, #3A86FF 100%);
+            }
+        }
+    </style>
+</head>
+<body class="bg-neutral min-h-screen font-sans text-dark">
+    <div class="max-w-3xl mx-auto px-4 py-8">
+        <!-- 头部区域 -->
+        <header class="text-center mb-10">
+            <h1 class="text-4xl font-bold text-primary mb-3 text-shadow">财商自测表</h1>
+            <p class="text-lg text-gray-600">专为年轻人设计的理财能力评估工具</p>
+        </header>
+
+        <!-- 付费提示和免责声明 -->
+        <div class="bg-white rounded-xl p-6 shadow-soft mb-8 border-l-4 border-primary">
+            <div class="flex items-start">
+                <i class="fa fa-info-circle text-primary text-xl mt-1 mr-3"></i>
+                <div>
+                    <h3 class="font-bold text-lg mb-2">付费测试说明</h3>
+                    <p class="text-gray-700 mb-4">本测试为原创内容服务，非专业医疗/心理测评。测试结果仅供参考，不构成任何投资建议或财务规划指导。</p>
+                    
+                    <h4 class="font-bold text-primary mb-2">免责声明</h4>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1">
+                        <li>本测试非专业诊断工具，仅作为个人财商水平的自我评估参考</li>
+                        <li>测试结果不代表真实财商水平，请勿过度解读</li>
+                        <li>基于测试结果的任何理财决策，用户需自行承担风险</li>
+                        <li>如有财务规划需求，请咨询专业金融顾问</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 测试说明 -->
+        <div class="bg-white rounded-xl p-6 shadow-soft mb-8">
+            <h2 class="text-2xl font-bold mb-4 flex items-center">
+                <i class="fa fa-lightbulb-o text-accent mr-2"></i>
+                测试说明
+            </h2>
+            <p class="mb-4 text-gray-700">本测试包含40道题目，分为消费习惯、理财观念和风险承受能力三个维度，帮助你了解自己的财商水平。请根据自己的实际情况选择最符合的选项。</p>
+            <div class="flex justify-center">
+                <button id="startTest" class="bg-gradient-primary text-white px-8 py-3 rounded-full font-bold shadow-soft hover:shadow-hover transition-all-300 transform hover:-translate-y-1">
+                    开始测试
+                </button>
+            </div>
+        </div>
+
+        <!-- 测试区域 -->
+        <div id="testContainer" class="hidden">
+            <!-- 进度条 -->
+            <div class="mb-8">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-sm font-medium text-gray-600">进度</span>
+                    <span id="progressText" class="text-sm font-medium text-primary">1/40</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                    <div id="progressBar" class="bg-gradient-primary h-2.5 rounded-full transition-all duration-300" style="width: 3.33%"></div>
+                </div>
+            </div>
+
+            <!-- 题目区域 -->
+            <div id="questionContainer" class="bg-white rounded-xl p-6 shadow-soft mb-6">
+                <h3 id="questionNumber" class="text-lg font-bold text-primary mb-2">问题 1/40</h3>
+                <h2 id="questionText" class="text-xl font-bold mb-6">你通常如何处理每月的工资？</h2>
+                
+                <div id="optionsContainer" class="space-y-4">
+                    <!-- 选项将通过JS动态生成 -->
+                </div>
+            </div>
+
+            <!-- 导航按钮 -->
+            <div class="flex justify-between">
+                <button id="prevButton" class="px-6 py-2.5 bg-gray-200 text-gray-700 rounded-lg font-medium shadow-sm hover:bg-gray-300 transition-all-300 disabled:opacity-50 disabled:cursor-not-allowed hidden">
+                    上一题
+                </button>
+                <button id="nextButton" class="px-6 py-2.5 bg-gradient-primary text-white rounded-lg font-medium shadow-soft hover:shadow-hover transition-all-300 transform hover:-translate-y-1">
+                    下一题
+                </button>
+            </div>
+        </div>
+
+        <!-- 结果区域 -->
+        <div id="resultContainer" class="hidden">
+            <div class="bg-white rounded-xl p-8 shadow-soft mb-8">
+                <h2 class="text-2xl font-bold text-center mb-6">测试结果</h2>
+                
+                <div class="flex justify-center mb-8">
+                    <div class="relative w-48 h-48">
+                        <svg class="w-full h-full" viewBox="0 0 100 100">
+                            <!-- 背景圆环 -->
+                            <circle cx="50" cy="50" r="45" fill="none" stroke="#e6e6e6" stroke-width="8" />
+                            <!-- 进度圆环 -->
+                            <circle id="resultCircle" cx="50" cy="50" r="45" fill="none" stroke="url(#gradient)" stroke-width="8" stroke-linecap="round" transform="rotate(-90 50 50)" stroke-dasharray="282.74" stroke-dashoffset="282.74" />
+                            <defs>
+                                <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#FF6B35" />
+                                    <stop offset="100%" stop-color="#F7931E" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center">
+                            <span id="resultScore" class="text-4xl font-bold text-primary">0</span>
+                            <span class="text-sm text-gray-500">财商指数</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="resultLevel" class="text-center mb-8">
+                    <h3 class="text-2xl font-bold mb-2">财商水平：待评估</h3>
+                    <p class="text-gray-600">根据你的答题情况，我们为你生成了个性化的财商分析</p>
+                </div>
+
+                <div id="resultDetails" class="space-y-6">
+                    <!-- 结果详情将通过JS动态生成 -->
+                </div>
+
+                <div class="mt-8 pt-6 border-t border-gray-200">
+                    <h3 class="text-xl font-bold mb-4">提升建议</h3>
+                    <div id="improvementSuggestions" class="space-y-3 text-gray-700">
+                        <!-- 建议将通过JS动态生成 -->
+                    </div>
+                </div>
+
+                <div class="mt-8 text-center">
+                    <p class="text-sm text-gray-500 mb-4">如果需要更专业的理财建议，建议咨询专业金融顾问</p>
+                    <button id="restartTest" class="bg-gradient-secondary text-white px-8 py-3 rounded-full font-bold shadow-soft hover:shadow-hover transition-all-300 transform hover:-translate-y-1">
+                        重新测试
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 原创声明 -->
+        <footer class="mt-12 text-center text-sm text-gray-500">
+            <p>© 2025 财商自测表 - 原创内容，未经授权不得复制或传播</p>
+            <p class="mt-1">本测试为付费内容服务，非专业医疗/心理测评</p>
+        </footer>
+    </div>
+
+    <script>
+        // 测试题目数据
+        const questions = [
+            // 消费习惯维度
+            {
+                id: 1,
+                text: "你通常如何处理每月的工资？",
+                dimension: "消费习惯",
+                options: [
+                    { value: 0, text: "全部花掉，没有计划" },
+                    { value: 1, text: "大部分花掉，偶尔存一点" },
+                    { value: 2, text: "先存一部分，再计划消费" },
+                    { value: 3, text: "制定详细预算，严格执行储蓄计划" }
+                ]
+            },
+            {
+                id: 2,
+                text: "当你看到心仪的商品但超出预算时，你会怎么做？",
+                dimension: "消费习惯",
+                options: [
+                    { value: 0, text: "立即购买，大不了之后节省" },
+                    { value: 1, text: "犹豫后还是购买，毕竟喜欢" },
+                    { value: 2, text: "加入愿望清单，等有额外资金时再考虑" },
+                    { value: 3, text: "理性分析是否必要，通常选择不购买" }
+                ]
+            },
+            {
+                id: 3,
+                text: "你是否有记账的习惯？",
+                dimension: "消费习惯",
+                options: [
+                    { value: 0, text: "从不记账，不知道钱花在哪里" },
+                    { value: 1, text: "偶尔记一下，但经常忘记" },
+                    { value: 2, text: "大部分时间都记账，但不够细致" },
+                    { value: 3, text: "坚持每天记账，分类清晰，定期复盘" }
+                ]
+            },
+            {
+                id: 4,
+                text: "你如何看待信用卡消费？",
+                dimension: "消费习惯",
+                options: [
+                    { value: 0, text: "经常超额使用，只还最低还款额" },
+                    { value: 1, text: "偶尔超额，但能全额还款" },
+                    { value: 2, text: "合理使用，每月全额还款" },
+                    { value: 3, text: "谨慎使用，主要用于优惠和积分，确保全额还款" }
+                ]
+            },
+            {
+                id: 5,
+                text: "面对促销活动时，你的反应是？",
+                dimension: "消费习惯",
+                options: [
+                    { value: 0, text: "看到折扣就想买，不管是否需要" },
+                    { value: 1, text: "容易被吸引，经常买一些不太需要的东西" },
+                    { value: 2, text: "会比较原价和折扣，只买确实需要的" },
+                    { value: 3, text: "提前列好购物清单，只关注清单内商品的折扣" }
+                ]
+            },
+            {
+                id: 6,
+                text: "你每月在娱乐和社交上的开销占收入比例大约是？",
+                dimension: "消费习惯",
+                options: [
+                    { value: 0, text: "50%以上" },
+                    { value: 1, text: "30%-50%" },
+                    { value: 2, text: "15%-30%" },
+                    { value: 3, text: "15%以下" }
+                ]
+            },
+            {
+                id: 7,
+                text: "你是否有应急基金？",
+                dimension: "消费习惯",
+                options: [
+                    { value: 0, text: "没有，月月光" },
+                    { value: 1, text: "有一点，但不足一个月生活费" },
+                    { value: 2, text: "有3-6个月生活费的应急基金" },
+                    { value: 3, text: "有6个月以上生活费的应急基金，并定期补充" }
+                ]
+            },
+            {
+                id: 8,
+                text: "你如何看待分期付款购买商品？",
+                dimension: "消费习惯",
+                options: [
+                    { value: 0, text: "经常使用，即使利息很高" },
+                    { value: 1, text: "偶尔使用，不太关注利息" },
+                    { value: 2, text: "只在免息或低息时使用" },
+                    { value: 3, text: "尽量避免，除非是重大必要支出且利息合理" }
+                ]
+            },
+            {
+                id: 9,
+                text: "你是否会为未来的大额支出做准备？",
+                dimension: "消费习惯",
+                options: [
+                    { value: 0, text: "不会，到时候再说" },
+                    { value: 1, text: "偶尔会想，但没有实际计划" },
+                    { value: 2, text: "有计划，但执行不够严格" },
+                    { value: 3, text: "有详细计划，并按计划定期储蓄" }
+                ]
+            },
+            {
+                id: 10,
+                text: "你对奢侈品的态度是？",
+                dimension: "消费习惯",
+                options: [
+                    { value: 0, text: "喜欢就买，不考虑价格" },
+                    { value: 1, text: "偶尔购买，作为奖励" },
+                    { value: 2, text: "很少购买，认为性价比不高" },
+                    { value: 3, text: "几乎不买，更看重实用性" }
+                ]
+            },
+            {
+                id: 11,
+                text: "你如何规划每月的固定支出？",
+                dimension: "消费习惯",
+                options: [
+                    { value: 0, text: "没有规划，用到哪里算哪里" },
+                    { value: 1, text: "大致知道主要支出，但没有详细记录" },
+                    { value: 2, text: "有基本规划，但偶尔会超支" },
+                    { value: 3, text: "详细规划每一项支出，并严格控制在预算内" }
+                ]
+            },
+            {
+                id: 12,
+                text: "当你的收入增加时，你会如何调整消费？",
+                dimension: "消费习惯",
+                options: [
+                    { value: 0, text: "立即提高生活水平，增加消费" },
+                    { value: 1, text: "部分增加消费，部分储蓄" },
+                    { value: 2, text: "主要增加储蓄和投资，小幅提高消费" },
+                    { value: 3, text: "按照预设比例增加储蓄、投资和消费" }
+                ]
+            },
+            {
+                id: 13,
+                text: "你如何看待提前消费（如花呗、借呗等）？",
+                dimension: "消费习惯",
+                options: [
+                    { value: 0, text: "经常使用，方便快捷" },
+                    { value: 1, text: "偶尔使用，解决临时资金需求" },
+                    { value: 2, text: "谨慎使用，确保能按时还款" },
+                    { value: 3, text: "尽量避免，不喜欢负债消费" }
+                ]
+            },
+            {
+                id: 14,
+                text: "你是否会定期审视和优化自己的消费习惯？",
+                dimension: "消费习惯",
+                options: [
+                    { value: 0, text: "从不，觉得没必要" },
+                    { value: 1, text: "偶尔会想，但没有实际行动" },
+                    { value: 2, text: "有时会反思并调整一些明显的浪费" },
+                    { value: 3, text: "定期分析消费模式，持续优化支出结构" }
+                ]
+            },
+            
+            // 理财观念维度
+            {
+                id: 15,
+                text: "你认为理财的首要目标是什么？",
+                dimension: "理财观念",
+                options: [
+                    { value: 0, text: "赚更多钱，提高生活品质" },
+                    { value: 1, text: "保值增值，不让钱贬值" },
+                    { value: 2, text: "实现财务自由，减少工作压力" },
+                    { value: 3, text: "构建稳健的财务体系，应对各种风险" }
+                ]
+            },
+            {
+                id: 16,
+                text: "你如何看待风险和收益的关系？",
+                dimension: "理财观念",
+                options: [
+                    { value: 0, text: "只关注收益，风险无所谓" },
+                    { value: 1, text: "希望高收益，但有点担心风险" },
+                    { value: 2, text: "愿意承担适度风险以获取合理收益" },
+                    { value: 3, text: "安全第一，宁愿收益低也要保证本金安全" }
+                ]
+            },
+            {
+                id: 17,
+                text: "你是否了解复利的力量？",
+                dimension: "理财观念",
+                options: [
+                    { value: 0, text: "不了解，没听说过" },
+                    { value: 1, text: "听说过，但不太明白具体含义" },
+                    { value: 2, text: "大致了解，知道长期投资的重要性" },
+                    { value: 3, text: "非常了解，并积极利用复利进行长期投资" }
+                ]
+            },
+            {
+                id: 18,
+                text: "你认为什么时候开始理财最合适？",
+                dimension: "理财观念",
+                options: [
+                    { value: 0, text: "等有了很多钱之后" },
+                    { value: 1, text: "等收入稳定之后" },
+                    { value: 2, text: "现在就开始，无论收入多少" },
+                    { value: 3, text: "越早越好，最好从第一笔收入开始" }
+                ]
+            },
+            {
+                id: 19,
+                text: "你如何看待负债？",
+                dimension: "理财观念",
+                options: [
+                    { value: 0, text: "负债很正常，不用太在意" },
+                    { value: 1, text: "有点担心，但不知道如何管理" },
+                    { value: 2, text: "认为合理的负债可以接受，但要控制比例" },
+                    { value: 3, text: "尽量避免负债，除非是能带来收益的投资" }
+                ]
+            },
+            {
+                id: 20,
+                text: "你是否制定了长期的财务目标？",
+                dimension: "理财观念",
+                options: [
+                    { value: 0, text: "没有，过一天算一天" },
+                    { value: 1, text: "有一些模糊的想法，但没有具体计划" },
+                    { value: 2, text: "有明确的目标，但没有详细计划" },
+                    { value: 3, text: "有明确的目标和详细的实现计划" }
+                ]
+            },
+            {
+                id: 21,
+                text: "你如何看待投资多元化？",
+                dimension: "理财观念",
+                options: [
+                    { value: 0, text: "不了解，只知道把钱存在银行" },
+                    { value: 1, text: "听说过多元化重要，但不知道如何操作" },
+                    { value: 2, text: "有一些多元化投资，但不够系统" },
+                    { value: 3, text: "非常重视多元化，根据风险承受能力配置不同资产" }
+                ]
+            },
+            {
+                id: 22,
+                text: "你是否会定期学习理财知识？",
+                dimension: "理财观念",
+                options: [
+                    { value: 0, text: "不会，觉得理财很复杂" },
+                    { value: 1, text: "偶尔会看看相关文章，但不系统" },
+                    { value: 2, text: "会关注理财信息，学习一些基础知识" },
+                    { value: 3, text: "定期学习，参加课程，阅读专业书籍" }
+                ]
+            },
+            {
+                id: 23,
+                text: "你如何看待保险在理财中的作用？",
+                dimension: "理财观念",
+                options: [
+                    { value: 0, text: "没必要，浪费钱" },
+                    { value: 1, text: "有基本社保就够了" },
+                    { value: 2, text: "认为应该有一些基础商业保险" },
+                    { value: 3, text: "非常重要，是理财的基础，会根据需求配置全面保障" }
+                ]
+            },
+            {
+                id: 24,
+                text: "你对税务规划的了解程度如何？",
+                dimension: "理财观念",
+                options: [
+                    { value: 0, text: "完全不了解" },
+                    { value: 1, text: "知道一些基本概念，但不深入" },
+                    { value: 2, text: "了解一些合理避税方法，并尝试应用" },
+                    { value: 3, text: "深入了解税法，合理规划税务，最大化税后收入" }
+                ]
+            },
+            {
+                id: 25,
+                text: "你如何看待财务独立性？",
+                dimension: "理财观念",
+                options: [
+                    { value: 0, text: "不太在意，有需要时可以依赖他人" },
+                    { value: 1, text: "希望独立，但缺乏具体计划" },
+                    { value: 2, text: "正在努力实现财务独立" },
+                    { value: 3, text: "将财务独立视为重要目标，并积极采取行动" }
+                ]
+            },
+            {
+                id: 26,
+                text: "你认为理财规划应该多久更新一次？",
+                dimension: "理财观念",
+                options: [
+                    { value: 0, text: "从不需要更新" },
+                    { value: 1, text: "当发生重大变化时更新" },
+                    { value: 2, text: "每年更新一次" },
+                    { value: 3, text: "每季度更新，并根据市场变化灵活调整" }
+                ]
+            },
+            {
+                id: 27,
+                text: "你对不同投资工具的了解程度如何？",
+                dimension: "理财观念",
+                options: [
+                    { value: 0, text: "只知道储蓄，不了解其他投资工具" },
+                    { value: 1, text: "了解基本的投资工具，但不清楚具体操作" },
+                    { value: 2, text: "熟悉几种常用投资工具的特点和风险" },
+                    { value: 3, text: "深入了解多种投资工具，并能根据自身需求进行选择" }
+                ]
+            },
+            {
+                id: 28,
+                text: "你如何看待通货膨胀对财富的影响？",
+                dimension: "理财观念",
+                options: [
+                    { value: 0, text: "没考虑过，觉得影响不大" },
+                    { value: 1, text: "知道有影响，但不知道如何应对" },
+                    { value: 2, text: "尝试通过一些投资来抵御通胀" },
+                    { value: 3, text: "高度重视，积极寻找能跑赢通胀的投资渠道" }
+                ]
+            },
+            
+            // 风险承受能力维度
+            {
+                id: 29,
+                text: "如果你的投资在短期内下跌20%，你会怎么做？",
+                dimension: "风险承受能力",
+                options: [
+                    { value: 0, text: "立即全部卖出，避免进一步损失" },
+                    { value: 1, text: "卖出一部分，减少风险敞口" },
+                    { value: 2, text: "持有不动，等待市场回暖" },
+                    { value: 3, text: "视为买入机会，适当加仓" }
+                ]
+            },
+            {
+                id: 30,
+                text: "你更倾向于哪种投资方式？",
+                dimension: "风险承受能力",
+                options: [
+                    { value: 0, text: "银行存款、国债等极低风险产品" },
+                    { value: 1, text: "货币基金、固定收益类产品等低风险产品" },
+                    { value: 2, text: "混合基金、蓝筹股等中等风险产品" },
+                    { value: 3, text: "股票、期货、加密货币等高风险产品" }
+                ]
+            },
+            {
+                id: 31,
+                text: "你能接受的最大投资亏损比例是多少？",
+                dimension: "风险承受能力",
+                options: [
+                    { value: 0, text: "0%，不能接受任何亏损" },
+                    { value: 1, text: "10%以内" },
+                    { value: 2, text: "20%-30%" },
+                    { value: 3, text: "30%以上" }
+                ]
+            },
+            {
+                id: 32,
+                text: "你的投资期限偏好是？",
+                dimension: "风险承受能力",
+                options: [
+                    { value: 0, text: "短期（1年以内）" },
+                    { value: 1, text: "中短期（1-3年）" },
+                    { value: 2, text: "中长期（3-5年）" },
+                    { value: 3, text: "长期（5年以上）" }
+                ]
+            },
+            {
+                id: 33,
+                text: "当市场大幅波动时，你的情绪反应是？",
+                dimension: "风险承受能力",
+                options: [
+                    { value: 0, text: "非常焦虑，整夜难眠" },
+                    { value: 1, text: "有些担心，经常查看账户" },
+                    { value: 2, text: "保持冷静，偶尔关注" },
+                    { value: 3, text: "几乎不受影响，专注长期趋势" }
+                ]
+            },
+            {
+                id: 34,
+                text: "你更看重投资的哪个方面？",
+                dimension: "风险承受能力",
+                options: [
+                    { value: 0, text: "本金安全" },
+                    { value: 1, text: "稳定收益" },
+                    { value: 2, text: "资本增值" },
+                    { value: 3, text: "高回报潜力" }
+                ]
+            },
+            {
+                id: 35,
+                text: "你的收入来源稳定性如何？",
+                dimension: "风险承受能力",
+                options: [
+                    { value: 0, text: "非常不稳定，收入波动很大" },
+                    { value: 1, text: "不太稳定，有一定波动" },
+                    { value: 2, text: "相对稳定，偶尔有波动" },
+                    { value: 3, text: "非常稳定，几乎没有波动" }
+                ]
+            },
+            {
+                id: 36,
+                text: "你有多少可用于投资的流动资产？",
+                dimension: "风险承受能力",
+                options: [
+                    { value: 0, text: "很少，几乎没有" },
+                    { value: 1, text: "有一些，但不多" },
+                    { value: 2, text: "有一定数量，可以进行多样化投资" },
+                    { value: 3, text: "很多，可以承受较大风险" }
+                ]
+            },
+            {
+                id: 37,
+                text: "你对投资产品的了解程度如何？",
+                dimension: "风险承受能力",
+                options: [
+                    { value: 0, text: "几乎不了解，需要他人指导" },
+                    { value: 1, text: "了解一些基本概念和产品" },
+                    { value: 2, text: "比较了解，能独立分析和选择" },
+                    { value: 3, text: "非常了解，能进行深入分析和组合配置" }
+                ]
+            },
+            {
+                id: 38,
+                text: "你是否有备用金应对突发情况？",
+                dimension: "风险承受能力",
+                options: [
+                    { value: 0, text: "没有，需要时只能借钱" },
+                    { value: 1, text: "有一点，但不够全面" },
+                    { value: 2, text: "有足够的备用金应对一般情况" },
+                    { value: 3, text: "有充足的备用金和保险保障" }
+                ]
+            },
+            {
+                id: 39,
+                text: "你如何看待投资中的不确定性？",
+                dimension: "风险承受能力",
+                options: [
+                    { value: 0, text: "非常厌恶，希望完全确定" },
+                    { value: 1, text: "不太喜欢，尽量避免不确定的投资" },
+                    { value: 2, text: "可以接受一定程度的不确定性" },
+                    { value: 3, text: "将不确定性视为获取高回报的必要条件" }
+                ]
+            },
+            {
+                id: 40,
+                text: "你在做投资决策时的信心程度如何？",
+                dimension: "风险承受能力",
+                options: [
+                    { value: 0, text: "非常缺乏信心，需要他人决策" },
+                    { value: 1, text: "有些犹豫，容易受他人影响" },
+                    { value: 2, text: "有一定信心，但会参考专业意见" },
+                    { value: 3, text: "非常有信心，能独立做出决策" }
+                ]
+            }
+        ];
+
+        // 结果分析数据
+        const resultAnalysis = {
+            levels: [
+                {
+                    name: "财商启蒙期",
+                    range: [0, 40],
+                    description: "你对理财的认识还处于初步阶段，需要更多的学习和实践。",
+                    color: "#FF6B35"
+                },
+                {
+                    name: "财商发展期",
+                    range: [41, 60],
+                    description: "你已经有了一些理财意识，但还需要系统学习和实践。",
+                    color: "#F7931E"
+                },
+                {
+                    name: "财商成熟期",
+                    range: [61, 80],
+                    description: "你的财商水平不错，有良好的理财习惯和观念。",
+                    color: "#4CB9E7"
+                },
+                {
+                    name: "财商卓越期",
+                    range: [81, 100],
+                    description: "你的财商水平非常高，有系统的理财知识和丰富的实践经验。",
+                    color: "#3A86FF"
+                }
+            ],
+            dimensions: [
+                {
+                    name: "消费习惯",
+                    description: "评估你日常消费行为和资金管理的合理性。"
+                },
+                {
+                    name: "理财观念",
+                    description: "评估你对理财的基本认识和理解程度。"
+                },
+                {
+                    name: "风险承受能力",
+                    description: "评估你对投资风险的认知和心理承受能力。"
+                }
+            ]
+        };
+
+        // 提升建议数据
+        const improvementSuggestions = {
+            "财商启蒙期": [
+                "开始培养记账习惯，了解自己的收支情况",
+                "建立应急基金，至少存够3个月的生活费",
+                "学习基本的理财知识，如复利、资产配置等概念",
+                "控制消费欲望，避免冲动消费和过度负债",
+                "从低风险产品开始，如货币基金、国债等，逐步了解投资"
+            ],
+            "财商发展期": [
+                "完善记账系统，分析并优化支出结构",
+                "增加应急基金至6个月生活费",
+                "系统学习理财知识，参加课程或阅读专业书籍",
+                "制定明确的财务目标，并分解为可执行的计划",
+                "尝试多元化投资，合理配置不同风险等级的资产"
+            ],
+            "财商成熟期": [
+                "优化资产配置，根据市场变化适时调整",
+                "考虑更复杂的投资策略，如价值投资、指数投资等",
+                "学习税务规划知识，合法最大化税后收入",
+                "制定长期财务规划，包括退休、子女教育等",
+                "定期复盘投资组合表现，总结经验教训"
+            ],
+            "财商卓越期": [
+                "探索更高级的投资策略和工具",
+                "考虑创业或股权投资等更高回报的机会",
+                "建立家族财富传承计划",
+                "学习慈善和社会责任投资",
+                "分享经验，帮助他人提升财商"
+            ]
+        };
+
+        // DOM元素
+        const startTestBtn = document.getElementById('startTest');
+        const testContainer = document.getElementById('testContainer');
+        const questionContainer = document.getElementById('questionContainer');
+        const questionNumber = document.getElementById('questionNumber');
+        const questionText = document.getElementById('questionText');
+        const optionsContainer = document.getElementById('optionsContainer');
+        const prevButton = document.getElementById('prevButton');
+        const nextButton = document.getElementById('nextButton');
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+        const resultContainer = document.getElementById('resultContainer');
+        const resultCircle = document.getElementById('resultCircle');
+        const resultScore = document.getElementById('resultScore');
+        const resultLevel = document.getElementById('resultLevel');
+        const resultDetails = document.getElementById('resultDetails');
+        const improvementSuggestionsEl = document.getElementById('improvementSuggestions');
+        const restartTestBtn = document.getElementById('restartTest');
+
+        // 测试状态
+        let currentQuestionIndex = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        let dimensionScores = {
+            "消费习惯": 0,
+            "理财观念": 0,
+            "风险承受能力": 0
+        };
+        let dimensionCounts = {
+            "消费习惯": 0,
+            "理财观念": 0,
+            "风险承受能力": 0
+        };
+
+        // 开始测试
+        startTestBtn.addEventListener('click', () => {
+            testContainer.classList.remove('hidden');
+            startTestBtn.parentElement.parentElement.classList.add('hidden');
+            showQuestion(currentQuestionIndex);
+        });
+
+        // 显示当前问题
+        function showQuestion(index) {
+            const question = questions[index];
+            
+            // 更新问题信息
+            questionNumber.textContent = `问题 ${index + 1}/${questions.length}`;
+            questionText.textContent = question.text;
+            
+            // 清空选项容器
+            optionsContainer.innerHTML = '';
+            
+            // 添加选项
+            question.options.forEach((option, optionIndex) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'relative';
+                
+                const isSelected = userAnswers[index] === optionIndex;
+                
+                optionDiv.innerHTML = `
+                    <input type="radio" id="option${optionIndex}" name="question${index}" value="${optionIndex}" class="sr-only" ${isSelected ? 'checked' : ''}>
+                    <label for="option${optionIndex}" class="flex items-center w-full p-4 border rounded-lg cursor-pointer transition-all-300 ${isSelected ? 'border-primary bg-primary/5' : 'border-gray-200 hover:border-primary/30 hover:bg-primary/5'}">
+                        <div class="w-6 h-6 flex items-center justify-center mr-3 border-2 rounded-full ${isSelected ? 'border-primary' : 'border-gray-300'}">
+                            <div class="w-3 h-3 rounded-full ${isSelected ? 'bg-primary' : 'bg-transparent'}"></div>
+                        </div>
+                        <span>${option.text}</span>
+                    </label>
+                `;
+                
+                optionsContainer.appendChild(optionDiv);
+                
+                // 添加选项点击事件
+                optionDiv.querySelector('input').addEventListener('change', () => {
+                    userAnswers[index] = optionIndex;
+                    updateOptionsStyle();
+                });
+            });
+            
+            // 更新导航按钮状态
+            prevButton.classList.toggle('hidden', index === 0);
+            nextButton.textContent = index === questions.length - 1 ? '查看结果' : '下一题';
+            
+            // 更新进度条
+            updateProgressBar();
+        }
+
+        // 更新选项样式
+        function updateOptionsStyle() {
+            const options = optionsContainer.querySelectorAll('label');
+            options.forEach((option, index) => {
+                const input = option.previousElementSibling;
+                const radioOuter = option.querySelector('.w-6');
+                const radioInner = option.querySelector('.w-3');
+                
+                if (input.checked) {
+                    option.classList.add('border-primary', 'bg-primary/5');
+                    option.classList.remove('border-gray-200');
+                    radioOuter.classList.add('border-primary');
+                    radioOuter.classList.remove('border-gray-300');
+                    radioInner.classList.add('bg-primary');
+                    radioInner.classList.remove('bg-transparent');
+                } else {
+                    option.classList.remove('border-primary', 'bg-primary/5');
+                    option.classList.add('border-gray-200');
+                    radioOuter.classList.remove('border-primary');
+                    radioOuter.classList.add('border-gray-300');
+                    radioInner.classList.remove('bg-primary');
+                    radioInner.classList.add('bg-transparent');
+                }
+            });
+        }
+
+        // 更新进度条
+        function updateProgressBar() {
+            const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+            progressText.textContent = `${currentQuestionIndex + 1}/${questions.length}`;
+        }
+
+        // 上一题按钮点击事件
+        prevButton.addEventListener('click', () => {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                showQuestion(currentQuestionIndex);
+            }
+        });
+
+        // 下一题按钮点击事件
+        nextButton.addEventListener('click', () => {
+            // 检查是否选择了答案
+            if (userAnswers[currentQuestionIndex] === null) {
+                alert('请选择一个选项');
+                return;
+            }
+            
+            // 如果是最后一题，计算结果
+            if (currentQuestionIndex === questions.length - 1) {
+                calculateResults();
+                showResults();
+                return;
+            }
+            
+            // 否则显示下一题
+            currentQuestionIndex++;
+            showQuestion(currentQuestionIndex);
+        });
+
+        // 计算测试结果
+        function calculateResults() {
+            // 重置维度分数计数
+            Object.keys(dimensionScores).forEach(key => {
+                dimensionScores[key] = 0;
+                dimensionCounts[key] = 0;
+            });
+            
+            // 计算各维度得分
+            questions.forEach((question, index) => {
+                const dimension = question.dimension;
+                const answer = userAnswers[index];
+                const score = question.options[answer].value;
+                
+                dimensionScores[dimension] += score;
+                dimensionCounts[dimension]++;
+            });
+            
+            // 计算各维度百分比得分
+            Object.keys(dimensionScores).forEach(key => {
+                const maxScore = dimensionCounts[key] * 3; // 每题最高3分
+                dimensionScores[key] = Math.round((dimensionScores[key] / maxScore) * 100);
+            });
+            
+            // 计算总体得分
+            const totalScore = Math.round(
+                (dimensionScores["消费习惯"] + dimensionScores["理财观念"] + dimensionScores["风险承受能力"]) / 3
+            );
+            
+            return {
+                totalScore,
+                dimensions: dimensionScores
+            };
+        }
+
+        // 显示测试结果
+        function showResults() {
+            const results = calculateResults();
+            
+            // 隐藏测试容器，显示结果容器
+            testContainer.classList.add('hidden');
+            resultContainer.classList.remove('hidden');
+            
+            // 更新结果圆环
+            const circumference = 2 * Math.PI * 45;
+            const offset = circumference - (results.totalScore / 100) * circumference;
+            resultCircle.style.strokeDashoffset = offset;
+            
+            // 更新总分显示
+            resultScore.textContent = results.totalScore;
+            
+            // 确定财商水平
+            let level = resultAnalysis.levels[0];
+            for (const l of resultAnalysis.levels) {
+                if (results.totalScore >= l.range[0] && results.totalScore <= l.range[1]) {
+                    level = l;
+                    break;
+                }
+            }
+            
+            // 更新水平描述
+            resultLevel.innerHTML = `
+                <h3 class="text-2xl font-bold mb-2" style="color: ${level.color}">财商水平：${level.name}</h3>
+                <p class="text-gray-600">${level.description}</p>
+            `;
+            
+            // 更新各维度详情
+            resultDetails.innerHTML = '';
+            resultAnalysis.dimensions.forEach(dimension => {
+                const score = dimensionScores[dimension.name];
+                let status, statusColor;
+                
+                if (score < 40) {
+                    status = "需要提升";
+                    statusColor = "#FF6B35";
+                } else if (score < 70) {
+                    status = "良好";
+                    statusColor = "#F7931E";
+                } else {
+                    status = "优秀";
+                    statusColor = "#4CB9E7";
+                }
+                
+                const dimensionEl = document.createElement('div');
+                dimensionEl.className = 'bg-neutral rounded-lg p-4';
+                dimensionEl.innerHTML = `
+                    <div class="flex justify-between items-center mb-2">
+                        <h4 class="font-bold">${dimension.name}</h4>
+                        <span class="font-bold" style="color: ${statusColor}">${score}%</span>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-3">${dimension.description}</p>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div class="h-2 rounded-full transition-all duration-1000" style="width: ${score}%; background-color: ${statusColor}"></div>
+                    </div>
+                    <div class="mt-2 text-right">
+                        <span class="text-sm font-medium" style="color: ${statusColor}">${status}</span>
+                    </div>
+                `;
+                
+                resultDetails.appendChild(dimensionEl);
+            });
+            
+            // 更新提升建议
+            improvementSuggestionsEl.innerHTML = '';
+            const suggestions = improvementSuggestions[level.name];
+            suggestions.forEach(suggestion => {
+                const suggestionEl = document.createElement('div');
+                suggestionEl.className = 'flex items-start';
+                suggestionEl.innerHTML = `
+                    <i class="fa fa-check-circle text-primary mt-1 mr-2"></i>
+                    <p>${suggestion}</p>
+                `;
+                improvementSuggestionsEl.appendChild(suggestionEl);
+            });
+        }
+
+        // 重新测试按钮点击事件
+        restartTestBtn.addEventListener('click', () => {
+            // 重置测试状态
+            currentQuestionIndex = 0;
+            userAnswers = new Array(questions.length).fill(null);
+            
+            // 隐藏结果容器，显示测试容器
+            resultContainer.classList.add('hidden');
+            testContainer.classList.remove('hidden');
+            
+            // 重新开始测试
+            showQuestion(currentQuestionIndex);
+        });
+    </script>
+</body>
+</html>
