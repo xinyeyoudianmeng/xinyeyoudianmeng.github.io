@@ -1,0 +1,974 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>气质倾向测试 - 探索你的独特气质</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#6366f1',
+                        secondary: '#f43f5e',
+                        tertiary: '#10b981',
+                        quaternary: '#f59e0b',
+                        neutral: '#6b7280',
+                        light: '#f3f4f6',
+                        dark: '#1f2937'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-in': 'slideIn 0.5s ease-in-out',
+                        'pulse-light': 'pulseLight 2s infinite'
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' }
+                        },
+                        slideIn: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' }
+                        },
+                        pulseLight: {
+                            '0%, 100%': { opacity: '1' },
+                            '50%': { opacity: '0.7' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+            }
+            .card-hover {
+                @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+            }
+            .btn-primary {
+                @apply bg-primary text-white px-6 py-3 rounded-lg shadow-md hover:bg-opacity-90 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50;
+            }
+            .btn-secondary {
+                @apply bg-white text-primary border border-primary px-6 py-3 rounded-lg shadow-sm hover:bg-primary hover:text-white transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50;
+            }
+            .input-radio {
+                @apply w-5 h-5 text-primary focus:ring-primary border-gray-300 rounded-full;
+            }
+            .progress-bar {
+                @apply h-2 bg-gray-200 rounded-full overflow-hidden;
+            }
+            .progress-value {
+                @apply h-full bg-primary transition-all duration-500 ease-out;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <div class="min-h-screen flex flex-col">
+        <!-- 顶部导航 -->
+        <header class="bg-white shadow-sm">
+            <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+                <h1 class="text-2xl font-bold text-primary">
+                    <i class="fa fa-star-half-o mr-2"></i>气质倾向测试
+                </h1>
+                <div class="text-sm text-gray-500">
+                    <span id="current-question">0</span>/<span id="total-questions">20</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- 主要内容区 -->
+        <main class="flex-grow container mx-auto px-4 py-8">
+            <!-- 进度条 -->
+            <div class="mb-8">
+                <div class="progress-bar">
+                    <div id="progress-value" class="progress-value" style="width: 0%"></div>
+                </div>
+                <div class="flex justify-between text-xs text-gray-500 mt-1">
+                    <span>开始</span>
+                    <span>进行中</span>
+                    <span>完成</span>
+                </div>
+            </div>
+
+            <!-- 测试说明 -->
+            <div id="test-intro" class="bg-white rounded-xl shadow-md p-8 mb-8 animate-fade-in">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">欢迎参加气质倾向测试</h2>
+                <p class="text-gray-600 mb-6">
+                    本测试基于现代心理学研究，帮助你了解自己的气质倾向。请根据你的真实感受和行为方式回答以下问题，不要过多思考，选择最符合你的选项。
+                </p>
+                
+                <div class="bg-light rounded-lg p-6 mb-6 border-l-4 border-primary">
+                    <h3 class="font-bold text-gray-800 mb-2">测试说明：</h3>
+                    <ul class="list-disc list-inside text-gray-600 space-y-2">
+                        <li>测试包含20道题目，每道题有4个选项</li>
+                        <li>请根据你的真实情况选择最符合的选项</li>
+                        <li>测试完成后，你将获得详细的气质倾向分析</li>
+                        <li>测试结果仅供参考，非专业诊断工具</li>
+                    </ul>
+                </div>
+
+                <div class="bg-red-50 rounded-lg p-6 mb-6 border-l-4 border-red-400">
+                    <h3 class="font-bold text-red-700 mb-2">免责声明：</h3>
+                    <p class="text-red-600">
+                        本测试为原创设计，仅作为个人成长和自我认知的参考工具，不构成专业心理诊断或医疗建议。测试结果不能替代专业心理咨询师、心理医生或其他医疗专业人士的评估和建议。如有心理健康方面的困扰，请寻求专业人士的帮助。
+                    </p>
+                </div>
+
+                <button id="start-test" class="btn-primary w-full">
+                    开始测试
+                    <i class="fa fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+
+            <!-- 测试题目区域 -->
+            <div id="test-questions" class="hidden">
+                <div id="question-container" class="bg-white rounded-xl shadow-md p-8 mb-8 animate-slide-in">
+                    <h2 id="question-text" class="text-xl font-bold text-gray-800 mb-6"></h2>
+                    
+                    <div id="options-container" class="space-y-4">
+                        <!-- 选项将通过JavaScript动态生成 -->
+                    </div>
+                </div>
+
+                <div class="flex justify-between">
+                    <button id="prev-question" class="btn-secondary opacity-50 cursor-not-allowed" disabled>
+                        <i class="fa fa-arrow-left mr-2"></i>
+                        上一题
+                    </button>
+                    <button id="next-question" class="btn-primary">
+                        下一题
+                        <i class="fa fa-arrow-right ml-2"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 测试结果区域 -->
+            <div id="test-results" class="hidden">
+                <div class="bg-white rounded-xl shadow-md p-8 mb-8 animate-fade-in">
+                    <div class="text-center mb-8">
+                        <div class="inline-block p-4 rounded-full bg-primary bg-opacity-10 mb-4">
+                            <i class="fa fa-trophy text-4xl text-primary"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-gray-800">测试完成！</h2>
+                        <p class="text-gray-600">以下是你的气质倾向分析</p>
+                    </div>
+
+                    <!-- 结果概览 -->
+                    <div class="mb-8">
+                        <h3 class="text-lg font-bold text-gray-800 mb-4">气质倾向分布</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <canvas id="temperament-chart" height="250"></canvas>
+                            </div>
+                            <div>
+                                <div id="primary-trait" class="mb-6">
+                                    <h4 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-1">主导气质</h4>
+                                    <div class="flex items-center">
+                                        <div id="primary-trait-color" class="w-4 h-4 rounded-full mr-2"></div>
+                                        <span id="primary-trait-name" class="text-xl font-bold"></span>
+                                    </div>
+                                </div>
+                                
+                                <div class="space-y-4">
+                                    <div class="trait-bar">
+                                        <div class="flex justify-between mb-1">
+                                            <span class="text-sm font-medium text-gray-700">多血质 (活泼型)</span>
+                                            <span id="v-score" class="text-sm font-medium text-gray-700">0%</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div id="v-bar" class="progress-value bg-secondary" style="width: 0%"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="trait-bar">
+                                        <div class="flex justify-between mb-1">
+                                            <span class="text-sm font-medium text-gray-700">胆汁质 (兴奋型)</span>
+                                            <span id="t-score" class="text-sm font-medium text-gray-700">0%</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div id="t-bar" class="progress-value bg-primary" style="width: 0%"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="trait-bar">
+                                        <div class="flex justify-between mb-1">
+                                            <span class="text-sm font-medium text-gray-700">黏液质 (安静型)</span>
+                                            <span id="h-score" class="text-sm font-medium text-gray-700">0%</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div id="h-bar" class="progress-value bg-tertiary" style="width: 0%"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="trait-bar">
+                                        <div class="flex justify-between mb-1">
+                                            <span class="text-sm font-medium text-gray-700">抑郁质 (抑制型)</span>
+                                            <span id="d-score" class="text-sm font-medium text-gray-700">0%</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div id="d-bar" class="progress-value bg-quaternary" style="width: 0%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 详细解读 -->
+                    <div id="detailed-results" class="space-y-8">
+                        <!-- 主导气质详细描述 -->
+                        <div id="primary-trait-details" class="bg-light rounded-lg p-6 border-l-4 border-primary">
+                            <h3 class="text-xl font-bold text-gray-800 mb-4">你的主导气质：<span id="primary-trait-title"></span></h3>
+                            <p id="primary-trait-description" class="text-gray-600 mb-4"></p>
+                            
+                            <h4 class="font-bold text-gray-800 mb-2">主要特点：</h4>
+                            <ul id="primary-trait-strengths" class="list-disc list-inside text-gray-600 space-y-1 mb-4"></ul>
+                            
+                            <h4 class="font-bold text-gray-800 mb-2">潜在挑战：</h4>
+                            <ul id="primary-trait-challenges" class="list-disc list-inside text-gray-600 space-y-1"></ul>
+                        </div>
+
+                        <!-- 其他气质描述 -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div id="secondary-trait-details" class="bg-white rounded-lg p-6 shadow-sm border border-gray-100">
+                                <h3 class="text-lg font-bold text-gray-800 mb-3">次要气质</h3>
+                                <p id="secondary-trait-description" class="text-gray-600"></p>
+                            </div>
+                            
+                            <div id="balance-tips" class="bg-white rounded-lg p-6 shadow-sm border border-gray-100">
+                                <h3 class="text-lg font-bold text-gray-800 mb-3">平衡发展建议</h3>
+                                <ul id="balance-tips-list" class="list-disc list-inside text-gray-600 space-y-2"></ul>
+                            </div>
+                        </div>
+
+                        <!-- 人际关系建议 -->
+                        <div class="bg-white rounded-lg p-6 shadow-sm border border-gray-100">
+                            <h3 class="text-lg font-bold text-gray-800 mb-3">人际关系互动建议</h3>
+                            <p class="text-gray-600 mb-4">了解自己的气质类型，可以帮助你更好地理解他人，改善人际关系：</p>
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div class="p-4 bg-light rounded-lg">
+                                    <h4 class="font-bold text-secondary mb-2">与多血质相处</h4>
+                                    <p class="text-gray-600 text-sm">欣赏他们的活力和社交能力，给予他们表达的空间，理解他们可能缺乏持久性。</p>
+                                </div>
+                                
+                                <div class="p-4 bg-light rounded-lg">
+                                    <h4 class="font-bold text-primary mb-2">与胆汁质相处</h4>
+                                    <p class="text-gray-600 text-sm">理解他们的直率和冲动，给予明确的反馈，避免在他们情绪激动时与其争论。</p>
+                                </div>
+                                
+                                <div class="p-4 bg-light rounded-lg">
+                                    <h4 class="font-bold text-tertiary mb-2">与黏液质相处</h4>
+                                    <p class="text-gray-600 text-sm">尊重他们的稳重和耐心，给予充分的思考时间，避免催促或施加压力。</p>
+                                </div>
+                                
+                                <div class="p-4 bg-light rounded-lg">
+                                    <h4 class="font-bold text-quaternary mb-2">与抑郁质相处</h4>
+                                    <p class="text-gray-600 text-sm">理解他们的敏感和细腻，给予更多的关心和支持，避免直接批评或否定。</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 专业帮助提示 -->
+                        <div class="bg-blue-50 rounded-lg p-6 border-l-4 border-blue-400">
+                            <h3 class="font-bold text-blue-700 mb-2">寻求专业帮助</h3>
+                            <p class="text-blue-600">
+                                如果你对自己的心理状态或人际关系有更深层次的疑问，建议寻求专业心理咨询师或心理医生的帮助。专业人士可以提供更全面、个性化的评估和建议，帮助你更好地成长和发展。
+                            </p>
+                        </div>
+
+                        <!-- 原创声明 -->
+                        <div class="text-center text-sm text-gray-500 pt-4 border-t border-gray-200">
+                            <p>© 2025 气质倾向测试 | 原创设计 | 版权所有</p>
+                            <p class="mt-1">本测试内容为原创设计，未经授权不得复制或商用</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button id="restart-test" class="btn-primary">
+                        <i class="fa fa-refresh mr-2"></i>
+                        重新测试
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <script>
+        // 测试题目数据
+        const questions = [
+            {
+                id: 1,
+                text: "在社交场合中，你通常是怎样的？",
+                options: [
+                    { value: "V", text: "活泼开朗，主动与他人交流，喜欢成为焦点" },
+                    { value: "T", text: "热情直率，表达自己的观点，可能主导对话" },
+                    { value: "H", text: "安静沉稳，观察为主，很少主动交流" },
+                    { value: "D", text: "敏感谨慎， prefer一对一交流，避免成为焦点" }
+                ]
+            },
+            {
+                id: 2,
+                text: "当面对一个新任务时，你会如何开始？",
+                options: [
+                    { value: "V", text: "快速行动，边做边调整，充满热情" },
+                    { value: "T", text: "立即着手，有明确的目标和方向，行动果断" },
+                    { value: "H", text: "仔细规划，深思熟虑后再行动，确保准确" },
+                    { value: "D", text: "谨慎评估，考虑可能的困难，需要时间准备" }
+                ]
+            },
+            {
+                id: 3,
+                text: "当你的计划被打乱时，你的反应是？",
+                options: [
+                    { value: "V", text: "灵活调整，很快适应变化，寻找新的乐趣" },
+                    { value: "T", text: "可能感到烦躁，希望尽快恢复计划，行动迅速" },
+                    { value: "H", text: "保持冷静，慢慢调整，需要时间适应" },
+                    { value: "D", text: "感到不安，需要时间接受变化，可能情绪低落" }
+                ]
+            },
+            {
+                id: 4,
+                text: "在解决问题时，你更倾向于？",
+                options: [
+                    { value: "V", text: "提出多个想法，快速尝试不同的解决方案" },
+                    { value: "T", text: "直接指出问题，快速决策，采取行动" },
+                    { value: "H", text: "分析问题，制定详细计划，稳步解决" },
+                    { value: "D", text: "考虑各种可能性，担心可能的后果，谨慎决定" }
+                ]
+            },
+            {
+                id: 5,
+                text: "在团队合作中，你通常扮演什么角色？",
+                options: [
+                    { value: "V", text: "活跃气氛，促进团队交流，提出创意" },
+                    { value: "T", text: "主导讨论，推动决策，负责执行" },
+                    { value: "H", text: "默默工作，提供支持，确保质量" },
+                    { value: "D", text: "关注细节，提供建议，避免冲突" }
+                ]
+            },
+            {
+                id: 6,
+                text: "你如何处理压力和挑战？",
+                options: [
+                    { value: "V", text: "保持乐观，寻找积极面，寻求支持" },
+                    { value: "T", text: "直面挑战，坚持不懈，可能更加努力" },
+                    { value: "H", text: "保持冷静，按部就班，避免急躁" },
+                    { value: "D", text: "感到压力，需要时间调整，可能寻求安慰" }
+                ]
+            },
+            {
+                id: 7,
+                text: "在空闲时间，你更喜欢？",
+                options: [
+                    { value: "V", text: "参加社交活动，结识新朋友，尝试新事物" },
+                    { value: "T", text: "进行有挑战性的活动，如运动或竞赛" },
+                    { value: "H", text: "安静地阅读、学习或做自己喜欢的事情" },
+                    { value: "T", text: "与亲密的朋友或家人相处，享受安静时光" }
+                ]
+            },
+            {
+                id: 8,
+                text: "当你感到情绪激动时，你会如何表现？",
+                options: [
+                    { value: "V", text: "情绪外露，很快表达出来，但也容易平复" },
+                    { value: "T", text: "强烈表达，可能激动或冲动，需要时间冷静" },
+                    { value: "H", text: "情绪内敛，很少表露，保持平静" },
+                    { value: "D", text: "情绪深刻，可能长时间沉浸其中，不易平复" }
+                ]
+            },
+            {
+                id: 9,
+                text: "你如何看待规则和传统？",
+                options: [
+                    { value: "V", text: "灵活对待，认为规则可以根据情况调整" },
+                    { value: "T", text: "可能挑战规则，认为规则应服务于目标" },
+                    { value: "H", text: "尊重规则，倾向于遵守传统和既定流程" },
+                    { value: "D", text: "认真遵守规则，避免出错或违反规定" }
+                ]
+            },
+            {
+                id: 10,
+                text: "在学习新事物时，你更喜欢？",
+                options: [
+                    { value: "V", text: "通过实践和互动学习，喜欢多样化的方式" },
+                    { value: "T", text: "快速掌握要点，直接应用，喜欢挑战" },
+                    { value: "H", text: "系统学习，循序渐进，确保理解透彻" },
+                    { value: "D", text: "深入学习，关注细节，反复巩固" }
+                ]
+            },
+            {
+                id: 11,
+                text: "当他人与你意见不同时，你会？",
+                options: [
+                    { value: "V", text: "轻松讨论，寻找共同点，避免冲突" },
+                    { value: "T", text: "坚持自己的观点，可能激烈辩论，试图说服对方" },
+                    { value: "H", text: "倾听对方，保持中立，避免争论" },
+                    { value: "D", text: "可能感到不安，避免冲突，倾向于妥协" }
+                ]
+            },
+            {
+                id: 12,
+                text: "你对自己的工作或任务有什么要求？",
+                options: [
+                    { value: "V", text: "喜欢多样化，追求创新和变化" },
+                    { value: "T", text: "追求效率和结果，希望快速完成" },
+                    { value: "H", text: "注重质量和准确性，稳步完成" },
+                    { value: "D", text: "追求完美，关注细节，避免错误" }
+                ]
+            },
+            {
+                id: 13,
+                text: "你如何处理日常的例行事务？",
+                options: [
+                    { value: "V", text: "可能感到无聊，喜欢变化和新鲜感" },
+                    { value: "T", text: "高效完成，可能寻求更快捷的方式" },
+                    { value: "H", text: "按部就班，习惯例行程序，保持稳定" },
+                    { value: "D", text: "认真完成，确保每个细节都正确" }
+                ]
+            },
+            {
+                id: 14,
+                text: "你如何看待冒险和风险？",
+                options: [
+                    { value: "V", text: "愿意尝试新事物，享受刺激和变化" },
+                    { value: "T", text: "接受挑战，愿意承担风险，追求目标" },
+                    { value: "H", text: "倾向于安全和稳定，避免不必要的风险" },
+                    { value: "D", text: "谨慎对待风险，可能担心负面结果" }
+                ]
+            },
+            {
+                id: 15,
+                text: "在时间管理上，你通常？",
+                options: [
+                    { value: "V", text: "灵活安排，可能同时处理多项任务" },
+                    { value: "T", text: "注重效率，设定明确目标，快速完成" },
+                    { value: "H", text: "按计划行事，喜欢有条不紊，避免匆忙" },
+                    { value: "D", text: "可能过于谨慎，花费更多时间确保准确" }
+                ]
+            },
+            {
+                id: 16,
+                text: "你如何表达自己的情感和需求？",
+                options: [
+                    { value: "V", text: "直接表达，情感丰富，善于沟通" },
+                    { value: "T", text: "坦率表达，可能直接提出要求，不拐弯抹角" },
+                    { value: "H", text: "很少直接表达，可能隐藏自己的需求" },
+                    { value: "D", text: "可能含蓄表达，担心被拒绝或不被理解" }
+                ]
+            },
+            {
+                id: 17,
+                text: "你如何适应新环境或新人际关系？",
+                options: [
+                    { value: "V", text: "快速适应，很快融入，结交新朋友" },
+                    { value: "T", text: "主动适应，可能尝试影响环境或他人" },
+                    { value: "H", text: "需要时间适应，逐渐熟悉，保持稳定" },
+                    { value: "D", text: "可能感到不安，需要更多时间和支持" }
+                ]
+            },
+            {
+                id: 18,
+                text: "你如何看待他人的批评或反馈？",
+                options: [
+                    { value: "V", text: "轻松接受，很快调整，不放在心上" },
+                    { value: "T", text: "可能情绪反应强烈，但过后也容易释怀" },
+                    { value: "H", text: "认真考虑，默默改进，很少反驳" },
+                    { value: "D", text: "可能过度在意，需要时间消化，容易受伤" }
+                ]
+            },
+            {
+                id: 19,
+                text: "你在团队中的决策风格是？",
+                options: [
+                    { value: "V", text: "喜欢参与讨论，提出创意，灵活调整" },
+                    { value: "T", text: "倾向于快速决策，可能主导讨论和决定" },
+                    { value: "H", text: "喜欢集体决策，尊重他人意见，避免冲突" },
+                    { value: "D", text: "可能谨慎发言，担心自己的意见不被重视" }
+                ]
+            },
+            {
+                id: 20,
+                text: "你如何看待生活中的变化和不确定性？",
+                options: [
+                    { value: "V", text: "接受变化，甚至享受不确定性带来的新鲜感" },
+                    { value: "T", text: "可能试图控制变化，寻找确定性和方向" },
+                    { value: "H", text: "偏好稳定和可预测性，避免过多变化" },
+                    { value: "D", text: "可能感到不安，需要更多安全感和确定性" }
+                ]
+            }
+        ];
+
+        // 气质类型数据
+        const temperamentTypes = {
+            V: {
+                name: "多血质",
+                title: "活泼开朗的社交者",
+                color: "#f43f5e",
+                description: "你属于多血质（活泼型）气质，这是一种以活泼好动、反应迅速、善于交际为主要特征的气质类型。你神经活动强、平衡且灵活，能够快速适应新环境和新人际关系。你的情绪外露且体验较浅，开心或难过都来得快去得也快，不易长久沉浸在某种情绪中。",
+                strengths: [
+                    "活泼开朗，善于与人交流和建立关系",
+                    "反应迅速，思维敏捷，表达能力强",
+                    "适应能力强，能快速融入新环境",
+                    "情绪积极乐观，很少长时间陷入负面情绪",
+                    "兴趣广泛，充满好奇心和探索欲"
+                ],
+                challenges: [
+                    "注意力容易分散，难以长时间专注于一件事",
+                    "兴趣广泛但易转移，做事可能虎头蛇尾",
+                    "情绪波动较大，可能不够稳定",
+                    "可能缺乏耐心和持久性，遇到困难容易放弃",
+                    "思考可能不够深入，做事有时不够细致"
+                ]
+            },
+            T: {
+                name: "胆汁质",
+                title: "热情直率的行动者",
+                color: "#6366f1",
+                description: "你属于胆汁质（兴奋型）气质，这是一种以精力旺盛、直率热情、情绪强烈为主要特征的气质类型。你神经活动强但不平衡，具有不可遏制的特点。你行动力强，做事果断，有魄力，敢于冒险，但也可能脾气急躁，情绪波动较大。",
+                strengths: [
+                    "精力充沛，行动果断，有魄力",
+                    "直率坦诚，表达直接，不拐弯抹角",
+                    "敢于冒险，适合应对紧急任务和挑战",
+                    "目标明确，执行力强，能够快速行动",
+                    "情绪表达真实，不掩饰自己的想法和感受"
+                ],
+                challenges: [
+                    "情绪波动较大，容易冲动或暴怒",
+                    "缺乏耐心，遇到不顺心的事可能当场发作",
+                    "思考可能不够深入，容易凭冲动做决定",
+                    "可能过于直接，忽视他人的感受",
+                    "需要学会控制情绪，避免因冲动而做出后悔的决定"
+                ]
+            },
+            H: {
+                name: "黏液质",
+                title: "稳重踏实的思考者",
+                color: "#10b981",
+                description: "你属于黏液质（安静型）气质，这是一种以安静稳重、反应缓慢、情绪内敛为主要特征的气质类型。你神经活动强、平衡但不灵活，具有安静型神经活动的特点。你做事慢条斯理，深思熟虑，不易出错，有耐心，能长期坚持做一件事，但也可能适应新环境较慢。",
+                strengths: [
+                    "稳重踏实，做事认真负责，有耐心",
+                    "情绪稳定，很少大喜大悲，给人沉稳靠谱的感觉",
+                    "深思熟虑，决策谨慎，很少出错",
+                    "有毅力，能够长期坚持做一件事",
+                    "善于倾听，思维严谨，注重细节"
+                ],
+                challenges: [
+                    "反应较慢，适应新环境需要较长时间",
+                    "思维灵活性较差，可能缺乏创新思维",
+                    "不善于交际，社交中较被动",
+                    "可能过于保守，不愿尝试新事物",
+                    "决策过程可能过于缓慢，错过机会"
+                ]
+            },
+            D: {
+                name: "抑郁质",
+                title: "敏感细腻的观察者",
+                color: "#f59e0b",
+                description: "你属于抑郁质（抑制型）气质，这是一种以敏感细腻、反应迟缓、情绪深刻且内敛为主要特征的气质类型。你神经活动弱，具有抑制型神经活动的特点。你内心体验极其丰富，观察力敏锐，能捕捉到他人忽略的细节，想象力丰富，但也可能情绪脆弱，易多愁善感。",
+                strengths: [
+                    "观察力敏锐，能注意到他人忽略的细节",
+                    "内心体验丰富，情感细腻，有同理心",
+                    "想象力丰富，创造力强，适合艺术创作",
+                    "做事谨慎、细心，注重质量",
+                    "善于思考，有深度，能够专注于自己感兴趣的领域"
+                ],
+                challenges: [
+                    "情绪脆弱，易多愁善感，受挫折后难以恢复",
+                    "社交中胆小、被动，害怕被拒绝，偏爱独处",
+                    "缺乏自信，可能过度在意他人评价",
+                    "决策时可能过于犹豫，担心出错",
+                    "需要更多的支持和鼓励，避免过大的压力"
+                ]
+            }
+        };
+
+        // 平衡发展建议
+        const balanceTips = {
+            V: [
+                "培养专注力和持久性，学会坚持完成任务",
+                "增强自我约束能力，避免冲动行事",
+                "提高深度思考能力，做事更加细致认真",
+                "学会管理时间和优先级，避免分心",
+                "培养情绪稳定性，避免过度波动"
+            ],
+            T: [
+                "学会控制情绪，避免冲动和暴怒",
+                "培养耐心，倾听他人意见，避免过于主观",
+                "提高决策的全面性，考虑更多因素",
+                "学会理解和关心他人感受，避免过于直接",
+                "培养放松和减压的能力，避免过度紧张"
+            ],
+            H: [
+                "提高适应能力，学会应对变化和挑战",
+                "增强创新思维，尝试新方法和新思路",
+                "改善社交能力，主动与人交流",
+                "提高决策速度，避免过度犹豫",
+                "学会表达自己的需求和想法，避免过度压抑"
+            ],
+            D: [
+                "增强自信心，相信自己的能力和价值",
+                "培养情绪韧性，学会应对挫折和压力",
+                "改善社交技能，增加与人互动的机会",
+                "提高决策能力，减少过度犹豫",
+                "学会放松和享受生活，避免过度担忧"
+            ]
+        };
+
+        // 次要气质描述
+        const secondaryTraitDescriptions = {
+            VT: "你兼具多血质的活泼和胆汁质的直率，既有社交能力又有行动力，能够灵活应对各种情况。",
+            VH: "你融合了多血质的开朗和黏液质的稳重，既有社交能力又有耐心，能够平衡活跃和沉稳。",
+            VD: "你结合了多血质的活泼和抑郁质的敏感，既有社交能力又有细腻的情感，能够理解他人并建立深层联系。",
+            TV: "你既有胆汁质的直率又有多血质的活泼，既有行动力又有社交能力，能够积极主动地影响环境。",
+            TH: "你兼具胆汁质的直率和黏液质的稳重，既有行动力又有耐心，能够坚定且持续地追求目标。",
+            TD: "你融合了胆汁质的直率和抑郁质的敏感，既有行动力又有细腻的情感，能够在坚持目标的同时理解他人。",
+            HV: "你既有黏液质的稳重又有多血质的活泼，既有耐心又有社交能力，能够在稳定中保持活力。",
+            HT: "你兼具黏液质的稳重和胆汁质的直率，既有耐心又有行动力，能够在深思熟虑后果断行动。",
+            HD: "你融合了黏液质的稳重和抑郁质的敏感，既有耐心又有细腻的情感，能够在稳定中关注细节和他人感受。",
+            DV: "你既有抑郁质的敏感又有多血质的活泼，既有细腻的情感又有社交能力，能够在理解他人的同时保持积极。",
+            DT: "你兼具抑郁质的敏感和胆汁质的直率，既有细腻的情感又有行动力，能够在关注细节的同时果断行动。",
+            DH: "你融合了抑郁质的敏感和黏液质的稳重，既有细腻的情感又有耐心，能够在深思熟虑中关注细节和他人感受。"
+        };
+
+        // DOM元素
+        const startTestBtn = document.getElementById('start-test');
+        const testIntro = document.getElementById('test-intro');
+        const testQuestions = document.getElementById('test-questions');
+        const testResults = document.getElementById('test-results');
+        const questionContainer = document.getElementById('question-container');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const prevQuestionBtn = document.getElementById('prev-question');
+        const nextQuestionBtn = document.getElementById('next-question');
+        const restartTestBtn = document.getElementById('restart-test');
+        const currentQuestionSpan = document.getElementById('current-question');
+        const totalQuestionsSpan = document.getElementById('total-questions');
+        const progressValue = document.getElementById('progress-value');
+
+        // 测试状态
+        let currentQuestionIndex = 0;
+        const userAnswers = {};
+        const scores = { V: 0, T: 0, H: 0, D: 0 };
+
+        // 初始化
+        totalQuestionsSpan.textContent = questions.length;
+
+        // 开始测试
+        startTestBtn.addEventListener('click', () => {
+            testIntro.classList.add('hidden');
+            testQuestions.classList.remove('hidden');
+            showQuestion(currentQuestionIndex);
+        });
+
+        // 显示问题
+        function showQuestion(index) {
+            const question = questions[index];
+            questionText.textContent = `${index + 1}. ${question.text}`;
+            optionsContainer.innerHTML = '';
+
+            question.options.forEach(option => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'flex items-center';
+                
+                const radioId = `question-${question.id}-option-${option.value}`;
+                const isChecked = userAnswers[question.id] === option.value;
+                
+                optionDiv.innerHTML = `
+                    <input type="radio" id="${radioId}" name="question-${question.id}" value="${option.value}" class="input-radio" ${isChecked ? 'checked' : ''}>
+                    <label for="${radioId}" class="ml-3 text-gray-700 hover:text-primary cursor-pointer flex-grow py-2">
+                        ${option.text}
+                    </label>
+                `;
+                
+                optionsContainer.appendChild(optionDiv);
+
+                // 添加选项点击事件
+                const radio = optionDiv.querySelector('input[type="radio"]');
+                radio.addEventListener('change', () => {
+                    userAnswers[question.id] = option.value;
+                    
+                    // 如果是最后一题，启用下一题按钮
+                    if (currentQuestionIndex === questions.length - 1) {
+                        nextQuestionBtn.textContent = '查看结果';
+                        nextQuestionBtn.innerHTML = '查看结果 <i class="fa fa-check ml-2"></i>';
+                    }
+                });
+            });
+
+            // 更新当前问题索引
+            currentQuestionSpan.textContent = index + 1;
+            
+            // 更新进度条
+            const progressPercentage = ((index + 1) / questions.length) * 100;
+            progressValue.style.width = `${progressPercentage}%`;
+            
+            // 更新导航按钮状态
+            prevQuestionBtn.disabled = index === 0;
+            prevQuestionBtn.classList.toggle('opacity-50', index === 0);
+            prevQuestionBtn.classList.toggle('cursor-not-allowed', index === 0);
+            
+            // 如果是最后一题且已回答，更改按钮文本
+            if (index === questions.length - 1 && userAnswers[questions[index].id]) {
+                nextQuestionBtn.innerHTML = '查看结果 <i class="fa fa-check ml-2"></i>';
+            } else {
+                nextQuestionBtn.innerHTML = '下一题 <i class="fa fa-arrow-right ml-2"></i>';
+            }
+            
+            // 滚动到顶部
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 上一题按钮
+        prevQuestionBtn.addEventListener('click', () => {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                showQuestion(currentQuestionIndex);
+            }
+        });
+
+        // 下一题按钮
+        nextQuestionBtn.addEventListener('click', () => {
+            // 检查是否已回答当前问题
+            if (!userAnswers[questions[currentQuestionIndex].id]) {
+                alert('请选择一个选项');
+                return;
+            }
+            
+            // 如果是最后一题，显示结果
+            if (currentQuestionIndex === questions.length - 1) {
+                calculateResults();
+                showResults();
+            } else {
+                currentQuestionIndex++;
+                showQuestion(currentQuestionIndex);
+            }
+        });
+
+        // 计算结果
+        function calculateResults() {
+            // 重置分数
+            scores.V = 0;
+            scores.T = 0;
+            scores.H = 0;
+            scores.D = 0;
+            
+            // 计算各类型得分
+            for (const questionId in userAnswers) {
+                const answer = userAnswers[questionId];
+                scores[answer]++;
+            }
+            
+            // 计算百分比
+            const totalAnswers = Object.values(scores).reduce((sum, score) => sum + score, 0);
+            for (const type in scores) {
+                scores[type] = Math.round((scores[type] / totalAnswers) * 100);
+            }
+        }
+
+        // 显示结果
+        function showResults() {
+            testQuestions.classList.add('hidden');
+            testResults.classList.remove('hidden');
+            
+            // 找出得分最高的类型
+            let primaryType = 'V';
+            let maxScore = scores.V;
+            
+            for (const type in scores) {
+                if (scores[type] > maxScore) {
+                    maxScore = scores[type];
+                    primaryType = type;
+                }
+            }
+            
+            // 找出得分第二高的类型
+            let secondaryType = '';
+            let secondMaxScore = 0;
+            
+            for (const type in scores) {
+                if (type !== primaryType && scores[type] > secondMaxScore) {
+                    secondMaxScore = scores[type];
+                    secondaryType = type;
+                }
+            }
+            
+            // 更新分数显示
+            document.getElementById('v-score').textContent = `${scores.V}%`;
+            document.getElementById('t-score').textContent = `${scores.T}%`;
+            document.getElementById('h-score').textContent = `${scores.H}%`;
+            document.getElementById('d-score').textContent = `${scores.D}%`;
+            
+            // 更新进度条
+            document.getElementById('v-bar').style.width = `${scores.V}%`;
+            document.getElementById('t-bar').style.width = `${scores.T}%`;
+            document.getElementById('h-bar').style.width = `${scores.H}%`;
+            document.getElementById('d-bar').style.width = `${scores.D}%`;
+            
+            // 更新主导气质信息
+            const primaryTemperament = temperamentTypes[primaryType];
+            document.getElementById('primary-trait-name').textContent = primaryTemperament.name;
+            document.getElementById('primary-trait-color').style.backgroundColor = primaryTemperament.color;
+            document.getElementById('primary-trait-title').textContent = primaryTemperament.title;
+            document.getElementById('primary-trait-description').textContent = primaryTemperament.description;
+            
+            // 更新主导气质特点
+            const strengthsList = document.getElementById('primary-trait-strengths');
+            strengthsList.innerHTML = '';
+            primaryTemperament.strengths.forEach(strength => {
+                const li = document.createElement('li');
+                li.textContent = strength;
+                strengthsList.appendChild(li);
+            });
+            
+            // 更新主导气质挑战
+            const challengesList = document.getElementById('primary-trait-challenges');
+            challengesList.innerHTML = '';
+            primaryTemperament.challenges.forEach(challenge => {
+                const li = document.createElement('li');
+                li.textContent = challenge;
+                challengesList.appendChild(li);
+            });
+            
+            // 更新次要气质信息
+            const secondaryTraitKey = primaryType + secondaryType;
+            const secondaryDescription = secondaryTraitDescriptions[secondaryTraitKey] || 
+                                        `你的次要气质是${temperamentTypes[secondaryType].name}，这为你的主导气质增添了丰富的层次。`;
+            document.getElementById('secondary-trait-description').textContent = secondaryDescription;
+            
+            // 更新平衡发展建议
+            const balanceTipsList = document.getElementById('balance-tips-list');
+            balanceTipsList.innerHTML = '';
+            balanceTips[primaryType].forEach(tip => {
+                const li = document.createElement('li');
+                li.textContent = tip;
+                balanceTipsList.appendChild(li);
+            });
+            
+            // 创建图表
+            createChart(primaryType);
+            
+            // 滚动到顶部
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // 创建图表
+        function createChart(primaryType) {
+            const ctx = document.getElementById('temperament-chart').getContext('2d');
+            
+            // 设置图表颜色
+            const backgroundColors = [
+                scores.V > 0 ? temperamentTypes.V.color + 'CC' : 'rgba(0, 0, 0, 0.1)',
+                scores.T > 0 ? temperamentTypes.T.color + 'CC' : 'rgba(0, 0, 0, 0.1)',
+                scores.H > 0 ? temperamentTypes.H.color + 'CC' : 'rgba(0, 0, 0, 0.1)',
+                scores.D > 0 ? temperamentTypes.D.color + 'CC' : 'rgba(0, 0, 0, 0.1)'
+            ];
+            
+            const borderColors = [
+                scores.V > 0 ? temperamentTypes.V.color : 'rgba(0, 0, 0, 0.2)',
+                scores.T > 0 ? temperamentTypes.T.color : 'rgba(0, 0, 0, 0.2)',
+                scores.H > 0 ? temperamentTypes.H.color : 'rgba(0, 0, 0, 0.2)',
+                scores.D > 0 ? temperamentTypes.D.color : 'rgba(0, 0, 0, 0.2)'
+            ];
+            
+            // 创建图表
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['多血质 (活泼型)', '胆汁质 (兴奋型)', '黏液质 (安静型)', '抑郁质 (抑制型)'],
+                    datasets: [{
+                        label: '气质倾向',
+                        data: [scores.V, scores.T, scores.H, scores.D],
+                        backgroundColor: backgroundColors,
+                        borderColor: borderColors,
+                        borderWidth: 2,
+                        pointBackgroundColor: borderColors,
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: borderColors
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                stepSize: 20,
+                                backdropColor: 'transparent'
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            },
+                            angleLines: {
+                                color: 'rgba(0, 0, 0, 0.1)'
+                            },
+                            pointLabels: {
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `得分: ${context.raw}%`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // 重新测试
+        restartTestBtn.addEventListener('click', () => {
+            // 重置状态
+            currentQuestionIndex = 0;
+            Object.keys(userAnswers).forEach(key => delete userAnswers[key]);
+            scores.V = 0;
+            scores.T = 0;
+            scores.H = 0;
+            scores.D = 0;
+            
+            // 重置UI
+            testResults.classList.add('hidden');
+            testQuestions.classList.remove('hidden');
+            showQuestion(currentQuestionIndex);
+        });
+
+        // 添加键盘导航支持
+        document.addEventListener('keydown', (e) => {
+            if (testQuestions.classList.contains('hidden')) return;
+            
+            if (e.key === 'ArrowLeft') {
+                if (currentQuestionIndex > 0) {
+                    prevQuestionBtn.click();
+                }
+            } else if (e.key === 'ArrowRight') {
+                if (currentQuestionIndex < questions.length - 1 || userAnswers[questions[currentQuestionIndex].id]) {
+                    nextQuestionBtn.click();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
