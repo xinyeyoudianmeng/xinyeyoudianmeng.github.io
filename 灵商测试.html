@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>灵商(SQ)测试 - 探索你的精神智慧</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#8a4fff',
+                        secondary: '#64b5f6',
+                        tertiary: '#f5f5dc',
+                        accent: '#ff9e80',
+                        light: '#f8f9fa',
+                        dark: '#495057'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-in': 'slideIn 0.5s ease-in-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideIn: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+            }
+            .card-hover {
+                transition: all 0.3s ease;
+            }
+            .card-hover:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            }
+            .progress-bar {
+                transition: width 0.5s ease-in-out;
+            }
+            .option-hover:hover {
+                background-color: rgba(138, 79, 255, 0.1);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-tertiary to-light min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <!-- 标题区域 -->
+        <header class="text-center mb-8 animate-fade-in">
+            <h1 class="text-4xl md:text-5xl font-bold text-primary mb-4 text-shadow">灵商测试 (SQ Test)</h1>
+            <p class="text-lg text-dark max-w-2xl mx-auto">探索你的精神觉知、直觉智慧与内在联结能力，发现更完整的自己</p>
+        </header>
+
+        <!-- 主内容区域 -->
+        <main>
+            <!-- 开始页面 -->
+            <section id="start-section" class="bg-white rounded-xl shadow-lg p-8 mb-8 animate-fade-in">
+                <div class="mb-6">
+                    <h2 class="text-2xl font-semibold text-primary mb-4">什么是灵商？</h2>
+                    <p class="text-dark mb-4">灵商（SQ，Spiritual Quotient）是衡量个人精神觉知、直觉智慧、生命感悟及内在联结能力的核心指标，聚焦超越理性逻辑和情绪感知的深层精神维度。</p>
+                    <p class="text-dark">本测试从六大核心维度评估你的灵商水平，帮助你了解自己的精神智慧状态，为个人成长提供参考。</p>
+                </div>
+
+                <div class="mb-8">
+                    <h3 class="text-xl font-semibold text-primary mb-3">测试说明</h3>
+                    <ul class="list-disc pl-6 space-y-2 text-dark">
+                        <li>测试包含24道题目，覆盖六大灵商核心维度</li>
+                        <li>每道题请根据你的真实情况选择最符合的选项</li>
+                        <li>测试完成后，你将获得详细的灵商评估报告</li>
+                        <li>测试时间约为10-15分钟，请在安静的环境中完成</li>
+                    </ul>
+                </div>
+
+                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-8">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i class="fa fa-exclamation-triangle text-yellow-400"></i>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-yellow-700">
+                                <strong class="font-medium">免责声明：</strong> 本测试为非专业诊断工具，结果仅供参考，不构成任何形式的医疗或心理咨询建议。测试目的是促进自我认知与个人成长，而非替代专业的心理健康服务。如有精神健康需求，请寻求专业人士帮助。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button id="start-test-btn" class="bg-primary hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-full transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50">
+                        开始测试
+                    </button>
+                </div>
+            </section>
+
+            <!-- 测试页面 -->
+            <section id="test-section" class="hidden bg-white rounded-xl shadow-lg p-8 mb-8 animate-fade-in">
+                <!-- 进度条 -->
+                <div class="mb-6">
+                    <div class="flex justify-between text-sm text-dark mb-1">
+                        <span>进度</span>
+                        <span id="progress-text">1/24</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2.5">
+                        <div id="progress-bar" class="bg-primary h-2.5 rounded-full progress-bar" style="width: 4.17%"></div>
+                    </div>
+                </div>
+
+                <!-- 题目区域 -->
+                <div id="question-container" class="mb-8 animate-slide-in">
+                    <h3 id="question-category" class="text-sm font-medium text-secondary mb-2">自我觉知</h3>
+                    <h2 id="question-text" class="text-2xl font-semibold text-dark mb-6">当面对外界的期待和评价时，我能够清晰分辨出哪些是真正符合我内心需求的，哪些是为了迎合他人。</h2>
+                    
+                    <div id="options-container" class="space-y-3">
+                        <div class="option-hover rounded-lg p-4 border border-gray-200 cursor-pointer" data-score="1">
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center mr-3">
+                                    <span class="font-medium">1</span>
+                                </div>
+                                <div>
+                                    <p class="font-medium">完全不符合</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="option-hover rounded-lg p-4 border border-gray-200 cursor-pointer" data-score="2">
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center mr-3">
+                                    <span class="font-medium">2</span>
+                                </div>
+                                <div>
+                                    <p class="font-medium">不太符合</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="option-hover rounded-lg p-4 border border-gray-200 cursor-pointer" data-score="3">
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center mr-3">
+                                    <span class="font-medium">3</span>
+                                </div>
+                                <div>
+                                    <p class="font-medium">一般</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="option-hover rounded-lg p-4 border border-gray-200 cursor-pointer" data-score="4">
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center mr-3">
+                                    <span class="font-medium">4</span>
+                                </div>
+                                <div>
+                                    <p class="font-medium">比较符合</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="option-hover rounded-lg p-4 border border-gray-200 cursor-pointer" data-score="5">
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center mr-3">
+                                    <span class="font-medium">5</span>
+                                </div>
+                                <div>
+                                    <p class="font-medium">完全符合</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 导航按钮 -->
+                <div class="flex justify-between">
+                    <button id="prev-btn" class="hidden bg-gray-200 hover:bg-gray-300 text-dark font-medium py-2 px-6 rounded-lg transition duration-300 ease-in-out">
+                        <i class="fa fa-arrow-left mr-2"></i>上一题
+                    </button>
+                    <div class="ml-auto">
+                        <button id="next-btn" class="bg-primary hover:bg-purple-700 text-white font-medium py-2 px-6 rounded-lg transition duration-300 ease-in-out">
+                            下一题<i class="fa fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 结果页面 -->
+            <section id="result-section" class="hidden bg-white rounded-xl shadow-lg p-8 mb-8 animate-fade-in">
+                <h2 class="text-2xl font-bold text-primary mb-6 text-center">你的灵商评估报告</h2>
+                
+                <!-- 总体评分 -->
+                <div class="mb-8 text-center">
+                    <div class="inline-block relative">
+                        <svg class="w-48 h-48" viewBox="0 0 100 100">
+                            <circle cx="50" cy="50" r="45" fill="none" stroke="#e6e6e6" stroke-width="8"></circle>
+                            <circle id="total-score-circle" cx="50" cy="50" r="45" fill="none" stroke="#8a4fff" stroke-width="8" stroke-dasharray="283" stroke-dashoffset="141.5" transform="rotate(-90 50 50)"></circle>
+                        </svg>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center">
+                            <span class="text-4xl font-bold text-primary" id="total-score">120</span>
+                            <span class="text-sm text-dark">总分</span>
+                        </div>
+                    </div>
+                    <p class="mt-4 text-lg font-medium text-dark" id="total-rating">灵商水平：中等</p>
+                </div>
+
+                <!-- 各维度评分 -->
+                <div class="mb-8">
+                    <h3 class="text-xl font-semibold text-primary mb-4">六大维度分析</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- 自我觉知 -->
+                        <div class="bg-light rounded-lg p-5 card-hover">
+                            <div class="flex justify-between items-center mb-3">
+                                <h4 class="font-semibold text-dark">自我觉知</h4>
+                                <span class="text-primary font-bold" id="self-awareness-score">20</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5 mb-3">
+                                <div id="self-awareness-bar" class="bg-primary h-2.5 rounded-full" style="width: 80%"></div>
+                            </div>
+                            <p class="text-sm text-dark" id="self-awareness-desc">你对自己的内心需求和精神追求有较清晰的认知，能够在一定程度上分辨外界期待与真实自我的区别。</p>
+                        </div>
+                        
+                        <!-- 直觉洞察 -->
+                        <div class="bg-light rounded-lg p-5 card-hover">
+                            <div class="flex justify-between items-center mb-3">
+                                <h4 class="font-semibold text-dark">直觉洞察</h4>
+                                <span class="text-primary font-bold" id="intuition-score">20</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5 mb-3">
+                                <div id="intuition-bar" class="bg-primary h-2.5 rounded-full" style="width: 80%"></div>
+                            </div>
+                            <p class="text-sm text-dark" id="intuition-desc">你在面对复杂问题时，能够依靠直觉把握关键信息，有时会有豁然开朗的顿悟体验。</p>
+                        </div>
+                        
+                        <!-- 生命觉知 -->
+                        <div class="bg-light rounded-lg p-5 card-hover">
+                            <div class="flex justify-between items-center mb-3">
+                                <h4 class="font-semibold text-dark">生命觉知</h4>
+                                <span class="text-primary font-bold" id="life-awareness-score">20</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5 mb-3">
+                                <div id="life-awareness-bar" class="bg-primary h-2.5 rounded-full" style="width: 80%"></div>
+                            </div>
+                            <p class="text-sm text-dark" id="life-awareness-desc">你对生命的意义和价值有一定的思考，能够在日常生活中发现美好与意义，但有时也会感到迷茫。</p>
+                        </div>
+                        
+                        <!-- 精神韧性 -->
+                        <div class="bg-light rounded-lg p-5 card-hover">
+                            <div class="flex justify-between items-center mb-3">
+                                <h4 class="font-semibold text-dark">精神韧性</h4>
+                                <span class="text-primary font-bold" id="resilience-score">20</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5 mb-3">
+                                <div id="resilience-bar" class="bg-primary h-2.5 rounded-full" style="width: 80%"></div>
+                            </div>
+                            <p class="text-sm text-dark" id="resilience-desc">在面对困难和挫折时，你能够从精神层面找到一定的支撑，但在重大打击面前有时仍会感到无力。</p>
+                        </div>
+                        
+                        <!-- 深度联结 -->
+                        <div class="bg-light rounded-lg p-5 card-hover">
+                            <div class="flex justify-between items-center mb-3">
+                                <h4 class="font-semibold text-dark">深度联结</h4>
+                                <span class="text-primary font-bold" id="connection-score">20</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5 mb-3">
+                                <div id="connection-bar" class="bg-primary h-2.5 rounded-full" style="width: 80%"></div>
+                            </div>
+                            <p class="text-sm text-dark" id="connection-desc">你能够与他人建立一定程度的情感共鸣，也能感受到自然的美好，但深度联结的体验相对有限。</p>
+                        </div>
+                        
+                        <!-- 价值觉醒与践行 -->
+                        <div class="bg-light rounded-lg p-5 card-hover">
+                            <div class="flex justify-between items-center mb-3">
+                                <h4 class="font-semibold text-dark">价值觉醒与践行</h4>
+                                <span class="text-primary font-bold" id="values-score">20</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5 mb-3">
+                                <div id="values-bar" class="bg-primary h-2.5 rounded-full" style="width: 80%"></div>
+                            </div>
+                            <p class="text-sm text-dark" id="values-desc">你对自己的核心价值观有一定认识，并在某些情况下能够坚持自己的原则，但在面对现实压力时有时会妥协。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 综合评价 -->
+                <div class="mb-8">
+                    <h3 class="text-xl font-semibold text-primary mb-4">综合评价</h3>
+                    <div class="bg-light rounded-lg p-6" id="comprehensive-evaluation">
+                        <p class="text-dark">根据你的测试结果，你的灵商水平处于中等范围。你在某些维度上表现较好，而在其他维度上还有提升空间。这是一个非常正常的状态，因为灵商是可以通过有意识的练习和成长来提升的。</p>
+                        <p class="text-dark mt-3">你的优势在于能够在一定程度上觉察自己的内心需求，并在面对问题时运用直觉。建议你可以通过冥想、反思、阅读哲学或灵性书籍等方式，进一步提升自己的灵商水平。</p>
+                    </div>
+                </div>
+
+                <!-- 提升建议 -->
+                <div class="mb-8">
+                    <h3 class="text-xl font-semibold text-primary mb-4">灵商提升建议</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-light rounded-lg p-5">
+                            <h4 class="font-semibold text-dark mb-2">日常练习</h4>
+                            <ul class="list-disc pl-5 space-y-1 text-sm text-dark">
+                                <li>每天花10-15分钟进行冥想或深呼吸练习</li>
+                                <li>写日记记录自己的情绪、想法和感悟</li>
+                                <li>定期进行自我反思，审视自己的价值观和行为</li>
+                                <li>培养正念意识，专注于当下的体验</li>
+                            </ul>
+                        </div>
+                        <div class="bg-light rounded-lg p-5">
+                            <h4 class="font-semibold text-dark mb-2">深度探索</h4>
+                            <ul class="list-disc pl-5 space-y-1 text-sm text-dark">
+                                <li>阅读哲学、心理学或灵性成长相关书籍</li>
+                                <li>参加心灵成长工作坊或课程</li>
+                                <li>与志同道合的朋友进行深度交流</li>
+                                <li>亲近自然，感受大自然的智慧和力量</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 免责声明 -->
+                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-8">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i class="fa fa-exclamation-triangle text-yellow-400"></i>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-yellow-700">
+                                <strong class="font-medium">免责声明：</strong> 本测试结果仅供参考，不构成任何形式的医疗或心理咨询建议。灵商测试的目的是促进自我认知与个人成长，而非替代专业的心理健康服务。如有精神健康需求，请寻求专业心理咨询师或精神科医生的帮助。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 原创声明 -->
+                <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-8">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i class="fa fa-info-circle text-blue-400"></i>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-blue-700">
+                                <strong class="font-medium">原创声明：</strong> 本灵商测试及其评估体系为原创内容，受著作权保护。未经授权，不得以任何形式复制、传播或用于商业用途。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button id="restart-btn" class="bg-primary hover:bg-purple-700 text-white font-bold py-3 px-8 rounded-full transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-opacity-50">
+                        重新测试
+                    </button>
+                    <p class="mt-4 text-sm text-gray-500">如需更深入的个人成长指导，建议寻求专业心理咨询师的帮助</p>
+                </div>
+            </section>
+        </main>
+
+        <!-- 页脚 -->
+        <footer class="text-center text-sm text-gray-500 mt-12">
+            <p>© 2025 灵商测试 - 探索内在智慧，提升生命品质</p>
+            <p class="mt-1">本测试内容为原创，仅供个人成长参考，不构成专业诊断</p>
+        </footer>
+    </div>
+
+    <script>
+        // 测试题目数据
+        const questions = [
+            // 自我觉知
+            {
+                category: "自我觉知",
+                text: "当面对外界的期待和评价时，我能够清晰分辨出哪些是真正符合我内心需求的，哪些是为了迎合他人。",
+                dimension: "self-awareness"
+            },
+            {
+                category: "自我觉知",
+                text: "我能够觉察到自己的情绪变化和思维模式，并理解它们背后的原因。",
+                dimension: "self-awareness"
+            },
+            {
+                category: "自我觉知",
+                text: "在独处时，我能够与自己的内心进行对话，找到平静与答案。",
+                dimension: "self-awareness"
+            },
+            {
+                category: "自我觉知",
+                text: "我清楚地知道自己的核心价值观和人生目标，不会轻易被外界因素干扰。",
+                dimension: "self-awareness"
+            },
+            
+            // 直觉洞察
+            {
+                category: "直觉洞察",
+                text: "面对复杂问题时，我常常能够凭直觉快速把握关键信息，做出准确判断。",
+                dimension: "intuition"
+            },
+            {
+                category: "直觉洞察",
+                text: "在学习或思考过程中，我经常会有'豁然开朗'的顿悟体验。",
+                dimension: "intuition"
+            },
+            {
+                category: "直觉洞察",
+                text: "我能够感知到他人未明说的想法或情绪，即使没有明确的证据。",
+                dimension: "intuition"
+            },
+            {
+                category: "直觉洞察",
+                text: "当理性分析陷入僵局时，我会依靠直觉寻找新的解决路径。",
+                dimension: "intuition"
+            },
+            
+            // 生命觉知
+            {
+                category: "生命觉知",
+                text: "我对生命的意义和存在价值有深入的思考和理解。",
+                dimension: "life-awareness"
+            },
+            {
+                category: "生命觉知",
+                text: "我能够从日常生活的小事中发现美好和意义，不感到生活枯燥乏味。",
+                dimension: "life-awareness"
+            },
+            {
+                category: "生命觉知",
+                text: "我尊重所有生命的存在价值，包括动物和植物。",
+                dimension: "life-awareness"
+            },
+            {
+                category: "生命觉知",
+                text: "面对生活中的得失成败，我能够以平和的心态接受，不偏执于结果。",
+                dimension: "life-awareness"
+            },
+            
+            // 精神韧性
+            {
+                category: "精神韧性",
+                text: "在面对重大挫折或困境时，我能够从精神层面找到支撑自己的力量。",
+                dimension: "resilience"
+            },
+            {
+                category: "精神韧性",
+                text: "即使在长期压力下，我也能保持自己的精神底线和价值准则。",
+                dimension: "resilience"
+            },
+            {
+                category: "精神韧性",
+                text: "遭遇不公或困难时，我能够保持内心的平和与善良，不被负面情绪控制。",
+                dimension: "resilience"
+            },
+            {
+                category: "精神韧性",
+                text: "我相信困难和挑战是成长的机会，能够从逆境中学习和成长。",
+                dimension: "resilience"
+            },
+            
+            // 深度联结
+            {
+                category: "深度联结",
+                text: "我能够真正理解他人的内心世界和情感需求，不仅仅是表面的情绪。",
+                dimension: "connection"
+            },
+            {
+                category: "深度联结",
+                text: "在与自然接触时，我会产生一种深刻的联结感和归属感。",
+                dimension: "connection"
+            },
+            {
+                category: "深度联结",
+                text: "我重视与他人建立真诚的灵魂交流，而非仅仅是表面的社交。",
+                dimension: "connection"
+            },
+            {
+                category: "深度联结",
+                text: "我对不同文化、信仰和价值观持有开放和包容的态度。",
+                dimension: "connection"
+            },
+            
+            // 价值觉醒与践行
+            {
+                category: "价值觉醒与践行",
+                text: "我清楚地知道自己的人生终极价值和使命，并以此为生活的导向。",
+                dimension: "values"
+            },
+            {
+                category: "价值觉醒与践行",
+                text: "在面对物质诱惑或世俗标准时，我能够坚持自己的精神追求。",
+                dimension: "values"
+            },
+            {
+                category: "价值觉醒与践行",
+                text: "我会在日常生活中践行自己的价值观，做到言行一致。",
+                dimension: "values"
+            },
+            {
+                category: "价值觉醒与践行",
+                text: "为了实现自己的生命价值，我愿意做出必要的牺牲和取舍。",
+                dimension: "values"
+            }
+        ];
+
+        // 结果解读数据
+        const resultInterpretations = {
+            // 总体评分解读
+            total: {
+                low: {
+                    range: [24, 60],
+                    rating: "灵商水平：初步发展",
+                    description: "你的灵商处于初步发展阶段，对精神层面的觉知和探索相对有限。这可能意味着你目前更关注外在世界和物质层面的追求，而较少关注内心世界。这是一个正常的状态，也是一个很好的起点。"
+                },
+                medium: {
+                    range: [61, 90],
+                    rating: "灵商水平：中等",
+                    description: "你的灵商水平处于中等范围。你在某些维度上已有一定的觉知和发展，而在其他维度上还有提升空间。这是大多数人的状态，说明你已经开始关注自己的精神世界，但仍有成长的空间。"
+                },
+                high: {
+                    range: [91, 120],
+                    rating: "灵商水平：较高",
+                    description: "你的灵商水平较高，表明你在精神觉知、直觉智慧和内在联结方面有较好的发展。你能够超越表面现象，深入理解事物的本质和意义，也能够与自己的内心保持连接。这是一种宝贵的能力，可以帮助你在生活中获得更多的智慧和满足。"
+                }
+            },
+            
+            // 各维度评分解读
+            dimensions: {
+                "self-awareness": {
+                    low: {
+                        range: [4, 10],
+                        description: "你对自己的内心需求和真实感受的觉知较为有限，可能经常受到外界评价和期待的影响。建议你多花时间独处和反思，尝试分辨'他人期待的你'和'真实的你'之间的区别。"
+                    },
+                    medium: {
+                        range: [11, 15],
+                        description: "你对自己的内心需求和精神追求有一定的认知，能够在某些情况下分辨外界期待与真实自我的区别。建议你通过冥想、写日记等方式，进一步提升自我觉知的能力。"
+                    },
+                    high: {
+                        range: [16, 20],
+                        description: "你具有较强的自我觉知能力，能够清晰地认识自己的内心需求、价值观和精神追求。你不容易被外界的评价和期待所左右，能够保持自己的独立性和真实性。这是灵商的重要基础。"
+                    }
+                },
+                
+                "intuition": {
+                    low: {
+                        range: [4, 10],
+                        description: "你在面对问题时主要依靠理性分析，对直觉的信任和运用相对有限。建议你尝试在一些日常决策中关注自己的第一感觉，逐渐培养对直觉的敏感度。"
+                    },
+                    medium: {
+                        range: [11, 15],
+                        description: "你在面对复杂问题时，能够在一定程度上依靠直觉把握关键信息，有时会有豁然开朗的顿悟体验。建议你通过冥想、艺术创作等方式，进一步开发自己的直觉能力。"
+                    },
+                    high: {
+                        range: [16, 20],
+                        description: "你具有较强的直觉洞察能力，能够超越理性分析，直接把握事物的本质和规律。你的顿悟和灵感经常能够为你提供解决问题的新视角和方法。这是灵商的核心能力之一。"
+                    }
+                },
+                
+                "life-awareness": {
+                    low: {
+                        range: [4, 10],
+                        description: "你对生命的意义和存在价值的思考较为有限，可能更多关注日常生活的具体事务。建议你尝试阅读一些哲学、生命教育相关的书籍，或者参加一些关于生命意义的讨论和活动。"
+                    },
+                    medium: {
+                        range: [11, 15],
+                        description: "你对生命的意义和价值有一定的思考，能够在日常生活中发现一些美好与意义，但有时也会感到迷茫。建议你通过亲近自然、帮助他人等方式，进一步探索生命的意义。"
+                    },
+                    high: {
+                        range: [16, 20],
+                        description: "你对生命的本质和意义有深入的理解和感悟，能够在平凡的生活中发现深刻的价值和美好。你尊重所有生命的存在，对生活持有感恩和敬畏的态度。这是灵商的重要体现。"
+                    }
+                },
+                
+                "resilience": {
+                    low: {
+                        range: [4, 10],
+                        description: "在面对困难和挫折时，你可能更多地感受到压力和痛苦，较难从精神层面找到支撑。建议你尝试建立自己的精神信仰或价值观体系，为自己提供面对逆境的内在力量。"
+                    },
+                    medium: {
+                        range: [11, 15],
+                        description: "在面对困难和挫折时，你能够从精神层面找到一定的支撑，但在重大打击面前有时仍会感到无力。建议你通过回顾自己过去的成功经验，或者寻求他人的支持和指导，进一步增强自己的精神韧性。"
+                    },
+                    high: {
+                        range: [16, 20],
+                        description: "你具有很强的精神韧性，即使在面对重大挫折和困境时，也能够从精神层面找到支撑自己的力量。你相信困难是成长的机会，能够在逆境中保持内心的平和与坚定。这是灵商的重要保障。"
+                    }
+                },
+                
+                "connection": {
+                    low: {
+                        range: [4, 10],
+                        description: "你与他人、自然和世界的联结较为表面，较少体验到深度的共鸣和融合。建议你尝试减少评判，增加倾听和理解，培养对他人和自然的同理心和关爱。"
+                    },
+                    medium: {
+                        range: [11, 15],
+                        description: "你能够与他人建立一定程度的情感共鸣，也能感受到自然的美好，但深度联结的体验相对有限。建议你尝试一些促进深度连接的活动，如真诚的交流、志愿服务、自然冥想等。"
+                    },
+                    high: {
+                        range: [16, 20],
+                        description: "你具有较强的深度联结能力，能够与他人、自然和世界建立超越表面的精神连接。你能够真正理解他人的内心世界，也能感受到与自然的和谐统一。这是灵商的重要表现。"
+                    }
+                },
+                
+                "values": {
+                    low: {
+                        range: [4, 10],
+                        description: "你对自己的核心价值观和人生终极目标的认识较为模糊，在面对选择时可能更多地考虑外界因素而非内在价值。建议你尝试通过反思和探索，明确自己真正重视的价值和想要的生活方式。"
+                    },
+                    medium: {
+                        range: [11, 15],
+                        description: "你对自己的核心价值观有一定认识，并在某些情况下能够坚持自己的原则，但在面对现实压力时有时会妥协。建议你通过设定明确的价值导向目标，并制定具体的行动计划，进一步将价值观落实到生活中。"
+                    },
+                    high: {
+                        range: [16, 20],
+                        description: "你对自己的人生终极价值有清晰的认识，并能够以这些价值为导向生活。你在面对选择时能够坚持自己的原则，即使这意味着要付出一定的代价。这是灵商的最终落脚点。"
+                    }
+                }
+            }
+        };
+
+        // 应用状态
+        let currentQuestionIndex = 0;
+        const userAnswers = [];
+        const dimensionScores = {
+            "self-awareness": 0,
+            "intuition": 0,
+            "life-awareness": 0,
+            "resilience": 0,
+            "connection": 0,
+            "values": 0
+        };
+        const dimensionCounts = {
+            "self-awareness": 4,
+            "intuition": 4,
+            "life-awareness": 4,
+            "resilience": 4,
+            "connection": 4,
+            "values": 4
+        };
+
+        // DOM 元素
+        const startSection = document.getElementById('start-section');
+        const testSection = document.getElementById('test-section');
+        const resultSection = document.getElementById('result-section');
+        
+        const startTestBtn = document.getElementById('start-test-btn');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        
+        const questionCategory = document.getElementById('question-category');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const options = optionsContainer.querySelectorAll('.option-hover');
+
+        // 初始化测试
+        function initTest() {
+            currentQuestionIndex = 0;
+            userAnswers.length = 0;
+            Object.keys(dimensionScores).forEach(key => {
+                dimensionScores[key] = 0;
+            });
+            showQuestion(0);
+        }
+
+        // 显示当前问题
+        function showQuestion(index) {
+            const question = questions[index];
+            questionCategory.textContent = question.category;
+            questionText.textContent = question.text;
+            
+            // 更新进度
+            const progress = ((index + 1) / questions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+            progressText.textContent = `${index + 1}/${questions.length}`;
+            
+            // 重置选项状态
+            options.forEach(option => {
+                option.classList.remove('bg-primary', 'bg-opacity-10', 'border-primary');
+                const scoreSpan = option.querySelector('.w-8');
+                scoreSpan.classList.remove('bg-primary', 'text-white');
+                scoreSpan.classList.add('bg-gray-200');
+                
+                // 恢复已选择的选项
+                if (userAnswers[index] && option.dataset.score == userAnswers[index]) {
+                    option.classList.add('bg-primary', 'bg-opacity-10', 'border-primary');
+                    scoreSpan.classList.remove('bg-gray-200');
+                    scoreSpan.classList.add('bg-primary', 'text-white');
+                }
+            });
+            
+            // 更新导航按钮状态
+            prevBtn.classList.toggle('hidden', index === 0);
+            nextBtn.textContent = index === questions.length - 1 ? '提交测试' : '下一题';
+            nextBtn.innerHTML = index === questions.length - 1 ? '提交测试<i class="fa fa-check ml-2"></i>' : '下一题<i class="fa fa-arrow-right ml-2"></i>';
+        }
+
+        // 计算测试结果
+        function calculateResults() {
+            // 计算各维度得分
+            questions.forEach((question, index) => {
+                const dimension = question.dimension;
+                dimensionScores[dimension] += parseInt(userAnswers[index]) || 0;
+            });
+            
+            // 计算总分
+            const totalScore = Object.values(dimensionScores).reduce((sum, score) => sum + score, 0);
+            
+            // 更新结果页面
+            updateResultPage(totalScore);
+        }
+
+        // 更新结果页面
+        function updateResultPage(totalScore) {
+            // 更新总分
+            document.getElementById('total-score').textContent = totalScore;
+            
+            // 更新总分评级和描述
+            let totalRating, totalDesc;
+            if (totalScore <= resultInterpretations.total.low.range[1]) {
+                totalRating = resultInterpretations.total.low.rating;
+                totalDesc = resultInterpretations.total.low.description;
+            } else if (totalScore <= resultInterpretations.total.medium.range[1]) {
+                totalRating = resultInterpretations.total.medium.rating;
+                totalDesc = resultInterpretations.total.medium.description;
+            } else {
+                totalRating = resultInterpretations.total.high.rating;
+                totalDesc = resultInterpretations.total.high.description;
+            }
+            document.getElementById('total-rating').textContent = totalRating;
+            
+            // 更新总分圆环
+            const circle = document.getElementById('total-score-circle');
+            const circumference = 2 * Math.PI * 45;
+            const offset = circumference - (totalScore / 120) * circumference;
+            circle.style.strokeDasharray = circumference;
+            circle.style.strokeDashoffset = offset;
+            
+            // 更新各维度结果
+            Object.keys(dimensionScores).forEach(dimension => {
+                const score = dimensionScores[dimension];
+                const maxScore = dimensionCounts[dimension] * 5;
+                const percentage = (score / maxScore) * 100;
+                
+                // 更新分数和进度条
+                document.getElementById(`${dimension}-score`).textContent = score;
+                document.getElementById(`${dimension}-bar`).style.width = `${percentage}%`;
+                
+                // 更新描述
+                let desc;
+                if (score <= resultInterpretations.dimensions[dimension].low.range[1]) {
+                    desc = resultInterpretations.dimensions[dimension].low.description;
+                } else if (score <= resultInterpretations.dimensions[dimension].medium.range[1]) {
+                    desc = resultInterpretations.dimensions[dimension].medium.description;
+                } else {
+                    desc = resultInterpretations.dimensions[dimension].high.description;
+                }
+                document.getElementById(`${dimension}-desc`).textContent = desc;
+            });
+            
+            // 更新综合评价
+            document.getElementById('comprehensive-evaluation').innerHTML = `
+                <p class="text-dark">${totalDesc}</p>
+                <p class="text-dark mt-3">你在${getStrongestDimension()}方面表现较好，而在${getWeakestDimension()}方面还有提升空间。建议你可以通过冥想、反思、阅读哲学或灵性书籍等方式，进一步提升自己的灵商水平。</p>
+            `;
+        }
+
+        // 获取最强维度
+        function getStrongestDimension() {
+            let maxScore = 0;
+            let strongestDimension = "";
+            
+            Object.keys(dimensionScores).forEach(dimension => {
+                const score = dimensionScores[dimension];
+                const avgScore = score / dimensionCounts[dimension];
+                
+                if (avgScore > maxScore) {
+                    maxScore = avgScore;
+                    strongestDimension = dimension;
+                }
+            });
+            
+            // 转换为中文名称
+            const dimensionNames = {
+                "self-awareness": "自我觉知",
+                "intuition": "直觉洞察",
+                "life-awareness": "生命觉知",
+                "resilience": "精神韧性",
+                "connection": "深度联结",
+                "values": "价值觉醒与践行"
+            };
+            
+            return dimensionNames[strongestDimension];
+        }
+
+        // 获取最弱维度
+        function getWeakestDimension() {
+            let minScore = Infinity;
+            let weakestDimension = "";
+            
+            Object.keys(dimensionScores).forEach(dimension => {
+                const score = dimensionScores[dimension];
+                const avgScore = score / dimensionCounts[dimension];
+                
+                if (avgScore < minScore) {
+                    minScore = avgScore;
+                    weakestDimension = dimension;
+                }
+            });
+            
+            // 转换为中文名称
+            const dimensionNames = {
+                "self-awareness": "自我觉知",
+                "intuition": "直觉洞察",
+                "life-awareness": "生命觉知",
+                "resilience": "精神韧性",
+                "connection": "深度联结",
+                "values": "价值觉醒与践行"
+            };
+            
+            return dimensionNames[weakestDimension];
+        }
+
+        // 事件监听器
+        startTestBtn.addEventListener('click', () => {
+            startSection.classList.add('hidden');
+            testSection.classList.remove('hidden');
+            initTest();
+        });
+
+        options.forEach(option => {
+            option.addEventListener('click', () => {
+                // 移除其他选项的选中状态
+                options.forEach(opt => {
+                    opt.classList.remove('bg-primary', 'bg-opacity-10', 'border-primary');
+                    const scoreSpan = opt.querySelector('.w-8');
+                    scoreSpan.classList.remove('bg-primary', 'text-white');
+                    scoreSpan.classList.add('bg-gray-200');
+                });
+                
+                // 设置当前选项为选中状态
+                option.classList.add('bg-primary', 'bg-opacity-10', 'border-primary');
+                const scoreSpan = option.querySelector('.w-8');
+                scoreSpan.classList.remove('bg-gray-200');
+                scoreSpan.classList.add('bg-primary', 'text-white');
+                
+                // 保存用户选择
+                userAnswers[currentQuestionIndex] = option.dataset.score;
+            });
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                showQuestion(currentQuestionIndex);
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            // 检查是否已选择答案
+            if (!userAnswers[currentQuestionIndex]) {
+                alert('请选择一个选项');
+                return;
+            }
+            
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                showQuestion(currentQuestionIndex);
+            } else {
+                // 提交测试
+                calculateResults();
+                testSection.classList.add('hidden');
+                resultSection.classList.remove('hidden');
+            }
+        });
+
+        restartBtn.addEventListener('click', () => {
+            resultSection.classList.add('hidden');
+            startSection.classList.remove('hidden');
+            initTest();
+        });
+    </script>
+</body>
+</html>
