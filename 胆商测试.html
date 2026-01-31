@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>胆商(DQ)测试 - 勇气与理性的平衡</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4F46E5',
+                        secondary: '#10B981',
+                        accent: '#F59E0B',
+                        dark: '#1F2937',
+                        light: '#F3F4F6'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+            }
+            .card-hover {
+                transition: all 0.3s ease;
+            }
+            .card-hover:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- 顶部导航 -->
+    <header class="bg-white shadow-md">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fa fa-bolt text-primary text-2xl"></i>
+                <h1 class="text-xl font-bold text-dark">胆商测试</h1>
+            </div>
+            <div class="text-sm text-gray-600">
+                <span id="progress-text">0/20 题</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主内容区 -->
+    <main class="container mx-auto px-4 py-8 max-w-3xl">
+        <!-- 开始页面 -->
+        <section id="start-section" class="bg-white rounded-xl shadow-lg p-8 mb-8">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-dark mb-4">胆商(DQ)测试</h2>
+                <p class="text-gray-600 mb-6">探索你面对风险、压力和挑战时的勇气与决断力</p>
+                <div class="w-20 h-1 bg-primary mx-auto mb-6"></div>
+                <p class="text-gray-700">本测试包含20道题目，涵盖胆商的五大核心维度，帮助你了解自己的胆商水平。</p>
+            </div>
+
+            <!-- 胆商介绍 -->
+            <div class="mb-8">
+                <h3 class="text-xl font-semibold text-dark mb-4">什么是胆商？</h3>
+                <p class="text-gray-700 mb-4">胆商(DQ, Daring Quotient)是衡量个人面对风险、压力、挑战时的勇气、决断力和抗挫能力的核心指标，核心聚焦"敢想敢做的魄力 + 理性抉择的智慧"，并非单纯的鲁莽冲动。</p>
+                
+                <h4 class="font-semibold text-dark mt-6 mb-3">五大核心维度：</h4>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="bg-light rounded-lg p-4 card-hover">
+                        <h5 class="font-medium text-primary mb-2">1. 勇气魄力</h5>
+                        <p class="text-sm text-gray-600">面对未知、挑战和压力时的敢为之心，突破自我设限、敢于尝试的基础能力。</p>
+                    </div>
+                    <div class="bg-light rounded-lg p-4 card-hover">
+                        <h5 class="font-medium text-primary mb-2">2. 决断能力</h5>
+                        <p class="text-sm text-gray-600">在信息不充分、选择多元、风险并存的情况下，快速分析、果断决策的能力。</p>
+                    </div>
+                    <div class="bg-light rounded-lg p-4 card-hover">
+                        <h5 class="font-medium text-primary mb-2">3. 风险把控</h5>
+                        <p class="text-sm text-gray-600">对潜在风险的识别、评估和应对能力，做到"勇而有谋"，而非盲目冒进。</p>
+                    </div>
+                    <div class="bg-light rounded-lg p-4 card-hover">
+                        <h5 class="font-medium text-primary mb-2">4. 抗压抗挫</h5>
+                        <p class="text-sm text-gray-600">面对压力、失败、挫折时的心理承受能力和恢复能力，具备"越挫越勇"的韧性。</p>
+                    </div>
+                    <div class="bg-light rounded-lg p-4 card-hover md:col-span-2">
+                        <h5 class="font-medium text-primary mb-2">5. 格局视野</h5>
+                        <p class="text-sm text-gray-600">立足长远、放眼全局的认知格局和视野，是决定胆商高度的关键因素。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 免责声明 -->
+            <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-8">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <i class="fa fa-exclamation-triangle text-yellow-400"></i>
+                    </div>
+                    <div class="ml-3">
+                        <h3 class="text-sm font-medium text-yellow-800">免责声明</h3>
+                        <div class="mt-2 text-sm text-yellow-700">
+                            <p>本测试为原创非专业心理测评工具，仅供个人成长参考，不构成专业诊断或建议。测试结果不能替代专业心理咨询或医疗诊断。如有需要，请寻求专业人士帮助。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button id="start-test-btn" onclick="startTest()" class="bg-primary hover:bg-primary/90 text-white font-medium py-3 px-8 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 cursor-pointer active:scale-95">
+                    开始测试
+                </button>
+            </div>
+        </section>
+
+        <!-- 测试页面 -->
+        <section id="test-section" class="hidden bg-white rounded-xl shadow-lg p-8 mb-8">
+            <div class="mb-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold text-dark" id="question-number">问题 1/20</h2>
+                    <div class="text-sm text-gray-500" id="dimension-tag">勇气魄力</div>
+                </div>
+                <p class="text-lg text-gray-800 mb-6" id="question-text">当公司有一个重要项目需要负责人，你会主动争取吗？</p>
+            </div>
+
+            <div class="space-y-4 mb-8" id="options-container">
+                <!-- 选项将通过JS动态生成 -->
+            </div>
+
+            <div class="flex justify-between">
+                <button id="prev-btn" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium py-2 px-6 rounded-lg transition duration-300 hidden cursor-pointer active:scale-95">
+                    上一题
+                </button>
+                <button id="next-btn" class="bg-primary hover:bg-primary/90 text-white font-medium py-2 px-6 rounded-lg transition duration-300 cursor-pointer active:scale-95">
+                    下一题
+                </button>
+            </div>
+        </section>
+
+        <!-- 结果页面 -->
+        <section id="result-section" class="hidden bg-white rounded-xl shadow-lg p-8 mb-8">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-dark mb-2">测试结果</h2>
+                <p class="text-gray-600 mb-6">你的胆商分析报告</p>
+                <div class="w-20 h-1 bg-primary mx-auto mb-6"></div>
+            </div>
+
+            <!-- 总体得分 -->
+            <div class="text-center mb-10">
+                <div class="inline-block relative">
+                    <svg class="w-48 h-48" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="45" fill="none" stroke="#E5E7EB" stroke-width="10"></circle>
+                        <circle cx="50" cy="50" r="45" fill="none" stroke="#4F46E5" stroke-width="10" stroke-dasharray="283" stroke-dashoffset="70" id="result-circle"></circle>
+                    </svg>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <div>
+                            <span class="text-4xl font-bold text-dark" id="total-score">75</span>
+                            <span class="text-xl text-gray-500">/100</span>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="text-2xl font-bold text-dark mt-4" id="result-title">胆商水平：优秀</h3>
+                <p class="text-gray-600 mt-2" id="result-brief">你在面对风险和挑战时展现出出色的勇气和决断力</p>
+            </div>
+
+            <!-- 维度雷达图 -->
+            <div class="mb-10">
+                <h3 class="text-xl font-semibold text-dark mb-4 text-center">五大维度分析</h3>
+                <div class="flex justify-center">
+                    <canvas id="radar-chart" width="400" height="300"></canvas>
+                </div>
+            </div>
+
+            <!-- 详细分析 -->
+            <div class="mb-10">
+                <h3 class="text-xl font-semibold text-dark mb-4">详细分析</h3>
+                <div class="space-y-6" id="detailed-analysis">
+                    <!-- 详细分析将通过JS动态生成 -->
+                </div>
+            </div>
+
+            <!-- 建议 -->
+            <div class="mb-10">
+                <h3 class="text-xl font-semibold text-dark mb-4">提升建议</h3>
+                <div class="bg-light rounded-lg p-6" id="suggestions">
+                    <!-- 建议将通过JS动态生成 -->
+                </div>
+            </div>
+
+            <!-- 结尾声明 -->
+            <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-8">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <i class="fa fa-info-circle text-blue-400"></i>
+                    </div>
+                    <div class="ml-3">
+                        <h3 class="text-sm font-medium text-blue-800">重要提示</h3>
+                        <div class="mt-2 text-sm text-blue-700">
+                            <p>本测试结果仅供参考，不构成专业诊断或建议。胆商是可以通过后天训练提升的能力，如果你希望进一步提升自己的胆商水平，建议寻求专业心理咨询师或教练的帮助。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button id="restart-btn" class="bg-primary hover:bg-primary/90 text-white font-medium py-3 px-8 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 cursor-pointer active:scale-95">
+                    重新测试
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-6">
+                <div class="flex items-center justify-center space-x-2 mb-4">
+                    <i class="fa fa-bolt text-primary text-2xl"></i>
+                    <h2 class="text-xl font-bold">胆商测试</h2>
+                </div>
+                <p class="text-gray-400">探索你的勇气与决断力</p>
+            </div>
+            
+            <div class="border-t border-gray-700 pt-6 mt-6 text-center text-gray-400 text-sm">
+                <p>© 2025 胆商测试 - 原创测试工具</p>
+                <p class="mt-2">本测试为原创内容，未经授权不得复制或传播</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+
+    <script>
+        // 确保DOM加载完成后再执行
+        document.addEventListener('DOMContentLoaded', function() {
+        // 测试题目数据
+        const questions = [
+            // 勇气魄力
+            {
+                id: 1,
+                text: "当公司有一个重要项目需要负责人，你会主动争取吗？",
+                dimension: "勇气魄力",
+                options: [
+                    { value: 1, text: "绝对不会，我会避免承担过多责任" },
+                    { value: 2, text: "可能不会，除非有人推荐我" },
+                    { value: 3, text: "可能会，如果我认为自己有能力" },
+                    { value: 4, text: "会，我愿意挑战自己" },
+                    { value: 5, text: "一定会，这是展示能力的好机会" }
+                ]
+            },
+            {
+                id: 2,
+                text: "面对一个全新的、有风险的职业机会，你会如何选择？",
+                dimension: "勇气魄力",
+                options: [
+                    { value: 1, text: "立即拒绝，我更看重稳定性" },
+                    { value: 2, text: "会犹豫很久，可能最终还是放弃" },
+                    { value: 3, text: "会仔细考虑后再决定" },
+                    { value: 4, text: "倾向于接受挑战" },
+                    { value: 5, text: "毫不犹豫地接受，风险意味着机遇" }
+                ]
+            },
+            {
+                id: 3,
+                text: "当你有一个创新想法但可能被他人质疑时，你会：",
+                dimension: "勇气魄力",
+                options: [
+                    { value: 1, text: "不表达，避免被批评" },
+                    { value: 2, text: "只在小范围内分享" },
+                    { value: 3, text: "谨慎地表达，准备好应对质疑" },
+                    { value: 4, text: "自信地表达，不怕被质疑" },
+                    { value: 5, text: "积极推广，寻求支持实现想法" }
+                ]
+            },
+            {
+                id: 4,
+                text: "在社交场合，你会主动与陌生人交流吗？",
+                dimension: "勇气魄力",
+                options: [
+                    { value: 1, text: "绝对不会，我更喜欢熟悉的人" },
+                    { value: 2, text: "很少主动，除非对方先开口" },
+                    { value: 3, text: "有时会，视情况而定" },
+                    { value: 4, text: "经常会，我喜欢认识新朋友" },
+                    { value: 5, text: "总是主动，我享受与不同的人交流" }
+                ]
+            },
+            
+            // 决断能力
+            {
+                id: 5,
+                text: "当需要在两个各有优缺点的选项中做决定时，你通常会：",
+                dimension: "决断能力",
+                options: [
+                    { value: 1, text: "长时间纠结，难以做出选择" },
+                    { value: 2, text: "需要他人帮助做决定" },
+                    { value: 3, text: "收集足够信息后做出决定" },
+                    { value: 4, text: "快速分析后做出决定" },
+                    { value: 5, text: "迅速评估并果断决策" }
+                ]
+            },
+            {
+                id: 6,
+                text: "在紧急情况下，你能快速做出决策吗？",
+                dimension: "决断能力",
+                options: [
+                    { value: 1, text: "很难，我会感到慌乱无措" },
+                    { value: 2, text: "需要时间思考，难以快速决定" },
+                    { value: 3, text: "可以，但需要一定时间" },
+                    { value: 4, text: "通常可以保持冷静并快速决策" },
+                    { value: 5, text: "非常擅长，危机中我能迅速做出最佳选择" }
+                ]
+            },
+            {
+                id: 7,
+                text: "当你发现自己做了一个错误的决定，你会：",
+                dimension: "决断能力",
+                options: [
+                    { value: 1, text: "坚持错误，不愿承认失败" },
+                    { value: 2, text: "犹豫不决，不知道是否该改变" },
+                    { value: 3, text: "分析后再决定是否调整" },
+                    { value: 4, text: "迅速承认错误并调整方向" },
+                    { value: 5, text: "立即止损，快速转向更优方案" }
+                ]
+            },
+            {
+                id: 8,
+                text: "在团队讨论中，当大家意见分歧较大时，你会：",
+                dimension: "决断能力",
+                options: [
+                    { value: 1, text: "保持沉默，不参与决策" },
+                    { value: 2, text: "跟随大多数人的意见" },
+                    { value: 3, text: "表达自己的观点，但不坚持" },
+                    { value: 4, text: "清晰表达观点并试图说服他人" },
+                    { value: 5, text: "引导讨论，促成最终决策" }
+                ]
+            },
+            
+            // 风险把控
+            {
+                id: 9,
+                text: "在做重要决定前，你会评估潜在风险吗？",
+                dimension: "风险把控",
+                options: [
+                    { value: 1, text: "很少考虑，凭感觉做决定" },
+                    { value: 2, text: "偶尔会想，但不会深入分析" },
+                    { value: 3, text: "会简单评估主要风险" },
+                    { value: 4, text: "会全面分析潜在风险和应对策略" },
+                    { value: 5, text: "会进行详细的风险评估并制定应急预案" }
+                ]
+            },
+            {
+                id: 10,
+                text: "当一个机会看起来很有吸引力但风险未知时，你会：",
+                dimension: "风险把控",
+                options: [
+                    { value: 1, text: "立即抓住，不考虑风险" },
+                    { value: 2, text: "倾向于接受，风险意识较弱" },
+                    { value: 3, text: "会犹豫，需要更多信息" },
+                    { value: 4, text: "先评估风险，再决定是否接受" },
+                    { value: 5, text: "深入分析风险收益比，只接受可控风险" }
+                ]
+            },
+            {
+                id: 11,
+                text: "你如何看待投资中的风险？",
+                dimension: "风险把控",
+                options: [
+                    { value: 1, text: "我只选择无风险的投资" },
+                    { value: 2, text: "尽量避免风险，偏好稳定收益" },
+                    { value: 3, text: "可以接受适度风险以获取更好回报" },
+                    { value: 4, text: "愿意承担一定风险以追求高收益" },
+                    { value: 5, text: "擅长管理风险，能在高风险中寻找机会" }
+                ]
+            },
+            {
+                id: 12,
+                text: "当计划执行中出现意外情况时，你会：",
+                dimension: "风险把控",
+                options: [
+                    { value: 1, text: "不知所措，需要他人帮助" },
+                    { value: 2, text: "感到焦虑，难以应对变化" },
+                    { value: 3, text: "会尝试调整，但缺乏系统方法" },
+                    { value: 4, text: "能快速调整策略应对变化" },
+                    { value: 5, text: "早已预见可能的变化，有备选方案" }
+                ]
+            },
+            
+            // 抗压抗挫
+            {
+                id: 13,
+                text: "当你面临巨大压力时，你会如何应对？",
+                dimension: "抗压抗挫",
+                options: [
+                    { value: 1, text: "容易崩溃，难以承受压力" },
+                    { value: 2, text: "感到焦虑，影响正常工作" },
+                    { value: 3, text: "能坚持，但需要调整心态" },
+                    { value: 4, text: "保持冷静，有效应对压力" },
+                    { value: 5, text: "将压力转化为动力，表现更佳" }
+                ]
+            },
+            {
+                id: 14,
+                text: "当你经历重大失败时，你的第一反应是：",
+                dimension: "抗压抗挫",
+                options: [
+                    { value: 1, text: "极度沮丧，需要很长时间恢复" },
+                    { value: 2, text: "自我怀疑，对能力失去信心" },
+                    { value: 3, text: "会难过，但能逐渐接受现实" },
+                    { value: 4, text: "分析失败原因，寻求改进" },
+                    { value: 5, text: "视为学习机会，迅速调整方向" }
+                ]
+            },
+            {
+                id: 15,
+                text: "当他人对你的能力提出质疑时，你会：",
+                dimension: "抗压抗挫",
+                options: [
+                    { value: 1, text: "非常在意，容易被他人评价影响" },
+                    { value: 2, text: "感到沮丧，需要时间消化" },
+                    { value: 3, text: "会反思，但不完全认同" },
+                    { value: 4, text: "保持自信，理性看待批评" },
+                    { value: 5, text: "将质疑视为进步的动力" }
+                ]
+            },
+            {
+                id: 16,
+                text: "在长期努力但看不到成果时，你会：",
+                dimension: "抗压抗挫",
+                options: [
+                    { value: 1, text: "很快放弃，认为努力没用" },
+                    { value: 2, text: "会犹豫，考虑是否继续" },
+                    { value: 3, text: "会坚持一段时间，再做决定" },
+                    { value: 4, text: "调整方法，但坚持目标" },
+                    { value: 5, text: "坚持不懈，相信付出终将有回报" }
+                ]
+            },
+            
+            // 格局视野
+            {
+                id: 17,
+                text: "你更看重短期收益还是长期发展？",
+                dimension: "格局视野",
+                options: [
+                    { value: 1, text: "只关注眼前利益" },
+                    { value: 2, text: "倾向于短期收益，对长期考虑较少" },
+                    { value: 3, text: "会平衡短期和长期因素" },
+                    { value: 4, text: "更看重长期发展，愿意牺牲部分短期利益" },
+                    { value: 5, text: "始终以长期价值为导向，不计较短期得失" }
+                ]
+            },
+            {
+                id: 18,
+                text: "在做决策时，你会考虑对他人和环境的影响吗？",
+                dimension: "格局视野",
+                options: [
+                    { value: 1, text: "很少考虑，主要关注自身利益" },
+                    { value: 2, text: "偶尔会考虑，但不是主要因素" },
+                    { value: 3, text: "会考虑直接相关方的影响" },
+                    { value: 4, text: "会全面考虑对团队和环境的影响" },
+                    { value: 5, text: "总是从全局角度考虑决策的广泛影响" }
+                ]
+            },
+            {
+                id: 19,
+                text: "你是否经常关注行业趋势和未来发展方向？",
+                dimension: "格局视野",
+                options: [
+                    { value: 1, text: "几乎不关注，专注于当前工作" },
+                    { value: 2, text: "偶尔了解，但不深入研究" },
+                    { value: 3, text: "会关注重要趋势和变化" },
+                    { value: 4, text: "经常研究行业发展，提前布局" },
+                    { value: 5, text: "深入洞察趋势，预见未来发展方向" }
+                ]
+            },
+            {
+                id: 20,
+                text: "当面临短期困难但对长期有价值的事情时，你会：",
+                dimension: "格局视野",
+                options: [
+                    { value: 1, text: "倾向于回避困难，选择舒适路径" },
+                    { value: 2, text: "会犹豫，需要很大动力才会坚持" },
+                    { value: 3, text: "会坚持，但需要看到一定成果" },
+                    { value: 4, text: "愿意承受短期困难以获取长期价值" },
+                    { value: 5, text: "主动选择有长期价值的挑战，不畏短期困难" }
+                ]
+            }
+        ];
+
+        // 结果分析数据
+        const resultAnalysis = {
+            // 总体评分
+            totalScore: {
+                1: { range: [20, 40], title: "胆商水平：较低", brief: "你在面对风险和挑战时较为谨慎，倾向于避免不确定性。" },
+                2: { range: [41, 60], title: "胆商水平：一般", brief: "你具备基本的勇气和决断力，但在面对重大挑战时可能会犹豫。" },
+                3: { range: [61, 75], title: "胆商水平：良好", brief: "你在大多数情况下能展现出不错的勇气和决断力，能应对常见挑战。" },
+                4: { range: [76, 88], title: "胆商水平：优秀", brief: "你在面对风险和挑战时展现出出色的勇气和决断力，能有效应对压力。" },
+                5: { range: [89, 100], title: "胆商水平：卓越", brief: "你拥有非凡的胆商，能在高风险高压力环境中保持冷静并做出明智决策。" }
+            },
+            
+            // 维度评分
+            dimensions: {
+                "勇气魄力": {
+                    1: { range: [4, 8], title: "需要提升", analysis: "你在面对未知和挑战时较为谨慎，倾向于待在舒适区内。这可能会限制你的发展机会和个人成长。", suggestion: "从小事做起，逐步挑战自己的舒适区；设定具体的勇气目标，如主动发言、尝试新活动等；寻求支持和鼓励，逐步建立自信。" },
+                    2: { range: [9, 12], title: "一般", analysis: "你有一定的勇气，但在面对重大挑战时可能会犹豫。你能够在熟悉的领域展现自信，但在新环境中可能需要更多时间适应。", suggestion: "识别自己的恐惧来源，针对性地进行突破；学习积极思考，将挑战视为成长机会；观察和学习他人的勇气表现，借鉴经验。" },
+                    3: { range: [13, 16], title: "良好", analysis: "你具备不错的勇气和魄力，能够面对大多数挑战。你在关键时刻能够挺身而出，展现自己的能力和价值。", suggestion: "继续拓展自己的舒适区，尝试更具挑战性的任务；培养乐观心态，相信自己的能力；在团队中发挥榜样作用，鼓励他人。" },
+                    4: { range: [17, 19], title: "优秀", analysis: "你展现出出色的勇气和魄力，能够主动寻求挑战和机会。你在面对未知时保持积极态度，敢于突破自我限制。", suggestion: "将勇气与智慧结合，避免盲目冒险；帮助和指导他人提升勇气；在重要决策前充分评估，确保勇气有价值。" },
+                    5: { range: [20, 20], title: "卓越", analysis: "你拥有非凡的勇气和魄力，是真正的冒险家。你能够在极端情况下保持冷静，并带领他人突破困境，开创全新局面。", suggestion: "发挥领袖作用，激励团队面对挑战；将勇气与谨慎平衡，避免不必要的风险；分享你的经验和故事，启发他人成长。" }
+                },
+                "决断能力": {
+                    1: { range: [4, 8], title: "需要提升", analysis: "你在做决策时经常犹豫不决，难以快速做出选择。这可能导致你错过机会，或在压力下做出不理性的决定。", suggestion: "练习在小事情上快速做决定；设定决策时间限制，避免过度思考；学习基本的决策框架，如 pros/cons 分析；寻求他人的意见和建议。" },
+                    2: { range: [9, 12], title: "一般", analysis: "你具备基本的决策能力，但在复杂或压力情况下可能会犹豫。你需要更多时间和信息来做出决定，有时会受到他人意见的影响。", suggestion: "学习识别决策中的关键因素，避免被次要信息干扰；练习在有限信息下做决定；培养自信，相信自己的判断能力。" },
+                    3: { range: [13, 16], title: "良好", analysis: "你具备不错的决断能力，能够在大多数情况下做出合理决策。你在面对选择时能够分析利弊，并在适当的时间内做出决定。", suggestion: "继续提升在压力下的决策能力；学习识别决策陷阱和偏见；培养直觉决策能力，结合理性分析和直觉判断。" },
+                    4: { range: [17, 19], title: "优秀", analysis: "你展现出出色的决断能力，能够在复杂情况下快速分析并做出明智决策。你在面对不确定性时保持冷静，并能引领他人前进。", suggestion: "分享你的决策过程和经验；学习更高级的决策工具和方法；培养在高压力环境下的决策能力；帮助团队提升决策效率。" },
+                    5: { range: [20, 20], title: "卓越", analysis: "你拥有非凡的决断能力，是天生的决策者。你能够在极端复杂和不确定的情况下做出精准判断，并承担决策责任，引领团队走向成功。", suggestion: "发挥战略决策作用，关注长远和全局；培养接班人，传授决策智慧；保持开放心态，不断学习和完善决策方法。" }
+                },
+                "风险把控": {
+                    1: { range: [4, 8], title: "需要提升", analysis: "你在风险识别和管理方面能力有限，可能要么过度规避风险，要么盲目冒险。这可能导致你错过机会或陷入不必要的麻烦。", suggestion: "学习基本的风险评估方法；在做决定前明确列出潜在风险和应对措施；寻求有经验的人的指导；从小风险开始练习风险管理。" },
+                    2: { range: [9, 12], title: "一般", analysis: "你有一定的风险意识，但在风险评估和管理方面还有提升空间。你能够识别明显的风险，但可能忽视潜在风险或应对策略不够完善。", suggestion: "系统学习风险管理知识；培养前瞻性思维，预见潜在问题；制定更全面的风险应对计划；在实践中不断总结经验。" },
+                    3: { range: [13, 16], title: "良好", analysis: "你具备不错的风险把控能力，能够在大多数情况下识别和管理风险。你在追求机会的同时保持理性，避免盲目冒险。", suggestion: "继续深化风险分析能力；学习更高级的风险管理工具；培养在不确定性中寻找机会的能力；分享你的风险管理经验。" },
+                    4: { range: [17, 19], title: "优秀", analysis: "你展现出出色的风险把控能力，能够精准识别、评估和管理风险。你在复杂环境中保持清醒的判断力，做到勇而有谋。", suggestion: "将风险管理与创新平衡；帮助团队建立风险管理文化；在高风险高回报的机会中发挥你的优势；培养下一代风险管理人才。" },
+                    5: { range: [20, 20], title: "卓越", analysis: "你是风险把控的大师，能够在混沌中识别秩序，在风险中发现机遇。你具备非凡的前瞻力和判断力，能够引领组织安全穿越风险风暴。", suggestion: "发挥战略风险顾问的角色；著书立说或分享你的风险管理智慧；培养全局风险观，关注系统性风险；帮助组织建立 resilient 文化。" }
+                },
+                "抗压抗挫": {
+                    1: { range: [4, 8], title: "需要提升", analysis: "你在面对压力和挫折时较为脆弱，容易被困难击倒。这可能影响你的工作表现和心理健康，需要加强心理韧性。", suggestion: "学习基本的压力管理技巧，如深呼吸、冥想等；建立支持系统，寻求家人朋友的帮助；设定小目标，逐步建立成就感；培养积极的思维方式。" },
+                    2: { range: [9, 12], title: "一般", analysis: "你具备基本的抗压能力，但在高强度压力下可能会感到吃力。你在面对挫折时需要一定时间恢复，有时会陷入自我怀疑。", suggestion: "学习更系统的压力管理方法；培养成长型思维，将挫折视为学习机会；建立健康的生活方式，增强身心素质；寻求专业指导，提升心理韧性。" },
+                    3: { range: [13, 16], title: "良好", analysis: "你具备不错的抗压抗挫能力，能够应对大多数压力和挑战。你在困难面前保持相对稳定的心态，并能逐步恢复和调整。", suggestion: "继续提升心理韧性，学习更高级的压力管理技巧；培养乐观心态，看到困难中的积极面；帮助团队建立抗压文化；分享你的经验和方法。" },
+                    4: { range: [17, 19], title: "优秀", analysis: "你展现出出色的抗压抗挫能力，能够在高压环境中保持高效表现。你将挫折视为成长机会，具备快速恢复和学习的能力。", suggestion: "发挥榜样作用，帮助他人提升抗压能力；探索更深入的心理韧性训练；在极端压力下保持自我关怀；培养团队的抗压文化。" },
+                    5: { range: [20, 20], title: "卓越", analysis: "你拥有非凡的心理韧性，是真正的"压不垮的人"。你在绝境中依然保持希望和行动力，能够将危机转化为转机，激励他人共同面对挑战。", suggestion: "成为心理韧性导师，帮助他人突破自我限制；分享你的故事和方法，启发更多人；在组织中推动韧性文化建设；继续探索人类潜能的边界。" }
+                },
+                "格局视野": {
+                    1: { range: [4, 8], title: "需要提升", analysis: "你在思考问题时较为局限，主要关注眼前和局部。这可能限制你的发展潜力和决策质量，需要拓宽视野和思维方式。", suggestion: "多阅读不同领域的书籍和文章，拓宽知识面；主动了解行业趋势和全球发展；尝试从不同角度思考问题；寻求更有经验的人的指导。" },
+                    2: { range: [9, 12], title: "一般", analysis: "你有一定的全局意识，但在大多数情况下更关注直接相关的事物。你能够理解长远利益的重要性，但在实际决策中可能会受到短期因素影响。", suggestion: "培养长远思维，定期思考未来发展方向；学习系统思维，理解事物间的相互关联；参与跨部门或跨领域的项目，拓宽视野；关注社会和环境议题，培养责任感。" },
+                    3: { range: [13, 16], title: "良好", analysis: "你具备不错的格局视野，能够在大多数情况下考虑长远和全局。你在做决策时能够平衡短期和长期利益，考虑多方面因素。", suggestion: "继续拓展全球视野和未来思维；深入学习系统思考和战略思维；参与更广泛的社会和行业活动；培养前瞻性思维，预见趋势变化。" },
+                    4: { range: [17, 19], title: "优秀", analysis: "你展现出出色的格局视野，能够站在更高层次思考问题。你具备前瞻性思维，能够预见趋势变化，并做出具有长远价值的决策。", suggestion: "发挥战略引领作用，帮助组织明确方向；培养更多具有全局视野的人才；参与行业和社会变革，推动积极发展；分享你的洞见和智慧。" },
+                    5: { range: [20, 20], title: "卓越", analysis: "你拥有非凡的格局视野，是真正的战略思想家。你能够超越当前和局部，看到事物的本质和发展规律，引领组织和他人走向更广阔的未来。", suggestion: "承担更大的社会责任，为社会发展贡献智慧；培养下一代战略领袖；著书立说，分享你的思想和洞见；继续探索未知领域，拓展人类认知边界。" }
+                }
+            },
+            
+            // 综合建议
+            suggestions: {
+                low: "建议你从小事做起，逐步提升自己的胆商。可以从设定小的挑战目标开始，如主动发言、尝试新活动等。同时，学习基本的风险评估和压力管理技巧，建立支持系统，寻求他人的指导和鼓励。记住，胆商是可以通过刻意练习提升的能力。",
+                medium: "你已经具备不错的胆商基础，可以通过更系统的训练进一步提升。建议你设定更具挑战性的目标，学习更高级的决策和风险管理工具，培养乐观心态和成长型思维。同时，寻求专业指导和反馈，不断反思和调整自己的行为模式。",
+                high: "你拥有出色的胆商，建议你发挥榜样作用，帮助和指导他人提升胆商。同时，注意将勇气与智慧平衡，避免盲目冒险。可以通过参与更具挑战性的项目和活动，继续拓展自己的能力边界。记住，真正的高胆商是'勇气+理性'的结合。"
+            }
+        };
+
+        // DOM元素
+        const startSection = document.getElementById('start-section');
+        const testSection = document.getElementById('test-section');
+        const resultSection = document.getElementById('result-section');
+        const startTestBtn = document.getElementById('start-test-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const questionNumber = document.getElementById('question-number');
+        const dimensionTag = document.getElementById('dimension-tag');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const progressText = document.getElementById('progress-text');
+        const resultCircle = document.getElementById('result-circle');
+        const totalScore = document.getElementById('total-score');
+        const resultTitle = document.getElementById('result-title');
+        const resultBrief = document.getElementById('result-brief');
+        const detailedAnalysis = document.getElementById('detailed-analysis');
+        const suggestions = document.getElementById('suggestions');
+
+        // 测试状态
+        let currentQuestion = 0;
+        const answers = [];
+        const dimensionScores = {
+            "勇气魄力": 0,
+            "决断能力": 0,
+            "风险把控": 0,
+            "抗压抗挫": 0,
+            "格局视野": 0
+        };
+
+        // 开始测试 - 全局函数，确保可以通过onclick调用
+        window.startTest = function() {
+            const startSection = document.getElementById('start-section');
+            const testSection = document.getElementById('test-section');
+            startSection.classList.add('hidden');
+            testSection.classList.remove('hidden');
+            showQuestion(0);
+        };
+        
+        // 开始测试 - 事件监听器方式
+        startTestBtn.addEventListener('click', function() {
+            startSection.classList.add('hidden');
+            testSection.classList.remove('hidden');
+            showQuestion(currentQuestion);
+        });
+        
+        // 添加触摸事件支持
+        startTestBtn.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            startSection.classList.add('hidden');
+            testSection.classList.remove('hidden');
+            showQuestion(currentQuestion);
+        });
+
+        // 重新测试
+        restartBtn.addEventListener('click', function() {
+            // 重置状态
+            currentQuestion = 0;
+            answers.length = 0;
+            Object.keys(dimensionScores).forEach(key => {
+                dimensionScores[key] = 0;
+            });
+            
+            // 显示开始页面
+            resultSection.classList.add('hidden');
+            startSection.classList.remove('hidden');
+        });
+        
+        // 添加触摸事件支持
+        restartBtn.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            // 重置状态
+            currentQuestion = 0;
+            answers.length = 0;
+            Object.keys(dimensionScores).forEach(key => {
+                dimensionScores[key] = 0;
+            });
+            
+            // 显示开始页面
+            resultSection.classList.add('hidden');
+            startSection.classList.remove('hidden');
+        });
+
+        // 上一题
+        prevBtn.addEventListener('click', function() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showQuestion(currentQuestion);
+            }
+        });
+        
+        // 添加触摸事件支持
+        prevBtn.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showQuestion(currentQuestion);
+            }
+        });
+
+        // 下一题
+        nextBtn.addEventListener('click', function() {
+            // 检查是否选择了答案
+            const selectedOption = document.querySelector('input[name="option"]:checked');
+            if (!selectedOption) {
+                alert('请选择一个选项');
+                return;
+            }
+
+            // 保存答案
+            answers[currentQuestion] = parseInt(selectedOption.value);
+            
+            // 更新维度得分
+            const dimension = questions[currentQuestion].dimension;
+            dimensionScores[dimension] += parseInt(selectedOption.value);
+
+            // 移动到下一题或显示结果
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                showQuestion(currentQuestion);
+            } else {
+                showResult();
+            }
+            dimensionScores[dimension] += parseInt(selectedOption.value);
+
+            // 移动到下一题或显示结果
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                showQuestion(currentQuestion);
+            } else {
+                showResult();
+            }
+        });
+        
+        // 添加触摸事件支持
+        nextBtn.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            // 检查是否选择了答案
+            const selectedOption = document.querySelector('input[name="option"]:checked');
+            if (!selectedOption) {
+                alert('请选择一个选项');
+                return;
+            }
+
+            // 保存答案
+            answers[currentQuestion] = parseInt(selectedOption.value);
+            
+            // 更新维度得分
+            const dimension = questions[currentQuestion].dimension;
+            dimensionScores[dimension] += parseInt(selectedOption.value);
+
+            // 移动到下一题或显示结果
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                showQuestion(currentQuestion);
+            } else {
+                showResult();
+            }
+            dimensionScores[dimension] += parseInt(selectedOption.value);
+
+            // 移动到下一题或显示结果
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                showQuestion(currentQuestion);
+            } else {
+                showResult();
+            }
+        });
+
+        // 显示问题
+        function showQuestion(index) {
+            const question = questions[index];
+            
+            // 更新问题信息
+            questionNumber.textContent = `问题 ${index + 1}/${questions.length}`;
+            dimensionTag.textContent = question.dimension;
+            questionText.textContent = question.text;
+            progressText.textContent = `${index + 1}/${questions.length} 题`;
+            
+            // 生成选项
+            optionsContainer.innerHTML = '';
+            question.options.forEach(option => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'flex items-center';
+                
+                const input = document.createElement('input');
+                input.type = 'radio';
+                input.id = `option-${option.value}`;
+                input.name = 'option';
+                input.value = option.value;
+                input.className = 'w-4 h-4 text-primary focus:ring-primary';
+                
+                // 如果之前回答过这个问题，选中相应选项
+                if (answers[index] === option.value) {
+                    input.checked = true;
+                }
+                
+                const label = document.createElement('label');
+                label.htmlFor = `option-${option.value}`;
+                label.className = 'ml-2 text-gray-700';
+                label.textContent = option.text;
+                
+                optionDiv.appendChild(input);
+                optionDiv.appendChild(label);
+                optionsContainer.appendChild(optionDiv);
+            });
+            
+            // 更新按钮状态
+            prevBtn.classList.toggle('hidden', index === 0);
+            nextBtn.textContent = index === questions.length - 1 ? '查看结果' : '下一题';
+        }
+
+        // 显示结果
+        function showResult() {
+            // 计算总分
+            const total = answers.reduce((sum, score) => sum + score, 0);
+            totalScore.textContent = total;
+            
+            // 设置圆环进度
+            const circumference = 2 * Math.PI * 45;
+            const offset = circumference - (total / 100) * circumference;
+            resultCircle.style.strokeDashoffset = offset;
+            
+            // 获取总体评价
+            let level;
+            for (let key in resultAnalysis.totalScore) {
+                const range = resultAnalysis.totalScore[key].range;
+                if (total >= range[0] && total <= range[1]) {
+                    level = key;
+                    break;
+                }
+            }
+            
+            const totalResult = resultAnalysis.totalScore[level];
+            resultTitle.textContent = totalResult.title;
+            resultBrief.textContent = totalResult.brief;
+            
+            // 生成维度分析
+            detailedAnalysis.innerHTML = '';
+            const dimensionLevels = {};
+            
+            Object.keys(dimensionScores).forEach(dimension => {
+                let level;
+                for (let key in resultAnalysis.dimensions[dimension]) {
+                    const range = resultAnalysis.dimensions[dimension][key].range;
+                    if (dimensionScores[dimension] >= range[0] && dimensionScores[dimension] <= range[1]) {
+                        level = key;
+                        break;
+                    }
+                }
+                
+                dimensionLevels[dimension] = level;
+                
+                const dimensionResult = resultAnalysis.dimensions[dimension][level];
+                
+                const div = document.createElement('div');
+                div.className = 'bg-light rounded-lg p-6';
+                
+                const h4 = document.createElement('h4');
+                h4.className = 'text-lg font-semibold text-dark mb-2';
+                h4.textContent = `${dimension}：${dimensionResult.title}`;
+                
+                const p1 = document.createElement('p');
+                p1.className = 'text-gray-700 mb-4';
+                p1.textContent = dimensionResult.analysis;
+                
+                const p2 = document.createElement('p');
+                p2.className = 'text-gray-700';
+                p2.innerHTML = `<span class="font-medium text-primary">提升建议：</span>${dimensionResult.suggestion}`;
+                
+                div.appendChild(h4);
+                div.appendChild(p1);
+                div.appendChild(p2);
+                detailedAnalysis.appendChild(div);
+            });
+            
+            // 生成雷达图
+            const ctx = document.getElementById('radar-chart').getContext('2d');
+            const radarChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: Object.keys(dimensionScores),
+                    datasets: [{
+                        label: '得分',
+                        data: Object.values(dimensionScores).map(score => score / 4), // 转换为5分制
+                        backgroundColor: 'rgba(79, 70, 229, 0.2)',
+                        borderColor: 'rgba(79, 70, 229, 1)',
+                        pointBackgroundColor: 'rgba(79, 70, 229, 1)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(79, 70, 229, 1)'
+                    }]
+                },
+                options: {
+                    scales: {
+                        r: {
+                            angleLines: {
+                                display: true
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 5
+                        }
+                    }
+                }
+            });
+            
+            // 生成综合建议
+            let suggestionText;
+            if (total < 60) {
+                suggestionText = resultAnalysis.suggestions.low;
+            } else if (total < 80) {
+                suggestionText = resultAnalysis.suggestions.medium;
+            } else {
+                suggestionText = resultAnalysis.suggestions.high;
+            }
+            
+            suggestions.innerHTML = `
+                <p class="text-gray-700 mb-4">基于你的测试结果，我们为你提供以下综合建议：</p>
+                <p class="text-gray-700">${suggestionText}</p>
+                <p class="text-gray-700 mt-4">记住，胆商是可以通过后天训练提升的能力。通过持续的学习和实践，你可以不断提升自己的胆商水平。</p>
+            `;
+            
+            // 显示结果页面
+            testSection.classList.add('hidden');
+            resultSection.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
