@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>健商(HQ)测试 - 全面评估你的健康管理能力</title>
+    <!-- Tailwind CSS v3 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- AOS 动画库 -->
+    <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4CAF50',
+                        secondary: '#2196F3',
+                        accent: '#FF9800',
+                        light: '#E8F5E9',
+                        dark: '#2E7D32',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px rgba(0, 0, 0, 0.05)',
+                        'hover': '0 10px 25px rgba(0, 0, 0, 0.1)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            .bg-gradient {
+                background: linear-gradient(135deg, #4CAF50 0%, #2196F3 100%);
+            }
+            .transition-all-300 {
+                transition: all 0.3s ease;
+            }
+        }
+        
+        /* 自定义样式 */
+        .progress-bar {
+            height: 8px;
+            background-color: #E8F5E9;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50 0%, #2196F3 100%);
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+        
+        .option-card {
+            transition: all 0.3s ease;
+        }
+        
+        .option-card:hover {
+            transform: translateY(-2px);
+        }
+        
+        .option-card.selected {
+            border-color: #4CAF50;
+            background-color: #E8F5E9;
+        }
+        
+        .result-card {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.5s forwards;
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .result-card:nth-child(1) { animation-delay: 0.1s; }
+        .result-card:nth-child(2) { animation-delay: 0.2s; }
+        .result-card:nth-child(3) { animation-delay: 0.3s; }
+        .result-card:nth-child(4) { animation-delay: 0.4s; }
+        .result-card:nth-child(5) { animation-delay: 0.5s; }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- 顶部导航 -->
+    <nav class="bg-white shadow-soft sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <div class="w-10 h-10 rounded-full bg-gradient flex items-center justify-center mr-3">
+                    <i class="fa fa-heartbeat text-white text-xl"></i>
+                </div>
+                <h1 class="text-xl font-bold text-gray-800">健商测试</h1>
+            </div>
+            <div class="text-sm text-gray-600">
+                <span id="current-step">1</span>/30
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main class="container mx-auto px-4 py-8 max-w-3xl">
+        <!-- 欢迎页 -->
+        <section id="welcome-section" class="bg-white rounded-2xl shadow-soft p-8 mb-8" data-aos="fade-up">
+            <div class="text-center mb-6">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4 text-shadow">健商(HQ)测试</h2>
+                <p class="text-gray-600 mb-6">全面评估你的健康认知、管理与调适能力</p>
+                <div class="w-20 h-1 bg-gradient mx-auto mb-6"></div>
+            </div>
+            
+            <div class="space-y-6 text-gray-700">
+                <p>健商(HQ)是由加拿大医学博士谢华真提出的概念，核心围绕身心综合健康的认知、管理与调适展开，包含五大核心维度：</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-light rounded-lg p-4">
+                        <h3 class="font-bold text-primary mb-2">健康认知商</h3>
+                        <p class="text-sm">对健康常识、人体生理规律的掌握能力，以及辨别科学健康信息的判断能力。</p>
+                    </div>
+                    
+                    <div class="bg-light rounded-lg p-4">
+                        <h3 class="font-bold text-primary mb-2">健康管理商</h3>
+                        <p class="text-sm">将健康知识转化为实际健康行为，系统化规划、执行并坚持健康生活方式的能力。</p>
+                    </div>
+                    
+                    <div class="bg-light rounded-lg p-4">
+                        <h3 class="font-bold text-primary mb-2">健康心理商</h3>
+                        <p class="text-sm">感知、调节自身情绪，抗压、抗挫折，保持积极心态和心理韧性的能力。</p>
+                    </div>
+                    
+                    <div class="bg-light rounded-lg p-4">
+                        <h3 class="font-bold text-primary mb-2">健康适应商</h3>
+                        <p class="text-sm">根据自身年龄、身体状况、生活环境灵活调整健康策略，适应外界变化的能力。</p>
+                    </div>
+                    
+                    <div class="bg-light rounded-lg p-4 md:col-span-2">
+                        <h3 class="font-bold text-primary mb-2">健康责任商</h3>
+                        <p class="text-sm">明确自身是健康的第一责任人，树立"预防大于治疗"的健康理念，主动规避健康风险的意识与担当。</p>
+                    </div>
+                </div>
+                
+                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-r-lg mt-6">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <i class="fa fa-info-circle text-yellow-400"></i>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-yellow-700">
+                                <strong class="font-medium">免责声明：</strong> 本测试为原创设计，仅供参考，非专业诊断工具。测试结果不构成医疗建议，如有健康问题请咨询专业医疗人员。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-8 text-center">
+                <button id="start-test-btn" class="bg-gradient text-white py-3 px-8 rounded-full font-medium shadow-md hover:shadow-lg transition-all-300">
+                    开始测试
+                </button>
+            </div>
+        </section>
+        
+        <!-- 测试进度条 -->
+        <div id="progress-section" class="mb-8 hidden">
+            <div class="flex justify-between items-center mb-2">
+                <span class="text-sm font-medium text-gray-600">测试进度</span>
+                <span id="progress-text" class="text-sm font-medium text-primary">3%</span>
+            </div>
+            <div class="progress-bar">
+                <div id="progress-bar-fill" class="progress-bar-fill" style="width: 3%"></div>
+            </div>
+        </div>
+        
+        <!-- 测试题目区 -->
+        <section id="test-section" class="bg-white rounded-2xl shadow-soft p-8 mb-8 hidden" data-aos="fade-up">
+            <h2 id="question-category" class="text-lg font-semibold text-gray-500 mb-4">健康认知商</h2>
+            <h3 id="question-text" class="text-2xl font-bold text-gray-800 mb-8">问题加载中...</h3>
+            
+            <div id="options-container" class="space-y-4 mb-8">
+                <!-- 选项将通过JS动态生成 -->
+            </div>
+            
+            <div class="flex justify-between">
+                <button id="prev-btn" class="px-6 py-2 border border-gray-300 rounded-full text-gray-600 font-medium hover:bg-gray-50 transition-all-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i class="fa fa-arrow-left mr-2"></i>上一题
+                </button>
+                
+                <button id="next-btn" class="px-6 py-2 bg-primary text-white rounded-full font-medium hover:bg-dark transition-all-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                    下一题<i class="fa fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </section>
+        
+        <!-- 结果区域 -->
+        <section id="result-section" class="hidden">
+            <!-- 总体评分卡片 -->
+            <div class="bg-white rounded-2xl shadow-soft p-8 mb-8 text-center" data-aos="fade-up">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">你的健商评分</h2>
+                <p class="text-gray-600 mb-6">基于五大核心维度的综合评估</p>
+                
+                <div class="flex justify-center mb-8">
+                    <div class="relative w-48 h-48">
+                        <svg class="w-full h-full" viewBox="0 0 100 100">
+                            <!-- 背景圆环 -->
+                            <circle cx="50" cy="50" r="45" fill="none" stroke="#E8F5E9" stroke-width="10" />
+                            <!-- 进度圆环 -->
+                            <circle id="score-circle" cx="50" cy="50" r="45" fill="none" stroke="#4CAF50" stroke-width="10" stroke-dasharray="283" stroke-dashoffset="283" transform="rotate(-90 50 50)" />
+                        </svg>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center">
+                            <span id="total-score" class="text-4xl font-bold text-gray-800">0</span>
+                            <span class="text-gray-500">/100</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="score-level" class="text-xl font-semibold text-primary mb-4">评估等级加载中...</div>
+                <p id="score-description" class="text-gray-600 max-w-2xl mx-auto">结果分析加载中...</p>
+            </div>
+            
+            
+            
+            <!-- 健康管理行动计划 -->
+            <div class="bg-white rounded-2xl shadow-soft p-8 mb-8" data-aos="fade-up">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">个性化健康管理行动计划</h2>
+                
+                <div class="space-y-6">
+                    <div class="flex items-start">
+                        <div class="bg-light rounded-full p-3 mr-4">
+                            <i class="fa fa-cutlery text-primary"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800 mb-2">饮食建议</h3>
+                            <p id="dietary-advice" class="text-gray-600"></p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start">
+                        <div class="bg-light rounded-full p-3 mr-4">
+                            <i class="fa fa-heartbeat text-primary"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800 mb-2">运动指导</h3>
+                            <p id="exercise-advice" class="text-gray-600"></p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start">
+                        <div class="bg-light rounded-full p-3 mr-4">
+                            <i class="fa fa-moon-o text-primary"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800 mb-2">睡眠优化</h3>
+                            <p id="sleep-advice" class="text-gray-600"></p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-start">
+                        <div class="bg-light rounded-full p-3 mr-4">
+                            <i class="fa fa-smile-o text-primary"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800 mb-2">心理调适</h3>
+                            <p id="psychological-advice" class="text-gray-600"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 免责声明 -->
+            <div class="bg-gray-50 rounded-xl p-6 text-center text-sm text-gray-600">
+                <h3 class="font-semibold mb-2">免责声明</h3>
+                <p>本测试为原创设计，仅供参考，非专业诊断工具。测试结果不构成医疗建议，不能替代专业医疗诊断和治疗。</p>
+                <p class="mt-2">如有健康问题或疑虑，请咨询专业医疗人员。本测试的目的是提供健康意识和自我认知，而非医疗诊断。</p>
+                <p class="mt-4 font-medium">© 2025 健商测试 - 原创设计，版权所有</p>
+            </div>
+            
+            <!-- 分享按钮 -->
+            <div class="mt-8 text-center">
+                <button id="share-btn" class="bg-secondary text-white py-3 px-8 rounded-full font-medium shadow-md hover:shadow-lg transition-all-300">
+                    <i class="fa fa-share-alt mr-2"></i>分享结果
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // 初始化AOS动画库
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 800,
+                once: true
+            });
+        });
+        
+        // 测试题目数据
+        const questions = [
+            // 健康认知商 (6题)
+            {
+                category: "健康认知商",
+                question: "关于人体所需的主要营养素，以下说法正确的是：",
+                options: [
+                    { text: "蛋白质、碳水化合物、脂肪、维生素、矿物质和水是人体必需的六大营养素", score: 4 },
+                    { text: "只要多吃维生素片，就可以弥补饮食不均衡的问题", score: 1 },
+                    { text: "脂肪对健康有害，应该完全避免摄入", score: 0 },
+                    { text: "碳水化合物是导致肥胖的主要原因，应该尽量少吃", score: 2 }
+                ]
+            },
+            {
+                category: "健康认知商",
+                question: "以下关于运动与健康的关系，哪种说法更科学？",
+                options: [
+                    { text: "每周至少150分钟中等强度有氧运动可以显著提升健康水平", score: 4 },
+                    { text: "只有高强度运动才能达到健身效果", score: 1 },
+                    { text: "运动越多越好，每天运动3小时以上效果最佳", score: 0 },
+                    { text: "只要控制饮食，不运动也能保持健康", score: 1 }
+                ]
+            },
+            {
+                category: "健康认知商",
+                question: "关于睡眠与健康的关系，下列说法正确的是：",
+                options: [
+                    { text: "成年人每晚需要7-9小时的优质睡眠", score: 4 },
+                    { text: "睡眠不足可以通过周末补觉完全弥补", score: 1 },
+                    { text: "睡眠时间越长越好，每天睡10小时以上更健康", score: 0 },
+                    { text: "睡眠质量不重要，只要睡够时间就行", score: 1 }
+                ]
+            },
+            {
+                category: "健康认知商",
+                question: "面对网络上的健康信息，你会：",
+                options: [
+                    { text: "查看信息来源的权威性，优先选择专业医疗机构发布的内容", score: 4 },
+                    { text: "相信大多数人转发的内容，认为大家都在说的就是对的", score: 0 },
+                    { text: "完全不信网络上的健康信息，只相信自己的经验", score: 1 },
+                    { text: "尝试各种网传的健康方法，实践出真知", score: 2 }
+                ]
+            },
+            {
+                category: "健康认知商",
+                question: "关于人体正常生理指标，以下哪个认知是正确的？",
+                options: [
+                    { text: "正常腋下体温范围是36.0-37.0℃，安静状态下心率60-100次/分钟", score: 4 },
+                    { text: "血压在120/80mmHg以下就是低血压，需要进补", score: 1 },
+                    { text: "空腹血糖只要不超过7.0mmol/L就属于正常范围", score: 2 },
+                    { text: "体重指数(BMI)超过25就是严重肥胖，必须立即减肥", score: 1 }
+                ]
+            },
+            {
+                category: "健康认知商",
+                question: "关于常见疾病预防，以下说法正确的是：",
+                options: [
+                    { text: "定期体检、接种疫苗、保持健康生活方式是预防疾病的重要手段", score: 4 },
+                    { text: "经常服用保健品可以有效预防各种疾病", score: 1 },
+                    { text: "疾病主要靠遗传，后天预防作用不大", score: 0 },
+                    { text: "只要感觉身体好，就不需要进行任何预防措施", score: 0 }
+                ]
+            },
+            
+            // 健康管理商 (6题)
+            {
+                category: "健康管理商",
+                question: "你是否有规律的健康监测习惯？",
+                options: [
+                    { text: "我会定期测量并记录体重、血压等基本健康指标", score: 4 },
+                    { text: "只有在身体不适时才会关注健康指标", score: 2 },
+                    { text: "偶尔会测量，但没有记录习惯", score: 3 },
+                    { text: "很少关注这些指标，感觉身体好就行", score: 0 }
+                ]
+            },
+            {
+                category: "健康管理商",
+                question: "你如何规划和执行自己的运动计划？",
+                options: [
+                    { text: "有明确的运动计划，包括频率、强度和类型，并能坚持执行", score: 4 },
+                    { text: "有运动想法，但经常因为各种原因无法坚持", score: 2 },
+                    { text: "偶尔运动，没有固定计划", score: 3 },
+                    { text: "很少运动，觉得没必要或没时间", score: 0 }
+                ]
+            },
+            {
+                category: "健康管理商",
+                question: "你对自己的饮食结构有何管理？",
+                options: [
+                    { text: "会有意识地均衡饮食，控制各类食物的比例和摄入量", score: 4 },
+                    { text: "知道应该健康饮食，但难以控制食欲和口味偏好", score: 2 },
+                    { text: "偶尔会注意饮食，但没有系统规划", score: 3 },
+                    { text: "不太关注饮食结构，想吃什么就吃什么", score: 0 }
+                ]
+            },
+            {
+                category: "健康管理商",
+                question: "你如何管理自己的睡眠？",
+                options: [
+                    { text: "保持规律的作息时间，包括周末，确保充足的睡眠时间和质量", score: 4 },
+                    { text: "工作日作息规律，但周末经常熬夜晚起", score: 2 },
+                    { text: "睡眠作息不太规律，经常因工作或娱乐而晚睡", score: 1 },
+                    { text: "几乎没有固定的睡眠时间，经常熬夜", score: 0 }
+                ]
+            },
+            {
+                category: "健康管理商",
+                question: "当你发现自己有一些不良健康习惯时，你会：",
+                options: [
+                    { text: "制定具体计划逐步改变，并寻找方法监督自己执行", score: 4 },
+                    { text: "想改变但缺乏毅力和方法，经常反复", score: 2 },
+                    { text: "偶尔尝试改变，但很快就放弃了", score: 1 },
+                    { text: "觉得改变太麻烦，维持现状也挺好", score: 0 }
+                ]
+            },
+            {
+                category: "健康管理商",
+                question: "你多久进行一次全面的健康体检？",
+                options: [
+                    { text: "每年至少进行一次全面体检，并根据结果调整健康管理策略", score: 4 },
+                    { text: "每2-3年进行一次体检，主要看有没有明显问题", score: 3 },
+                    { text: "只有在感觉身体不适时才去体检", score: 2 },
+                    { text: "很少体检，觉得没必要或害怕查出问题", score: 0 }
+                ]
+            },
+            
+            // 健康心理商 (6题)
+            {
+                category: "健康心理商",
+                question: "当你面临较大压力时，你通常会：",
+                options: [
+                    { text: "有多种有效的减压方法，如运动、冥想、倾诉等，并能及时应用", score: 4 },
+                    { text: "知道一些减压方法，但在压力大时难以实施", score: 3 },
+                    { text: "主要依靠时间自然缓解，很少主动采取措施", score: 2 },
+                    { text: "经常被压力困扰，难以有效应对", score: 0 }
+                ]
+            },
+            {
+                category: "健康心理商",
+                question: "你如何看待生活中的挫折和困难？",
+                options: [
+                    { text: "视为成长机会，积极寻找解决办法，相信自己能够克服", score: 4 },
+                    { text: "虽然会感到沮丧，但最终能够调整心态面对", score: 3 },
+                    { text: "遇到挫折时容易陷入消极情绪，需要较长时间恢复", score: 1 },
+                    { text: "经常被挫折击垮，难以振作", score: 0 }
+                ]
+            },
+            {
+                category: "健康心理商",
+                question: "你对自己的情绪状态了解程度如何？",
+                options: [
+                    { text: "非常了解自己的情绪变化规律，能够准确识别和命名自己的情绪", score: 4 },
+                    { text: "大多数时候能意识到自己的情绪，但有时不太清楚原因", score: 3 },
+                    { text: "对自己的情绪不太敏感，经常在情绪爆发后才意识到", score: 1 },
+                    { text: "很少关注自己的情绪状态，觉得没必要", score: 0 }
+                ]
+            },
+            {
+                category: "健康心理商",
+                question: "你如何处理负面情绪？",
+                options: [
+                    { text: "有健康的情绪调节方式，如写日记、深呼吸、寻求支持等", score: 4 },
+                    { text: "有时能找到合适的方式调节，但偶尔会情绪失控", score: 3 },
+                    { text: "主要依靠转移注意力或压抑情绪，很少正面处理", score: 1 },
+                    { text: "经常被负面情绪困扰，缺乏有效的调节方法", score: 0 }
+                ]
+            },
+            {
+                category: "健康心理商",
+                question: "你与周围人的人际关系如何？",
+                options: [
+                    { text: "拥有支持性的社交网络，能与亲友保持良好沟通和互动", score: 4 },
+                    { text: "有一定的社交圈，但与他人的情感连接不够深入", score: 3 },
+                    { text: "社交圈较小，很少主动建立新的人际关系", score: 2 },
+                    { text: "人际关系紧张或疏离，经常感到孤独", score: 0 }
+                ]
+            },
+            {
+                category: "健康心理商",
+                question: "你对生活的总体态度是：",
+                options: [
+                    { text: "积极乐观，相信未来会更好，能够从日常中发现美好", score: 4 },
+                    { text: "总体比较乐观，但有时会有担忧和焦虑", score: 3 },
+                    { text: "对生活持中性态度，既不特别乐观也不特别悲观", score: 2 },
+                    { text: "经常感到悲观和失望，对未来缺乏信心", score: 0 }
+                ]
+            },
+            
+            // 健康适应商 (6题)
+            {
+                category: "健康适应商",
+                question: "当你的生活环境发生较大变化时（如搬家、换工作），你会如何调整自己的健康习惯？",
+                options: [
+                    { text: "迅速评估新环境对健康的影响，并调整自己的健康策略以适应", score: 4 },
+                    { text: "尝试保持原有的健康习惯，但会根据新环境做一些小调整", score: 3 },
+                    { text: "在适应期内健康习惯会受到影响，但稳定后会逐渐恢复", score: 2 },
+                    { text: "环境变化会严重打乱我的健康习惯，很难快速调整", score: 0 }
+                ]
+            },
+            {
+                category: "健康适应商",
+                question: "当你旅行或出差时，你如何维持健康的生活方式？",
+                options: [
+                    { text: "会提前规划，寻找旅途中保持健康饮食和运动的方法", score: 4 },
+                    { text: "尽量保持基本健康习惯，但会适当放松一些要求", score: 3 },
+                    { text: "旅行期间基本放弃健康管理，认为是放松的时候", score: 1 },
+                    { text: "旅途中完全随心所欲，健康问题回家再说", score: 0 }
+                ]
+            },
+            {
+                category: "健康适应商",
+                question: "当你身体出现轻微不适时（如感冒、疲劳），你会：",
+                options: [
+                    { text: "根据症状采取适当措施，如休息、调整饮食、补充水分等", score: 4 },
+                    { text: "知道应该怎么做，但有时因为忙碌而忽视身体信号", score: 2 },
+                    { text: "主要依靠药物缓解症状，很少调整生活方式", score: 2 },
+                    { text: "不太在意，继续正常生活，等身体自然恢复", score: 0 }
+                ]
+            },
+            {
+                category: "健康适应商",
+                question: "随着年龄增长，你如何调整自己的健康管理策略？",
+                options: [
+                    { text: "会主动了解不同年龄段的健康特点，并相应调整饮食、运动和生活方式", score: 4 },
+                    { text: "意识到年龄增长带来的变化，但调整不够系统和主动", score: 3 },
+                    { text: "主要在出现健康问题后才被动调整", score: 1 },
+                    { text: "很少考虑年龄因素，保持一贯的生活方式", score: 0 }
+                ]
+            },
+            {
+                category: "健康适应商",
+                question: "当工作压力增大，时间紧张时，你会如何处理健康问题？",
+                options: [
+                    { text: "会更注重效率，寻找时间短但效果好的健康管理方法", score: 4 },
+                    { text: "尽量维持基本健康习惯，但会减少一些非核心活动", score: 3 },
+                    { text: "健康管理会让步于工作，压力大时往往忽视健康", score: 1 },
+                    { text: "工作压力大时完全放弃健康管理，认为没办法兼顾", score: 0 }
+                ]
+            },
+            {
+                category: "健康适应商",
+                question: "你如何应对季节变化对健康的影响？",
+                options: [
+                    { text: "会根据季节变化调整饮食、运动和穿着，预防季节性疾病", score: 4 },
+                    { text: "有一些季节性调整习惯，但不够系统", score: 3 },
+                    { text: "主要在出现季节性不适后才采取措施", score: 1 },
+                    { text: "很少考虑季节因素，生活方式全年基本一致", score: 0 }
+                ]
+            },
+            
+            // 健康责任商 (6题)
+            {
+                category: "健康责任商",
+                question: "你如何看待个人健康与生活其他方面的关系？",
+                options: [
+                    { text: "健康是最重要的基础，其他一切都建立在健康之上", score: 4 },
+                    { text: "认为健康重要，但有时会为了工作、家庭等牺牲健康", score: 2 },
+                    { text: "对健康的重视程度一般，视情况而定", score: 2 },
+                    { text: "觉得健康问题离自己很远，很少主动关注", score: 0 }
+                ]
+            },
+            {
+                category: "健康责任商",
+                question: "你是否会主动学习健康知识并将其应用到生活中？",
+                options: [
+                    { text: "经常学习健康知识，并积极实践和分享给亲友", score: 4 },
+                    { text: "偶尔会关注健康信息，但应用不够系统", score: 3 },
+                    { text: "主要通过医生建议或出现问题时才了解健康知识", score: 1 },
+                    { text: "很少主动学习健康知识，觉得太专业或没必要", score: 0 }
+                ]
+            },
+            {
+                category: "健康责任商",
+                question: "你如何看待健康预防与治疗的关系？",
+                options: [
+                    { text: "坚信预防胜于治疗，会主动采取各种预防措施", score: 4 },
+                    { text: "认同预防重要，但实际行动不够积极", score: 3 },
+                    { text: "主要关注治疗，预防意识较弱", score: 1 },
+                    { text: "很少考虑预防，觉得有问题再解决就行", score: 0 }
+                ]
+            },
+            {
+                category: "健康责任商",
+                question: "你是否会影响和引导家人的健康行为？",
+                options: [
+                    { text: "会主动引导家人养成健康习惯，组织家庭健康活动", score: 4 },
+                    { text: "会分享健康知识，但不会强制家人改变", score: 3 },
+                    { text: "主要关注自己的健康，很少影响家人", score: 1 },
+                    { text: "自己的健康都顾不过来，没时间管家人", score: 0 }
+                ]
+            },
+            {
+                category: "健康责任商",
+                question: "当你需要在健康和其他利益之间做选择时，你通常会：",
+                options: [
+                    { text: "优先考虑健康因素，认为健康是无价的", score: 4 },
+                    { text: "会权衡利弊，但健康通常是重要考量因素", score: 3 },
+                    { text: "视情况而定，有时会为了其他利益牺牲健康", score: 1 },
+                    { text: "经常为了工作、娱乐等忽视健康警告", score: 0 }
+                ]
+            },
+            {
+                category: "健康责任商",
+                question: "你对自己的健康风险意识如何？",
+                options: [
+                    { text: "清楚了解自己的健康风险因素，并采取措施降低风险", score: 4 },
+                    { text: "知道一些风险因素，但没有系统评估和应对", score: 3 },
+                    { text: "对健康风险了解不多，主要关注眼前的健康状况", score: 1 },
+                    { text: "很少考虑健康风险，觉得疾病不会发生在自己身上", score: 0 }
+                ]
+            }
+        ];
+        
+        // 结果分析数据
+        const resultAnalysis = {
+            // 总体评分等级
+            levels: [
+                { min: 0, max: 40, level: "健商待提升", description: "你的健康意识和管理能力有待加强。建议从基础健康知识学习开始，逐步建立健康的生活习惯。" },
+                { min: 41, max: 60, level: "健商良好", description: "你对健康有一定的认知和管理能力，但仍有提升空间。可以针对薄弱环节进行加强，进一步完善健康管理体系。" },
+                { min: 61, max: 80, level: "健商优秀", description: "你具备较好的健康认知和管理能力，健康生活方式已基本形成。建议继续保持并优化，追求更高层次的健康状态。" },
+                { min: 81, max: 100, level: "健商卓越", description: "你的健商水平非常高，不仅有全面的健康认知，还能有效管理自己的健康。你是健康生活的典范，可以考虑分享经验帮助他人。" }
+            ],
+            
+            // 各维度分析
+            dimensions: {
+                "健康认知商": {
+                    low: {
+                        strengths: ["你对某些基础健康知识有一定了解", "你有改善健康认知的意愿"],
+                        improvements: ["加强基础健康知识学习，尤其是营养、运动和睡眠方面", "学会辨别健康信息的真伪，避免被误导", "定期关注权威健康资讯，更新健康知识"]
+                    },
+                    medium: {
+                        strengths: ["你掌握了基本的健康知识", "对健康信息有一定的辨别能力"],
+                        improvements: ["深化专业健康知识学习，尤其是与自身健康状况相关的领域", "建立系统的健康知识体系，避免碎片化", "将健康知识更好地转化为实际行动"]
+                    },
+                    high: {
+                        strengths: ["你拥有全面且系统的健康知识", "能够准确辨别健康信息的科学性和可靠性"],
+                        improvements: ["保持健康知识的更新，关注健康领域的新研究和发现", "将专业知识用简单易懂的方式分享给他人", "进一步探索个性化健康管理的深度知识"]
+                    }
+                },
+                "健康管理商": {
+                    low: {
+                        strengths: ["你对健康管理有初步意识", "可能在某些方面已有健康习惯"],
+                        improvements: ["建立基础健康监测习惯，如记录体重、血压等指标", "制定简单可行的健康计划，从一个小目标开始", "寻找健康管理的支持系统，如朋友或专业人士"]
+                    },
+                    medium: {
+                        strengths: ["你已经建立了一些健康管理习惯", "能够在一定程度上执行健康计划"],
+                        improvements: ["提高健康计划的系统性和全面性", "加强健康行为的持续性，减少中断", "建立健康管理的奖惩机制，提高执行力"]
+                    },
+                    high: {
+                        strengths: ["你具备出色的健康管理能力", "能够制定并执行全面的健康计划"],
+                        improvements: ["优化健康管理方法，提高效率", "探索更精细化的个性化健康管理策略", "帮助他人建立健康管理体系，分享经验"]
+                    }
+                },
+                "健康心理商": {
+                    low: {
+                        strengths: ["你对自己的情绪有一定感知", "有改善心理健康的愿望"],
+                        improvements: ["学习基础的情绪识别和管理技巧", "建立健康的压力释放渠道", "培养积极的思维方式，减少负面情绪影响"]
+                    },
+                    medium: {
+                        strengths: ["你能够识别和管理基本情绪", "有一定的心理调适能力"],
+                        improvements: ["深化情绪管理技巧，提高应对复杂情绪的能力", "增强心理韧性，更好地应对挫折和压力", "建立更丰富的心理支持系统"]
+                    },
+                    high: {
+                        strengths: ["你拥有出色的情绪管理能力", "具备强大的心理韧性和积极心态"],
+                        improvements: ["探索更高层次的心理调适方法，如冥想、正念等", "帮助他人提升心理健康水平", "将心理健康与身体健康更好地结合"]
+                    }
+                },
+                "健康适应商": {
+                    low: {
+                        strengths: ["你在稳定环境下可能有良好的健康习惯", "对环境变化有一定的感知"],
+                        improvements: ["学习基本的环境适应技巧，如旅行时的健康管理", "提高对身体信号的敏感度，及时调整", "建立在不同环境下都能维持的核心健康习惯"]
+                    },
+                    medium: {
+                        strengths: ["你能够在一定程度上适应环境变化对健康的影响", "有一些应对不同情境的健康策略"],
+                        improvements: ["提高健康策略的灵活性和多样性", "加强对特殊时期（如压力大、旅行）的健康管理", "建立更系统的环境-健康适应机制"]
+                    },
+                    high: {
+                        strengths: ["你具备出色的健康适应能力，能在各种环境下维持健康状态", "对身体信号高度敏感，能及时调整"],
+                        improvements: ["探索更精细化的环境适应策略", "帮助他人提高健康适应能力", "研究环境因素与健康的深层关联"]
+                    }
+                },
+                "健康责任商": {
+                    low: {
+                        strengths: ["你对自己的健康有初步责任意识", "可能在某些方面已采取行动"],
+                        improvements: ["强化健康第一责任人的意识", "学习基础的健康风险管理知识", "从小事做起，逐步承担健康责任"]
+                    },
+                    medium: {
+                        strengths: ["你认识到健康责任的重要性", "已开始采取行动管理自己的健康"],
+                        improvements: ["深化健康责任意识，将健康融入生活各个方面", "加强对家人健康的关注和引导", "建立更主动的健康风险管理机制"]
+                    },
+                    high: {
+                        strengths: ["你拥有强烈的健康责任意识，视健康为生活核心", "不仅对自己负责，还积极影响他人"],
+                        improvements: ["进一步提升健康领导力，成为健康生活的倡导者", "探索健康责任的更深层次意义", "将健康责任与社会价值结合，产生更大影响"]
+                    }
+                }
+            },
+            
+            // 个性化建议
+            personalizedAdvice: {
+                low: {
+                    dietary: "从基础饮食均衡开始，每天保证蛋白质、碳水化合物、脂肪、维生素和矿物质的摄入。建议增加蔬果摄入，减少高糖、高脂食物。可以从记录饮食日记开始，了解自己的饮食习惯。",
+                    exercise: "从低强度、短时间的运动开始，如每天散步15-20分钟。逐渐增加运动时间和强度，培养运动习惯。选择自己喜欢的运动方式，提高坚持的可能性。",
+                    sleep: "建立基本的睡眠规律，尝试每天固定时间上床和起床。创造良好的睡眠环境，如保持房间黑暗、安静和凉爽。睡前避免使用电子设备，可尝试轻度拉伸或阅读放松。",
+                    psychological: "学习基础的情绪识别技巧，如给情绪命名。每天留出10分钟安静时间，关注自己的感受。建立简单的减压方法，如深呼吸、听音乐或短暂散步。"
+                },
+                medium: {
+                    dietary: "进一步优化饮食结构，增加食物多样性。根据自身情况调整饮食比例，如增加优质蛋白、膳食纤维摄入。尝试学习基础营养学知识，为自己设计更科学的饮食计划。",
+                    exercise: "制定更系统的运动计划，包括有氧运动、力量训练和灵活性训练。逐渐提高运动强度和时长，达到每周至少150分钟中等强度运动的推荐量。关注运动质量和技术正确性。",
+                    sleep: "优化睡眠质量，关注睡眠周期和深度。尝试睡眠追踪，了解自己的睡眠模式。根据睡眠需求调整作息时间，确保充足且高质量的睡眠。",
+                    psychological: "学习更系统的情绪管理技巧，如认知重构、情绪调节策略。建立定期的心理调适习惯，如冥想、正念练习。拓展社交支持网络，增强心理韧性。"
+                },
+                high: {
+                    dietary: "探索个性化营养方案，根据自身代谢特点、健康目标和生活方式定制饮食。关注食物的品质和来源，尝试有机、当地食材。学习高级烹饪技巧，使健康饮食更美味多样。",
+                    exercise: "设计全面且个性化的运动方案，包括不同类型、强度和目的的训练。考虑加入功能性训练和恢复训练，提高整体运动表现。探索新的运动形式，保持运动的新鲜感和挑战性。",
+                    sleep: "深入了解睡眠科学，优化睡眠环境和习惯。尝试睡眠优化技术，如睡眠限制疗法、放松技巧等。关注睡眠与整体健康的关联，调整生活方式以支持最佳睡眠。",
+                    psychological: "实践高级心理调适技巧，如正念冥想、自我 compassion 练习。建立心理韧性训练计划，定期挑战自己的舒适区。探索心理健康与身体健康的深层联系，实现身心整合。"
+                }
+            }
+        };
+        
+        // 当前问题索引
+        let currentQuestionIndex = 0;
+        // 用户答案存储
+        const userAnswers = new Array(questions.length).fill(null);
+        // 各维度得分
+        let dimensionScores = {
+            "健康认知商": 0,
+            "健康管理商": 0,
+            "健康心理商": 0,
+            "健康适应商": 0,
+            "健康责任商": 0
+        };
+        // 各维度题目数量
+        const dimensionQuestionCounts = {
+            "健康认知商": 6,
+            "健康管理商": 6,
+            "健康心理商": 6,
+            "健康适应商": 6,
+            "健康责任商": 6
+        };
+        
+        // DOM元素
+        const welcomeSection = document.getElementById('welcome-section');
+        const progressSection = document.getElementById('progress-section');
+        const testSection = document.getElementById('test-section');
+        const resultSection = document.getElementById('result-section');
+        
+        const questionCategory = document.getElementById('question-category');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const startTestBtn = document.getElementById('start-test-btn');
+        const shareBtn = document.getElementById('share-btn');
+        
+        const progressText = document.getElementById('progress-text');
+        const progressBarFill = document.getElementById('progress-bar-fill');
+        const currentStepSpan = document.getElementById('current-step');
+        
+        // 开始测试按钮点击事件
+        document.getElementById('start-test-btn').addEventListener('click', function() {
+            console.log('开始测试按钮被点击');
+            document.getElementById('welcome-section').classList.add('hidden');
+            document.getElementById('progress-section').classList.remove('hidden');
+            document.getElementById('test-section').classList.remove('hidden');
+            showQuestion(0);
+        });
+        
+        // 上一题按钮点击事件
+        prevBtn.addEventListener('click', function() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                showQuestion(currentQuestionIndex);
+                updateProgress();
+            }
+        });
+        
+        // 下一题按钮点击事件
+        nextBtn.addEventListener('click', function() {
+            if (userAnswers[currentQuestionIndex] !== null) {
+                if (currentQuestionIndex < questions.length - 1) {
+                    currentQuestionIndex++;
+                    showQuestion(currentQuestionIndex);
+                    updateProgress();
+                } else {
+                    // 计算得分并显示结果
+                    calculateScores();
+                    showResults();
+                }
+            } else {
+                // 提示用户选择一个选项
+                alert('请选择一个选项');
+            }
+        });
+        
+        // 分享按钮点击事件
+        shareBtn.addEventListener('click', function() {
+            alert('分享功能已触发！在实际应用中，这里会调用小红书的分享API。');
+        });
+        
+        // 显示当前问题
+        function showQuestion(index) {
+            const question = questions[index];
+            questionCategory.textContent = question.category;
+            questionText.textContent = question.question;
+            
+            // 清空选项容器
+            optionsContainer.innerHTML = '';
+            
+            // 添加选项
+            question.options.forEach((option, optionIndex) => {
+                const optionCard = document.createElement('div');
+                optionCard.className = `option-card p-4 border rounded-xl cursor-pointer ${userAnswers[index] === optionIndex ? 'selected' : ''}`;
+                
+                optionCard.innerHTML = `
+                    <div class="flex items-center">
+                        <div class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center mr-3 ${userAnswers[index] === optionIndex ? 'border-primary bg-primary text-white' : ''}">
+                            ${userAnswers[index] === optionIndex ? '<i class="fa fa-check"></i>' : ''}
+                        </div>
+                        <div class="text-gray-700">${option.text}</div>
+                    </div>
+                `;
+                
+                optionCard.addEventListener('click', function() {
+                    // 移除其他选项的选中状态
+                    document.querySelectorAll('.option-card').forEach(card => {
+                        card.classList.remove('selected');
+                        const radio = card.querySelector('.w-6');
+                        radio.classList.remove('border-primary', 'bg-primary', 'text-white');
+                        
+                        // 移除可能存在的i元素
+                        const existingIcon = radio.querySelector('i');
+                        if (existingIcon) {
+                            existingIcon.remove();
+                        }
+                    });
+                    
+                    // 添加当前选项的选中状态
+                    this.classList.add('selected');
+                    const radio = this.querySelector('.w-6');
+                    radio.classList.add('border-primary', 'bg-primary', 'text-white');
+                    const checkIcon = document.createElement('i');
+                    checkIcon.className = 'fa fa-check';
+                    radio.appendChild(checkIcon);
+                    
+                    // 保存用户选择
+                    userAnswers[currentQuestionIndex] = optionIndex;
+                });
+                
+                optionsContainer.appendChild(optionCard);
+            });
+            
+            // 更新按钮状态
+            prevBtn.disabled = index === 0;
+            nextBtn.textContent = index === questions.length - 1 ? '提交测试' : '下一题';
+            nextBtn.innerHTML = index === questions.length - 1 ? '提交测试<i class="fa fa-arrow-right ml-2"></i>' : '下一题<i class="fa fa-arrow-right ml-2"></i>';
+        }
+        
+        // 更新进度条
+        function updateProgress() {
+            const progress = Math.round(((currentQuestionIndex + 1) / questions.length) * 100);
+            progressText.textContent = `${progress}%`;
+            progressBarFill.style.width = `${progress}%`;
+            currentStepSpan.textContent = currentQuestionIndex + 1;
+        }
+        
+        // 计算得分
+        function calculateScores() {
+            // 重置得分
+            for (const dimension in dimensionScores) {
+                dimensionScores[dimension] = 0;
+            }
+            
+            // 计算各维度得分
+            questions.forEach((question, index) => {
+                if (userAnswers[index] !== null) {
+                    const selectedOption = question.options[userAnswers[index]];
+                    dimensionScores[question.category] += selectedOption.score;
+                }
+            });
+            
+            // 计算各维度百分比得分（0-20分制）
+            for (const dimension in dimensionScores) {
+                const maxScore = dimensionQuestionCounts[dimension] * 4; // 每题最高4分
+                dimensionScores[dimension] = Math.round((dimensionScores[dimension] / maxScore) * 20);
+            }
+        }
+        
+        // 显示结果
+        function showResults() {
+            // 隐藏测试部分，显示结果部分
+            testSection.classList.add('hidden');
+            progressSection.classList.add('hidden');
+            resultSection.classList.remove('hidden');
+            
+            // 计算总得分
+            const totalScore = Object.values(dimensionScores).reduce((sum, score) => sum + score, 0);
+            
+            // 显示总得分和等级
+            const totalScoreElement = document.getElementById('total-score');
+            const scoreLevelElement = document.getElementById('score-level');
+            const scoreDescriptionElement = document.getElementById('score-description');
+            
+            // 动画显示得分
+            let animatedScore = 0;
+            const scoreInterval = setInterval(() => {
+                animatedScore += 1;
+                totalScoreElement.textContent = animatedScore;
+                
+                // 更新圆环进度
+                const circle = document.getElementById('score-circle');
+                const circumference = 2 * Math.PI * 45;
+                const offset = circumference - (animatedScore / 100) * circumference;
+                circle.style.strokeDashoffset = offset;
+                
+                if (animatedScore >= totalScore) {
+                    clearInterval(scoreInterval);
+                }
+            }, 20);
+            
+            // 显示评分等级和描述
+            const level = resultAnalysis.levels.find(level => totalScore >= level.min && totalScore <= level.max);
+            scoreLevelElement.textContent = level.level;
+            scoreDescriptionElement.textContent = level.description;
+            
+
+            
+            // 生成个性化建议
+            generatePersonalizedAdvice();
+        }
+        
+        
+        
+        // 生成个性化建议
+        function generatePersonalizedAdvice() {
+            // 根据总得分确定建议级别
+            const totalScore = Object.values(dimensionScores).reduce((sum, score) => sum + score, 0);
+            let adviceLevel;
+            
+            if (totalScore < 40) {
+                adviceLevel = 'low';
+            } else if (totalScore < 60) {
+                adviceLevel = 'medium';
+            } else {
+                adviceLevel = 'high';
+            }
+            
+            // 获取各维度得分情况
+            const cognitionScore = dimensionScores["健康认知商"];
+            const managementScore = dimensionScores["健康管理商"];
+            const psychologicalScore = dimensionScores["健康心理商"];
+            const adaptationScore = dimensionScores["健康适应商"];
+            const responsibilityScore = dimensionScores["健康责任商"];
+            
+            // 生成更详细的饮食建议
+            let dietaryAdvice = resultAnalysis.personalizedAdvice[adviceLevel].dietary;
+            
+            // 根据健康认知商调整建议
+            if (cognitionScore < 8) {
+                dietaryAdvice += " 建议你学习基础的营养学知识，了解各类食物的营养价值，为自己制定简单的饮食计划。";
+            } else if (cognitionScore >= 14) {
+                dietaryAdvice += " 你已经具备良好的营养知识，可以进一步探索功能性食品和特殊饮食模式对健康的影响，如地中海饮食、间歇性断食等。";
+            }
+            
+            // 根据健康管理商调整建议
+            if (managementScore < 8) {
+                dietaryAdvice += " 从记录饮食日记开始，了解自己的饮食习惯，然后设定小而可行的目标，如每天增加一份蔬菜。";
+            } else if (managementScore >= 14) {
+                dietaryAdvice += " 你可以尝试更精细的饮食管理方法，如计算营养素摄入、食物搭配优化，或者根据特定健康目标调整饮食结构。";
+            }
+            
+            // 生成更详细的运动建议
+            let exerciseAdvice = resultAnalysis.personalizedAdvice[adviceLevel].exercise;
+            
+            // 根据健康认知商调整建议
+            if (cognitionScore < 8) {
+                exerciseAdvice += " 建议你了解不同类型运动的益处，如有氧运动对心肺功能的好处，力量训练对肌肉和骨密度的影响等。";
+            } else if (cognitionScore >= 14) {
+                exerciseAdvice += " 你可以深入学习运动生理学知识，根据自己的身体状况和健康目标，设计更科学、更有针对性的训练计划。";
+            }
+            
+            // 根据健康管理商调整建议
+            if (managementScore < 8) {
+                exerciseAdvice += " 从建立运动习惯开始，选择你喜欢的运动方式，设定固定的运动时间，如每天早上或下班后30分钟。";
+            } else if (managementScore >= 14) {
+                exerciseAdvice += " 你可以尝试更系统的运动管理方法，如周期化训练、运动负荷监控、恢复策略优化等，提高运动效果。";
+            }
+            
+            // 生成更详细的睡眠建议
+            let sleepAdvice = resultAnalysis.personalizedAdvice[adviceLevel].sleep;
+            
+            // 根据健康心理商调整建议
+            if (psychologicalScore < 8) {
+                sleepAdvice += " 建议你学习一些放松技巧，如深呼吸、渐进性肌肉放松、冥想等，帮助缓解睡前焦虑，改善睡眠质量。";
+            } else if (psychologicalScore >= 14) {
+                sleepAdvice += " 你可以探索更高级的睡眠优化技术，如睡眠周期管理、睡眠环境精细化调整、心理因素对睡眠的影响等。";
+            }
+            
+            // 根据健康适应商调整建议
+            if (adaptationScore < 8) {
+                sleepAdvice += " 尝试在不同环境下保持基本的睡眠习惯，如旅行时携带自己的枕头、保持相似的睡前仪式等。";
+            } else if (adaptationScore >= 14) {
+                sleepAdvice += " 你可以学习如何根据不同情境快速调整睡眠策略，如时差调整技巧、压力期间的睡眠管理、特殊时期的睡眠优化等。";
+            }
+            
+            // 生成更详细的心理调适建议
+            let psychologicalAdvice = resultAnalysis.personalizedAdvice[adviceLevel].psychological;
+            
+            // 根据健康心理商调整建议
+            if (psychologicalScore < 8) {
+                psychologicalAdvice += " 建议你从基础的情绪识别开始，学习给情绪命名，了解情绪背后的需求和想法，逐步建立情绪管理的基础能力。";
+            } else if (psychologicalScore >= 14) {
+                psychologicalAdvice += " 你可以探索更深入的心理调适方法，如认知行为疗法技巧、正念练习进阶、自我接纳和自我同情练习等，提升心理韧性。";
+            }
+            
+            // 根据健康责任商调整建议
+            if (responsibilityScore < 8) {
+                psychologicalAdvice += " 尝试将心理健康视为整体健康的重要组成部分，定期关注自己的情绪状态，必要时寻求专业帮助。";
+            } else if (responsibilityScore >= 14) {
+                psychologicalAdvice += " 你可以考虑将心理健康知识分享给家人和朋友，帮助他们建立健康的心理状态，共同创造支持性的社会环境。";
+            }
+            
+            // 更新页面内容
+            document.getElementById('dietary-advice').textContent = dietaryAdvice;
+            document.getElementById('exercise-advice').textContent = exerciseAdvice;
+            document.getElementById('sleep-advice').textContent = sleepAdvice;
+            document.getElementById('psychological-advice').textContent = psychologicalAdvice;
+        }
+    </script>
+</body>
+</html>
