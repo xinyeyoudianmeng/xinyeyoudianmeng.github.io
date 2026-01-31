@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>德商(MQ)测试 - 探索你的道德素养</title>
+    <!-- Tailwind CSS v3 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    <!-- 统一的 Tailwind 配置 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4A90E2',
+                        secondary: '#F5A623',
+                        accent: '#7ED321',
+                        neutral: '#9B9B9B',
+                        light: '#F8F9FA',
+                        dark: '#333333',
+                        warm: '#F9E8D9',
+                        cool: '#E8F4FD'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px rgba(0, 0, 0, 0.05)',
+                        'hover': '0 10px 30px rgba(0, 0, 0, 0.1)',
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            .transition-all-300 {
+                transition: all 0.3s ease;
+            }
+            .bg-gradient-warm {
+                background: linear-gradient(135deg, #F9E8D9 0%, #F5D7B2 100%);
+            }
+            .bg-gradient-cool {
+                background: linear-gradient(135deg, #E8F4FD 0%, #D0E8FF 100%);
+            }
+            .card-hover {
+                @apply transition-all duration-300 hover:shadow-hover hover:-translate-y-1;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- 顶部导航 -->
+    <nav class="bg-white shadow-soft sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fa fa-heart text-primary text-2xl"></i>
+                <h1 class="text-xl font-semibold text-dark">德商(MQ)测试</h1>
+            </div>
+            <div class="text-sm text-neutral">
+                <span id="current-step">步骤 1/3</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主内容区 -->
+    <main class="container mx-auto px-4 py-8 max-w-4xl">
+        <!-- 步骤容器 -->
+        <div id="step-container">
+            <!-- 步骤1：介绍页面 -->
+            <section id="step-1" class="step-content active">
+                <div class="bg-white rounded-2xl shadow-soft p-8 mb-8">
+                    <div class="text-center mb-8">
+                        <div class="inline-block p-4 rounded-full bg-cool mb-4">
+                            <i class="fa fa-lightbulb-o text-primary text-4xl"></i>
+                        </div>
+                        <h2 class="text-3xl font-bold text-dark mb-4">了解德商(MQ)</h2>
+                        <p class="text-neutral text-lg max-w-2xl mx-auto">
+                            德商(Moral Quotient)是衡量个人道德修养、品行操守和人际道德行为能力的核心指标，
+                            核心围绕"为人处世的道德准则与践行能力"展开。
+                        </p>
+                    </div>
+
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold text-dark mb-4">六大核心维度</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- 尊重 -->
+                            <div class="bg-warm rounded-xl p-5 card-hover">
+                                <div class="flex items-start">
+                                    <div class="bg-white rounded-full p-3 mr-4 shadow-sm">
+                                        <i class="fa fa-handshake-o text-primary text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-dark mb-2">尊重</h4>
+                                        <p class="text-sm text-neutral">对自己、他人、社会规则及世间万物的敬畏与重视，是一切道德行为的前提。</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 诚信 -->
+                            <div class="bg-cool rounded-xl p-5 card-hover">
+                                <div class="flex items-start">
+                                    <div class="bg-white rounded-full p-3 mr-4 shadow-sm">
+                                        <i class="fa fa-check-circle text-secondary text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-dark mb-2">诚信</h4>
+                                        <p class="text-sm text-neutral">言行一致、信守承诺，是个人道德信用的核心体现，也是人际信任建立的关键。</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 同理心 -->
+                            <div class="bg-cool rounded-xl p-5 card-hover">
+                                <div class="flex items-start">
+                                    <div class="bg-white rounded-full p-3 mr-4 shadow-sm">
+                                        <i class="fa fa-heart text-accent text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-dark mb-2">同理心</h4>
+                                        <p class="text-sm text-neutral">换位思考、共情他人的能力，是化解人际矛盾、建立善意连接的关键。</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 责任 -->
+                            <div class="bg-warm rounded-xl p-5 card-hover">
+                                <div class="flex items-start">
+                                    <div class="bg-white rounded-full p-3 mr-4 shadow-sm">
+                                        <i class="fa fa-briefcase text-primary text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-dark mb-2">责任</h4>
+                                        <p class="text-sm text-neutral">对自己、他人、家庭和社会应尽义务的自觉承担，是道德行为从"认知"到"行动"的关键。</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 宽容 -->
+                            <div class="bg-warm rounded-xl p-5 card-hover">
+                                <div class="flex items-start">
+                                    <div class="bg-white rounded-full p-3 mr-4 shadow-sm">
+                                        <i class="fa fa-umbrella text-secondary text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-dark mb-2">宽容</h4>
+                                        <p class="text-sm text-neutral">包容他人的不足、原谅他人的无心之过，是化解人际冲突、保持关系和谐的重要素养。</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- 善良 -->
+                            <div class="bg-cool rounded-xl p-5 card-hover">
+                                <div class="flex items-start">
+                                    <div class="bg-white rounded-full p-3 mr-4 shadow-sm">
+                                        <i class="fa fa-star text-accent text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-dark mb-2">善良</h4>
+                                        <p class="text-sm text-neutral">心怀善意、乐善好施，是所有道德维度的最终落脚点，也是个人道德修养的本质体现。</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 免责声明 -->
+                    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-lg mb-8">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <i class="fa fa-exclamation-triangle text-yellow-400"></i>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-medium text-yellow-800">免责声明</h3>
+                                <div class="mt-2 text-sm text-yellow-700">
+                                    <p>本测试仅供自我认知和个人成长参考，<strong>非专业诊断工具</strong>。测试结果不构成任何形式的医疗、心理或专业评估。请以开放、客观的心态看待测试结果，如有需要，请寻求专业人士的帮助。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-center">
+                        <button id="start-test" class="bg-primary hover:bg-blue-600 text-white font-medium py-3 px-8 rounded-full shadow-md transition-all-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                            开始测试
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 步骤2：测试题目 -->
+            <section id="step-2" class="step-content hidden">
+                <div class="bg-white rounded-2xl shadow-soft p-6 mb-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <div>
+                            <h2 class="text-2xl font-bold text-dark">德商测试问卷</h2>
+                            <p class="text-neutral">请根据你的真实情况回答以下问题</p>
+                        </div>
+                        <div class="bg-cool rounded-full px-4 py-1 text-sm font-medium text-primary">
+                            题目 <span id="current-question">1</span>/36
+                        </div>
+                    </div>
+
+                    <!-- 进度条 -->
+                    <div class="w-full bg-gray-200 rounded-full h-2.5 mb-8">
+                        <div id="progress-bar" class="bg-primary h-2.5 rounded-full" style="width: 2.78%"></div>
+                    </div>
+
+                    <!-- 题目容器 -->
+                    <div id="question-container" class="mb-8">
+                        <h3 id="question-text" class="text-xl font-medium text-dark mb-6">题目加载中...</h3>
+                        
+                        <div class="space-y-3">
+                            <div class="option-item">
+                                <input type="radio" id="option-1" name="answer" value="5" class="hidden peer">
+                                <label for="option-1" class="flex items-center justify-between p-4 border border-gray-200 rounded-xl cursor-pointer peer-checked:bg-cool peer-checked:border-primary peer-checked:text-primary transition-all-300">
+                                    <span class="font-medium">非常符合</span>
+                                    <span class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center peer-checked:border-primary">
+                                        <span class="w-3 h-3 rounded-full bg-primary hidden peer-checked:block"></span>
+                                    </span>
+                                </label>
+                            </div>
+                            
+                            <div class="option-item">
+                                <input type="radio" id="option-2" name="answer" value="4" class="hidden peer">
+                                <label for="option-2" class="flex items-center justify-between p-4 border border-gray-200 rounded-xl cursor-pointer peer-checked:bg-cool peer-checked:border-primary peer-checked:text-primary transition-all-300">
+                                    <span class="font-medium">比较符合</span>
+                                    <span class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center peer-checked:border-primary">
+                                        <span class="w-3 h-3 rounded-full bg-primary hidden peer-checked:block"></span>
+                                    </span>
+                                </label>
+                            </div>
+                            
+                            <div class="option-item">
+                                <input type="radio" id="option-3" name="answer" value="3" class="hidden peer">
+                                <label for="option-3" class="flex items-center justify-between p-4 border border-gray-200 rounded-xl cursor-pointer peer-checked:bg-cool peer-checked:border-primary peer-checked:text-primary transition-all-300">
+                                    <span class="font-medium">一般</span>
+                                    <span class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center peer-checked:border-primary">
+                                        <span class="w-3 h-3 rounded-full bg-primary hidden peer-checked:block"></span>
+                                    </span>
+                                </label>
+                            </div>
+                            
+                            <div class="option-item">
+                                <input type="radio" id="option-4" name="answer" value="2" class="hidden peer">
+                                <label for="option-4" class="flex items-center justify-between p-4 border border-gray-200 rounded-xl cursor-pointer peer-checked:bg-cool peer-checked:border-primary peer-checked:text-primary transition-all-300">
+                                    <span class="font-medium">不太符合</span>
+                                    <span class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center peer-checked:border-primary">
+                                        <span class="w-3 h-3 rounded-full bg-primary hidden peer-checked:block"></span>
+                                    </span>
+                                </label>
+                            </div>
+                            
+                            <div class="option-item">
+                                <input type="radio" id="option-5" name="answer" value="1" class="hidden peer">
+                                <label for="option-5" class="flex items-center justify-between p-4 border border-gray-200 rounded-xl cursor-pointer peer-checked:bg-cool peer-checked:border-primary peer-checked:text-primary transition-all-300">
+                                    <span class="font-medium">非常不符合</span>
+                                    <span class="w-6 h-6 rounded-full border-2 border-gray-300 flex items-center justify-center peer-checked:border-primary">
+                                        <span class="w-3 h-3 rounded-full bg-primary hidden peer-checked:block"></span>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between">
+                        <button id="prev-question" class="bg-gray-200 hover:bg-gray-300 text-dark font-medium py-2 px-6 rounded-lg shadow-sm transition-all-300 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 disabled:opacity-50 disabled:cursor-not-allowed">
+                            <i class="fa fa-arrow-left mr-2"></i>上一题
+                        </button>
+                        <button id="next-question" class="bg-primary hover:bg-blue-600 text-white font-medium py-2 px-6 rounded-lg shadow-md transition-all-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 disabled:opacity-50 disabled:cursor-not-allowed">
+                            下一题<i class="fa fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 步骤3：结果页面 -->
+            <section id="step-3" class="step-content hidden">
+                <div class="bg-white rounded-2xl shadow-soft p-6 mb-6">
+                    <div class="text-center mb-8">
+                        <div class="inline-block p-4 rounded-full bg-cool mb-4">
+                            <i class="fa fa-trophy text-primary text-4xl"></i>
+                        </div>
+                        <h2 class="text-3xl font-bold text-dark mb-2">你的德商测试结果</h2>
+                        <p class="text-neutral">感谢完成测试，以下是你的个性化分析报告</p>
+                    </div>
+
+                    <!-- 总体得分 -->
+                    <div class="bg-gradient-cool rounded-2xl p-6 mb-8 text-center">
+                        <h3 class="text-xl font-semibold text-dark mb-4">总体德商水平</h3>
+                        <div class="flex justify-center items-center mb-4">
+                            <div class="relative w-40 h-40">
+                                <canvas id="total-score-chart"></canvas>
+                                <div class="absolute inset-0 flex flex-col items-center justify-center">
+                                    <span id="total-score" class="text-4xl font-bold text-primary">0</span>
+                                    <span class="text-sm text-neutral">/100</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="total-score-description" class="text-lg font-medium text-dark">
+                            分析结果加载中...
+                        </div>
+                    </div>
+
+                    <!-- 各维度得分 -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold text-dark mb-4">六大维度分析</h3>
+                        <div class="mb-6">
+                            <canvas id="dimensions-chart" height="250"></canvas>
+                        </div>
+                        
+                        <div id="dimensions-details" class="space-y-6">
+                            <!-- 各维度详细分析将通过JS动态生成 -->
+                        </div>
+                    </div>
+
+                    <!-- 提升建议 -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold text-dark mb-4">个性化提升建议</h3>
+                        <div id="improvement-suggestions" class="bg-warm rounded-xl p-6">
+                            <!-- 提升建议将通过JS动态生成 -->
+                        </div>
+                    </div>
+
+                    <!-- 正向引导 -->
+                    <div class="bg-blue-50 border-l-4 border-primary p-4 rounded-lg mb-8">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <i class="fa fa-info-circle text-primary"></i>
+                            </div>
+                            <div class="ml-3">
+                                <h3 class="text-sm font-medium text-primary">成长的旅程</h3>
+                                <div class="mt-2 text-sm text-blue-700">
+                                    <p>道德修养是一个终身学习和成长的过程。无论测试结果如何，每一次自我反思都是进步的开始。如果你希望进一步提升自己的道德素养，建议寻求专业心理咨询师或参加相关培训课程。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 分享和重新测试 -->
+                    <div class="flex flex-col sm:flex-row justify-center gap-4">
+                        <button id="share-result" class="bg-secondary hover:bg-yellow-500 text-white font-medium py-3 px-6 rounded-lg shadow-md transition-all-300 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-opacity-50">
+                            <i class="fa fa-share-alt mr-2"></i>分享结果
+                        </button>
+                        <button id="retake-test" class="bg-gray-200 hover:bg-gray-300 text-dark font-medium py-3 px-6 rounded-lg shadow-sm transition-all-300 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50">
+                            <i class="fa fa-refresh mr-2"></i>重新测试
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 原创声明 -->
+                <div class="bg-gray-100 rounded-xl p-4 text-center text-sm text-neutral">
+                    <p>© 2025 德商测试 | 原创内容，版权所有</p>
+                    <p class="mt-1">本测试内容为原创设计，受版权保护。未经授权，不得以任何形式复制、传播或用于商业目的。</p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script>
+        // 测试题目数据
+        const questions = [
+            // 尊重维度
+            {
+                id: 1,
+                text: "在与他人交流时，我会认真倾听对方的观点，不随意打断。",
+                dimension: "尊重",
+                reverse: false
+            },
+            {
+                id: 2,
+                text: "我尊重他人的隐私，不会未经许可查看或传播他人的私人信息。",
+                dimension: "尊重",
+                reverse: false
+            },
+            {
+                id: 3,
+                text: "我会平等对待不同背景、身份的人，不歧视他人。",
+                dimension: "尊重",
+                reverse: false
+            },
+            {
+                id: 4,
+                text: "我遵守公共秩序和规则，尊重社会公序良俗。",
+                dimension: "尊重",
+                reverse: false
+            },
+            {
+                id: 5,
+                text: "我会尊重自己的身体和健康，养成良好的生活习惯。",
+                dimension: "尊重",
+                reverse: false
+            },
+            {
+                id: 6,
+                text: "在网络交流中，我会注意言行举止，尊重他人的感受。",
+                dimension: "尊重",
+                reverse: false
+            },
+            
+            // 诚信维度
+            {
+                id: 7,
+                text: "我承诺的事情会尽力完成，不会轻易食言。",
+                dimension: "诚信",
+                reverse: false
+            },
+            {
+                id: 8,
+                text: "在学习或工作中，我会遵守规则，不弄虚作假。",
+                dimension: "诚信",
+                reverse: false
+            },
+            {
+                id: 9,
+                text: "当我犯错误时，我会勇于承认并承担责任。",
+                dimension: "诚信",
+                reverse: false
+            },
+            {
+                id: 10,
+                text: "我会如实表达自己的想法和感受，不刻意隐瞒或欺骗他人。",
+                dimension: "诚信",
+                reverse: false
+            },
+            {
+                id: 11,
+                text: "我会遵守与他人的约定，按时赴约。",
+                dimension: "诚信",
+                reverse: false
+            },
+            {
+                id: 12,
+                text: "在面对利益诱惑时，我仍会坚持诚实的原则。",
+                dimension: "诚信",
+                reverse: false
+            },
+            
+            // 同理心维度
+            {
+                id: 13,
+                text: "当他人遇到困难时，我会尝试理解他们的感受。",
+                dimension: "同理心",
+                reverse: false
+            },
+            {
+                id: 14,
+                text: "我会站在对方的角度思考问题，考虑他们的处境。",
+                dimension: "同理心",
+                reverse: false
+            },
+            {
+                id: 15,
+                text: "看到他人痛苦或悲伤时，我会感到难过并想要帮助他们。",
+                dimension: "同理心",
+                reverse: false
+            },
+            {
+                id: 16,
+                text: "我会关注他人的情绪变化，并适当给予安慰或支持。",
+                dimension: "同理心",
+                reverse: false
+            },
+            {
+                id: 17,
+                text: "在与他人发生分歧时，我会尝试理解对方的立场。",
+                dimension: "同理心",
+                reverse: false
+            },
+            {
+                id: 18,
+                text: "我会注意自己的言行对他人可能产生的影响。",
+                dimension: "同理心",
+                reverse: false
+            },
+            
+            // 责任维度
+            {
+                id: 19,
+                text: "我会对自己的行为负责，不将错误归咎于他人。",
+                dimension: "责任",
+                reverse: false
+            },
+            {
+                id: 20,
+                text: "我会认真完成自己的学习或工作任务，不敷衍了事。",
+                dimension: "责任",
+                reverse: false
+            },
+            {
+                id: 21,
+                text: "我会主动承担家庭中的责任，帮助家人分担家务。",
+                dimension: "责任",
+                reverse: false
+            },
+            {
+                id: 22,
+                text: "我会关心社会公共事务，积极参与公益活动。",
+                dimension: "责任",
+                reverse: false
+            },
+            {
+                id: 23,
+                text: "在团队合作中，我会认真履行自己的职责。",
+                dimension: "责任",
+                reverse: false
+            },
+            {
+                id: 24,
+                text: "我会保护环境，不做损害公共利益的事。",
+                dimension: "责任",
+                reverse: false
+            },
+            
+            // 宽容维度
+            {
+                id: 25,
+                text: "当他人不小心冒犯我时，我会选择原谅而不是记仇。",
+                dimension: "宽容",
+                reverse: false
+            },
+            {
+                id: 26,
+                text: "我尊重他人的不同观点和生活方式，不强迫他人认同自己。",
+                dimension: "宽容",
+                reverse: false
+            },
+            {
+                id: 27,
+                text: "我不会因为他人的缺点或不足而轻视他们。",
+                dimension: "宽容",
+                reverse: false
+            },
+            {
+                id: 28,
+                text: "在与他人发生矛盾时，我会尝试沟通和解，而不是激化冲突。",
+                dimension: "宽容",
+                reverse: false
+            },
+            {
+                id: 29,
+                text: "我会接受他人的批评和建议，不固执己见。",
+                dimension: "宽容",
+                reverse: false
+            },
+            {
+                id: 30,
+                text: "我会给他人改正错误的机会，不揪住过去的错误不放。",
+                dimension: "宽容",
+                reverse: false
+            },
+            
+            // 善良维度
+            {
+                id: 31,
+                text: "我会主动帮助需要帮助的人，不图回报。",
+                dimension: "善良",
+                reverse: false
+            },
+            {
+                id: 32,
+                text: "我会关心家人、朋友的需求，并尽力提供支持。",
+                dimension: "善良",
+                reverse: false
+            },
+            {
+                id: 33,
+                text: "我会尊重和爱护动物，不虐待或伤害它们。",
+                dimension: "善良",
+                reverse: false
+            },
+            {
+                id: 34,
+                text: "我会对他人的帮助表示感谢，并铭记于心。",
+                dimension: "善良",
+                reverse: false
+            },
+            {
+                id: 35,
+                text: "我会在能力范围内参与公益活动，帮助弱势群体。",
+                dimension: "善良",
+                reverse: false
+            },
+            {
+                id: 36,
+                text: "我会传递正能量，鼓励和支持他人。",
+                dimension: "善良",
+                reverse: false
+            }
+        ];
+
+        // 维度解释数据
+        const dimensionExplanations = {
+            "尊重": {
+                title: "尊重",
+                icon: "fa-handshake-o",
+                color: "text-primary",
+                descriptions: {
+                    excellent: "你非常尊重自己和他人，能够平等对待不同的人，遵守社会规则。你的尊重意识体现在日常生活的方方面面，是你道德素养的重要基础。",
+                    good: "你总体上尊重他人和规则，但在某些情况下可能需要更多注意。你的尊重意识良好，但仍有提升空间。",
+                    average: "你有基本的尊重意识，但在某些情境中可能表现不够。建议你更多关注他人的感受和社会规则。",
+                    below: "你的尊重意识有待加强，建议更多关注他人的感受和社会规则，培养平等对待他人的习惯。",
+                    poor: "你的尊重意识较为薄弱，建议深入反思并积极改进，学习如何尊重自己和他人的权利与尊严。"
+                },
+                suggestions: [
+                    "练习积极倾听，在与他人交流时保持专注",
+                    "学习更多关于不同文化和背景的知识，增进理解和尊重",
+                    "关注自己的言行，确保不会无意中冒犯他人",
+                    "参与志愿服务，培养对他人的尊重和关爱",
+                    "定期反思自己的行为，找出需要改进的地方"
+                ]
+            },
+            "诚信": {
+                title: "诚信",
+                icon: "fa-check-circle",
+                color: "text-secondary",
+                descriptions: {
+                    excellent: "你是一个非常诚信的人，言行一致，信守承诺。你的诚信为你赢得了他人的信任和尊重，是你人际关系的坚实基础。",
+                    good: "你总体上是一个诚信的人，但在某些情况下可能会有妥协。你的诚信度良好，但在面对诱惑时仍需保持警惕。",
+                    average: "你有基本的诚信意识，但在某些情况下可能会犹豫不决。建议你更加重视自己的承诺，做到言行一致。",
+                    below: "你的诚信意识有待加强，建议更加重视自己的承诺，避免轻易许诺或食言。",
+                    poor: "你的诚信意识较为薄弱，建议深入反思自己的行为，建立言行一致的习惯，重建他人对你的信任。"
+                },
+                suggestions: [
+                    "谨慎许诺，确保自己能够兑现承诺",
+                    "面对错误时勇于承认，不找借口或推诿",
+                    "在学习和工作中坚持诚实，不弄虚作假",
+                    "建立诚信记录，定期反思自己的言行是否一致",
+                    "向身边诚信的人学习，树立良好榜样"
+                ]
+            },
+            "同理心": {
+                title: "同理心",
+                icon: "fa-heart",
+                color: "text-accent",
+                descriptions: {
+                    excellent: "你拥有极强的同理心，能够深入理解他人的感受和处境。你的共情能力帮助你建立良好的人际关系，化解冲突。",
+                    good: "你有较好的同理心，能够理解大多数情况下他人的感受。你的共情能力良好，但在某些复杂情境中可能需要更多练习。",
+                    average: "你有基本的同理心，但在某些情况下可能难以理解他人的感受。建议你更多练习换位思考，关注他人的情绪变化。",
+                    below: "你的同理心有待加强，建议尝试更多地关注他人的感受，练习换位思考。",
+                    poor: "你的同理心较为薄弱，建议通过观察他人的情绪、主动倾听等方式，培养自己理解他人的能力。"
+                },
+                suggestions: [
+                    "练习主动倾听，不急于表达自己的观点",
+                    "关注他人的非语言线索，如面部表情和肢体语言",
+                    "尝试从他人的角度思考问题，理解他们的动机和处境",
+                    "阅读文学作品或观看电影，培养对不同角色的理解",
+                    "参与志愿服务，接触不同背景的人群"
+                ]
+            },
+            "责任": {
+                title: "责任",
+                icon: "fa-briefcase",
+                color: "text-primary",
+                descriptions: {
+                    excellent: "你是一个高度负责任的人，对自己的行为和承诺负责。你积极承担家庭、工作和社会责任，是他人可以信赖的对象。",
+                    good: "你总体上是一个负责任的人，能够完成自己的主要职责。你的责任感良好，但在某些情况下可能需要更多主动性。",
+                    average: "你有基本的责任意识，但在某些情况下可能会逃避责任。建议你更加主动地承担自己的义务，不轻易推诿。",
+                    below: "你的责任意识有待加强，建议更加重视自己的义务，避免逃避责任。",
+                    poor: "你的责任意识较为薄弱，建议从小事做起，逐步培养自己的责任感，对自己的行为负责。"
+                },
+                suggestions: [
+                    "设定明确的目标和计划，确保完成自己的任务",
+                    "主动承担更多责任，不局限于基本要求",
+                    "在团队合作中积极贡献，不推诿责任",
+                    "关注社会问题，参与公益活动，培养社会责任感",
+                    "定期反思自己的责任履行情况，找出需要改进的地方"
+                ]
+            },
+            "宽容": {
+                title: "宽容",
+                icon: "fa-umbrella",
+                color: "text-secondary",
+                descriptions: {
+                    excellent: "你拥有宽广的胸怀，能够包容他人的不足和差异。你的宽容帮助你建立和谐的人际关系，减少冲突。",
+                    good: "你总体上是一个宽容的人，能够接受大多数情况下他人的差异。你的宽容度良好，但在某些情况下可能需要更多耐心。",
+                    average: "你有基本的宽容心，但在某些情况下可能难以接受他人的差异或错误。建议你尝试更加包容不同的观点和行为方式。",
+                    below: "你的宽容度有待加强，建议尝试理解和接受他人的差异，不轻易苛责他人。",
+                    poor: "你的宽容度较为薄弱，建议学习如何接纳他人的不足，培养平和的心态，减少对他人的批评和指责。"
+                },
+                suggestions: [
+                    "练习接纳不同的观点和生活方式，不急于评判",
+                    "尝试理解他人行为背后的原因和动机",
+                    "学习Forgiveness技巧，释放负面情绪",
+                    "培养感恩的心态，关注他人的优点而非缺点",
+                    "通过冥想或反思，培养内心的平和"
+                ]
+            },
+            "善良": {
+                title: "善良",
+                icon: "fa-star",
+                color: "text-accent",
+                descriptions: {
+                    excellent: "你是一个非常善良的人，总是心怀善意，乐于助人。你的善良不仅帮助他人，也为你带来内心的满足和快乐。",
+                    good: "你总体上是一个善良的人，能够在大多数情况下帮助他人。你的善良品质良好，但在某些情况下可能需要更多主动性。",
+                    average: "你有基本的善良心，但在某些情况下可能犹豫是否帮助他人。建议你更加主动地表达善意，帮助需要帮助的人。",
+                    below: "你的善良意识有待加强，建议尝试更多地关注他人的需求，主动提供帮助。",
+                    poor: "你的善良意识较为薄弱，建议从小事做起，培养对他人的关心和帮助的习惯。"
+                },
+                suggestions: [
+                    "每天做一件善事，哪怕是很小的事情",
+                    "关注家人、朋友和同事的需求，主动提供支持",
+                    "参与志愿服务，帮助弱势群体",
+                    "培养感恩的心态，珍惜他人的付出",
+                    "避免说伤害他人的话，传递正能量"
+                ]
+            }
+        };
+
+        // 总体得分解释
+        const totalScoreExplanations = {
+            excellent: {
+                range: "90-100",
+                title: "优秀",
+                description: "恭喜你！你的德商水平非常优秀。你在尊重、诚信、同理心、责任、宽容和善良等方面都表现出色。你的道德素养为你赢得了他人的尊重和信任，也为你建立了良好的人际关系。继续保持这种优秀的道德品质，它将成为你人生道路上的宝贵财富。"
+            },
+            good: {
+                range: "80-89",
+                title: "良好",
+                description: "你的德商水平良好。你在大多数道德维度上都表现不错，有较强的道德意识和行为能力。你的道德素养为你建立了良好的人际关系和社会形象。建议你关注得分相对较低的维度，进一步提升自己的道德修养。"
+            },
+            average: {
+                range: "70-79",
+                title: "一般",
+                description: "你的德商水平处于中等。你有基本的道德意识，但在某些情况下可能需要更多思考和努力。建议你深入了解自己的道德价值观，加强在得分较低维度的修养，提升自己的整体道德水平。"
+            },
+            below: {
+                range: "60-69",
+                title: "待提升",
+                description: "你的德商水平有待提升。你有一定的道德意识，但在很多情况下可能缺乏足够的道德判断和行为能力。建议你认真反思自己的道德观念和行为，寻求专业帮助或参加相关培训，努力提升自己的道德素养。"
+            },
+            poor: {
+                range: "0-59",
+                title: "需关注",
+                description: "你的德商水平需要特别关注。你可能在道德观念和行为上存在较大的提升空间。建议你寻求专业心理咨询师的帮助，深入探索自己的价值观和行为模式，积极参与道德教育和培训活动，努力提升自己的道德素养。"
+            }
+        };
+
+        // 应用状态
+        let currentQuestionIndex = 0;
+        const answers = {};
+        let scores = {
+            total: 0,
+            dimensions: {
+                "尊重": 0,
+                "诚信": 0,
+                "同理心": 0,
+                "责任": 0,
+                "宽容": 0,
+                "善良": 0
+            }
+        };
+
+        // DOM元素
+        const startTestBtn = document.getElementById('start-test');
+        const prevQuestionBtn = document.getElementById('prev-question');
+        const nextQuestionBtn = document.getElementById('next-question');
+        const questionText = document.getElementById('question-text');
+        const currentQuestionSpan = document.getElementById('current-question');
+        const progressBar = document.getElementById('progress-bar');
+        const currentStepSpan = document.getElementById('current-step');
+        const shareResultBtn = document.getElementById('share-result');
+        const retakeTestBtn = document.getElementById('retake-test');
+
+        // 步骤切换函数
+        function showStep(stepNumber) {
+            // 隐藏所有步骤
+            document.querySelectorAll('.step-content').forEach(step => {
+                step.classList.add('hidden');
+            });
+            
+            // 显示指定步骤
+            document.getElementById(`step-${stepNumber}`).classList.remove('hidden');
+            
+            // 更新步骤指示器
+            currentStepSpan.textContent = `步骤 ${stepNumber}/3`;
+        }
+
+        // 加载当前问题
+        function loadCurrentQuestion() {
+            const question = questions[currentQuestionIndex];
+            questionText.textContent = question.text;
+            currentQuestionSpan.textContent = question.id;
+            
+            // 更新进度条
+            const progressPercentage = ((currentQuestionIndex + 1) / questions.length) * 100;
+            progressBar.style.width = `${progressPercentage}%`;
+            
+            // 清除之前的选择
+            document.querySelectorAll('input[name="answer"]').forEach(radio => {
+                radio.checked = false;
+            });
+            
+            // 如果已有答案，选中对应选项
+            if (answers[question.id]) {
+                document.querySelector(`input[name="answer"][value="${answers[question.id]}"]`).checked = true;
+            }
+            
+            // 更新按钮状态
+            prevQuestionBtn.disabled = currentQuestionIndex === 0;
+            nextQuestionBtn.disabled = !answers[question.id];
+            
+            // 如果是最后一题，更改按钮文本
+            if (currentQuestionIndex === questions.length - 1) {
+                nextQuestionBtn.innerHTML = '查看结果<i class="fa fa-arrow-right ml-2"></i>';
+            } else {
+                nextQuestionBtn.innerHTML = '下一题<i class="fa fa-arrow-right ml-2"></i>';
+            }
+        }
+
+        // 计算得分
+        function calculateScores() {
+            // 初始化得分
+            scores = {
+                total: 0,
+                dimensions: {
+                    "尊重": 0,
+                    "诚信": 0,
+                    "同理心": 0,
+                    "责任": 0,
+                    "宽容": 0,
+                    "善良": 0
+                }
+            };
+            
+            // 计算各维度得分
+            questions.forEach(question => {
+                const answer = answers[question.id];
+                if (answer) {
+                    // 反向计分题目需要转换分数
+                    const score = question.reverse ? 6 - answer : answer;
+                    scores.dimensions[question.dimension] += score;
+                    scores.total += score;
+                }
+            });
+            
+            // 转换为百分制
+            const maxDimensionScore = 6 * 5; // 每个维度6题，每题最高5分
+            const maxTotalScore = questions.length * 5; // 总共36题，每题最高5分
+            
+            Object.keys(scores.dimensions).forEach(dimension => {
+                scores.dimensions[dimension] = Math.round((scores.dimensions[dimension] / maxDimensionScore) * 100);
+            });
+            
+            scores.total = Math.round((scores.total / maxTotalScore) * 100);
+            
+            return scores;
+        }
+
+        // 获取得分等级
+        function getScoreLevel(score) {
+            if (score >= 90) return 'excellent';
+            if (score >= 80) return 'good';
+            if (score >= 70) return 'average';
+            if (score >= 60) return 'below';
+            return 'poor';
+        }
+
+        // 显示结果
+        function displayResults() {
+            const scores = calculateScores();
+            
+            // 更新总体得分
+            document.getElementById('total-score').textContent = scores.total;
+            
+            // 获取总体得分解释
+            const totalLevel = getScoreLevel(scores.total);
+            const totalExplanation = totalScoreExplanations[totalLevel];
+            document.getElementById('total-score-description').textContent = `${totalExplanation.title} (${totalExplanation.range}分)`;
+            
+            // 创建总体得分图表
+            const totalScoreCtx = document.getElementById('total-score-chart').getContext('2d');
+            new Chart(totalScoreCtx, {
+                type: 'doughnut',
+                data: {
+                    datasets: [{
+                        data: [scores.total, 100 - scores.total],
+                        backgroundColor: [
+                            '#4A90E2',
+                            '#E8F4FD'
+                        ],
+                        borderWidth: 0,
+                        cutout: '80%'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            enabled: false
+                        }
+                    }
+                }
+            });
+            
+            // 创建维度雷达图
+            const dimensionsCtx = document.getElementById('dimensions-chart').getContext('2d');
+            new Chart(dimensionsCtx, {
+                type: 'radar',
+                data: {
+                    labels: Object.keys(scores.dimensions),
+                    datasets: [{
+                        label: '德商得分',
+                        data: Object.values(scores.dimensions),
+                        backgroundColor: 'rgba(74, 144, 226, 0.2)',
+                        borderColor: '#4A90E2',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#4A90E2',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#4A90E2'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                stepSize: 20
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // 生成维度详细分析
+            const dimensionsDetails = document.getElementById('dimensions-details');
+            dimensionsDetails.innerHTML = '';
+            
+            // 按得分从低到高排序维度
+            const sortedDimensions = Object.entries(scores.dimensions)
+                .sort((a, b) => a[1] - b[1]);
+            
+            sortedDimensions.forEach(([dimension, score]) => {
+                const level = getScoreLevel(score);
+                const explanation = dimensionExplanations[dimension];
+                
+                const dimensionElement = document.createElement('div');
+                dimensionElement.className = 'bg-white rounded-xl p-5 shadow-sm border border-gray-100';
+                dimensionElement.innerHTML = `
+                    <div class="flex items-center mb-4">
+                        <div class="bg-cool rounded-full p-3 mr-4">
+                            <i class="fa ${explanation.icon} ${explanation.color} text-xl"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold text-dark">${explanation.title}</h4>
+                            <div class="flex items-center">
+                                <span class="text-lg font-bold ${score >= 80 ? 'text-primary' : score >= 60 ? 'text-secondary' : 'text-red-500'}">${score}</span>
+                                <span class="text-sm text-neutral ml-1">/100</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-neutral">${explanation.descriptions[level]}</p>
+                `;
+                
+                dimensionsDetails.appendChild(dimensionElement);
+            });
+            
+            // 生成提升建议
+            const improvementSuggestions = document.getElementById('improvement-suggestions');
+            
+            // 获取得分最低的两个维度
+            const lowestDimensions = sortedDimensions.slice(0, 2);
+            
+            let suggestionsHTML = '<h4 class="font-semibold text-dark mb-4">重点提升方向</h4><ul class="space-y-4">';
+            
+            lowestDimensions.forEach(([dimension, score]) => {
+                const explanation = dimensionExplanations[dimension];
+                
+                suggestionsHTML += `
+                    <li>
+                        <div class="flex items-center mb-2">
+                            <i class="fa ${explanation.icon} ${explanation.color} mr-2"></i>
+                            <h5 class="font-medium text-dark">${explanation.title}</h5>
+                        </div>
+                        <ul class="list-disc list-inside text-neutral space-y-2 ml-6">
+                `;
+                
+                explanation.suggestions.forEach(suggestion => {
+                    suggestionsHTML += `<li>${suggestion}</li>`;
+                });
+                
+                suggestionsHTML += '</ul></li>';
+            });
+            
+            suggestionsHTML += '</ul>';
+            improvementSuggestions.innerHTML = suggestionsHTML;
+        }
+
+        // 事件监听器
+        startTestBtn.addEventListener('click', () => {
+            showStep(2);
+            loadCurrentQuestion();
+        });
+
+        prevQuestionBtn.addEventListener('click', () => {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadCurrentQuestion();
+            }
+        });
+
+        nextQuestionBtn.addEventListener('click', () => {
+            // 如果是最后一题，显示结果
+            if (currentQuestionIndex === questions.length - 1) {
+                calculateScores();
+                displayResults();
+                showStep(3);
+            } else if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                loadCurrentQuestion();
+            }
+        });
+
+        // 监听答案选择
+        document.querySelectorAll('input[name="answer"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                const question = questions[currentQuestionIndex];
+                answers[question.id] = parseInt(e.target.value);
+                nextQuestionBtn.disabled = false;
+            });
+        });
+
+        // 分享结果
+        shareResultBtn.addEventListener('click', () => {
+            alert('分享功能即将上线，敬请期待！');
+        });
+
+        // 重新测试
+        retakeTestBtn.addEventListener('click', () => {
+            // 重置状态
+            currentQuestionIndex = 0;
+            Object.keys(answers).forEach(key => delete answers[key]);
+            
+            // 返回测试开始
+            showStep(2);
+            loadCurrentQuestion();
+        });
+
+        // 初始化应用
+        showStep(1);
+    </script>
+</body>
+</html>
